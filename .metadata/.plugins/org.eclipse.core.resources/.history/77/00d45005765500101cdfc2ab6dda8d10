@@ -1,0 +1,10 @@
+package br.usp.ime.choreos.vvws.ws;
+
+import javax.jws.WebService;
+
+@WebService
+public interface Store {
+
+	
+	
+}

@@ -1,0 +1,37 @@
+package br.usp.ime.choreos.vvws.ws;
+
+import java.util.List;
+
+import javax.jws.WebService;
+
+import br.usp.ime.choreos.vvws.model.CD;
+import br.usp.ime.choreos.vvws.model.Customer;
+
+@WebService(endpointInterface="br.usp.ime.choreos.vvws.ws.Store")
+public class StoreWS implements Store {
+
+	@Override
+	public List<CD> searchByArtist(String artist) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<CD> searchByGenre(String genre) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<CD> searchByTitle(String title) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean purchase(CD cd, Customer customer) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

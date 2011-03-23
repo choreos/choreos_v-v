@@ -1,0 +1,8 @@
+package br.usp.ime.choreos.vvws.ws;
+
+@WebService
+public interface Store {
+
+	
+	
+}

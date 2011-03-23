@@ -1,0 +1,11 @@
+package br.usp.ime.choreos.vvws.ws;
+
+import javax.jws.WebService;
+
+@WebService
+public class SimpleStoreWS {
+
+	@WebMethod
+	
+	
+}

@@ -1,0 +1,70 @@
+package br.usp.ime.choreos.vvws.ws;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+
+import br.usp.ime.choreos.vvws.model.CD;
+import br.usp.ime.choreos.vvws.model.Customer;
+
+@WebService
+public class SimpleStoreWS {
+	
+	List<CD> cds = MockCDs.CDList;
+
+	@WebMethod
+	public String getCDByArtist(String artist){
+		
+		return null;
+	}
+
+	public String searchByArtist(String artist) {
+
+		StringBuilder result = new StringBuilder();
+		
+		for(CD cd : cds){
+			if(cd.getArtist().contains(artist)){
+				result.append(cd.getTitle());
+			}
+		}
+			
+		return result.toString();
+	}
+
+	@Override
+	public List<CD> searchByGenre(String genre) {
+		
+		List<CD> results = new ArrayList<CD>();
+		
+		for(CD cd : cds){
+			if(cd.getGenre().contains(genre)){
+				results.add(cd);
+			}
+		}
+			
+		return results;
+	
+	}
+
+	@Override
+	public List<CD> searchByTitle(String title) {
+		
+		List<CD> results = new ArrayList<CD>();
+		
+		for(CD cd : cds){
+			if(cd.getTitle().contains(title)){
+				results.add(cd);
+			}
+		}
+			
+		return results;
+	}
+
+	@Override
+	public Boolean purchase(CD cd, Customer customer) {
+		return true;
+	}
+	
+}

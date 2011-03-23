@@ -1,0 +1,14 @@
+package br.usp.ime.choreos.vvws.ws;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class StoreTest {
+
+	@Test
+	public void testPurchaseShouldAlwaysWork(){
+		StoreWS ws = new StoreWS();
+		assertTrue(ws.purchase(null, null));
+	}
+}

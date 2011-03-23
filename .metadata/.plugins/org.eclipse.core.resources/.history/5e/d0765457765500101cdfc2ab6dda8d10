@@ -1,0 +1,6 @@
+package br.usp.ime.choreos.vvws.ws;
+
+@WebService(endpointInterface="br.usp.ime.choreos.vvws.ws.Store")
+public class StoreWS {
+
+}
