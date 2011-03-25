@@ -1,0 +1,14 @@
+package br.usp.ime.choreos.vvws.client;
+
+import org.junit.*;
+
+
+public class ClientTest {
+	
+	@Test
+	public void clientTest() {
+		
+		
+	}
+
+}

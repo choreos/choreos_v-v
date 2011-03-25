@@ -1,0 +1,10 @@
+package br.usp.ime.choreos.vvws.client;
+
+public class Client {
+
+	public static void main(String[] args) {
+
+		
+	}
+
+}
