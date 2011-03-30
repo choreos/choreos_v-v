@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite failures="0" time="0.049" errors="0" skipped="0" tests="1" name="br.usp.ime.labxp.soapUIStudy.AppTest">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/i386"/>
+    <property name="java.vm.version" value="17.1-b03"/>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."/>
+    <property name="java.vendor.url" value="http://java.sun.com/"/>
+    <property name="path.separator" value=":"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="/home/piva/workspace/Choreos/soapUIStudy"/>
+    <property name="java.runtime.version" value="1.6.0_22-b04"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
+    <property name="basedir" value="/home/piva/workspace/Choreos/soapUIStudy"/>
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/endorsed"/>
+    <property name="os.arch" value="i386"/>
+    <property name="surefire.real.class.path" value="/home/piva/workspace/Choreos/soapUIStudy/target/surefire/surefirebooter9144392609910898816.jar"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="os.name" value="Linux"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/i386/server:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/i386:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/../lib/i386:/usr/java/packages/lib/i386:/lib:/usr/lib"/>
+    <property name="surefire.test.class.path" value="/home/piva/workspace/Choreos/soapUIStudy/target/test-classes:/home/piva/workspace/Choreos/soapUIStudy/target/classes:/home/piva/.m2/repository/javax/mail/mail/1.4/mail-1.4.jar:/home/piva/.m2/repository/javax/jms/jms/1.1/jms-1.1.jar:/home/piva/.m2/repository/wsdl4j/wsdl4j/1.6.2/wsdl4j-1.6.2.jar:/home/piva/.m2/repository/junit/junit/4.8.2/junit-4.8.2.jar:/home/piva/.m2/repository/com/jgoodies/looks/2.2.2/looks-2.2.2.jar:/home/piva/.m2/repository/com/jgoodies/binding/2.0.6/binding-2.0.6.jar:/home/piva/.m2/repository/com/jgoodies/forms/1.2.1/forms-1.2.1.jar:/home/piva/.m2/repository/com/l2fprod/common/l2fprod-common-fontchooser/6.9.1/l2fprod-common-fontchooser-6.9.1.jar:/home/piva/.m2/repository/com/l2fprod/common/l2fprod-common-shared/6.9.1/l2fprod-common-shared-6.9.1.jar:/home/piva/.m2/repository/org/swinglabs/swingx/1.6.1/swingx-1.6.1.jar:/home/piva/.m2/repository/com/jhlabs/filters/2.0.235/filters-2.0.235.jar:/home/piva/.m2/repository/org/swinglabs/swing-worker/1.1/swing-worker-1.1.jar:/home/piva/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar:/home/piva/.m2/repository/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar:/home/piva/.m2/repository/commons-lang/commons-lang/2.4/commons-lang-2.4.jar:/home/piva/.m2/repository/commons-beanutils/commons-beanutils/1.8.3/commons-beanutils-1.8.3.jar:/home/piva/.m2/repository/xom/xom/1.2.5/xom-1.2.5.jar:/home/piva/.m2/repository/xml-apis/xml-apis/1.3.03/xml-apis-1.3.03.jar:/home/piva/.m2/repository/xerces/xercesImpl/2.8.0/xercesImpl-2.8.0.jar:/home/piva/.m2/repository/xalan/xalan/2.7.0/xalan-2.7.0.jar:/home/piva/.m2/repository/net/sf/ezmorph/ezmorph/1.0.6/ezmorph-1.0.6.jar:/home/piva/.m2/repository/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar:/home/piva/.m2/repository/commons-codec/commons-codec/1.4/commons-codec-1.4.jar:/home/piva/.m2/repository/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar:/home/piva/.m2/repository/commons-cli/commons-cli/1.2/commons-cli-1.2.jar:/home/piva/.m2/repository/net/sf/saxon/saxon/8.7/saxon-8.7.jar:/home/piva/.m2/repository/saxon/saxon-jdom/6.5.3/saxon-jdom-6.5.3.jar:/home/piva/.m2/repository/groovy/groovy-all/1.1-rc-1/groovy-all-1.1-rc-1.jar:/home/piva/.m2/repository/org/apache/ant/ant/1.7.0/ant-1.7.0.jar:/home/piva/.m2/repository/org/apache/ant/ant-launcher/1.7.0/ant-launcher-1.7.0.jar:/home/piva/.m2/repository/jline/jline/0.9.91/jline-0.9.91.jar:/home/piva/.m2/repository/jetty/jetty/6.0.2/jetty-6.0.2.jar:/home/piva/.m2/repository/jetty/jetty-util/6.0.2/jetty-util-6.0.2.jar:/home/piva/.m2/repository/org/apache/ant/ant-apache-log4j/1.8.2/ant-apache-log4j-1.8.2.jar:/home/piva/.m2/repository/log4j/log4j/1.2.13/log4j-1.2.13.jar:/home/piva/.m2/repository/ca/juliusdavies/not-yet-commons-ssl/0.3.11/not-yet-commons-ssl-0.3.11.jar:/home/piva/.m2/repository/javax/activation/activation/1.1.1/activation-1.1.1.jar:/home/piva/.m2/repository/eviware/soapui-xmlbeans/3.6.1/soapui-xmlbeans-3.6.1.jar:/home/piva/.m2/repository/eviware/soap-xmlbeans/1.2/soap-xmlbeans-1.2.jar:/home/piva/.m2/repository/eviware/soapui/3.6/soapui-3.6.jar:/home/piva/.m2/repository/org/bouncycastle/bcprov-jdk15/1.44/bcprov-jdk15-1.44.jar:/home/piva/.m2/repository/xmlbeans/xbean/fixed-2.4.0/xbean-fixed-2.4.0.jar:/home/piva/.m2/repository/xmlbeans/xbean_xpath/2.4.0/xbean_xpath-2.4.0.jar:/home/piva/.m2/repository/xmlbeans/xmlpublic/2.4.0/xmlpublic-2.4.0.jar:"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="50.0"/>
+    <property name="sun.management.compiler" value="HotSpot Tiered Compilers"/>
+    <property name="os.version" value="2.6.35-25-generic-pae"/>
+    <property name="user.home" value="/home/piva"/>
+    <property name="user.timezone" value=""/>
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.specification.version" value="1.6"/>
+    <property name="user.name" value="piva"/>
+    <property name="java.class.path" value="/home/piva/workspace/Choreos/soapUIStudy/target/test-classes:/home/piva/workspace/Choreos/soapUIStudy/target/classes:/home/piva/.m2/repository/javax/mail/mail/1.4/mail-1.4.jar:/home/piva/.m2/repository/javax/jms/jms/1.1/jms-1.1.jar:/home/piva/.m2/repository/wsdl4j/wsdl4j/1.6.2/wsdl4j-1.6.2.jar:/home/piva/.m2/repository/junit/junit/4.8.2/junit-4.8.2.jar:/home/piva/.m2/repository/com/jgoodies/looks/2.2.2/looks-2.2.2.jar:/home/piva/.m2/repository/com/jgoodies/binding/2.0.6/binding-2.0.6.jar:/home/piva/.m2/repository/com/jgoodies/forms/1.2.1/forms-1.2.1.jar:/home/piva/.m2/repository/com/l2fprod/common/l2fprod-common-fontchooser/6.9.1/l2fprod-common-fontchooser-6.9.1.jar:/home/piva/.m2/repository/com/l2fprod/common/l2fprod-common-shared/6.9.1/l2fprod-common-shared-6.9.1.jar:/home/piva/.m2/repository/org/swinglabs/swingx/1.6.1/swingx-1.6.1.jar:/home/piva/.m2/repository/com/jhlabs/filters/2.0.235/filters-2.0.235.jar:/home/piva/.m2/repository/org/swinglabs/swing-worker/1.1/swing-worker-1.1.jar:/home/piva/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar:/home/piva/.m2/repository/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar:/home/piva/.m2/repository/commons-lang/commons-lang/2.4/commons-lang-2.4.jar:/home/piva/.m2/repository/commons-beanutils/commons-beanutils/1.8.3/commons-beanutils-1.8.3.jar:/home/piva/.m2/repository/xom/xom/1.2.5/xom-1.2.5.jar:/home/piva/.m2/repository/xml-apis/xml-apis/1.3.03/xml-apis-1.3.03.jar:/home/piva/.m2/repository/xerces/xercesImpl/2.8.0/xercesImpl-2.8.0.jar:/home/piva/.m2/repository/xalan/xalan/2.7.0/xalan-2.7.0.jar:/home/piva/.m2/repository/net/sf/ezmorph/ezmorph/1.0.6/ezmorph-1.0.6.jar:/home/piva/.m2/repository/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar:/home/piva/.m2/repository/commons-codec/commons-codec/1.4/commons-codec-1.4.jar:/home/piva/.m2/repository/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar:/home/piva/.m2/repository/commons-cli/commons-cli/1.2/commons-cli-1.2.jar:/home/piva/.m2/repository/net/sf/saxon/saxon/8.7/saxon-8.7.jar:/home/piva/.m2/repository/saxon/saxon-jdom/6.5.3/saxon-jdom-6.5.3.jar:/home/piva/.m2/repository/groovy/groovy-all/1.1-rc-1/groovy-all-1.1-rc-1.jar:/home/piva/.m2/repository/org/apache/ant/ant/1.7.0/ant-1.7.0.jar:/home/piva/.m2/repository/org/apache/ant/ant-launcher/1.7.0/ant-launcher-1.7.0.jar:/home/piva/.m2/repository/jline/jline/0.9.91/jline-0.9.91.jar:/home/piva/.m2/repository/jetty/jetty/6.0.2/jetty-6.0.2.jar:/home/piva/.m2/repository/jetty/jetty-util/6.0.2/jetty-util-6.0.2.jar:/home/piva/.m2/repository/org/apache/ant/ant-apache-log4j/1.8.2/ant-apache-log4j-1.8.2.jar:/home/piva/.m2/repository/log4j/log4j/1.2.13/log4j-1.2.13.jar:/home/piva/.m2/repository/ca/juliusdavies/not-yet-commons-ssl/0.3.11/not-yet-commons-ssl-0.3.11.jar:/home/piva/.m2/repository/javax/activation/activation/1.1.1/activation-1.1.1.jar:/home/piva/.m2/repository/eviware/soapui-xmlbeans/3.6.1/soapui-xmlbeans-3.6.1.jar:/home/piva/.m2/repository/eviware/soap-xmlbeans/1.2/soap-xmlbeans-1.2.jar:/home/piva/.m2/repository/eviware/soapui/3.6/soapui-3.6.jar:/home/piva/.m2/repository/org/bouncycastle/bcprov-jdk15/1.44/bcprov-jdk15-1.44.jar:/home/piva/.m2/repository/xmlbeans/xbean/fixed-2.4.0/xbean-fixed-2.4.0.jar:/home/piva/.m2/repository/xmlbeans/xbean_xpath/2.4.0/xbean_xpath-2.4.0.jar:/home/piva/.m2/repository/xmlbeans/xmlpublic/2.4.0/xmlpublic-2.4.0.jar:"/>
+    <property name="java.vm.specification.version" value="1.0"/>
+    <property name="sun.arch.data.model" value="32"/>
+    <property name="java.home" value="/usr/lib/jvm/java-6-sun-1.6.0.22/jre"/>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.language" value="en"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.6.0_22"/>
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/ext:/usr/java/packages/lib/ext"/>
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/classes"/>
+    <property name="java.vendor" value="Sun Microsystems Inc."/>
+    <property name="localRepository" value="/home/piva/.m2/repository"/>
+    <property name="file.separator" value="/"/>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.desktop" value="gnome"/>
+    <property name="sun.cpu.isalist" value=""/>
+  </properties>
+  <testcase time="0.001" classname="br.usp.ime.labxp.soapUIStudy.AppTest" name="testApp"/>
+</testsuite>
