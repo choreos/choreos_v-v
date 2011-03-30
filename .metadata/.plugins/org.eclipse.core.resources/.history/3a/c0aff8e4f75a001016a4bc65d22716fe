@@ -1,0 +1,29 @@
+package br.usp.ime.choreos;
+
+import java.util.ArrayList;
+
+import org.junit.Test;
+
+
+public class EnvelopeArgumentGeneratorTest {
+	
+	@Test
+	public void testGenerator(){
+		String testXml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:trav=\"http://airline.ws.ime.usp.br/\">"
+			+ "<soapenv:Header/>"
+			+ "<soapenv:Body>"
+			+ "<trav:getFlight>"
+			+ "<arg0>?</arg0>"
+			+ "<arg1>?</arg1>"
+			+ "</trav:getFlight>"
+			+ "</soapenv:Body>"
+			+ "</soapenv:Envelope>";
+		
+		List<String> parameters = new ArrayList<E>();
+		
+		
+		String result = EnvelopeArgumentGenerator.generate(testXml, []); 
+		
+	}
+
+}
