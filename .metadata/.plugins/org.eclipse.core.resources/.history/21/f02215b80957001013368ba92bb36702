@@ -1,7 +1,0 @@
-package br.usp.ime.choreos.vvws.client;
-
-import junit.framework.TestCase;
-
-public class ClientTest extends TestCase {
-
-}

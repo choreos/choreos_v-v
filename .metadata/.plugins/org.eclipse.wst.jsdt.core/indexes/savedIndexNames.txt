@@ -1,5 +1,0 @@
-INDEX VERSION 1.121+/home/leonardo/workspace_choreus/CHOReOS_V-V/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
-423192495.index
-3909848824.index
-308103377.index
-3590866546.index

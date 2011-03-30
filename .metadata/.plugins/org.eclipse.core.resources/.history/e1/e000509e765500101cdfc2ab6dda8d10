@@ -1,8 +1,0 @@
-package br.usp.ime.choreos.vvws.ws;
-
-import javax.jws.WebService;
-
-@WebService(endpointInterface="br.usp.ime.choreos.vvws.ws.Store")
-public class StoreWS implements StoreWS {
-	
-}

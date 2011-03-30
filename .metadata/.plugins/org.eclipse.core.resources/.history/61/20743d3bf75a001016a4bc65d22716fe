@@ -1,9 +1,0 @@
-package br.usp.ime.choreos;
-
-public class EnvelopeArgumentGenerator {
-
-	public static String generate(){
-
-		return null;
-	}
-}
