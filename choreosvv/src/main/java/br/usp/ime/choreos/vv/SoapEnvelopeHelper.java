@@ -2,7 +2,7 @@ package br.usp.ime.choreos.vv;
 
 import java.util.List;
 
-public class EnvelopeArgumentGenerator {
+public class SoapEnvelopeHelper {
 
 	private static String getTag(int i){
 		return "<arg" + i + ">";
@@ -34,4 +34,9 @@ public class EnvelopeArgumentGenerator {
 		}
 		return xml;
 	}
+	
+	public static int getExpectedNumberOfParameters(String xml){
+		return 42;
+	}
+	
 }

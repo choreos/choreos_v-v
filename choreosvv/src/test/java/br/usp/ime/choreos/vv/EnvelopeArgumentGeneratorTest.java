@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import br.usp.ime.choreos.vv.EnvelopeArgumentGenerator;
+import br.usp.ime.choreos.vv.SoapEnvelopeHelper;
 import static org.junit.Assert.*;
 
 public class EnvelopeArgumentGeneratorTest {
@@ -29,7 +29,7 @@ public class EnvelopeArgumentGeneratorTest {
 		String result;
 		
 		try {
-			result = EnvelopeArgumentGenerator.generate(testXml, parameters);
+			result = SoapEnvelopeHelper.generate(testXml, parameters);
 			assertTrue(false);
 		} catch(Exception e){
 			// Test passed
@@ -37,7 +37,7 @@ public class EnvelopeArgumentGeneratorTest {
 		
 		parameters.add("12-21-2010");
 		
-		result = EnvelopeArgumentGenerator.generate(testXml, parameters); 
+		result = SoapEnvelopeHelper.generate(testXml, parameters); 
 		
 		String expectedOutput = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:trav=\"http://airline.ws.ime.usp.br/\">"
 			+ "<soapenv:Header/>"
@@ -54,7 +54,7 @@ public class EnvelopeArgumentGeneratorTest {
 		parameters.add("Extra parameter");
 		
 		try {
-			result = EnvelopeArgumentGenerator.generate(testXml, parameters);
+			result = SoapEnvelopeHelper.generate(testXml, parameters);
 			assertTrue(false);
 		} catch(Exception e){
 			// Test passed
@@ -78,7 +78,7 @@ public class EnvelopeArgumentGeneratorTest {
 		parameters.add("Araçá do Ribeirão");
 		parameters.add("12-21-2010");
 		
-		String result = EnvelopeArgumentGenerator.generate(testXml, parameters); 
+		String result = SoapEnvelopeHelper.generate(testXml, parameters); 
 		
 		String expectedOutput = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:trav=\"http://airline.ws.ime.usp.br/\">"
 			+ "<soapenv:Header/>"
