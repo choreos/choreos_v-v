@@ -10,29 +10,26 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.usp.ime.choreos.vv.Operation;
-import br.usp.ime.choreos.vv.WSClient;
-import br.usp.ime.choreos.vv.util.Bash;
+import br.usp.ime.choreos.vv.util.WebServiceController;
 
 import com.eviware.soapui.support.SoapUIException;
 
 public class WSClientTest {
 
 	private static final String WSDL = "http://localhost:1234/Store?wsdl";
-	private static final int NUMBER_OF_OPERATIONS = 5;
-	private static final int NUMBER_OF_BUY_PARAMETERS = 2;
+	private static final int NUMBER_OF_OPERATIONS = 4;
 	
 	private static WSClient wsClient;
 	
 	@BeforeClass
 	public static void setUp() throws SoapUIException, XmlException, IOException {
-		Bash.deployService();
+		WebServiceController.deployService();
 		wsClient = new WSClient(WSDL);
 	}
 	
 	@AfterClass
 	public static void tearDown(){
-		Bash.undeployService();
+		WebServiceController.undeployService();
 	}
 	
 	@Test
@@ -56,15 +53,7 @@ public class WSClientTest {
 	
 	@Test
 	public void checkNumberOfOperations() {
-		
 		assertEquals(NUMBER_OF_OPERATIONS, wsClient.getOperations().size());
-	}
-
-	@Test
-	public void checkNumberOfParametersOfBuy() {
-		
-		Operation buy = wsClient.getOperationByName("buy");
-		assertEquals(NUMBER_OF_BUY_PARAMETERS, buy.getNumberOfParameters());
 	}
 
 }
