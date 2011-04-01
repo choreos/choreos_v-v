@@ -10,9 +10,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.ime.usp.choreos.vv.Operation;
-import br.ime.usp.choreos.vv.WSClient;
-import br.ime.usp.choreos.vv.util.Bash;
+import br.usp.ime.choreos.vv.Operation;
+import br.usp.ime.choreos.vv.WSClient;
+import br.usp.ime.choreos.vv.util.Bash;
 
 import com.eviware.soapui.support.SoapUIException;
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import br.ime.usp.choreos.vv.EnvelopeArgumentGenerator;
+import br.usp.ime.choreos.vv.EnvelopeArgumentGenerator;
 import static org.junit.Assert.*;
 
 public class EnvelopeArgumentGeneratorTest {
