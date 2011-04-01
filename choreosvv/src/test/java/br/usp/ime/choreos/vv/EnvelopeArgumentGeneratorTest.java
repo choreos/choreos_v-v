@@ -1,4 +1,4 @@
-package br.usp.ime.choreos;
+package br.usp.ime.choreos.vv;
 
 import java.util.ArrayList;
 import java.util.List;

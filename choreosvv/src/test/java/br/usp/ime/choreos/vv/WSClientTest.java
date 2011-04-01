@@ -1,4 +1,4 @@
-package br.usp.ime.choreos;
+package br.usp.ime.choreos.vv;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
@@ -18,7 +18,7 @@ import com.eviware.soapui.support.SoapUIException;
 
 public class WSClientTest {
 
-	private static final String WSDL = "http://localhost:1234/store?wsdl";
+	private static final String WSDL = "http://localhost:1234/Store?wsdl";
 	private static final int NUMBER_OF_OPERATIONS = 5;
 	private static final int NUMBER_OF_BUY_PARAMETERS = 2;
 	
@@ -45,7 +45,7 @@ public class WSClientTest {
 	@Test(expected=SoapUIException.class)
 	public void checkInvalidWsdlUri() throws SoapUIException, XmlException, IOException {
 
-		new WSClient("http://localhost:1234/store?wsdl_invalid"); // invalid wsdl uri
+		new WSClient("http://localhost:1234/Store?wsdl_invalid"); // invalid wsdl uri
 	}
 
 	@Test
