@@ -1,12 +1,12 @@
 package br.usp.ime.choreos.vv;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-
-import br.usp.ime.choreos.vv.SoapEnvelopeHelper;
-import static org.junit.Assert.*;
 
 public class SoapEnvelopeHelperTest {
 	
