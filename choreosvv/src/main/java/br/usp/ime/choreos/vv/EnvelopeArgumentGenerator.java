@@ -1,5 +1,7 @@
 package br.usp.ime.choreos.vv;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EnvelopeArgumentGenerator {
@@ -9,9 +11,8 @@ public class EnvelopeArgumentGenerator {
 	}
 	
 	public static String generate(String xml, List<String> parameters) throws Exception {
-
 		if(xml.matches(".*" + getTag(parameters.size()) + ".*")){
-			Exception lessParameters = new Exception(
+			Exception lessParameters = new  Exception(
 					"Number of parameters less than number of parameters in XML envelope. "
 							+ "Parameters given: "
 							+ parameters.size());
@@ -22,7 +23,7 @@ public class EnvelopeArgumentGenerator {
 			// Tag for the current argument
 			String currentArgTag = getTag(i);
 			String argRegex = currentArgTag + "\\?";
-			if(!xml.matches(".*" + argRegex + ".*")){
+			if(xml.indexOf(currentArgTag) < 0){
 				Exception noMoreParameters = new Exception(
 						"Number of parameters exceeds number of parameters in XML envelope. Parameters expected: "
 								+ (i - 1)
@@ -32,6 +33,13 @@ public class EnvelopeArgumentGenerator {
 			}
 			xml = xml.replaceFirst(argRegex, currentArgTag + parameters.get(i));
 		}
+		
 		return xml;
+	}
+	
+	public static String generate(String xml, String... parameters) throws Exception {
+		List<String> paramList = Arrays.asList(parameters);
+		
+		return generate(xml, paramList);
 	}
 }

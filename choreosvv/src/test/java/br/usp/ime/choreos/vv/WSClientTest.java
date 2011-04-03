@@ -10,17 +10,14 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.usp.ime.choreos.vv.Operation;
-import br.usp.ime.choreos.vv.WSClient;
 import br.usp.ime.choreos.vv.util.Bash;
 
 import com.eviware.soapui.support.SoapUIException;
 
 public class WSClientTest {
 
-	private static final String WSDL = "http://localhost:1234/Store?wsdl";
-	private static final int NUMBER_OF_OPERATIONS = 5;
-	private static final int NUMBER_OF_BUY_PARAMETERS = 2;
+	private static final String WSDL = "http://localhost:1234/SimpleStore?wsdl";
+	private static final int NUMBER_OF_OPERATIONS = 4;
 	
 	private static WSClient wsClient;
 	
@@ -45,7 +42,7 @@ public class WSClientTest {
 	@Test(expected=SoapUIException.class)
 	public void checkInvalidWsdlUri() throws SoapUIException, XmlException, IOException {
 
-		new WSClient("http://localhost:1234/Store?wsdl_invalid"); // invalid wsdl uri
+		new WSClient("http://localhost:1234/SimpleStore?wsdl_invalid"); // invalid wsdl uri
 	}
 
 	@Test
@@ -61,10 +58,21 @@ public class WSClientTest {
 	}
 
 	@Test
-	public void checkNumberOfParametersOfBuy() {
+	public void shouldMakeValidRequestWithOneParameter() throws Exception {
 		
-		Operation buy = wsClient.getOperationByName("buy");
-		assertEquals(NUMBER_OF_BUY_PARAMETERS, buy.getNumberOfParameters());
+		String cd = wsClient.request("searchByArtist", "Floyd");
+		assertEquals("The dark side of the moon;", cd);	
+	}
+	
+	public void shouldMakeValidRequestWithTwoParameters() throws Exception {
+		
+		String status = wsClient.request("purchase", "Album Name", "Client Name");
+		assertEquals("true", status);	
+	}
+	
+	@Test(expected=InvalidOperationName.class)
+	public void shouldComplainAboutInvalidOperationName() throws Exception{
+		wsClient.request("Invalid Operation", "");
 	}
 
 }

@@ -45,5 +45,9 @@ public class Bash {
 			e.printStackTrace();
 		}	
 	}
+	
+	public static void main(String[] args) {
+		Bash.deployService();
+	}
 
 }
