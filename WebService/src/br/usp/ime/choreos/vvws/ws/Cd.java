@@ -8,7 +8,9 @@
 package br.usp.ime.choreos.vvws.ws;
 
 public class Cd  implements java.io.Serializable {
-    private java.lang.String artist;
+	private static final long serialVersionUID = -6795531741486092605L;
+
+	private java.lang.String artist;
 
     private java.lang.String genre;
 

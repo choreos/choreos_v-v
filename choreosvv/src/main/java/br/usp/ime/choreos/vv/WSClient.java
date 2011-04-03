@@ -21,47 +21,52 @@ public class WSClient {
 	private final String wsdl;
 	private WsdlInterface iface;
 	private List<String> operations;
-	
-	public WSClient(String wsdl) throws XmlException, IOException, SoapUIException  {
 
+	public WSClient(String wsdl) throws XmlException, IOException,
+			SoapUIException {
 		WsdlProject project = new WsdlProject();
 		iface = WsdlInterfaceFactory.importWsdl(project, wsdl, true)[0];
 		parseWsdlOperations();
-		
+
 		this.wsdl = wsdl;
 	}
 
 	private void parseWsdlOperations() {
 		this.operations = new ArrayList<String>();
-		for (com.eviware.soapui.model.iface.Operation suop: this.iface.getAllOperations()) {
-			
+		for (com.eviware.soapui.model.iface.Operation suop : this.iface
+				.getAllOperations()) {
+
 			String op = suop.getName();
+
 			this.operations.add(op);
 		}
 	}
 
-	 List<String> getOperations() {
-		
+	List<String> getOperations() {
 		return this.operations;
 	}
-	
+
 	public String getWsdl() {
 		return wsdl;
 	}
 
-	public String request(String operationName, String... parameters) throws Exception {
-		if(!operations.contains(operationName))
+	public String request(String operationName, String... parameters)
+			throws Exception {
+		if (!operations.contains(operationName))
 			throw new InvalidOperationName();
-		
-		WsdlOperation operation = (WsdlOperation) iface.getOperationByName(operationName);
 
-		String defaultRequestContent = operation.getRequestAt(0).getRequestContent();
-		
-		String requestContent = EnvelopeArgumentGenerator.generate(defaultRequestContent, parameters);
-		
+		WsdlOperation operation = (WsdlOperation) iface
+				.getOperationByName(operationName);
+
+		String defaultRequestContent = operation.getRequestAt(0)
+				.getRequestContent();
+
+		String requestContent = SoapEnvelopeHelper.generate(
+				defaultRequestContent, parameters);
+
 		WsdlRequest request = operation.addNewRequest("myRequest");
 		request.setRequestContent(requestContent);
-		
+
 		// submit the request
 		WsdlSubmit<WsdlRequest> submit = request.submit(new WsdlSubmitContext(
 				request), false);
@@ -71,15 +76,10 @@ public class WSClient {
 
 		// print the response
 		String responseContent = response.getContentAsString();
-		
+
 		System.out.println(responseContent);
-		
+
 		return responseContent;
 	}
-	
 
-
-
-
-	
 }
