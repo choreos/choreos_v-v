@@ -62,7 +62,7 @@ public class WSClientTest {
 	public void shouldMakeValidRequestWithOneParameter() throws Exception {
 		
 		String cd = wsClient.request("searchByArtist", "Floyd");
-		assertEquals("The dark side of the moon;", cd);	
+		assertEquals("<return>The dark side of the moon;</return>", cd);	
 	}
 	
 	public void shouldMakeValidRequestWithTwoParameters() throws Exception {

@@ -46,15 +46,15 @@ public class SoapEnvelopeHelper {
 	}
 	
 	public static String getCleanResponse(String xml){
-		String patternStr = ":Body><.*?>(.*)</.*></.*?:Body>";
+		String patternStr = ":Body>\\s*?<.*?>(.*)</.*?>\\s*?</.*?:Body>";
 		// Compile and use regular expression
-		Pattern pattern = Pattern.compile(patternStr);
+		Pattern pattern = Pattern.compile(patternStr, Pattern.DOTALL);
 		Matcher matcher = pattern.matcher(xml);
 		boolean matchFound = matcher.find();
 		
 		if(matchFound){
 			if(matcher.groupCount() > 0){
-				return matcher.group(1);
+				return matcher.group(1).trim();
 			}
 		}
 
