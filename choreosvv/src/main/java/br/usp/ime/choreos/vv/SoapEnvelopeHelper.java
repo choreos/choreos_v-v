@@ -9,10 +9,10 @@ public class SoapEnvelopeHelper {
 		return "<arg" + i + ">";
 	}
 	
-	public static String generate(String xml, List<String> parameters) throws Exception {
+	public static String generate(String xml, List<String> parameters) throws IllegalArgumentException  {
 		if(xml.matches(".*" + getTag(parameters.size()) + ".*")){
 
-			Exception lessParameters = new  Exception(
+			IllegalArgumentException lessParameters = new  IllegalArgumentException(
 					"Number of parameters less than number of parameters in XML envelope. "
 							+ "Parameters given: "
 							+ parameters.size());
@@ -24,7 +24,7 @@ public class SoapEnvelopeHelper {
 			String currentArgTag = getTag(i);
 			String argRegex = currentArgTag + "\\?";
 			if(xml.indexOf(currentArgTag) < 0){
-				Exception noMoreParameters = new Exception(
+				IllegalArgumentException noMoreParameters = new IllegalArgumentException (
 						"Number of parameters exceeds number of parameters in XML envelope. Parameters expected: "
 								+ (i - 1)
 								+ " parameters given: "

@@ -1,7 +1,6 @@
 package br.usp.ime.choreos.vv;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +20,8 @@ public class SoapEnvelopeHelperTest {
 		+ "</soapenv:Envelope>";
 
 	
-	@Test(expected=Exception.class)
-	public void shouldThrowExceptionForMissingArguments() throws Exception {
+	@Test(expected=IllegalArgumentException.class)
+	public void shouldThrowExceptionForMissingArguments() throws IllegalArgumentException {
 		
 		List<String> parameters = new ArrayList<String>();
 		parameters.add("Milan");
@@ -31,7 +30,7 @@ public class SoapEnvelopeHelperTest {
 	}
 	
 	@Test
-	public void shouldReplaceMarksInSoapWithRequiredArguments() throws Exception {
+	public void shouldReplaceMarksInSoapWithRequiredArguments() throws IllegalArgumentException {
 		
 		List<String> parameters = new ArrayList<String>();
 		parameters.add("Milan");
@@ -52,8 +51,8 @@ public class SoapEnvelopeHelperTest {
 		assertEquals(expectedOutput, result);
 	}
 	
-	@Test(expected=Exception.class)
-	public void shouldThrowExceptionForExtraArgument() throws Exception {
+	@Test(expected=IllegalArgumentException.class)
+	public void shouldThrowExceptionForExtraArgument() throws IllegalArgumentException {
 		
 		List<String> parameters = new ArrayList<String>();
 		parameters.add("Milan");
@@ -64,7 +63,7 @@ public class SoapEnvelopeHelperTest {
 	}
 	
 	@Test
-	public void shouldReplaceMarksInSoapWithNonAsciiCharacters() throws Exception {
+	public void shouldReplaceMarksInSoapWithNonAsciiCharacters() throws IllegalArgumentException{
 
 		List<String> parameters = new ArrayList<String>();
 		parameters.add("Araçá do Ribeirão");
