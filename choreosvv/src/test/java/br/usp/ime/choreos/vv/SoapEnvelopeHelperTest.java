@@ -9,35 +9,35 @@ import java.util.List;
 import org.junit.Test;
 
 public class SoapEnvelopeHelperTest {
+
+	private String testXml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:trav=\"http://airline.ws.ime.usp.br/\">"
+		+ "<soapenv:Header/>"
+		+ "<soapenv:Body>"
+		+ "<trav:getFlight>"
+		+ "<arg0>?</arg0>"
+		+ "<arg1>?</arg1>"
+		+ "</trav:getFlight>"
+		+ "</soapenv:Body>"
+		+ "</soapenv:Envelope>";
+
 	
-	@Test
-	public void testGenerator() throws Exception {
-		String testXml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:trav=\"http://airline.ws.ime.usp.br/\">"
-			+ "<soapenv:Header/>"
-			+ "<soapenv:Body>"
-			+ "<trav:getFlight>"
-			+ "<arg0>?</arg0>"
-			+ "<arg1>?</arg1>"
-			+ "</trav:getFlight>"
-			+ "</soapenv:Body>"
-			+ "</soapenv:Envelope>";
-		
+	@Test(expected=Exception.class)
+	public void shouldThrowExceptionForMissingArguments() throws Exception {
 		
 		List<String> parameters = new ArrayList<String>();
 		parameters.add("Milan");
 		
-		String result;
+		SoapEnvelopeHelper.generate(testXml, parameters);
+	}
+	
+	@Test
+	public void shouldReplaceMarksInSoapWithRequiredArguments() throws Exception {
 		
-		try {
-			result = SoapEnvelopeHelper.generate(testXml, parameters);
-			assertTrue(false);
-		} catch(Exception e){
-			// Test passed
-		}
-		
+		List<String> parameters = new ArrayList<String>();
+		parameters.add("Milan");
 		parameters.add("12-21-2010");
 		
-		result = SoapEnvelopeHelper.generate(testXml, parameters); 
+		String result = SoapEnvelopeHelper.generate(testXml, parameters); 
 		
 		String expectedOutput = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:trav=\"http://airline.ws.ime.usp.br/\">"
 			+ "<soapenv:Header/>"
@@ -50,30 +50,22 @@ public class SoapEnvelopeHelperTest {
 			+ "</soapenv:Envelope>";
 		
 		assertEquals(expectedOutput, result);
+	}
+	
+	@Test(expected=Exception.class)
+	public void shouldThrowExceptionForExtraArgument() throws Exception {
 		
+		List<String> parameters = new ArrayList<String>();
+		parameters.add("Milan");
+		parameters.add("12-21-2010");
 		parameters.add("Extra parameter");
 		
-		try {
-			result = SoapEnvelopeHelper.generate(testXml, parameters);
-			assertTrue(false);
-		} catch(Exception e){
-			// Test passed
-		}
+		SoapEnvelopeHelper.generate(testXml, parameters);
 	}
 	
 	@Test
-	public void testGeneratorWithNonAsciiCharacters() throws Exception {
-		String testXml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:trav=\"http://airline.ws.ime.usp.br/\">"
-			+ "<soapenv:Header/>"
-			+ "<soapenv:Body>"
-			+ "<trav:getFlight>"
-			+ "<arg0>?</arg0>"
-			+ "<arg1>?</arg1>"
-			+ "</trav:getFlight>"
-			+ "</soapenv:Body>"
-			+ "</soapenv:Envelope>";
-		
-		
+	public void shouldReplaceMarksInSoapWithNonAsciiCharacters() throws Exception {
+
 		List<String> parameters = new ArrayList<String>();
 		parameters.add("Araçá do Ribeirão");
 		parameters.add("12-21-2010");
@@ -91,7 +83,6 @@ public class SoapEnvelopeHelperTest {
 			+ "</soapenv:Envelope>";
 		
 		assertEquals(expectedOutput, result);
-		
 	}
 
 }
