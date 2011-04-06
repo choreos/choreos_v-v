@@ -2,6 +2,8 @@ package br.usp.ime.choreos.vv;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SoapEnvelopeHelper {
 
@@ -41,6 +43,22 @@ public class SoapEnvelopeHelper {
 		List<String> paramList = Arrays.asList(parameters);
 		
 		return generate(xml, paramList);
+	}
+	
+	public static String getCleanResponse(String xml){
+		String patternStr = ":Body><.*?>(.*)</.*></.*?:Body>";
+		// Compile and use regular expression
+		Pattern pattern = Pattern.compile(patternStr);
+		Matcher matcher = pattern.matcher(xml);
+		boolean matchFound = matcher.find();
+		
+		if(matchFound){
+			if(matcher.groupCount() > 0){
+				return matcher.group(1);
+			}
+		}
+
+		return xml;
 	}
 	
 }

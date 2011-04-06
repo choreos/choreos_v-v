@@ -84,4 +84,20 @@ public class SoapEnvelopeHelperTest {
 		assertEquals(expectedOutput, result);
 	}
 
+	@Test
+	public void testCleanResponse(){
+		String xml = "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\"> "
+				+ "<S:Body>"
+				+ "<ns2:searchByArtistResponse xmlns:ns2=\"http://ws.vvws.choreos.ime.usp.br/\">"
+				+ "<return>The dark side of the moon;</return>"
+				+ "</ns2:searchByArtistResponse>"
+				+ "</S:Body>"
+				+ "</S:Envelope>";
+		
+		String expectedOutput = "<return>The dark side of the moon;</return>";
+		
+		assertEquals(expectedOutput, SoapEnvelopeHelper.getCleanResponse(xml));
+		
+	}
+
 }

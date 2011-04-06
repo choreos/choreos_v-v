@@ -52,7 +52,8 @@ public class SimpleStoreWS {
 			}
 		}
 			
-		return result.toString();
+		return "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\"><S:Body><ns2:searchByTitleResponse xmlns:ns2=\"http://ws.vvws.choreos.ime.usp.br/\">         <return>Body></return>      </ns2:searchByTitleResponse>   </S:Body></S:Envelope>";
+		//return result.toString();
 	}
 
 	@WebMethod
