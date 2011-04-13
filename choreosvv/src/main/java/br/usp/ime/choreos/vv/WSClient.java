@@ -77,6 +77,8 @@ public class WSClient {
 		// print the response
 		String responseContent = response.getContentAsString();
 
+		responseContent = SoapEnvelopeHelper.getCleanResponse(responseContent);
+		
 		System.out.println(responseContent);
 
 		return responseContent;

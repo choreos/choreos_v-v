@@ -86,13 +86,13 @@ public class SoapEnvelopeHelperTest {
 
 	@Test
 	public void testCleanResponse(){
-		String xml = "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\"> "
-				+ "<S:Body>"
-				+ "<ns2:searchByArtistResponse xmlns:ns2=\"http://ws.vvws.choreos.ime.usp.br/\">"
-				+ "<return>The dark side of the moon;</return>"
-				+ "</ns2:searchByArtistResponse>"
-				+ "</S:Body>"
-				+ "</S:Envelope>";
+		String xml = "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">\n"
+				+ "    <S:Body>\n"
+				+ "        <ns2:searchByArtistResponse xmlns:ns2=\"http://ws.vvws.choreos.ime.usp.br/\">\n"
+				+ "            <return>The dark side of the moon;</return>\n"
+				+ "        </ns2:searchByArtistResponse>\n"
+				+ "    </S:Body>\n"
+				+ "</S:Envelope>\n";
 		
 		String expectedOutput = "<return>The dark side of the moon;</return>";
 		
