@@ -6,26 +6,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SoapEnvelopeHelper {
-
-	private static String getTag(int i){
-		return "<arg" + i + ">";
-	}
 	
-	public static String generate(String xml, List<String> parameters) throws IllegalArgumentException  {
-		if(xml.matches(".*" + getTag(parameters.size()) + ".*")){
+	private static final String REGEX_MATCH = ">\\?<";
 
-			IllegalArgumentException lessParameters = new  IllegalArgumentException(
-					"Number of parameters less than number of parameters in XML envelope. "
-							+ "Parameters given: "
-							+ parameters.size());
-			throw lessParameters;
-		}
+	public static String generate(String xml, List<String> parameters) throws IllegalArgumentException  {
 
 		for(int i = 0; i < parameters.size(); i++){
 			// Tag for the current argument
-			String currentArgTag = getTag(i);
-			String argRegex = currentArgTag + "\\?";
-			if(xml.indexOf(currentArgTag) < 0){
+			if(xml.indexOf(">?<") < 0){
 				IllegalArgumentException noMoreParameters = new IllegalArgumentException (
 						"Number of parameters exceeds number of parameters in XML envelope. Parameters expected: "
 								+ (i - 1)
@@ -33,7 +21,17 @@ public class SoapEnvelopeHelper {
 								+ parameters.size());
 				throw noMoreParameters;
 			}
-			xml = xml.replaceFirst(argRegex, currentArgTag + parameters.get(i));
+			xml = xml.replaceFirst(REGEX_MATCH,  ">"  + parameters.get(i) + "<");
+			System.out.println(xml);
+		}
+		
+		if(xml.indexOf(">?<") >= 0){
+			IllegalArgumentException lessParameters = new  IllegalArgumentException(
+					"Number of parameters less than number of parameters in XML envelope. "
+					+ "Parameters given: "
+					+ parameters.size());
+			throw lessParameters;
+			
 		}
 		
 		return xml;
