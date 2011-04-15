@@ -25,7 +25,7 @@ class InfoStoreService(DefinitionBase):
         Search product by Brand
 
         @param name of the brand to search for
-        @return the completed array
+        @return the completed list
         '''
         results = []
         for i in computerStoreItems.items:
@@ -40,7 +40,7 @@ class InfoStoreService(DefinitionBase):
         Search product by Category
 
         @param name of the category to search for
-        @return the completed array
+        @return the completed list
         '''
         results = []
         for i in computerStoreItems.items:
@@ -49,20 +49,18 @@ class InfoStoreService(DefinitionBase):
         return results
 
 
-    @soap(String, _returns=Array(Item))
+    @soap(String, _returns=Item)
     def search_by_model(self, model):
         '''
         Search product by Model
 
         @param name of the model to search for
-        @return the completed array
+        @return the item
         '''
-        results = []
         for i in computerStoreItems.items:
             if i.model == model:
-                results.append(i)
-        return results
-
+                return i
+        return None
 
     @soap(String, _returns=Array(Item))
     def get_mean_price(self, category):
@@ -91,18 +89,15 @@ class InfoStoreService(DefinitionBase):
         the first one found is returned
 
         @param name of the category to search for
-        @return the name of the chepeast item
+        @return the model of the chepeast item
         '''
-        category_items = [i for i in items if i.category == category]
+        category_items = [i for i in computerStoreItems.items if i.category == category]
         if len(category_items) > 0:
             a = min(category_items, key=lambda k: k.price)
-            item_name = a.brand + " - " + a.model 
+            item_model = a.model 
         else:
-            item_name = "no item in this category"
-        return item_name
-
-
-
+            raise Exception("No item in this category")
+        return item_model
 
 if __name__=='__main__':
     try:
