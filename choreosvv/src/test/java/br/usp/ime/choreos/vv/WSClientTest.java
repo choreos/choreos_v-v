@@ -10,10 +10,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-
+import br.usp.ime.choreos.vv.exceptions.FrameworkException;
+import br.usp.ime.choreos.vv.exceptions.InvalidOperationName;
+import br.usp.ime.choreos.vv.exceptions.WSDLException;
 import br.usp.ime.choreos.vv.util.WebServiceController;
-
-import com.eviware.soapui.support.SoapUIException;
 
 public class WSClientTest {
 
@@ -24,7 +24,7 @@ public class WSClientTest {
 	private static WSClient wsClient;
 	
 	@BeforeClass
-	public static void setUp() throws SoapUIException, XmlException, IOException {
+	public static void setUp() throws Exception {
 		WebServiceController.deployService();
 		wsClient = new WSClient(WSDL);
 	}
@@ -40,9 +40,8 @@ public class WSClientTest {
 		assertEquals(WSDL, wsClient.getWsdl());
 	}
 
-	// TODO: should be WSDLException ???
-	//@Test(expected=SoapUIException.class)
-	public void checkInvalidWsdlUri() throws SoapUIException, XmlException, IOException {
+	@Test(expected=WSDLException.class)
+	public void checkInvalidWsdlUri() throws WSDLException, XmlException, IOException, FrameworkException  {
 
 		new WSClient("http://localhost:1234/SimpleStore?wsdl_invalid"); // invalid wsdl uri
 	}
@@ -72,7 +71,7 @@ public class WSClientTest {
 	}
 	
 	@Test(expected=InvalidOperationName.class)
-	public void shouldComplainAboutInvalidOperationName() throws Exception{
+	public void shouldComplainAboutInvalidOperationName() throws InvalidOperationName, FrameworkException  {
 		wsClient.request("Invalid Operation", "");
 	}
 
