@@ -22,8 +22,7 @@ public class WSClient {
 	private WsdlInterface iface;
 	private List<String> operations;
 
-	public WSClient(String wsdl) throws XmlException, IOException,
-			SoapUIException {
+	public WSClient(String wsdl) throws XmlException, IOException, SoapUIException {
 		WsdlProject project = new WsdlProject();
 		iface = WsdlInterfaceFactory.importWsdl(project, wsdl, true)[0];
 		parseWsdlOperations();
@@ -33,8 +32,7 @@ public class WSClient {
 
 	private void parseWsdlOperations() {
 		this.operations = new ArrayList<String>();
-		for (com.eviware.soapui.model.iface.Operation suop : this.iface
-				.getAllOperations()) {
+		for (com.eviware.soapui.model.iface.Operation suop : this.iface.getAllOperations()) {
 
 			String op = suop.getName();
 
@@ -50,26 +48,21 @@ public class WSClient {
 		return wsdl;
 	}
 
-	public String request(String operationName, String... parameters)
-			throws Exception {
+	public String request(String operationName, String... parameters) throws Exception {
 		if (!operations.contains(operationName))
 			throw new InvalidOperationName();
 
-		WsdlOperation operation = (WsdlOperation) iface
-				.getOperationByName(operationName);
+		WsdlOperation operation = (WsdlOperation) iface.getOperationByName(operationName);
 
-		String defaultRequestContent = operation.getRequestAt(0)
-				.getRequestContent();
+		String defaultRequestContent = operation.getRequestAt(0).getRequestContent();
 
-		String requestContent = SoapEnvelopeHelper.generate(
-				defaultRequestContent, parameters);
+		String requestContent = SoapEnvelopeHelper.generate(defaultRequestContent, parameters);
 
 		WsdlRequest request = operation.addNewRequest("myRequest");
 		request.setRequestContent(requestContent);
 
 		// submit the request
-		WsdlSubmit<WsdlRequest> submit = request.submit(new WsdlSubmitContext(
-				request), false);
+		WsdlSubmit<WsdlRequest> submit = request.submit(new WsdlSubmitContext(request), false);
 
 		// wait for the response
 		Response response = submit.getResponse();
@@ -78,7 +71,7 @@ public class WSClient {
 		String responseContent = response.getContentAsString();
 
 		responseContent = SoapEnvelopeHelper.getCleanResponse(responseContent);
-		
+
 		System.out.println(responseContent);
 
 		return responseContent;
