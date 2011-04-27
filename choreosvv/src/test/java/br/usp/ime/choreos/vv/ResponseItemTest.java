@@ -43,7 +43,7 @@ public class ResponseItemTest {
         }
         
         @Test
-        public void shouldAddFloatContent(){
+        public void shouldAddDoubleContent(){
                 ResponseItem itemName = new ResponseItem("price");
                 itemName.addContent("12.0");
                 
@@ -51,7 +51,7 @@ public class ResponseItemTest {
         }
         
         @Test (expected=NumberFormatException.class)
-        public void shouldThrowAnExceptionWhenTheContentCannotBeAFloat(){
+        public void shouldThrowAnExceptionWhenTheContentCannotBeADouble(){
                 ResponseItem itemName = new ResponseItem("price");
                 itemName.addContent("R$ 12.0");
                 
