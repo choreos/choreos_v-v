@@ -1,40 +1,90 @@
 package br.usp.ime.choreos.vv;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import static junit.framework.Assert.assertEquals;
 
 public class ResponseParserTest {
 	
-	@Test
-	public void simpleTest() {
+        @Test
+        public void shouldParseASimpleXml() throws ParserConfigurationException, SAXException {
+                String sampleXml = "<senv:Envelope " 
+                                + "                             xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
+                                + "                             xmlns:tns=\"tns\">" 
+                                + "  <senv:Body>"
+                                + "   <tns:search_by_brandResponse>" 
+                                + "<tns:search_by_brandResult>" 
+                                + "    <s1:name>mouse</s1:name>" 
+                                + "</tns:search_by_brandResult>" 
+                                + "</tns:search_by_brandResponse>" 
+                                + "</senv:Body>" 
+                                + "</senv:Envelope>";
+                
+                ResponseParser parser = new ResponseParser();
+                ResponseItem actual = parser.parse(sampleXml);
+                
+                ResponseItem expected = new ResponseItem("search_by_brandResult");
+                ResponseItem child = new ResponseItem("name");
+                child.setContent("mouse");
+                expected.addItem(child);
+                
+                assertEquals(expected, actual); 
+        }
+        
+        
+        @Test
+	public void shouldParseASimpleXmlWithLineBreaks() throws ParserConfigurationException, SAXException {
 		String sampleXml = "<senv:Envelope " 
 				+ "				xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
-				+ "				xmlns:tns=\"tns\">" 
-				+ "  <senv:Body>"
-				+ "   <tns:search_by_brandResponse>" 
-				+ "<tns:search_by_brandResult>" 
-				+ "    <s1:name>mouse</s1:name>" 
-				+ "</tns:search_by_brandResult>" 
-				+ "</tns:search_by_brandResponse>" 
-				+ "</senv:Body>" 
+				+ "				xmlns:tns=\"tns\">\n" 
+				+ "  <senv:Body>\n"
+				+ "   <tns:search_by_brandResponse>\n" 
+				+ "<tns:search_by_brandResult>\n" 
+				+ "    <s1:name>mouse</s1:name>\n" 
+				+ "</tns:search_by_brandResult>\n" 
+				+ "</tns:search_by_brandResponse>\n" 
+				+ "</senv:Body>\n" 
 				+ "</senv:Envelope>";
 		
-		String result = "create: ResponseItem(search_by_brandResult)\n" +
-						"stack.push(search_by_brandResult)\n" +
-						"create: ResponseItem(name)\n" +
-						"stack.push(name)\n" +
-						"name.setContent()\n" +
-						"search_by_brandResult.add(name)\n" +
-						"stack.pop()\n" +
-						"stack.pop()\n";
-		
 		ResponseParser parser = new ResponseParser();
-		assertEquals(result, parser.parse(sampleXml));
+                ResponseItem actual = parser.parse(sampleXml);
+                
+                ResponseItem expected = new ResponseItem("search_by_brandResult");
+                ResponseItem child = new ResponseItem("name");
+                child.setContent("mouse");
+                expected.addItem(child);
+                
+                assertEquals(expected, actual);
 	}
+        
+        
+        @Test
+        public void shouldParseAnItemWithParameters() throws ParserConfigurationException, SAXException, NoSuchFieldException{
+                String sampleXml = "<senv:Envelope " 
+                        + "                             xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
+                        + "                             xmlns:tns=\"tns\">" 
+                        + "  <senv:Body>"
+                        + "   <tns:search_by_brandResponse>" 
+                        + "<tns:search_by_brandResult>" 
+                        + "    <s1:name length=\"5\">mouse</s1:name>" 
+                        + "</tns:search_by_brandResult>" 
+                        + "</tns:search_by_brandResponse>" 
+                        + "</senv:Body>" 
+                        + "</senv:Envelope>"; 
+                
+                ResponseParser parser = new ResponseParser();
+                ResponseItem item = parser.parse(sampleXml);
+
+                ResponseItem actual = item.getAttr("name"); 
+                assertEquals("5", actual.getTagParameters().get("length"));
+        }
 	
+        
 	@Test
-	public void complexTypeTest(){
+	public void shouldParseAComplexTypeTest() throws ParserConfigurationException, SAXException{
 	
 		String sampleXml = "<senv:Envelope " + 
 			"xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " + 
@@ -52,41 +102,38 @@ public class ResponseParserTest {
 			      "</tns:search_by_categoryResponse>" +
 			   "</senv:Body>" +
 			"</senv:Envelope>";
-		
-		String result = "create: ResponseItem(search_by_categoryResult)\n" +
-						"stack.push(search_by_categoryResult)\n" +
-						"create: ResponseItem(Item)\n" +
-						"stack.push(Item)\n" +
-						"create: ResponseItem(category)\n" +
-						"stack.push(category)\n" +
-						"category.setContent()\n" +
-						"Item.add(category)\n" +
-						"stack.pop()\n" +
-						"create: ResponseItem(price)\n" +
-						"stack.push(price)\n" +
-						"price.setContent()\n" +
-						"Item.add(price)\n" +
-						"stack.pop()\n" +
-						"create: ResponseItem(model)\n" +
-						"stack.push(model)\n" +
-						"model.setContent()\n" +
-						"Item.add(model)\n" +
-						"stack.pop()\n" +
-						"create: ResponseItem(brand)\n" +
-						"stack.push(brand)\n" +
-						"brand.setContent()\n" +
-						"Item.add(brand)\n" +
-						"stack.pop()\n" +
-						"search_by_categoryResult.add(Item)\n" +
-						"stack.pop()\n" + 
-						"stack.pop()\n";
 
 		ResponseParser parser = new ResponseParser();
-		assertEquals(result, parser.parse(sampleXml));		
+                ResponseItem actual = parser.parse(sampleXml);
+                
+                ResponseItem expected = new ResponseItem("search_by_categoryResult");
+                
+                ResponseItem item = new ResponseItem("Item");
+                
+                ResponseItem childA = new ResponseItem("category");
+                childA.setContent("mouse");
+                item.addItem(childA);
+                
+                ResponseItem childB = new ResponseItem("price");
+                childB.setContent("89.2");
+                item.addItem(childB);
+                
+                ResponseItem childC = new ResponseItem("model");
+                childC.setContent("RZG145");
+                item.addItem(childC);
+                
+                ResponseItem childD = new ResponseItem("brand");
+                childD.setContent("Razor");
+                item.addItem(childD);                
+                
+                expected.addItem(item);
+                
+                assertEquals(expected, actual);		
 	}
 	
+	
 	@Test
-	public void complexTypeListTest(){
+	public void shouldPaseComplexTypeListWithEmptySpaces() throws ParserConfigurationException, SAXException{
 	
 		String sampleXml = "<senv:Envelope " + 
 			"xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " + 
@@ -117,84 +164,57 @@ public class ResponseParserTest {
 			   "</senv:Body>" +
 			"</senv:Envelope>";
 		
-		String result = "create: ResponseItem(search_by_categoryResult)\n" +
-						"stack.push(search_by_categoryResult)\n" +
-						"create: ResponseItem(Item)\n" +
-						"stack.push(Item)\n" +
-						"create: ResponseItem(category)\n" +
-						"stack.push(category)\n" +
-						"category.setContent()\n" +
-						"Item.add(category)\n" +
-						"stack.pop()\n" +
-						"create: ResponseItem(price)\n" +
-						"stack.push(price)\n" +
-						"price.setContent()\n" +
-						"Item.add(price)\n" +
-						"stack.pop()\n" +
-						"create: ResponseItem(model)\n" +
-						"stack.push(model)\n" +
-						"model.setContent()\n" +
-						"Item.add(model)\n" +
-						"stack.pop()\n" +
-						"create: ResponseItem(brand)\n" +
-						"stack.push(brand)\n" +
-						"brand.setContent()\n" +
-						"Item.add(brand)\n" +
-						"stack.pop()\n" +
-						"search_by_categoryResult.add(Item)\n" +
-						"stack.pop()\n" + 
-						"create: ResponseItem(Item)\n" +
-						"stack.push(Item)\n" +
-						"create: ResponseItem(category)\n" +
-						"stack.push(category)\n" +
-						"category.setContent()\n" +
-						"Item.add(category)\n" +
-						"stack.pop()\n" +
-						"create: ResponseItem(price)\n" +
-						"stack.push(price)\n" +
-						"price.setContent()\n" +
-						"Item.add(price)\n" +
-						"stack.pop()\n" +
-						"create: ResponseItem(model)\n" +
-						"stack.push(model)\n" +
-						"model.setContent()\n" +
-						"Item.add(model)\n" +
-						"stack.pop()\n" +
-						"create: ResponseItem(brand)\n" +
-						"stack.push(brand)\n" +
-						"brand.setContent()\n" +
-						"Item.add(brand)\n" +
-						"stack.pop()\n" +
-						"search_by_categoryResult.add(Item)\n" +
-						"stack.pop()\n" + 
-						"create: ResponseItem(Item)\n" +
-						"stack.push(Item)\n" +
-						"create: ResponseItem(category)\n" +
-						"stack.push(category)\n" +
-						"category.setContent()\n" +
-						"Item.add(category)\n" +
-						"stack.pop()\n" +
-						"create: ResponseItem(price)\n" +
-						"stack.push(price)\n" +
-						"price.setContent()\n" +
-						"Item.add(price)\n" +
-						"stack.pop()\n" +
-						"create: ResponseItem(model)\n" +
-						"stack.push(model)\n" +
-						"model.setContent()\n" +
-						"Item.add(model)\n" +
-						"stack.pop()\n" +
-						"create: ResponseItem(brand)\n" +
-						"stack.push(brand)\n" +
-						"brand.setContent()\n" +
-						"Item.add(brand)\n" +
-						"stack.pop()\n" +
-						"search_by_categoryResult.add(Item)\n" +
-						"stack.pop()\n" + 
-						"stack.pop()\n";
-
+		ResponseItem expected = new ResponseItem("search_by_categoryResult");
+	                
+	        ResponseItem item1 = new ResponseItem("Item");
+                ResponseItem childA = new ResponseItem("category");
+                childA.setContent("mouse");
+                item1.addItem(childA);	                
+                ResponseItem childB = new ResponseItem("price");
+                childB.setContent("89.2");
+                item1.addItem(childB);	                
+                ResponseItem childC = new ResponseItem("model");
+                childC.setContent("RZG145");
+                item1.addItem(childC);	                
+                ResponseItem childD = new ResponseItem("brand");
+                childD.setContent("Razor");
+                item1.addItem(childD);          
+                expected.addItem(item1);
+	
+                ResponseItem item2 = new ResponseItem("Item");
+                childA = new ResponseItem("category");
+                childA.setContent("mouse");
+                item2.addItem(childA);                  
+                childB = new ResponseItem("price");
+                childB.setContent("61.0");
+                item2.addItem(childB);                  
+                childC = new ResponseItem("model");
+                childC.setContent("CCCC");
+                item2.addItem(childC);                  
+                childD = new ResponseItem("brand");
+                childD.setContent("Clone");
+                item2.addItem(childD);          
+                expected.addItem(item2);
+        
+                ResponseItem item3 = new ResponseItem("Item");
+                childA = new ResponseItem("category");
+                childA.setContent("mouse");
+                item3.addItem(childA);                  
+                childB = new ResponseItem("price");
+                childB.setContent("61.0");
+                item3.addItem(childB);                  
+                childC = new ResponseItem("model");
+                childC.setContent("MS23F");
+                item3.addItem(childC);                  
+                childD = new ResponseItem("brand");
+                childD.setContent("Microsoft");
+                item3.addItem(childD);          
+                expected.addItem(item3);
+                
 		ResponseParser parser = new ResponseParser();
-		assertEquals(result, parser.parse(sampleXml));		
+		ResponseItem actual = parser.parse(sampleXml);
+		
+		assertEquals(expected, actual);
 	}
 	
 }

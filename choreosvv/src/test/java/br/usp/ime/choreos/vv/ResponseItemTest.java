@@ -21,7 +21,7 @@ public class ResponseItemTest {
         @Test
         public void shouldAddStringContent(){
                 ResponseItem itemName = new ResponseItem("name");
-                itemName.addContent("Fernando Pessoa");
+                itemName.setContent("Fernando Pessoa");
                 
                 assertEquals("Fernando Pessoa", itemName.getContent());
         }
@@ -29,7 +29,7 @@ public class ResponseItemTest {
         @Test
         public void shouldAddIntegerContent(){
                 ResponseItem itemName = new ResponseItem("year");
-                itemName.addContent("1930");
+                itemName.setContent("1930");
                 
                 assertEquals((Integer)1930, itemName.getContentAsInt());
         }
@@ -37,7 +37,7 @@ public class ResponseItemTest {
         @Test (expected=NumberFormatException.class)
         public void shouldThrowAnExceptionWhenTheContentCannotBeAnInteger(){
                 ResponseItem itemName = new ResponseItem("year");
-                itemName.addContent("1930 A.C");
+                itemName.setContent("1930 A.C");
                 
                 itemName.getContentAsInt();
         }
@@ -45,7 +45,7 @@ public class ResponseItemTest {
         @Test
         public void shouldAddDoubleContent(){
                 ResponseItem itemName = new ResponseItem("price");
-                itemName.addContent("12.0");
+                itemName.setContent("12.0");
                 
                 assertEquals(12.0, itemName.getContentAsDouble(), 1e-9);
         }
@@ -53,7 +53,7 @@ public class ResponseItemTest {
         @Test (expected=NumberFormatException.class)
         public void shouldThrowAnExceptionWhenTheContentCannotBeADouble(){
                 ResponseItem itemName = new ResponseItem("price");
-                itemName.addContent("R$ 12.0");
+                itemName.setContent("R$ 12.0");
                 
                 itemName.getContentAsInt();
         }
@@ -68,9 +68,9 @@ public class ResponseItemTest {
         }
         
         @Test
-        public void shouldAddAnSimpleItem(){
+        public void shouldAddAnSimpleItem() throws NoSuchFieldException{
                 ResponseItem childItem = new ResponseItem("name");
-                childItem.addContent("Fernando Pessoa");
+                childItem.setContent("Fernando Pessoa");
                 item.addItem(childItem);
                
                assertEquals("Fernando Pessoa", item.getAttr("name").getContent());
@@ -79,11 +79,11 @@ public class ResponseItemTest {
         @Test
         public void shouldAddTwoSimpleItemWithTheSameName() throws NoSuchFieldException{
                 ResponseItem childItemA = new ResponseItem("name");
-                childItemA.addContent("Fernando Pessoa");
+                childItemA.setContent("Fernando Pessoa");
                 item.addItem(childItemA);
                 
                 ResponseItem childItemB = new ResponseItem("name");
-                childItemB.addContent("Machado de Assis");
+                childItemB.setContent("Machado de Assis");
                 item.addItem(childItemB);
                 
                 List<ResponseItem> children = item.getAttrAsList("name");
@@ -93,10 +93,10 @@ public class ResponseItemTest {
         }
         
         @Test
-        public void shouldAddAComplexItem(){
+        public void shouldAddAComplexItem() throws NoSuchFieldException{
                 ResponseItem coAuthorItem = new ResponseItem("co-author");  
                 ResponseItem nameItem = new ResponseItem("name");
-                nameItem.addContent("Eça de Queiroz");
+                nameItem.setContent("Eça de Queiroz");
                 
                 coAuthorItem.addItem(nameItem);
                 item.addItem(coAuthorItem);
@@ -105,14 +105,14 @@ public class ResponseItemTest {
         }
         
         @Test
-        public void shouldAddAComplexItemAnHaveContent(){
+        public void shouldAddAComplexItemAnHaveContent() throws NoSuchFieldException{
                 ResponseItem coAuthorItem = new ResponseItem("co-author");  
                 ResponseItem nameItem = new ResponseItem("name");
-                nameItem.addContent("Eça de Queiroz");
+                nameItem.setContent("Eça de Queiroz");
                 
                 coAuthorItem.addItem(nameItem);
                 item.addItem(coAuthorItem);
-                item.addContent("1935");
+                item.setContent("1935");
                 
                 
                 assertEquals("Eça de Queiroz", item.getAttr("co-author").getAttr("name").getContent());
@@ -123,10 +123,10 @@ public class ResponseItemTest {
         public void shouldAddAComplexWithTwoSimpleItems() throws NoSuchFieldException{
                 ResponseItem coAuthorItem = new ResponseItem("co-author");  
                 ResponseItem nameItemA = new ResponseItem("name");
-                nameItemA.addContent("Eça de Queiroz");
+                nameItemA.setContent("Eça de Queiroz");
                 
                 ResponseItem nameItemB = new ResponseItem("name");
-                nameItemB.addContent("Olavo Bilac");
+                nameItemB.setContent("Olavo Bilac");
                 
                 coAuthorItem.addItem(nameItemA);
                 coAuthorItem.addItem(nameItemB);
@@ -138,13 +138,18 @@ public class ResponseItemTest {
                 assertEquals("Olavo Bilac", coAuthors.get(1).getContent());
         }
         
-        @Test (expected=NoSuchFieldException.class)
-        public void shouldThrowAnExceptionWhenTheTagIsTakenAsAList() throws NoSuchFieldException{
+        @Test
+        public void shouldGetAListWithOneElement() throws NoSuchFieldException {
                 ResponseItem childItem = new ResponseItem("name");
-                childItem.addContent("Fernando Pessoa");
+                childItem.setContent("Fernando Pessoa");
                 item.addItem(childItem);
                 
-                item.getAttrAsList("name");
+                assertEquals(1, item.getAttrAsList("name").size());
+                assertEquals( "Fernando Pessoa", item.getAttr("name").getContent());
         }
 
+        @Test (expected=NoSuchFieldException.class)
+         public void shouldThrowsAnExceptionWhenTheElementNotExist() throws NoSuchFieldException {
+                 item.getAttr("sirname");
+        }
 }

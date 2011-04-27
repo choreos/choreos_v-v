@@ -3,8 +3,10 @@ package br.usp.ime.choreos.vv;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Stack;
 
+import javax.smartcardio.ATR;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -24,13 +26,13 @@ class ResponseParser {
 	
 	private static SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 	private SAXParser parser;
-	private StringBuilder result = new StringBuilder("");
+	private ResponseItem result;
 
 	
 	private class ResponseParserHandler extends DefaultHandler {
 		private String opName;
 		private boolean processing;
-		private Stack<String> tagStack = new Stack<String>();
+		private Stack<ResponseItem> tagStack = new Stack<ResponseItem>();
 
 		/**
 		 * @param ch     - The characters.
@@ -44,8 +46,7 @@ class ResponseParser {
 			String trimmed = new String(ch, start, lenght).trim();
 			
 			if (processing && !trimmed.isEmpty()){
-				result.append(tagStack.peek() + ".setContent()").append("\n");
-			}
+			        tagStack.peek().setContent(trimmed);			}
 		}
 
 		/**
@@ -64,12 +65,14 @@ class ResponseParser {
 				if (name.equals(opName)){
 					processing = false;
 				} else {
-					String poped = tagStack.pop();
+					ResponseItem poped = tagStack.pop();
 					if (!tagStack.empty()){
-						String father = tagStack.peek();
-						result.append(father + ".add(" + poped + ")").append("\n");
+						ResponseItem father = tagStack.peek();
+						father.addItem(poped);
 					}
-					result.append("stack.pop()").append("\n");
+					else {
+					        result = poped;
+					}
 				}
 			}
 			
@@ -93,34 +96,28 @@ class ResponseParser {
 				processing = true;
 			} 
 			else if (processing) {
-				result.append("create: ResponseItem(" + name + ")").append("\n");
-				result.append("stack.push(" + name + ")").append("\n");
-				tagStack.push(name);
+			        HashMap<String, String> parameters = new HashMap<String, String>();
+			        
+			        for(int i=0; i< attributes.getLength(); i++)
+			                parameters.put(attributes.getQName(i), attributes.getValue(i));
+			        
+	                        result = new ResponseItem(name, parameters);
+				tagStack.push(result);
 			}
-			
 		}
-
 	}
 	
-	public String parse(String xml) {
+	public ResponseItem parse(String xml) throws ParserConfigurationException, SAXException {
 		try {
-	        InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
+		        InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
 			parser = parserFactory.newSAXParser();
 			parser.parse(is, new ResponseParserHandler());
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		}  
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		System.out.println(result.toString());
-		
-		return result.toString();
+		return result;
 	}
 
 }
