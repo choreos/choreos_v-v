@@ -4,10 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.xmlbeans.XmlException;
+import org.xml.sax.SAXException;
 
 import br.usp.ime.choreos.vv.exceptions.FrameworkException;
 import br.usp.ime.choreos.vv.exceptions.InvalidOperationName;
+import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
 import br.usp.ime.choreos.vv.exceptions.WSDLException;
 
 import com.eviware.soapui.impl.WsdlInterfaceFactory;
@@ -17,8 +21,8 @@ import com.eviware.soapui.impl.wsdl.WsdlProject;
 import com.eviware.soapui.impl.wsdl.WsdlRequest;
 import com.eviware.soapui.impl.wsdl.WsdlSubmit;
 import com.eviware.soapui.impl.wsdl.WsdlSubmitContext;
-import com.eviware.soapui.model.iface.Response;
 import com.eviware.soapui.model.iface.Request.SubmitException;
+import com.eviware.soapui.model.iface.Response;
 import com.eviware.soapui.support.SoapUIException;
 
 /**
@@ -91,8 +95,11 @@ public class WSClient {
 	 * @return the operation response
 	 * @throws InvalidOperationName
 	 * @throws FrameworkException
+	 * @throws MissingResponseTagException 
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
 	 */
-	public String request(String operationName, String... parameters) throws InvalidOperationName, FrameworkException {
+	public ResponseItem request(String operationName, String... parameters) throws InvalidOperationName, FrameworkException, MissingResponseTagException  {
 		
 		if (!operations.contains(operationName))
 			throw new InvalidOperationName();
@@ -120,9 +127,11 @@ public class WSClient {
 		// print the response
 		String responseContent = response.getContentAsString();
 
-		responseContent = SoapEnvelopeHelper.getCleanResponse(responseContent);
-
-		return responseContent;
+		
+		ResponseParser parser = new ResponseParser();
+		
+		System.out.println(responseContent);
+		return parser.parse(responseContent) ;
 	}
 
 }

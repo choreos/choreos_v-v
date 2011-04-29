@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import br.usp.ime.choreos.vv.exceptions.FrameworkException;
 import br.usp.ime.choreos.vv.exceptions.InvalidOperationName;
+import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
 import br.usp.ime.choreos.vv.exceptions.WSDLException;
 import br.usp.ime.choreos.vv.util.WebServiceController;
 
@@ -58,22 +59,21 @@ public class WSClientTest {
 	}
 
 	@Test
-	public void shouldMakeValidRequestWithOneParameter() throws Exception {
-		
-		String cd = wsClient.request("searchByArtist", "Floyd");
-		assertEquals("<return>The dark side of the moon;</return>", cd);	
+	public void shouldMakeValidRequestWithOneParameter() throws Exception {	
+		ResponseItem cd = wsClient.request("searchByArtist", "Floyd");
+		assertEquals("The dark side of the moon;", cd.getContent());	
 	}
 	
 	public void shouldMakeValidRequestWithTwoParameters() throws Exception {
-		
-		String status = wsClient.request("purchase", "Album Name", "Client Name");
-		assertEquals("true", status);	
+		ResponseItem status = wsClient.request("purchase", "Album Name", "Client Name");
+		assertEquals("true", status.getContent());	
 	}
 	
 	@Test(expected=InvalidOperationName.class)
-	public void shouldComplainAboutInvalidOperationName() throws InvalidOperationName, FrameworkException  {
+	public void shouldComplainAboutInvalidOperationName() throws InvalidOperationName, FrameworkException, MissingResponseTagException  {
 		wsClient.request("Invalid Operation", "");
 	}
+	
 
 
 }

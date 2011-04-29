@@ -14,6 +14,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
+import br.usp.ime.choreos.vv.exceptions.ParserException;
+
 /**
  * Utility class to parse the Soap XML response of a Web Service operation
  * Obs: it's a package visibility class, since it's not used by the client
@@ -44,8 +47,9 @@ class ResponseParser {
 			
 			String trimmed = new String(ch, start, lenght).trim();
 			
-			if (processing && !trimmed.isEmpty()){
-			        tagStack.peek().setContent(trimmed);			}
+			if (processing && !trimmed.isEmpty() && !tagStack.empty()){
+			        tagStack.peek().setContent(trimmed);			
+			}
 		}
 
 		/**
@@ -58,7 +62,7 @@ class ResponseParser {
 			throws SAXException {
 			
 			//deletes namespace
-			String name = qName.split(":")[1];
+			String name = getNameWithoutNamespace(qName);
 			
 			if (processing) {
 				if (name.equals(opName)){
@@ -88,7 +92,7 @@ class ResponseParser {
 			throws SAXException {
 			
 			//deletes namespace
-			String name = qName.split(":")[1];
+			String name = getNameWithoutNamespace(qName);
 			
 			if (name.endsWith("Response") && !processing) {
 				opName = name;
@@ -104,17 +108,26 @@ class ResponseParser {
 				tagStack.push(result);
 			}
 		}
+
+                private String getNameWithoutNamespace(String qName) {
+                        String[] names = qName.split(":");                        
+			
+                        return names[names.length  - 1];
+                }
 	}
 	
-	public ResponseItemImpl parse(String xml) throws ParserConfigurationException, SAXException {
+	public ResponseItemImpl parse(String xml) throws MissingResponseTagException, ParserException {
 		try {
 		        InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
 			parser = parserFactory.newSAXParser();
 			parser.parse(is, new ResponseParserHandler());
 		}  
-		catch (IOException e) {
-			e.printStackTrace();
+		catch (Exception e) {
+			throw new ParserException(e);
 		}
+		
+		if(result == null)
+		       throw new MissingResponseTagException("Response Tag is missing");
 		
 		return result;
 	}
