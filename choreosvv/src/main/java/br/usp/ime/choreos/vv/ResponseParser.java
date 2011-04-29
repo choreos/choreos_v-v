@@ -18,20 +18,20 @@ import org.xml.sax.helpers.DefaultHandler;
  * Utility class to parse the Soap XML response of a Web Service operation
  * Obs: it's a package visibility class, since it's not used by the client
  * 
- * @author leonardo, guilherme
+ * @author Leonardo Leite, Guilherme Nogueira
  *
  */
 class ResponseParser {
 	
 	private static SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 	private SAXParser parser;
-	private ResponseItem result;
+	private ResponseItemImpl result;
 
 	
 	private class ResponseParserHandler extends DefaultHandler {
 		private String opName;
 		private boolean processing;
-		private Stack<ResponseItem> tagStack = new Stack<ResponseItem>();
+		private Stack<ResponseItemImpl> tagStack = new Stack<ResponseItemImpl>();
 
 		/**
 		 * @param ch     - The characters.
@@ -64,9 +64,9 @@ class ResponseParser {
 				if (name.equals(opName)){
 					processing = false;
 				} else {
-					ResponseItem poped = tagStack.pop();
+					ResponseItemImpl poped = tagStack.pop();
 					if (!tagStack.empty()){
-						ResponseItem father = tagStack.peek();
+						ResponseItemImpl father = tagStack.peek();
 						father.addChild(poped);
 					}
 					else {
@@ -100,13 +100,13 @@ class ResponseParser {
 			        for(int i=0; i< attributes.getLength(); i++)
 			                parameters.put(attributes.getQName(i), attributes.getValue(i));
 			        
-	                        result = new ResponseItem(name, parameters);
+	                        result = new ResponseItemImpl(name, parameters);
 				tagStack.push(result);
 			}
 		}
 	}
 	
-	public ResponseItem parse(String xml) throws ParserConfigurationException, SAXException {
+	public ResponseItemImpl parse(String xml) throws ParserConfigurationException, SAXException {
 		try {
 		        InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
 			parser = parserFactory.newSAXParser();

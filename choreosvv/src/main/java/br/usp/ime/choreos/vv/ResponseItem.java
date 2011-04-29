@@ -1,131 +1,109 @@
 package br.usp.ime.choreos.vv;
 
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-public class ResponseItem implements ResponseInterface{
-
-        private String content;
-        private String name;
-        private HashMap<String, String> tagAttributes;
-        private HashMap<String, LinkedList<ResponseItem>>items;
+/**
+ * This interface represents a complexType returned within the 
+ * response SOAP envelope of a request operation on a Web Service.
+ * It is a tree like structure that represents the XML.
+ * 
+ * The topmost Item of this structure is usually the operationResponse tag.
+ * 
+ * @author Leonardo Leite, Guilherme Nogueira, Felipe Besson, Lucas Piva
+ *
+ */
+public interface ResponseItem {
         
-        public ResponseItem(String tagName, HashMap<String, String> tagAttributes) {
-                this.name = tagName;
-                this.tagAttributes = tagAttributes;
-                items = new HashMap<String, LinkedList<ResponseItem>>();
-                if (tagAttributes == null)
-                	tagAttributes = new HashMap<String, String>();
-        }
-
-        public ResponseItem(String tagName) {
-                this.name = tagName;
-                items = new HashMap<String, LinkedList<ResponseItem>>();
-                this.tagAttributes = new HashMap<String, String>();
-        }
-
-        public String getContent() {
-                return content;
-        }
-
-        public Integer getContentAsInt() {
-                        return Integer.parseInt(content);
-        }
-
-        public Double getContentAsDouble() {
-                return Double.parseDouble(content);
-        }
+        /**
+         * This method returns the content of the XML tag this item represents.
+         * The content is any text written between the opening and closing tag,
+         * that is not a child tag.
+         * 
+         * @return The content of the item.
+         */
+		public String getContent();
         
-        public ResponseItem getChild(String name) throws NoSuchFieldException {
-                if(!items.containsKey(name))
-                        throw new NoSuchFieldException();
-                
-                return items.get(name).getFirst();
-        }
-
-        public List<ResponseItem> getChildAsList(String name) throws NoSuchFieldException {
-                if(!items.containsKey(name))
-                        throw new NoSuchFieldException();
-                return new LinkedList<ResponseItem>(items.get(name)); // return copy to protect encapsulation
-        }
-
-        public void addChild(ResponseItem item) {
-                LinkedList<ResponseItem> currentItems = items.get(item.getName());
-                
-                if(currentItems == null)
-                        currentItems = new LinkedList<ResponseItem>();
-                
-                currentItems.addLast(item);
-                items.put(item.getName(), currentItems);
-        }
-
-        public void setContent(String content) {
-               this.content = content;
-                
-        }
-
-        public HashMap<String, String> getTagAttributes() {
-                return new HashMap<String, String>(tagAttributes);
-        }
+        /**
+         * This method returns the content of the XML tag this item represents as an Integer.
+         * The content is any text written between the opening and closing tag,
+         * that is not a child tag.
+         * 
+         * @return The content of the item as an Integer.
+         */
+        public Integer  getContentAsInt();
         
-		@Override
-		public String getTagAttribute(String key) throws NoSuchFieldException {
-			if (!tagAttributes.containsKey(key))
-				throw new NoSuchFieldException("tagAttribute doesn't exist: " + key);
-			return tagAttributes.get(key);
-		}        
+        /**
+         * This method returns the content of the XML tag this item represents as a Double.
+         * The content is any text written between the opening and closing tag,
+         * that is not a child tag.
+         * 
+         * @return The content of the item as a Double.
+         */
+        public Double  getContentAsDouble();
         
-        public String getName(){
-                return name;
-        }        
+        /**
+         * This method returns the first child item of this item that matches the given name. 
+         * The child item represents a child tag of the XML file. 
+         * If there are several children with the same name, one should use the <code>getChildAsList</code>
+         * method to get a List of items, as this method will return only the first one.
+         * 
+         * @param The name of the tag. E.g. "\<foobar\>"'s name is "foobar".
+         * @return The child Item that matches the given name.
+         * @throws NoSuchFieldException if there isn't a matching item
+         */
+        public ResponseItem getChild(String name) throws NoSuchFieldException;
         
-        @Override
-        public int hashCode() {
-                final int prime = 31;
-                int result = 1;
-                result = prime * result + ((content == null) ? 0 : content.hashCode());
-                result = prime * result + ((items == null) ? 0 : items.hashCode());
-                result = prime * result + ((name == null) ? 0 : name.hashCode());
-                result = prime * result + ((tagAttributes == null) ? 0 : tagAttributes.hashCode());
-                return result;
-        }
+        
+        /**
+         * This method returns a List of child items of this item that match the given name. 
+         * The child item represents a child tag of the XML file. 
+         * 
+         * @param name The name of the tags. E.g. "\<foobar\>"'s name is "foobar".
+         * @return The List of children ResponseItem that match the given name.
+         * @throws NoSuchFieldException if there isn't a matching item
+         */
+        public List<ResponseItem> getChildAsList(String name) throws NoSuchFieldException;
+        
+        /**
+         * This method is used when building the structure to add a child item to another item.
+         * The child represents a child tag in the XML file.
+         * 
+         * @param item An Item representing the child.
+         */
+        public void addChild(ResponseItem item);
+        
+        /**
+         * This method sets the content of the XML tag this item represents.
+         * The content is any text written between the opening and closing tag,
+         * that is not a child tag.
+         * 
+         * @param content The content of the item.
+         */
+        public void setContent(String content);
+        
+    	/**
+    	 * This method returns a Map containing the XML tag attributes of the tag
+    	 * the Item represents.
+    	 * 
+    	 * @return The Map of Attributes of the XML tag.
+    	 */
+        public Map<String, String> getTagAttributes();
+        
+        /**
+    	 * This method returns the value of a XML tag attribute of the tag
+    	 * the Item represents.
+    	 * 
+         * @param key The name of the attribute. E.g. <tag name='value' attr2='...' ...>
+         * @return The value of the attribute
+         * @throws NoSuchFieldException
+         */
+        public String getTagAttribute(String key) throws NoSuchFieldException;
 
-        @Override
-        public boolean equals(Object obj) {
-                if (this == obj)
-                        return true;
-                if (obj == null)
-                        return false;
-                if (getClass() != obj.getClass())
-                        return false;
-                ResponseItem other = (ResponseItem) obj;
-                if (content == null) {
-                        if (other.content != null)
-                                return false;
-                } else if (!content.equals(other.content))
-                        return false;
-                if (items == null) {
-                        if (other.items != null)
-                                return false;
-                } else if (!items.equals(other.items))
-                        return false;
-                if (name == null) {
-                        if (other.name != null)
-                                return false;
-                } else if (!name.equals(other.name))
-                        return false;
-                if (tagAttributes == null) {
-                        if (other.tagAttributes != null)
-                                return false;
-                } else if (!tagAttributes.equals(other.tagAttributes))
-                        return false;
-                return true;
-        }
-
-        @Override
-        public String toString() {
-                return "ResponseItem [content=" + content + ", name=" + name + ", tagParameters="
-                + tagAttributes + ", items=" + items + "]";
-        }
+        /**
+         * Returns the name of the XML tag this item represents.
+         * 
+         * @return The name of the tag.
+         */
+		public String getName();
 }
