@@ -35,7 +35,6 @@ class SoapEnvelopeHelper {
 				throw noMoreParameters;
 			}
 			xml = xml.replaceFirst(REGEX_MATCH, ">" + parameters.get(i) + "<");
-			System.out.println(xml);
 		}
 
 		if (xml.indexOf(">?<") >= 0) {
