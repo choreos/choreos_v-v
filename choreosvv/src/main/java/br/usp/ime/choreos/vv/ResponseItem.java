@@ -15,6 +15,8 @@ public class ResponseItem implements ResponseInterface{
                 this.name = tagName;
                 this.tagAttributes = tagAttributes;
                 items = new HashMap<String, LinkedList<ResponseItem>>();
+                if (tagAttributes == null)
+                	tagAttributes = new HashMap<String, String>();
         }
 
         public ResponseItem(String tagName) {
@@ -45,7 +47,7 @@ public class ResponseItem implements ResponseInterface{
         public List<ResponseItem> getChildAsList(String name) throws NoSuchFieldException {
                 if(!items.containsKey(name))
                         throw new NoSuchFieldException();
-                return items.get(name);
+                return new LinkedList<ResponseItem>(items.get(name)); // return copy to protect encapsulation
         }
 
         public void addChild(ResponseItem item) {
@@ -64,8 +66,15 @@ public class ResponseItem implements ResponseInterface{
         }
 
         public HashMap<String, String> getTagAttributes() {
-                return tagAttributes;
+                return new HashMap<String, String>(tagAttributes);
         }
+        
+		@Override
+		public String getTagAttribute(String key) throws NoSuchFieldException {
+			if (!tagAttributes.containsKey(key))
+				throw new NoSuchFieldException("tagAttribute doesn't exist: " + key);
+			return tagAttributes.get(key);
+		}        
         
         public String getName(){
                 return name;

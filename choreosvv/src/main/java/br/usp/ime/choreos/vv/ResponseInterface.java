@@ -13,5 +13,5 @@ public interface ResponseInterface {
         public void addChild(ResponseItem item);
         public void setContent(String content);
         public HashMap<String, String> getTagAttributes();
-
+        public String getTagAttribute(String key) throws NoSuchFieldException;
 }
