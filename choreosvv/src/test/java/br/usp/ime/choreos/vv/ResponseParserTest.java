@@ -29,7 +29,7 @@ public class ResponseParserTest {
                 ResponseItem expected = new ResponseItem("search_by_brandResult");
                 ResponseItem child = new ResponseItem("name");
                 child.setContent("mouse");
-                expected.addItem(child);
+                expected.addChild(child);
                 
                 assertEquals(expected, actual); 
         }
@@ -55,7 +55,7 @@ public class ResponseParserTest {
                 ResponseItem expected = new ResponseItem("search_by_brandResult");
                 ResponseItem child = new ResponseItem("name");
                 child.setContent("mouse");
-                expected.addItem(child);
+                expected.addChild(child);
                 
                 assertEquals(expected, actual);
 	}
@@ -78,8 +78,8 @@ public class ResponseParserTest {
                 ResponseParser parser = new ResponseParser();
                 ResponseItem item = parser.parse(sampleXml);
 
-                ResponseItem actual = item.getAttr("name"); 
-                assertEquals("5", actual.getTagParameters().get("length"));
+                ResponseItem actual = item.getChild("name"); 
+                assertEquals("5", actual.getTagAttributes().get("length"));
         }
 	
         
@@ -112,21 +112,21 @@ public class ResponseParserTest {
                 
                 ResponseItem childA = new ResponseItem("category");
                 childA.setContent("mouse");
-                item.addItem(childA);
+                item.addChild(childA);
                 
                 ResponseItem childB = new ResponseItem("price");
                 childB.setContent("89.2");
-                item.addItem(childB);
+                item.addChild(childB);
                 
                 ResponseItem childC = new ResponseItem("model");
                 childC.setContent("RZG145");
-                item.addItem(childC);
+                item.addChild(childC);
                 
                 ResponseItem childD = new ResponseItem("brand");
                 childD.setContent("Razor");
-                item.addItem(childD);                
+                item.addChild(childD);                
                 
-                expected.addItem(item);
+                expected.addChild(item);
                 
                 assertEquals(expected, actual);		
 	}
@@ -169,47 +169,47 @@ public class ResponseParserTest {
 	        ResponseItem item1 = new ResponseItem("Item");
                 ResponseItem childA = new ResponseItem("category");
                 childA.setContent("mouse");
-                item1.addItem(childA);	                
+                item1.addChild(childA);	                
                 ResponseItem childB = new ResponseItem("price");
                 childB.setContent("89.2");
-                item1.addItem(childB);	                
+                item1.addChild(childB);	                
                 ResponseItem childC = new ResponseItem("model");
                 childC.setContent("RZG145");
-                item1.addItem(childC);	                
+                item1.addChild(childC);	                
                 ResponseItem childD = new ResponseItem("brand");
                 childD.setContent("Razor");
-                item1.addItem(childD);          
-                expected.addItem(item1);
+                item1.addChild(childD);          
+                expected.addChild(item1);
 	
                 ResponseItem item2 = new ResponseItem("Item");
                 childA = new ResponseItem("category");
                 childA.setContent("mouse");
-                item2.addItem(childA);                  
+                item2.addChild(childA);                  
                 childB = new ResponseItem("price");
                 childB.setContent("61.0");
-                item2.addItem(childB);                  
+                item2.addChild(childB);                  
                 childC = new ResponseItem("model");
                 childC.setContent("CCCC");
-                item2.addItem(childC);                  
+                item2.addChild(childC);                  
                 childD = new ResponseItem("brand");
                 childD.setContent("Clone");
-                item2.addItem(childD);          
-                expected.addItem(item2);
+                item2.addChild(childD);          
+                expected.addChild(item2);
         
                 ResponseItem item3 = new ResponseItem("Item");
                 childA = new ResponseItem("category");
                 childA.setContent("mouse");
-                item3.addItem(childA);                  
+                item3.addChild(childA);                  
                 childB = new ResponseItem("price");
                 childB.setContent("61.0");
-                item3.addItem(childB);                  
+                item3.addChild(childB);                  
                 childC = new ResponseItem("model");
                 childC.setContent("MS23F");
-                item3.addItem(childC);                  
+                item3.addChild(childC);                  
                 childD = new ResponseItem("brand");
                 childD.setContent("Microsoft");
-                item3.addItem(childD);          
-                expected.addItem(item3);
+                item3.addChild(childD);          
+                expected.addChild(item3);
                 
 		ResponseParser parser = new ResponseParser();
 		ResponseItem actual = parser.parse(sampleXml);

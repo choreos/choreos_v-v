@@ -8,19 +8,19 @@ public class ResponseItem implements ResponseInterface{
 
         private String content;
         private String name;
-        private HashMap<String, String> tagParameters;
+        private HashMap<String, String> tagAttributes;
         private HashMap<String, LinkedList<ResponseItem>>items;
         
-        public ResponseItem(String tagName, HashMap<String, String> tagParameters) {
+        public ResponseItem(String tagName, HashMap<String, String> tagAttributes) {
                 this.name = tagName;
-                this.tagParameters = tagParameters;
+                this.tagAttributes = tagAttributes;
                 items = new HashMap<String, LinkedList<ResponseItem>>();
         }
 
         public ResponseItem(String tagName) {
                 this.name = tagName;
                 items = new HashMap<String, LinkedList<ResponseItem>>();
-                this.tagParameters = new HashMap<String, String>();
+                this.tagAttributes = new HashMap<String, String>();
         }
 
         public String getContent() {
@@ -35,20 +35,20 @@ public class ResponseItem implements ResponseInterface{
                 return Double.parseDouble(content);
         }
         
-        public ResponseItem getAttr(String name) throws NoSuchFieldException {
+        public ResponseItem getChild(String name) throws NoSuchFieldException {
                 if(!items.containsKey(name))
                         throw new NoSuchFieldException();
                 
                 return items.get(name).getFirst();
         }
 
-        public List<ResponseItem> getAttrAsList(String name) throws NoSuchFieldException {
+        public List<ResponseItem> getChildAsList(String name) throws NoSuchFieldException {
                 if(!items.containsKey(name))
                         throw new NoSuchFieldException();
                 return items.get(name);
         }
 
-        public void addItem(ResponseItem item) {
+        public void addChild(ResponseItem item) {
                 LinkedList<ResponseItem> currentItems = items.get(item.getName());
                 
                 if(currentItems == null)
@@ -63,8 +63,8 @@ public class ResponseItem implements ResponseInterface{
                 
         }
 
-        public HashMap<String, String> getTagParameters() {
-                return tagParameters;
+        public HashMap<String, String> getTagAttributes() {
+                return tagAttributes;
         }
         
         public String getName(){
@@ -78,7 +78,7 @@ public class ResponseItem implements ResponseInterface{
                 result = prime * result + ((content == null) ? 0 : content.hashCode());
                 result = prime * result + ((items == null) ? 0 : items.hashCode());
                 result = prime * result + ((name == null) ? 0 : name.hashCode());
-                result = prime * result + ((tagParameters == null) ? 0 : tagParameters.hashCode());
+                result = prime * result + ((tagAttributes == null) ? 0 : tagAttributes.hashCode());
                 return result;
         }
 
@@ -106,10 +106,10 @@ public class ResponseItem implements ResponseInterface{
                                 return false;
                 } else if (!name.equals(other.name))
                         return false;
-                if (tagParameters == null) {
-                        if (other.tagParameters != null)
+                if (tagAttributes == null) {
+                        if (other.tagAttributes != null)
                                 return false;
-                } else if (!tagParameters.equals(other.tagParameters))
+                } else if (!tagAttributes.equals(other.tagAttributes))
                         return false;
                 return true;
         }
@@ -117,6 +117,6 @@ public class ResponseItem implements ResponseInterface{
         @Override
         public String toString() {
                 return "ResponseItem [content=" + content + ", name=" + name + ", tagParameters="
-                + tagParameters + ", items=" + items + "]";
+                + tagAttributes + ", items=" + items + "]";
         }
 }

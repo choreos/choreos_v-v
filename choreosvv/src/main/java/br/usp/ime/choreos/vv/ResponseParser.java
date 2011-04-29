@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Stack;
 
-import javax.smartcardio.ATR;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -68,7 +67,7 @@ class ResponseParser {
 					ResponseItem poped = tagStack.pop();
 					if (!tagStack.empty()){
 						ResponseItem father = tagStack.peek();
-						father.addItem(poped);
+						father.addChild(poped);
 					}
 					else {
 					        result = poped;

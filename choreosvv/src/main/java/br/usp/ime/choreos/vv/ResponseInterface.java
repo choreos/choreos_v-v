@@ -8,10 +8,10 @@ public interface ResponseInterface {
         public String getContent();
         public Integer  getContentAsInt();
         public Double  getContentAsDouble();
-        public ResponseItem getAttr(String name) throws NoSuchFieldException;
-        public List<ResponseItem> getAttrAsList(String name) throws NoSuchFieldException;
-        public void addItem(ResponseItem item);
+        public ResponseItem getChild(String name) throws NoSuchFieldException;
+        public List<ResponseItem> getChildAsList(String name) throws NoSuchFieldException;
+        public void addChild(ResponseItem item);
         public void setContent(String content);
-        public HashMap<String, String> getTagParameters();
+        public HashMap<String, String> getTagAttributes();
 
 }

@@ -64,29 +64,29 @@ public class ResponseItemTest {
                 parameters.put("xsd", "www.br.usp.ime.choreos.vv");
                 ResponseItem childItem = new ResponseItem("name", parameters );
                 
-                assertEquals("www.br.usp.ime.choreos.vv", childItem.getTagParameters().get("xsd"));
+                assertEquals("www.br.usp.ime.choreos.vv", childItem.getTagAttributes().get("xsd"));
         }
         
         @Test
         public void shouldAddAnSimpleItem() throws NoSuchFieldException{
                 ResponseItem childItem = new ResponseItem("name");
                 childItem.setContent("Fernando Pessoa");
-                item.addItem(childItem);
+                item.addChild(childItem);
                
-               assertEquals("Fernando Pessoa", item.getAttr("name").getContent());
+               assertEquals("Fernando Pessoa", item.getChild("name").getContent());
         }
         
         @Test
         public void shouldAddTwoSimpleItemWithTheSameName() throws NoSuchFieldException{
                 ResponseItem childItemA = new ResponseItem("name");
                 childItemA.setContent("Fernando Pessoa");
-                item.addItem(childItemA);
+                item.addChild(childItemA);
                 
                 ResponseItem childItemB = new ResponseItem("name");
                 childItemB.setContent("Machado de Assis");
-                item.addItem(childItemB);
+                item.addChild(childItemB);
                 
-                List<ResponseItem> children = item.getAttrAsList("name");
+                List<ResponseItem> children = item.getChildAsList("name");
                
                assertEquals("Fernando Pessoa", children.get(0).getContent());
                assertEquals("Machado de Assis", children.get(1).getContent());
@@ -98,10 +98,10 @@ public class ResponseItemTest {
                 ResponseItem nameItem = new ResponseItem("name");
                 nameItem.setContent("Eça de Queiroz");
                 
-                coAuthorItem.addItem(nameItem);
-                item.addItem(coAuthorItem);
+                coAuthorItem.addChild(nameItem);
+                item.addChild(coAuthorItem);
                 
-                assertEquals("Eça de Queiroz", item.getAttr("co-author").getAttr("name").getContent());
+                assertEquals("Eça de Queiroz", item.getChild("co-author").getChild("name").getContent());
         }
         
         @Test
@@ -110,12 +110,12 @@ public class ResponseItemTest {
                 ResponseItem nameItem = new ResponseItem("name");
                 nameItem.setContent("Eça de Queiroz");
                 
-                coAuthorItem.addItem(nameItem);
-                item.addItem(coAuthorItem);
+                coAuthorItem.addChild(nameItem);
+                item.addChild(coAuthorItem);
                 item.setContent("1935");
                 
                 
-                assertEquals("Eça de Queiroz", item.getAttr("co-author").getAttr("name").getContent());
+                assertEquals("Eça de Queiroz", item.getChild("co-author").getChild("name").getContent());
                 assertEquals((Integer)1935, item.getContentAsInt());
         }
         
@@ -128,11 +128,11 @@ public class ResponseItemTest {
                 ResponseItem nameItemB = new ResponseItem("name");
                 nameItemB.setContent("Olavo Bilac");
                 
-                coAuthorItem.addItem(nameItemA);
-                coAuthorItem.addItem(nameItemB);
-                item.addItem(coAuthorItem);
+                coAuthorItem.addChild(nameItemA);
+                coAuthorItem.addChild(nameItemB);
+                item.addChild(coAuthorItem);
                 
-                List<ResponseItem> coAuthors = item.getAttr("co-author").getAttrAsList("name");
+                List<ResponseItem> coAuthors = item.getChild("co-author").getChildAsList("name");
                 
                 assertEquals("Eça de Queiroz", coAuthors.get(0).getContent());
                 assertEquals("Olavo Bilac", coAuthors.get(1).getContent());
@@ -142,14 +142,14 @@ public class ResponseItemTest {
         public void shouldGetAListWithOneElement() throws NoSuchFieldException {
                 ResponseItem childItem = new ResponseItem("name");
                 childItem.setContent("Fernando Pessoa");
-                item.addItem(childItem);
+                item.addChild(childItem);
                 
-                assertEquals(1, item.getAttrAsList("name").size());
-                assertEquals( "Fernando Pessoa", item.getAttr("name").getContent());
+                assertEquals(1, item.getChildAsList("name").size());
+                assertEquals( "Fernando Pessoa", item.getChild("name").getContent());
         }
 
         @Test (expected=NoSuchFieldException.class)
          public void shouldThrowsAnExceptionWhenTheElementNotExist() throws NoSuchFieldException {
-                 item.getAttr("sirname");
+                 item.getChild("sirname");
         }
 }
