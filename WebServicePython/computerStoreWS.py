@@ -62,7 +62,7 @@ class InfoStoreService(DefinitionBase):
                 return i
         return None
 
-    @soap(String, _returns=Array(Item))
+    @soap(String, _returns=Float)
     def get_mean_price(self, category):
         '''
         Average price of items of a Category
@@ -70,6 +70,7 @@ class InfoStoreService(DefinitionBase):
         @param name of the category to search for
         @return the average price
         '''
+
         mean = 0
         count = 0
         for i in computerStoreItems.items:
