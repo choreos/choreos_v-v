@@ -10,7 +10,7 @@ import org.apache.xmlbeans.XmlException;
 import org.xml.sax.SAXException;
 
 import br.usp.ime.choreos.vv.exceptions.FrameworkException;
-import br.usp.ime.choreos.vv.exceptions.InvalidOperationName;
+import br.usp.ime.choreos.vv.exceptions.InvalidOperationNameException;
 import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
 import br.usp.ime.choreos.vv.exceptions.WSDLException;
 
@@ -99,10 +99,10 @@ public class WSClient {
 	 * @throws SAXException 
 	 * @throws ParserConfigurationException 
 	 */
-	public ResponseItem request(String operationName, String... parameters) throws InvalidOperationName, FrameworkException, MissingResponseTagException  {
+	public ResponseItem request(String operationName, String... parameters) throws InvalidOperationNameException, FrameworkException, MissingResponseTagException  {
 		
 		if (!operations.contains(operationName))
-			throw new InvalidOperationName();
+			throw new InvalidOperationNameException();
 
 		WsdlOperation operation = (WsdlOperation) iface.getOperationByName(operationName);
 

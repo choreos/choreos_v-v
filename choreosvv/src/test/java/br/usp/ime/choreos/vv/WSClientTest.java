@@ -11,7 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.usp.ime.choreos.vv.exceptions.FrameworkException;
-import br.usp.ime.choreos.vv.exceptions.InvalidOperationName;
+import br.usp.ime.choreos.vv.exceptions.InvalidOperationNameException;
 import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
 import br.usp.ime.choreos.vv.exceptions.WSDLException;
 import br.usp.ime.choreos.vv.util.WebServiceController;
@@ -20,8 +20,8 @@ public class WSClientTest {
 
 	private static final String WSDL = "http://localhost:1234/SimpleStore?wsdl";
 
-	private static final int NUMBER_OF_OPERATIONS = 4;
-	
+	private static final int NUMBER_OF_OPERATIONS = 5;
+
 	private static WSClient wsClient;
 	
 	@BeforeClass
@@ -69,11 +69,22 @@ public class WSClientTest {
 		assertEquals("true", status.getContent());	
 	}
 	
-	@Test(expected=InvalidOperationName.class)
-	public void shouldComplainAboutInvalidOperationName() throws InvalidOperationName, FrameworkException, MissingResponseTagException  {
+	@Test(expected=InvalidOperationNameException.class)
+	public void shouldComplainAboutInvalidOperationName() throws InvalidOperationNameException, FrameworkException, MissingResponseTagException {
 		wsClient.request("Invalid Operation", "");
 	}
 	
-
+	@Test
+	public void shouldReceiveVoidReturn() throws InvalidOperationNameException, FrameworkException, MissingResponseTagException {
+	        
+	        // just testing if no Exception is thrown because the void return
+	        
+	        try {
+	                wsClient.request("cancelPurchase", "cd name", "customer name");
+	        }
+	        catch (Exception e) {
+	                        assertTrue(false); // if exceptions is thrown, test fail
+	        }
+	}
 
 }
