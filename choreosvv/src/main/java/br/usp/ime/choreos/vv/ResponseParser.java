@@ -25,15 +25,13 @@ import br.usp.ime.choreos.vv.exceptions.ParserException;
  *
  */
 class ResponseParser {
-	
+
 	private static SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 	private SAXParser parser;
 	private ResponseItemImpl result;
 
-	
+
 	private class ResponseParserHandler extends DefaultHandler {
-		private String opName;
-		private boolean processing;
 		private Stack<ResponseItemImpl> tagStack = new Stack<ResponseItemImpl>();
 
 		/**
@@ -43,12 +41,12 @@ class ResponseParser {
 		 */
 		@Override
 		public void characters(char[] ch, int start, int lenght) 
-			throws SAXException {
-			
+		throws SAXException {
+
 			String trimmed = new String(ch, start, lenght).trim();
-			
-			if (processing && !trimmed.isEmpty() && !tagStack.empty()){
-			        tagStack.peek().setContent(trimmed);			
+
+			if (!trimmed.isEmpty() && !tagStack.empty()){
+				tagStack.peek().setContent(trimmed);			
 			}
 		}
 
@@ -59,26 +57,18 @@ class ResponseParser {
 		 */
 		@Override
 		public void endElement(String uri, String localName, String qName)
-			throws SAXException {
-			
-			//deletes namespace
-			String name = getNameWithoutNamespace(qName);
-			
-			if (processing) {
-				if (name.equals(opName)){
-					processing = false;
+		throws SAXException {
+
+			if (!tagStack.empty()) {
+				ResponseItemImpl poped = tagStack.pop();
+				if (!tagStack.empty()){
+					ResponseItemImpl father = tagStack.peek();
+					father.addChild(poped);
 				} else {
-					ResponseItemImpl poped = tagStack.pop();
-					if (!tagStack.empty()){
-						ResponseItemImpl father = tagStack.peek();
-						father.addChild(poped);
-					}
-					else {
-					        result = poped;
-					}
+					result = poped;
 				}
 			}
-			
+
 		}
 
 		/**
@@ -89,46 +79,41 @@ class ResponseParser {
 		 */
 		@Override
 		public void startElement(String uri, String localName, String qName, Attributes attributes) 
-			throws SAXException {
-			
-			//deletes namespace
+		throws SAXException {
+
 			String name = getNameWithoutNamespace(qName);
-			
-			if (name.endsWith("Response") && !processing) {
-				opName = name;
-				processing = true;
-			} 
-			else if (processing) {
-			        HashMap<String, String> parameters = new HashMap<String, String>();
-			        
-			        for(int i=0; i< attributes.getLength(); i++)
-			                parameters.put(attributes.getQName(i), attributes.getValue(i));
-			        
-	                        result = new ResponseItemImpl(name, parameters);
+
+			if (name.endsWith("Response") || !tagStack.empty()) {
+				HashMap<String, String> parameters = new HashMap<String, String>();
+
+				for(int i=0; i< attributes.getLength(); i++)
+					parameters.put(attributes.getQName(i), attributes.getValue(i));
+
+				result = new ResponseItemImpl(name, parameters);
 				tagStack.push(result);
 			}
 		}
 
-                private String getNameWithoutNamespace(String qName) {
-                        String[] names = qName.split(":");                        
-			
-                        return names[names.length  - 1];
-                }
+		private String getNameWithoutNamespace(String qName) {
+			String[] names = qName.split(":");                        
+
+			return names[names.length  - 1];
+		}
 	}
-	
-	public ResponseItemImpl parse(String xml) throws MissingResponseTagException, ParserException {
+
+	public ResponseItem parse(String xml) throws MissingResponseTagException, ParserException {
 		try {
-		        InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
+			InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
 			parser = parserFactory.newSAXParser();
 			parser.parse(is, new ResponseParserHandler());
 		}  
 		catch (Exception e) {
 			throw new ParserException(e);
 		}
-		
+
 		if(result == null)
-		       throw new MissingResponseTagException("Response Tag is missing");
-		
+			throw new MissingResponseTagException("Response Tag is missing");
+
 		return result;
 	}
 

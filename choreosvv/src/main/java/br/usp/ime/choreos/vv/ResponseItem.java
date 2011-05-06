@@ -41,6 +41,22 @@ public interface ResponseItem {
          * @return The content of the item as a Double.
          */
         public Double  getContentAsDouble();
+
+        /**
+         * This method returns a list of children items of this item. 
+         * A child item represents a child tag of the XML file.
+         * 
+         * @return A List of children ResponseItems. If there are no children, returns an empty list.
+         */
+        public List<ResponseItem> getChildren();
+        
+        /**
+         * This method returns the number of children items of this item. 
+         * A child item represents a child tag of the XML file.
+         * 
+         * @return The number of children ResponseItems.
+         */
+        public Integer getChildrenCount();
         
         /**
          * This method returns the first child item of this item that matches the given name. 

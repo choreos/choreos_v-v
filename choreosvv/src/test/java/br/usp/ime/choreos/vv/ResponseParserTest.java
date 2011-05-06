@@ -1,14 +1,14 @@
 package br.usp.ime.choreos.vv;
 
-import javax.xml.parsers.ParserConfigurationException;
+import static junit.framework.Assert.assertEquals;
+
+import java.util.HashMap;
+import java.util.List;
 
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
 import br.usp.ime.choreos.vv.exceptions.ParserException;
-
-import static junit.framework.Assert.assertEquals;
 
 public class ResponseParserTest {
         
@@ -27,18 +27,22 @@ public class ResponseParserTest {
                                 + "</senv:Envelope>";
                 
                 ResponseParser parser = new ResponseParser();
-                ResponseItemImpl actual = parser.parse(sampleXml);
+                ResponseItem actual = parser.parse(sampleXml);
                 
-                ResponseItemImpl expected = new ResponseItemImpl("search_by_brandResult");
-                ResponseItemImpl child = new ResponseItemImpl("name");
-                child.setContent("mouse");
-                expected.addChild(child);
+                HashMap<String, String> rootParameters = new HashMap<String, String>();
+                rootParameters.put("xmln", "schema");
+                ResponseItemImpl root = new ResponseItemImpl("search_by_brandResponse", rootParameters);
+                ResponseItemImpl child1 = new ResponseItemImpl("search_by_brandResult");
+                ResponseItemImpl child2 = new ResponseItemImpl("name");
+                child2.setContent("mouse");
+                child1.addChild(child2);
+                root.addChild(child1);
                 
-                assertEquals(expected, actual); 
+                assertEquals(root, actual); 
         }
         
         @Test
-        public void shouldParseATagWithoutNamespace() throws  MissingResponseTagException, ParserException {
+        public void shouldParseATagWithoutNamespace() throws  MissingResponseTagException, ParserException, NoSuchFieldException {
                 String sampleXml = "<senv:Envelope " 
                                 + "                             xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
                                 + "                             xmlns:tns=\"tns\">" 
@@ -50,9 +54,11 @@ public class ResponseParserTest {
                                 + "</senv:Envelope>";
                 
                 ResponseParser parser = new ResponseParser();
-                ResponseItemImpl actual = parser.parse(sampleXml);
+                ResponseItem actual = parser.parse(sampleXml);
+                
+                assertEquals("search_by_brandResponse", actual.getName());
                                                 
-                assertEquals( "Nike", actual.getContent()); 
+                assertEquals( "Nike", actual.getChild("brand").getContent()); 
         }
         
         @Test (expected=MissingResponseTagException.class)
@@ -98,14 +104,18 @@ public class ResponseParserTest {
                                 + "</senv:Envelope>";
                 
                 ResponseParser parser = new ResponseParser();
-                ResponseItemImpl actual = parser.parse(sampleXml);
+                ResponseItem actual = parser.parse(sampleXml);
                 
-                ResponseItemImpl expected = new ResponseItemImpl("search_by_brandResult");
-                ResponseItemImpl child = new ResponseItemImpl("name");
-                child.setContent("mouse");
-                expected.addChild(child);
+                ResponseItemImpl root = new ResponseItemImpl("search_by_brandResponse");
+                ResponseItemImpl child1 = new ResponseItemImpl("search_by_brandResult");
+                ResponseItemImpl child2 = new ResponseItemImpl("name");
+                child2.setContent("mouse");
+                child1.addChild(child2);
+                root.addChild(child1);
                 
-                assertEquals(expected, actual);
+                assertEquals((Integer)1, actual.getChildrenCount());
+                
+                assertEquals(root, actual);
         }
         
         
@@ -124,15 +134,14 @@ public class ResponseParserTest {
                         + "</senv:Envelope>"; 
                 
                 ResponseParser parser = new ResponseParser();
-                ResponseItemImpl item = parser.parse(sampleXml);
+                ResponseItem actual = parser.parse(sampleXml);
 
-                ResponseItem actual = item.getChild("name"); 
-                assertEquals("5", actual.getTagAttributes().get("length"));
+                ResponseItem child1 = actual.getChild("search_by_brandResult").getChild("name"); 
+                assertEquals("5", child1.getTagAttributes().get("length"));
         }
         
-        
         @Test
-        public void shouldParseAComplexTypeTest() throws MissingResponseTagException, ParserException{
+        public void shouldParseAComplexTypeTest() throws MissingResponseTagException, ParserException, NoSuchFieldException{
         
                 String sampleXml = "<senv:Envelope " + 
                         "xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " + 
@@ -152,7 +161,12 @@ public class ResponseParserTest {
                         "</senv:Envelope>";
 
                 ResponseParser parser = new ResponseParser();
-                ResponseItemImpl actual = parser.parse(sampleXml);
+                ResponseItem actual = parser.parse(sampleXml);
+                
+                assertEquals("search_by_categoryResponse", actual.getName());
+                assertEquals((Integer)1, actual.getChildrenCount());
+                
+                actual = (ResponseItemImpl) actual.getChild("search_by_categoryResult");
                 
                 ResponseItemImpl expected = new ResponseItemImpl("search_by_categoryResult");
                 
@@ -181,7 +195,7 @@ public class ResponseParserTest {
         
         
         @Test
-        public void shouldPaseComplexTypeListWithEmptySpaces() throws MissingResponseTagException, ParserException{
+        public void shouldPaseComplexTypeListWithEmptySpaces() throws MissingResponseTagException, ParserException, NoSuchFieldException{
         
                 String sampleXml = "<senv:Envelope " + 
                         "xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " + 
@@ -260,9 +274,63 @@ public class ResponseParserTest {
                 expected.addChild(item3);
                 
                 ResponseParser parser = new ResponseParser();
-                ResponseItemImpl actual = parser.parse(sampleXml);
+                ResponseItem actual = parser.parse(sampleXml);
+                
+                assertEquals("search_by_categoryResponse", actual.getName());
+                assertEquals((Integer)1, actual.getChildrenCount());
+                
+                actual = (ResponseItemImpl) actual.getChild("search_by_categoryResult");
                 
                 assertEquals(expected, actual);
+        }
+        
+        @Test
+        public void testResponseWithNoRootTag() throws NoSuchFieldException, ParserException, MissingResponseTagException{
+        	String xml =  "<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\">"
+        	+ "  <soapenv:Body>"
+        	+ "      <ns:getItensByBrandResponse xmlns:ns=\"http://ws.vvws.choreos.ime.usp.br\" xmlns:ax21=\"http://rmi.java/xsd\" xmlns:ax22=\"http://io.java/xsd\" xmlns:ax26=\"http://model.vvws.choreos.ime.usp.br/xsd\">"
+        	+ "         <ns:return xsi:type=\"ax26:Item\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
+        	+ "           <ax26:barcode>133</ax26:barcode>"
+        	+ "           <ax26:brand>adidas</ax26:brand>"
+        	+ "            <ax26:description>A Soccershirt</ax26:description>"
+        	+ "            <ax26:name>Soccershirt</ax26:name>"
+        	+ "           <ax26:price>80.0</ax26:price>"
+        	+ "           <ax26:sport>soccer</ax26:sport>"
+        	+ "        </ns:return>"
+        	+ "         <ns:return xsi:type=\"ax26:Item\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
+        	+ "           <ax26:barcode>143</ax26:barcode>"
+        	+ "           <ax26:brand>adidas</ax26:brand>"
+        	+ "            <ax26:description>A Soccerball</ax26:description>"
+        	+ "           <ax26:name>Ball</ax26:name>"
+        	+ "           <ax26:price>20.0</ax26:price>"
+        	+ "           <ax26:sport>soccer</ax26:sport>"
+        	+ "        </ns:return>"
+        	+ "         <ns:return xsi:type=\"ax26:Item\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
+        	+ "           <ax26:barcode>153</ax26:barcode>"
+        	+ "           <ax26:brand>adidas</ax26:brand>"
+        	+ "            <ax26:description>A Soccercleat</ax26:description>"
+        	+ "            <ax26:name>Soccercleat</ax26:name>"
+        	+ "           <ax26:price>90.0</ax26:price>"
+        	+ "           <ax26:sport>soccer</ax26:sport>"
+        	+ "        </ns:return>"
+        	+ "     </ns:getItensByBrandResponse>"
+        	+ "  </soapenv:Body>"
+        	+ "</soapenv:Envelope>";
+        	
+        	ResponseParser parser = new ResponseParser();
+            ResponseItem actual = parser.parse(xml);
+        	
+            assertEquals("getItensByBrandResponse", actual.getName());
+            
+            List<ResponseItem> l = actual.getChildAsList("return"); 
+            assertEquals(3, l.size());
+            
+            assertEquals(new Integer(133), l.get(0).getChild("barcode").getContentAsInt());
+            
+            assertEquals(new Integer(143), l.get(1).getChild("barcode").getContentAsInt());
+            
+            assertEquals(new Integer(153), l.get(2).getChild("barcode").getContentAsInt());
+
         }
         
 }

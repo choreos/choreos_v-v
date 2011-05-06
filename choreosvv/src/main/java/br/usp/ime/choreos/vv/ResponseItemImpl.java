@@ -1,5 +1,6 @@
 package br.usp.ime.choreos.vv;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -129,4 +130,24 @@ public class ResponseItemImpl implements ResponseItem{
                 return "ResponseItem [content=" + content + ", name=" + name + ", tagParameters="
                 + tagAttributes + ", items=" + items + "]";
         }
+
+		@Override
+		public List<ResponseItem> getChildren() {
+			List<ResponseItem> childrenList = new ArrayList<ResponseItem>();
+			for (String s : this.items.keySet() ){
+				childrenList.addAll(this.items.get(s));
+			}
+			
+			return childrenList;
+		}
+
+		@Override
+		public Integer getChildrenCount() {
+			Integer childrenCount = 0;
+			for (String s : this.items.keySet() ){
+				childrenCount += this.items.get(s).size();
+			}
+			
+			return childrenCount;
+		}
 }
