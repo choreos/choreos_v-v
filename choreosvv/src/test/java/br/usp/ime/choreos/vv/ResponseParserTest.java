@@ -1,14 +1,12 @@
 package br.usp.ime.choreos.vv;
 
-import javax.xml.parsers.ParserConfigurationException;
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
 import br.usp.ime.choreos.vv.exceptions.ParserException;
-
-import static junit.framework.Assert.assertEquals;
 
 public class ResponseParserTest {
         
@@ -263,6 +261,25 @@ public class ResponseParserTest {
                 ResponseItemImpl actual = parser.parse(sampleXml);
                 
                 assertEquals(expected, actual);
+        }
+        
+        @Test
+        public void shouldParseVoidReturn() throws ParserException {
+                
+                // just testing if no MissingResponseTagException is thrown
+
+                String sampleXml = "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+                                                                   "<S:Body>" +
+                                                                     " <ns2:cancelPurchaseResponse xmlns:ns2=\"http://ws.vvws.choreos.ime.usp.br/\"/>" +
+                                                                   "</S:Body>" +
+                                                                "</S:Envelope>";
+                
+                ResponseParser parser = new ResponseParser();
+                try {
+                        parser.parse(sampleXml);
+                } catch (MissingResponseTagException e) {
+                        assertTrue(false); // if exceptions is thrown, test fail
+                }
         }
         
 }
