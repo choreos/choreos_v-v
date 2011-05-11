@@ -59,7 +59,7 @@ public class StoreWSImpl implements StoreWS {
 
 	@Override
 	public Boolean purchase(CD cd, Customer customer) {
-		return true;
+		return cds.contains(cd);
 	}
 
 	
