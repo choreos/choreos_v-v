@@ -11,6 +11,11 @@ import org.junit.Test;
 import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
 import br.usp.ime.choreos.vv.exceptions.ParserException;
 
+/**
+ * JAX-WS tests made with version  JAX-WS RI 2.1.2-b05-RC1
+ * Ruby tests made with version... ??? // TODO
+ *
+ */
 public class ResponseParserTest {
 
 	@Test
@@ -18,12 +23,12 @@ public class ResponseParserTest {
 		String sampleXml = "<senv:Envelope " 
 			+ "                             xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
 			+ "                             xmlns:tns=\"tns\">" 
-			+ "  <senv:Body>"
-			+ "   <tns:search_by_brandResponse xmln=\"schema\">" 
-			+ "<tns:search_by_brandResult>" 
-			+ "    <s1:name>mouse</s1:name>" 
-			+ "</tns:search_by_brandResult>" 
-			+ "</tns:search_by_brandResponse>" 
+			+ "<senv:Body>"
+			+ "    <tns:search_by_brandResponse xmln=\"schema\">" 
+			+ "        <tns:search_by_brandResult>" 
+			+ "            <s1:name>mouse</s1:name>" 
+			+ "        </tns:search_by_brandResult>" 
+			+ "    </tns:search_by_brandResponse>" 
 			+ "</senv:Body>" 
 			+ "</senv:Envelope>";
 
@@ -47,10 +52,10 @@ public class ResponseParserTest {
 		String sampleXml = "<senv:Envelope " 
 			+ "                             xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
 			+ "                             xmlns:tns=\"tns\">" 
-			+ "  <senv:Body>"
-			+ "   <search_by_brandResponse xmln=\"schema\">" 
-			+ "   <brand>Nike</brand>"
-			+ "  </search_by_brandResponse>" 
+			+ "<senv:Body>"
+			+ "    <search_by_brandResponse xmln=\"schema\">" 
+			+ "        <brand>Nike</brand>"
+			+ "    </search_by_brandResponse>" 
 			+ "</senv:Body>" 
 			+ "</senv:Envelope>";
 
@@ -339,6 +344,11 @@ public class ResponseParserTest {
 
 		// just testing if no MissingResponseTagException is thrown
 
+		// On Ruby web services, calling a "void" method returns this SOAP XML as response
+		//
+		// On JAX-WS if the return method signature has any type (not void), 
+		// and the method execution returns null
+		// the SOAP response XML will be also like this
 		String sampleXml = "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
 		"<S:Body>" +
 		" <ns2:cancelPurchaseResponse xmlns:ns2=\"http://ws.vvws.choreos.ime.usp.br/\"/>" +
@@ -346,10 +356,62 @@ public class ResponseParserTest {
 		"</S:Envelope>";
 
 		ResponseParser parser = new ResponseParser();
+		ResponseItem item = null;
 		try {
-			parser.parse(sampleXml);
+			item = parser.parse(sampleXml);
 		} catch (MissingResponseTagException e) {
 			assertTrue(false); // if exceptions is thrown, test fail
 		}
+		
+		assertEquals(null, item.getContent());
 	}
+
+	@Test
+	public void shouldReturnEmptyStringWithEmptyResponseOnRuby() throws ParserException, MissingResponseTagException{
+		
+		// On Ruby web services, returning an empty string is represented by
+		// the following SOAP response XML 
+		String sampleXml = "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+		"<S:Body>" +
+		" <ns2:cancelPurchaseResponse xmlns:ns2=\"http://ws.vvws.choreos.ime.usp.br/\">" +
+		" </ns2:cancelPurchaseResponse>" +
+		"</S:Body>" +
+		"</S:Envelope>";
+		
+		ResponseParser parser = new ResponseParser();
+		assertEquals("", parser.parse(sampleXml).getContent());
+	}
+	
+	@Test
+	public void shouldReturnStringWhenResponseContentIsOnlyString() throws ParserException, MissingResponseTagException{
+		String sampleXml = "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+		"<S:Body>" +
+		" <ns2:cancelPurchaseResponse xmlns:ns2=\"http://ws.vvws.choreos.ime.usp.br/\">" +
+		"    this is some content" +
+		" </ns2:cancelPurchaseResponse>" +
+		"</S:Body>" +
+		"</S:Envelope>";
+		
+		ResponseParser parser = new ResponseParser();
+		assertEquals("this is some content", parser.parse(sampleXml).getContent());
+	}
+
+	@Test
+	public void shouldReturnEmptyStringWithEmptyResponseOnJaxws() throws ParserException, MissingResponseTagException, NoSuchFieldException{
+		
+		// On JAX-WS, returning an empty string is represented by
+		// the following SOAP response XML 
+		String sampleXml = "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+		"<S:Body>" +
+		" <ns2:cancelPurchaseResponse xmlns:ns2=\"http://ws.vvws.choreos.ime.usp.br/\">" +
+		"    <return/>" +
+		" </ns2:cancelPurchaseResponse>" +
+		"</S:Body>" +
+		"</S:Envelope>";
+		
+		ResponseParser parser = new ResponseParser();
+		assertTrue(parser.parse(sampleXml).getChild("return")
+				.getContent()
+				.isEmpty());
+	}	
 }
