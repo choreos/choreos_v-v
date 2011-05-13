@@ -2,17 +2,18 @@ package br.usp.ime.choreos.vv;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 
 import org.apache.xmlbeans.XmlException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import br.usp.ime.choreos.vv.exceptions.FrameworkException;
 import br.usp.ime.choreos.vv.exceptions.InvalidOperationNameException;
-import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
 import br.usp.ime.choreos.vv.exceptions.WSDLException;
 import br.usp.ime.choreos.vv.util.WebServiceController;
 
@@ -20,7 +21,7 @@ public class WSClientTest {
 
 	private static final String WSDL = "http://localhost:1234/SimpleStore?wsdl";
 
-	private static final int NUMBER_OF_OPERATIONS = 5;
+	private static final int NUMBER_OF_OPERATIONS = 6;
 
 	private static WSClient wsClient;
 	
@@ -70,21 +71,40 @@ public class WSClientTest {
 	}
 	
 	@Test(expected=InvalidOperationNameException.class)
-	public void shouldComplainAboutInvalidOperationName() throws InvalidOperationNameException, FrameworkException, MissingResponseTagException {
+	public void shouldComplainAboutInvalidOperationName() throws InvalidOperationNameException, FrameworkException {
 		wsClient.request("Invalid Operation", "");
 	}
 	
 	@Test
-	public void shouldReceiveVoidReturn() throws InvalidOperationNameException, FrameworkException, MissingResponseTagException {
-	        
-	        // just testing if no Exception is thrown because the void return
-	        
-	        try {
-	                wsClient.request("cancelPurchase", "cd name", "customer name");
-	        }
-	        catch (Exception e) {
-	                        assertTrue(false); // if exceptions is thrown, test fail
-	        }
+	public void shouldReceiveVoidReturn() throws InvalidOperationNameException, FrameworkException {
+
+		// just testing if no Exception is thrown because the void return
+
+		try {
+			wsClient.request("cancelPurchase", "cd name", "customer name");
+		}
+		catch (Exception e) {
+			assertTrue(false); // if exceptions is thrown, test fail
+		}
+	}
+	
+	@Test
+	public void requestToVoidWebServiceShouldHaveNullContent() throws InvalidOperationNameException, FrameworkException {
+
+		ResponseItem item = wsClient.request("cancelPurchase", "cd name", "customer name");
+		
+		assertNull(item.getContent());
+		assertEquals((Integer) 0, item.getChildrenCount());
+	}
+	
+	@Test
+	@Ignore
+	public void oneWayMethodsShouldHaveNullItem() throws InvalidOperationNameException, FrameworkException {
+
+		ResponseItem item = wsClient.request("sendPurchaseFeedback", "Great Store!");
+		
+		assertNull(item.getContent());
+		assertEquals((Integer) 0, item.getChildrenCount());
 	}
 
 }

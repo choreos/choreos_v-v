@@ -2,6 +2,7 @@ package br.usp.ime.choreos.vvws.simplestorews;
 
 import java.util.List;
 
+import javax.jws.Oneway;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
@@ -67,6 +68,12 @@ public class SimpleStoreWS {
 	public void cancelPurchase(String cdTitle, String customerName) {
 	        
 	        System.out.println("purchase cancelled");
+	        return;
+	}
+
+	@WebMethod
+	@Oneway
+	public void sendPurchaseFeedback(String message) {
 	        return;
 	}
 	

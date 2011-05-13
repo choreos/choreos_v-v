@@ -13,7 +13,6 @@ import br.usp.ime.choreos.vv.ResponseItem;
 import br.usp.ime.choreos.vv.WSClient;
 import br.usp.ime.choreos.vv.exceptions.FrameworkException;
 import br.usp.ime.choreos.vv.exceptions.InvalidOperationNameException;
-import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
 import br.usp.ime.choreos.vv.exceptions.WSDLException;
 
 public class SportsStoreWS {
@@ -27,14 +26,14 @@ public class SportsStoreWS {
         }
         
         @Test
-        public void shouldGetPriceByItemBarcode() throws InvalidOperationNameException, FrameworkException, MissingResponseTagException, NoSuchFieldException{
+        public void shouldGetPriceByItemBarcode() throws InvalidOperationNameException, FrameworkException, NoSuchFieldException{
                 ResponseItem response = service.request("getPriceByBarcode", "123");
                 
                 assertEquals(15.0, response.getChild("return").getContentAsDouble(), 0.001);
         }
         
         @Test
-        public void shouldGetItemByName() throws InvalidOperationNameException, FrameworkException, MissingResponseTagException, NoSuchFieldException{
+        public void shouldGetItemByName() throws InvalidOperationNameException, FrameworkException, NoSuchFieldException{
                 ResponseItem response = service.request("getItemByName", "Soccer cleat");
                 ResponseItem item = response.getChild("return");
                 
@@ -49,7 +48,7 @@ public class SportsStoreWS {
         }
         
         @Test
-        public void shouldGetAListOfItemsOfABrand() throws InvalidOperationNameException, FrameworkException, MissingResponseTagException, NoSuchFieldException{
+        public void shouldGetAListOfItemsOfABrand() throws InvalidOperationNameException, FrameworkException, NoSuchFieldException{
         	ResponseItem response = service.request("getItemsByBrand", "nike");
         	List<ResponseItem> items = response.getChildAsList("return"); 
         	

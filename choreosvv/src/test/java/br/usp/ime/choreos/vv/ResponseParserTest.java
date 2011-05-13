@@ -1,15 +1,13 @@
 package br.usp.ime.choreos.vv;
 
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 
 import java.util.HashMap;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
 import br.usp.ime.choreos.vv.exceptions.ParserException;
 
 /**
@@ -20,7 +18,7 @@ import br.usp.ime.choreos.vv.exceptions.ParserException;
 public class ResponseParserTest {
 
 	@Test
-	public void shouldParseASimpleXml() throws MissingResponseTagException, ParserException {
+	public void shouldParseASimpleXml() throws  ParserException {
 		String sampleXml = "<senv:Envelope " 
 			+ "                             xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
 			+ "                             xmlns:tns=\"tns\">" 
@@ -49,7 +47,7 @@ public class ResponseParserTest {
 	}
 
 	@Test
-	public void shouldParseATagWithoutNamespace() throws  MissingResponseTagException, ParserException, NoSuchFieldException {
+	public void shouldParseATagWithoutNamespace() throws   ParserException, NoSuchFieldException {
 		String sampleXml = "<senv:Envelope " 
 			+ "                             xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
 			+ "                             xmlns:tns=\"tns\">" 
@@ -68,22 +66,8 @@ public class ResponseParserTest {
 		assertEquals( "Nike", actual.getChild("brand").getContent()); 
 	}
 
-	@Test (expected=MissingResponseTagException.class)
-	public void shouldThrowsAnExceptioNWhenThereIsNoResponseTag() throws MissingResponseTagException, ParserException {
-		String sampleXml = "<senv:Envelope " 
-			+ "                             xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
-			+ "                             xmlns:tns=\"tns\">" 
-			+ "  <senv:Body>"
-			+ "   <brand>Nike</brand>"
-			+ "</senv:Body>"
-			+ "</senv:Envelope>";
-
-		ResponseParser parser = new ResponseParser();
-		parser.parse(sampleXml);
-	}
-
 	@Test (expected=ParserException.class)
-	public void shouldThrowsParse() throws MissingResponseTagException, ParserException {
+	public void shouldThrowsParse() throws  ParserException {
 		String sampleXml = "<senv:Envelope " 
 			+ "                             xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
 			+ "                             xmlns:tns=\"tns\">" 
@@ -97,7 +81,7 @@ public class ResponseParserTest {
 
 
 	@Test
-	public void shouldParseASimpleXmlWithLineBreaks() throws MissingResponseTagException, ParserException {
+	public void shouldParseASimpleXmlWithLineBreaks() throws  ParserException {
 		String sampleXml = "<senv:Envelope " 
 			+ "                             xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
 			+ "                             xmlns:tns=\"tns\">\n" 
@@ -127,7 +111,7 @@ public class ResponseParserTest {
 
 
 	@Test
-	public void shouldParseAnItemWithParameters() throws NoSuchFieldException, MissingResponseTagException, ParserException{
+	public void shouldParseAnItemWithParameters() throws NoSuchFieldException,  ParserException{
 		String sampleXml = "<senv:Envelope " 
 			+ "                             xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
 			+ "                             xmlns:tns=\"tns\">" 
@@ -148,7 +132,7 @@ public class ResponseParserTest {
 	}
 
 	@Test
-	public void shouldParseAComplexTypeTest() throws MissingResponseTagException, ParserException, NoSuchFieldException{
+	public void shouldParseAComplexTypeTest() throws  ParserException, NoSuchFieldException{
 
 		String sampleXml = "<senv:Envelope " + 
 		"xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " + 
@@ -202,7 +186,7 @@ public class ResponseParserTest {
 
 
 	@Test
-	public void shouldPaseComplexTypeListWithEmptySpaces() throws MissingResponseTagException, ParserException, NoSuchFieldException{
+	public void shouldPaseComplexTypeListWithEmptySpaces() throws  ParserException, NoSuchFieldException{
 
 		String sampleXml = "<senv:Envelope " + 
 		"xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " + 
@@ -292,7 +276,7 @@ public class ResponseParserTest {
 	}
 
 	@Test
-	public void testResponseWithNoRootTag() throws NoSuchFieldException, ParserException, MissingResponseTagException{
+	public void testResponseWithNoRootTag() throws NoSuchFieldException, ParserException {
 		String xml =  "<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\">"
 			+ "  <soapenv:Body>"
 			+ "      <ns:getItensByBrandResponse xmlns:ns=\"http://ws.vvws.choreos.ime.usp.br\" xmlns:ax21=\"http://rmi.java/xsd\" xmlns:ax22=\"http://io.java/xsd\" xmlns:ax26=\"http://model.vvws.choreos.ime.usp.br/xsd\">"
@@ -358,18 +342,13 @@ public class ResponseParserTest {
 
 		ResponseParser parser = new ResponseParser();
 		ResponseItem item = null;
-		try {
-			item = parser.parse(sampleXml);
-		} catch (MissingResponseTagException e) {
-			assertTrue(false); // if exceptions is thrown, test fail
-		}
+		item = parser.parse(sampleXml);
 		
 		assertEquals(null, item.getContent());
 	}
 
 	@Test
-	@Ignore
-	public void shouldReturnEmptyStringWithEmptyResponseOnRuby() throws ParserException, MissingResponseTagException{
+	public void shouldReturnEmptyStringWithEmptyResponseOnRuby() throws ParserException {
 		
 		// On Ruby web services, returning an empty string is represented by
 		// the following SOAP response XML 
@@ -381,11 +360,11 @@ public class ResponseParserTest {
 		"</S:Envelope>";
 		
 		ResponseParser parser = new ResponseParser();
-		assertEquals("", parser.parse(sampleXml).getContent());
+		assertNull(parser.parse(sampleXml).getContent());
 	}
 	
 	@Test
-	public void shouldReturnStringWhenResponseContentIsOnlyString() throws ParserException, MissingResponseTagException{
+	public void shouldReturnStringWhenResponseContentIsOnlyString() throws ParserException {
 		String sampleXml = "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
 		"<S:Body>" +
 		" <ns2:cancelPurchaseResponse xmlns:ns2=\"http://ws.vvws.choreos.ime.usp.br/\">" +
@@ -399,8 +378,7 @@ public class ResponseParserTest {
 	}
 
 	@Test
-	@Ignore
-	public void shouldReturnEmptyStringWithEmptyResponseOnJaxws() throws ParserException, MissingResponseTagException, NoSuchFieldException{
+	public void shouldReturnEmptyStringWithEmptyResponseOnJaxws() throws ParserException,  NoSuchFieldException{
 		
 		// On JAX-WS, returning an empty string is represented by
 		// the following SOAP response XML 
@@ -413,8 +391,19 @@ public class ResponseParserTest {
 		"</S:Envelope>";
 		
 		ResponseParser parser = new ResponseParser();
-		assertTrue(parser.parse(sampleXml).getChild("return")
-				.getContent()
-				.isEmpty());
+		assertNull(parser.parse(sampleXml).getChild("return").getContent());
+	}
+	
+	@Test
+	public void shouldReturnNullItemWithXmlWithNoResponseTag() throws ParserException,  NoSuchFieldException{
+		
+		// On JAX-WS
+		String sampleXml = "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+		"<S:Body>" +
+		"</S:Body>" +
+		"</S:Envelope>";
+		
+		ResponseParser parser = new ResponseParser();
+		assertNull(parser.parse(sampleXml));
 	}	
 }

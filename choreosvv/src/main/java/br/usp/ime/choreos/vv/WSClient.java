@@ -11,7 +11,6 @@ import org.xml.sax.SAXException;
 
 import br.usp.ime.choreos.vv.exceptions.FrameworkException;
 import br.usp.ime.choreos.vv.exceptions.InvalidOperationNameException;
-import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
 import br.usp.ime.choreos.vv.exceptions.WSDLException;
 
 import com.eviware.soapui.impl.WsdlInterfaceFactory;
@@ -99,7 +98,7 @@ public class WSClient {
 	 * @throws SAXException 
 	 * @throws ParserConfigurationException 
 	 */
-	public ResponseItem request(String operationName, String... parameters) throws InvalidOperationNameException, FrameworkException, MissingResponseTagException  {
+	public ResponseItem request(String operationName, String... parameters) throws InvalidOperationNameException, FrameworkException  {
 		
 		if (!operations.contains(operationName))
 			throw new InvalidOperationNameException();

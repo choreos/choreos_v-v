@@ -12,7 +12,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
 import br.usp.ime.choreos.vv.exceptions.ParserException;
 
 /**
@@ -99,7 +98,7 @@ class ResponseParser {
 		}
 	}
 
-	public ResponseItem parse(String xml) throws MissingResponseTagException, ParserException {
+	public ResponseItem parse(String xml) throws ParserException {
 		try {
 			InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
 			parser = parserFactory.newSAXParser();
@@ -108,9 +107,6 @@ class ResponseParser {
 		catch (Exception e) {
 			throw new ParserException(e);
 		}
-
-		if(result == null)
-			throw new MissingResponseTagException("Response Tag is missing");
 
 		return result;
 	}
