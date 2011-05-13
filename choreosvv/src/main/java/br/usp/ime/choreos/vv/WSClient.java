@@ -98,7 +98,7 @@ public class WSClient {
 	 * @throws SAXException 
 	 * @throws ParserConfigurationException 
 	 */
-	public ResponseItem request(String operationName, String... parameters) throws InvalidOperationNameException, FrameworkException  {
+	public Item request(String operationName, String... parameters) throws InvalidOperationNameException, FrameworkException  {
 		
 		if (!operations.contains(operationName))
 			throw new InvalidOperationNameException();

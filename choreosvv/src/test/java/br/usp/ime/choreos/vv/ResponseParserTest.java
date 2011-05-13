@@ -32,13 +32,13 @@ public class ResponseParserTest {
 			+ "</senv:Envelope>";
 
 		ResponseParser parser = new ResponseParser();
-		ResponseItem actual = parser.parse(sampleXml);
+		Item actual = parser.parse(sampleXml);
 
 		HashMap<String, String> rootParameters = new HashMap<String, String>();
 		rootParameters.put("xmln", "schema");
-		ResponseItemImpl root = new ResponseItemImpl("search_by_brandResponse", rootParameters);
-		ResponseItemImpl child1 = new ResponseItemImpl("search_by_brandResult");
-		ResponseItemImpl child2 = new ResponseItemImpl("name");
+		ItemImpl root = new ItemImpl("search_by_brandResponse", rootParameters);
+		ItemImpl child1 = new ItemImpl("search_by_brandResult");
+		ItemImpl child2 = new ItemImpl("name");
 		child2.setContent("mouse");
 		child1.addChild(child2);
 		root.addChild(child1);
@@ -59,7 +59,7 @@ public class ResponseParserTest {
 			+ "</senv:Envelope>";
 
 		ResponseParser parser = new ResponseParser();
-		ResponseItem actual = parser.parse(sampleXml);
+		Item actual = parser.parse(sampleXml);
 
 		assertEquals("search_by_brandResponse", actual.getName());
 
@@ -95,11 +95,11 @@ public class ResponseParserTest {
 			+ "</senv:Envelope>";
 
 		ResponseParser parser = new ResponseParser();
-		ResponseItem actual = parser.parse(sampleXml);
+		Item actual = parser.parse(sampleXml);
 
-		ResponseItemImpl root = new ResponseItemImpl("search_by_brandResponse");
-		ResponseItemImpl child1 = new ResponseItemImpl("search_by_brandResult");
-		ResponseItemImpl child2 = new ResponseItemImpl("name");
+		ItemImpl root = new ItemImpl("search_by_brandResponse");
+		ItemImpl child1 = new ItemImpl("search_by_brandResult");
+		ItemImpl child2 = new ItemImpl("name");
 		child2.setContent("mouse");
 		child1.addChild(child2);
 		root.addChild(child1);
@@ -125,9 +125,9 @@ public class ResponseParserTest {
 			+ "</senv:Envelope>"; 
 
 		ResponseParser parser = new ResponseParser();
-		ResponseItem actual = parser.parse(sampleXml);
+		Item actual = parser.parse(sampleXml);
 
-		ResponseItem child1 = actual.getChild("search_by_brandResult").getChild("name"); 
+		Item child1 = actual.getChild("search_by_brandResult").getChild("name"); 
 		assertEquals("5", child1.getTagAttributes().get("length"));
 	}
 
@@ -152,30 +152,30 @@ public class ResponseParserTest {
 		"</senv:Envelope>";
 
 		ResponseParser parser = new ResponseParser();
-		ResponseItem actual = parser.parse(sampleXml);
+		Item actual = parser.parse(sampleXml);
 
 		assertEquals("search_by_categoryResponse", actual.getName());
 		assertEquals((Integer)1, actual.getChildrenCount());
 
-		actual = (ResponseItemImpl) actual.getChild("search_by_categoryResult");
+		actual = (ItemImpl) actual.getChild("search_by_categoryResult");
 
-		ResponseItemImpl expected = new ResponseItemImpl("search_by_categoryResult");
+		ItemImpl expected = new ItemImpl("search_by_categoryResult");
 
-		ResponseItemImpl item = new ResponseItemImpl("Item");
+		ItemImpl item = new ItemImpl("Item");
 
-		ResponseItemImpl childA = new ResponseItemImpl("category");
+		ItemImpl childA = new ItemImpl("category");
 		childA.setContent("mouse");
 		item.addChild(childA);
 
-		ResponseItemImpl childB = new ResponseItemImpl("price");
+		ItemImpl childB = new ItemImpl("price");
 		childB.setContent("89.2");
 		item.addChild(childB);
 
-		ResponseItemImpl childC = new ResponseItemImpl("model");
+		ItemImpl childC = new ItemImpl("model");
 		childC.setContent("RZG145");
 		item.addChild(childC);
 
-		ResponseItemImpl childD = new ResponseItemImpl("brand");
+		ItemImpl childD = new ItemImpl("brand");
 		childD.setContent("Razor");
 		item.addChild(childD);                
 
@@ -217,60 +217,60 @@ public class ResponseParserTest {
 		"</senv:Body>" +
 		"</senv:Envelope>";
 
-		ResponseItemImpl expected = new ResponseItemImpl("search_by_categoryResult");
+		ItemImpl expected = new ItemImpl("search_by_categoryResult");
 
-		ResponseItemImpl item1 = new ResponseItemImpl("Item");
-		ResponseItemImpl childA = new ResponseItemImpl("category");
+		ItemImpl item1 = new ItemImpl("Item");
+		ItemImpl childA = new ItemImpl("category");
 		childA.setContent("mouse");
 		item1.addChild(childA);                  
-		ResponseItemImpl childB = new ResponseItemImpl("price");
+		ItemImpl childB = new ItemImpl("price");
 		childB.setContent("89.2");
 		item1.addChild(childB);                  
-		ResponseItemImpl childC = new ResponseItemImpl("model");
+		ItemImpl childC = new ItemImpl("model");
 		childC.setContent("RZG145");
 		item1.addChild(childC);                  
-		ResponseItemImpl childD = new ResponseItemImpl("brand");
+		ItemImpl childD = new ItemImpl("brand");
 		childD.setContent("Razor");
 		item1.addChild(childD);          
 		expected.addChild(item1);
 
-		ResponseItemImpl item2 = new ResponseItemImpl("Item");
-		childA = new ResponseItemImpl("category");
+		ItemImpl item2 = new ItemImpl("Item");
+		childA = new ItemImpl("category");
 		childA.setContent("mouse");
 		item2.addChild(childA);                  
-		childB = new ResponseItemImpl("price");
+		childB = new ItemImpl("price");
 		childB.setContent("61.0");
 		item2.addChild(childB);                  
-		childC = new ResponseItemImpl("model");
+		childC = new ItemImpl("model");
 		childC.setContent("CCCC");
 		item2.addChild(childC);                  
-		childD = new ResponseItemImpl("brand");
+		childD = new ItemImpl("brand");
 		childD.setContent("Clone");
 		item2.addChild(childD);          
 		expected.addChild(item2);
 
-		ResponseItemImpl item3 = new ResponseItemImpl("Item");
-		childA = new ResponseItemImpl("category");
+		ItemImpl item3 = new ItemImpl("Item");
+		childA = new ItemImpl("category");
 		childA.setContent("mouse");
 		item3.addChild(childA);                  
-		childB = new ResponseItemImpl("price");
+		childB = new ItemImpl("price");
 		childB.setContent("61.0");
 		item3.addChild(childB);                  
-		childC = new ResponseItemImpl("model");
+		childC = new ItemImpl("model");
 		childC.setContent("MS23F");
 		item3.addChild(childC);                  
-		childD = new ResponseItemImpl("brand");
+		childD = new ItemImpl("brand");
 		childD.setContent("Microsoft");
 		item3.addChild(childD);          
 		expected.addChild(item3);
 
 		ResponseParser parser = new ResponseParser();
-		ResponseItem actual = parser.parse(sampleXml);
+		Item actual = parser.parse(sampleXml);
 
 		assertEquals("search_by_categoryResponse", actual.getName());
 		assertEquals((Integer)1, actual.getChildrenCount());
 
-		actual = (ResponseItemImpl) actual.getChild("search_by_categoryResult");
+		actual = (ItemImpl) actual.getChild("search_by_categoryResult");
 
 		assertEquals(expected, actual);
 	}
@@ -309,11 +309,11 @@ public class ResponseParserTest {
 			+ "</soapenv:Envelope>";
 
 		ResponseParser parser = new ResponseParser();
-		ResponseItem actual = parser.parse(xml);
+		Item actual = parser.parse(xml);
 
 		assertEquals("getItensByBrandResponse", actual.getName());
 
-		List<ResponseItem> l = actual.getChildAsList("return"); 
+		List<Item> l = actual.getChildAsList("return"); 
 		assertEquals(3, l.size());
 
 		assertEquals(new Integer(133), l.get(0).getChild("barcode").getContentAsInt());
@@ -341,7 +341,7 @@ public class ResponseParserTest {
 		"</S:Envelope>";
 
 		ResponseParser parser = new ResponseParser();
-		ResponseItem item = null;
+		Item item = null;
 		item = parser.parse(sampleXml);
 		
 		assertEquals(null, item.getContent());
