@@ -47,6 +47,6 @@
 	<classpathentry kind="var" path="M2_REPO/xmlbeans/xmlpublic/2.4.0/xmlpublic-2.4.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/xom/xom/1.2.5/xom-1.2.5.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="resources/store.jar"/>
+	<classpathentry kind="lib" path="resources/musicstore.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

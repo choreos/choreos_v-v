@@ -11,16 +11,16 @@ import org.junit.Test;
 
 public class ResponseItemTest {
 
-	private ResponseItemImpl item;
+	private ItemImpl item;
 
 	@Before
 	public void setUp(){
-		item = new ResponseItemImpl("author");
+		item = new ItemImpl("author");
 	}
 
 	@Test
 	public void shouldAddStringContent(){
-		ResponseItem itemName = new ResponseItemImpl("name");
+		Item itemName = new ItemImpl("name");
 		itemName.setContent("Fernando Pessoa");
 
 		assertEquals("Fernando Pessoa", itemName.getContent());
@@ -28,7 +28,7 @@ public class ResponseItemTest {
 
 	@Test
 	public void shouldAddIntegerContent(){
-		ResponseItem itemName = new ResponseItemImpl("year");
+		Item itemName = new ItemImpl("year");
 		itemName.setContent("1930");
 
 		assertEquals((Integer)1930, itemName.getContentAsInt());
@@ -36,7 +36,7 @@ public class ResponseItemTest {
 
 	@Test (expected=NumberFormatException.class)
 	public void shouldThrowAnExceptionWhenTheContentCannotBeAnInteger(){
-		ResponseItem itemName = new ResponseItemImpl("year");
+		Item itemName = new ItemImpl("year");
 		itemName.setContent("1930 A.C");
 
 		itemName.getContentAsInt();
@@ -44,7 +44,7 @@ public class ResponseItemTest {
 
 	@Test
 	public void shouldAddDoubleContent(){
-		ResponseItem itemName = new ResponseItemImpl("price");
+		Item itemName = new ItemImpl("price");
 		itemName.setContent("12.0");
 
 		assertEquals(12.0, itemName.getContentAsDouble(), 1e-9);
@@ -52,7 +52,7 @@ public class ResponseItemTest {
 
 	@Test (expected=NumberFormatException.class)
 	public void shouldThrowAnExceptionWhenTheContentCannotBeADouble(){
-		ResponseItem itemName = new ResponseItemImpl("price");
+		Item itemName = new ItemImpl("price");
 		itemName.setContent("R$ 12.0");
 
 		itemName.getContentAsInt();
@@ -62,14 +62,14 @@ public class ResponseItemTest {
 	public void shouldAddAnItemWithParameters(){
 		HashMap<String, String> parameters = new HashMap<String, String>();
 		parameters.put("xsd", "www.br.usp.ime.choreos.vv");
-		ResponseItem childItem = new ResponseItemImpl("name", parameters );
+		Item childItem = new ItemImpl("name", parameters );
 
 		assertEquals("www.br.usp.ime.choreos.vv", childItem.getTagAttributes().get("xsd"));
 	}
 
 	@Test
 	public void shouldAddAnSimpleItem() throws NoSuchFieldException{
-		ResponseItem childItem = new ResponseItemImpl("name");
+		Item childItem = new ItemImpl("name");
 		childItem.setContent("Fernando Pessoa");
 		item.addChild(childItem);
 
@@ -78,15 +78,15 @@ public class ResponseItemTest {
 
 	@Test
 	public void shouldAddTwoSimpleItemWithTheSameName() throws NoSuchFieldException{
-		ResponseItem childItemA = new ResponseItemImpl("name");
+		Item childItemA = new ItemImpl("name");
 		childItemA.setContent("Fernando Pessoa");
 		item.addChild(childItemA);
 
-		ResponseItem childItemB = new ResponseItemImpl("name");
+		Item childItemB = new ItemImpl("name");
 		childItemB.setContent("Machado de Assis");
 		item.addChild(childItemB);
 
-		List<ResponseItem> children = item.getChildAsList("name");
+		List<Item> children = item.getChildAsList("name");
 
 		assertEquals("Fernando Pessoa", children.get(0).getContent());
 		assertEquals("Machado de Assis", children.get(1).getContent());
@@ -94,8 +94,8 @@ public class ResponseItemTest {
 
 	@Test
 	public void shouldAddAComplexItem() throws NoSuchFieldException{
-		ResponseItem coAuthorItem = new ResponseItemImpl("co-author");  
-		ResponseItem nameItem = new ResponseItemImpl("name");
+		Item coAuthorItem = new ItemImpl("co-author");  
+		Item nameItem = new ItemImpl("name");
 		nameItem.setContent("Eça de Queiroz");
 
 		coAuthorItem.addChild(nameItem);
@@ -106,8 +106,8 @@ public class ResponseItemTest {
 
 	@Test
 	public void shouldAddAComplexItemAnHaveContent() throws NoSuchFieldException{
-		ResponseItem coAuthorItem = new ResponseItemImpl("co-author");  
-		ResponseItem nameItem = new ResponseItemImpl("name");
+		Item coAuthorItem = new ItemImpl("co-author");  
+		Item nameItem = new ItemImpl("name");
 		nameItem.setContent("Eça de Queiroz");
 
 		coAuthorItem.addChild(nameItem);
@@ -121,18 +121,18 @@ public class ResponseItemTest {
 
 	@Test
 	public void shouldAddAComplexWithTwoSimpleItems() throws NoSuchFieldException{
-		ResponseItem coAuthorItem = new ResponseItemImpl("co-author");  
-		ResponseItem nameItemA = new ResponseItemImpl("name");
+		Item coAuthorItem = new ItemImpl("co-author");  
+		Item nameItemA = new ItemImpl("name");
 		nameItemA.setContent("Eça de Queiroz");
 
-		ResponseItem nameItemB = new ResponseItemImpl("name");
+		Item nameItemB = new ItemImpl("name");
 		nameItemB.setContent("Olavo Bilac");
 
 		coAuthorItem.addChild(nameItemA);
 		coAuthorItem.addChild(nameItemB);
 		item.addChild(coAuthorItem);
 
-		List<ResponseItem> coAuthors = item.getChild("co-author").getChildAsList("name");
+		List<Item> coAuthors = item.getChild("co-author").getChildAsList("name");
 
 		assertEquals("Eça de Queiroz", coAuthors.get(0).getContent());
 		assertEquals("Olavo Bilac", coAuthors.get(1).getContent());
@@ -140,7 +140,7 @@ public class ResponseItemTest {
 
 	@Test
 	public void shouldGetAListWithOneElement() throws NoSuchFieldException {
-		ResponseItem childItem = new ResponseItemImpl("name");
+		Item childItem = new ItemImpl("name");
 		childItem.setContent("Fernando Pessoa");
 		item.addChild(childItem);
 

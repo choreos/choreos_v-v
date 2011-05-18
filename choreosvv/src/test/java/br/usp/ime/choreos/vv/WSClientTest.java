@@ -61,12 +61,12 @@ public class WSClientTest {
 
 	@Test
 	public void shouldMakeValidRequestWithOneParameter() throws Exception {	
-		ResponseItem cd = wsClient.request("searchByArtist", "Floyd");
+		Item cd = wsClient.request("searchByArtist", "Floyd");
 		assertEquals("The dark side of the moon;", cd.getChild("return").getContent());	
 	}
 	
 	public void shouldMakeValidRequestWithTwoParameters() throws Exception {
-		ResponseItem status = wsClient.request("purchase", "Album Name", "Client Name");
+		Item status = wsClient.request("purchase", "Album Name", "Client Name");
 		assertEquals("true", status.getContent());	
 	}
 	
@@ -91,7 +91,7 @@ public class WSClientTest {
 	@Test
 	public void requestToVoidWebServiceShouldHaveNullContent() throws InvalidOperationNameException, FrameworkException {
 
-		ResponseItem item = wsClient.request("cancelPurchase", "cd name", "customer name");
+		Item item = wsClient.request("cancelPurchase", "cd name", "customer name");
 		
 		assertNull(item.getContent());
 		assertEquals((Integer) 0, item.getChildrenCount());
@@ -101,7 +101,7 @@ public class WSClientTest {
 	@Ignore
 	public void oneWayMethodsShouldHaveNullItem() throws InvalidOperationNameException, FrameworkException {
 
-		ResponseItem item = wsClient.request("sendPurchaseFeedback", "Great Store!");
+		Item item = wsClient.request("sendPurchaseFeedback", "Great Store!");
 		
 		assertNull(item.getContent());
 		assertEquals((Integer) 0, item.getChildrenCount());
