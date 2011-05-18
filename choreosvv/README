@@ -1,0 +1,5 @@
+if mvn install fails, try to run this command:
+
+cp resources/musicstore.jar ~/.m2/repository/br/usp/ime/choreos/vvws/webservice/1.0-SNAPSHOT/webservice-1.0-SNAPSHOT.jar
+
+
