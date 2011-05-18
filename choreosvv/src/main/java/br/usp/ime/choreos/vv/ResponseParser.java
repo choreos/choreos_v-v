@@ -12,7 +12,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
 import br.usp.ime.choreos.vv.exceptions.ParserException;
 
 /**
@@ -26,11 +25,11 @@ class ResponseParser {
 
 	private static SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 	private SAXParser parser;
-	private ResponseItemImpl result;
+	private ItemImpl result;
 
 
 	private class ResponseParserHandler extends DefaultHandler {
-		private Stack<ResponseItemImpl> tagStack = new Stack<ResponseItemImpl>();
+		private Stack<ItemImpl> tagStack = new Stack<ItemImpl>();
 
 		/**
 		 * @param ch     - The characters.
@@ -58,9 +57,9 @@ class ResponseParser {
 		throws SAXException {
 
 			if (!tagStack.empty()) {
-				ResponseItemImpl poped = tagStack.pop();
+				ItemImpl poped = tagStack.pop();
 				if (!tagStack.empty()){
-					ResponseItemImpl father = tagStack.peek();
+					ItemImpl father = tagStack.peek();
 					father.addChild(poped);
 				} else {
 					result = poped;
@@ -87,7 +86,7 @@ class ResponseParser {
 				for(int i=0; i< attributes.getLength(); i++)
 					parameters.put(attributes.getQName(i), attributes.getValue(i));
 
-				result = new ResponseItemImpl(name, parameters);
+				result = new ItemImpl(name, parameters);
 				tagStack.push(result);
 			}
 		}
@@ -99,7 +98,7 @@ class ResponseParser {
 		}
 	}
 
-	public ResponseItem parse(String xml) throws MissingResponseTagException, ParserException {
+	public Item parse(String xml) throws ParserException {
 		try {
 			InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
 			parser = parserFactory.newSAXParser();
@@ -108,9 +107,6 @@ class ResponseParser {
 		catch (Exception e) {
 			throw new ParserException(e);
 		}
-
-		if(result == null)
-			throw new MissingResponseTagException("Response Tag is missing");
 
 		return result;
 	}

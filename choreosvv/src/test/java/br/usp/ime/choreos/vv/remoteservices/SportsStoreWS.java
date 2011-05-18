@@ -9,11 +9,10 @@ import org.apache.xmlbeans.XmlException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.usp.ime.choreos.vv.ResponseItem;
+import br.usp.ime.choreos.vv.Item;
 import br.usp.ime.choreos.vv.WSClient;
 import br.usp.ime.choreos.vv.exceptions.FrameworkException;
 import br.usp.ime.choreos.vv.exceptions.InvalidOperationNameException;
-import br.usp.ime.choreos.vv.exceptions.MissingResponseTagException;
 import br.usp.ime.choreos.vv.exceptions.WSDLException;
 
 public class SportsStoreWS {
@@ -27,16 +26,16 @@ public class SportsStoreWS {
         }
         
         @Test
-        public void shouldGetPriceByItemBarcode() throws InvalidOperationNameException, FrameworkException, MissingResponseTagException, NoSuchFieldException{
-                ResponseItem response = service.request("getPriceByBarcode", "123");
+        public void shouldGetPriceByItemBarcode() throws InvalidOperationNameException, FrameworkException, NoSuchFieldException{
+                Item response = service.request("getPriceByBarcode", "123");
                 
                 assertEquals(15.0, response.getChild("return").getContentAsDouble(), 0.001);
         }
         
         @Test
-        public void shouldGetItemByName() throws InvalidOperationNameException, FrameworkException, MissingResponseTagException, NoSuchFieldException{
-                ResponseItem response = service.request("getItemByName", "Soccer cleat");
-                ResponseItem item = response.getChild("return");
+        public void shouldGetItemByName() throws InvalidOperationNameException, FrameworkException, NoSuchFieldException{
+                Item response = service.request("getItemByName", "Soccer cleat");
+                Item item = response.getChild("return");
                 
                 assertEquals("return", item.getName());
                 assertEquals("http://rmi.java/xsd", item.getTagAttribute("xmlns:ax21"));
@@ -49,9 +48,9 @@ public class SportsStoreWS {
         }
         
         @Test
-        public void shouldGetAListOfItemsOfABrand() throws InvalidOperationNameException, FrameworkException, MissingResponseTagException, NoSuchFieldException{
-        	ResponseItem response = service.request("getItemsByBrand", "nike");
-        	List<ResponseItem> items = response.getChildAsList("return"); 
+        public void shouldGetAListOfItemsOfABrand() throws InvalidOperationNameException, FrameworkException, NoSuchFieldException{
+        	Item response = service.request("getItemsByBrand", "nike");
+        	List<Item> items = response.getChildAsList("return"); 
         	
         	assertEquals("123", items.get(0).getChild("barcode").getContent());
         	assertEquals("163", items.get(1).getChild("barcode").getContent());

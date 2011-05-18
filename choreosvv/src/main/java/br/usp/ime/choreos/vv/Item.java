@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Leonardo Leite, Guilherme Nogueira, Felipe Besson, Lucas Piva
  *
  */
-public interface ResponseItem {
+public interface Item {
         
         /**
          * This method returns the content of the XML tag this item represents.
@@ -48,7 +48,7 @@ public interface ResponseItem {
          * 
          * @return A List of children ResponseItems. If there are no children, returns an empty list.
          */
-        public List<ResponseItem> getChildren();
+        public List<Item> getChildren();
         
         /**
          * This method returns the number of children items of this item. 
@@ -68,7 +68,7 @@ public interface ResponseItem {
          * @return The child Item that matches the given name.
          * @throws NoSuchFieldException if there isn't a matching item
          */
-        public ResponseItem getChild(String name) throws NoSuchFieldException;
+        public Item getChild(String name) throws NoSuchFieldException;
         
         
         /**
@@ -79,7 +79,7 @@ public interface ResponseItem {
          * @return The List of children ResponseItem that match the given name.
          * @throws NoSuchFieldException if there isn't a matching item
          */
-        public List<ResponseItem> getChildAsList(String name) throws NoSuchFieldException;
+        public List<Item> getChildAsList(String name) throws NoSuchFieldException;
         
         /**
          * This method is used when building the structure to add a child item to another item.
@@ -87,7 +87,7 @@ public interface ResponseItem {
          * 
          * @param item An Item representing the child.
          */
-        public void addChild(ResponseItem item);
+        public void addChild(Item item);
         
         /**
          * This method sets the content of the XML tag this item represents.

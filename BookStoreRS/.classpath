@@ -1,0 +1,19 @@
+<classpath>
+  <classpathentry kind="src" path="src/test/java" output="target/test-classes" including="**/*.java"/>
+  <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="var" path="M2_REPO/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar"/>
+  <classpathentry kind="var" path="M2_REPO/asm/asm/3.1/asm-3.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/grizzly/grizzly-framework/1.9.18-i/grizzly-framework-1.9.18-i.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/grizzly/grizzly-http/1.9.18-i/grizzly-http-1.9.18-i.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/grizzly/grizzly-http-servlet/1.9.18-i/grizzly-http-servlet-1.9.18-i.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/grizzly/grizzly-portunif/1.9.18-i/grizzly-portunif-1.9.18-i.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/grizzly/grizzly-rcm/1.9.18-i/grizzly-rcm-1.9.18-i.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/grizzly/grizzly-servlet-webserver/1.9.18-i/grizzly-servlet-webserver-1.9.18-i.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/grizzly/grizzly-utils/1.9.18-i/grizzly-utils-1.9.18-i.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/jersey/jersey-core/1.6/jersey-core-1.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/jersey/jersey-server/1.6/jersey-server-1.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+</classpath>

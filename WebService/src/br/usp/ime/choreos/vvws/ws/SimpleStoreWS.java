@@ -62,9 +62,7 @@ public class SimpleStoreWS {
 	
 	@WebMethod
 	public void cancelPurchase(String cdTitle, String customerName) {
-	        
-	        System.out.println("purchase cancelled");
-	        return;
+		return;
 	}
 	
 }
