@@ -1,17 +1,13 @@
 package br.usp.ime.choreos.vvrs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 
 import br.usp.ime.choreos.vvrs.model.Book;
 import br.usp.ime.choreos.vvrs.model.MockBooks;
 
-@Path("/bookstore")
-public class BookStoreRS {
+public class BookStore {
 
 	private static List<Book> books = MockBooks.bookList; 
 	
@@ -21,15 +17,12 @@ public class BookStoreRS {
 		return books.size()-1;
         }
 
-	@Path("/book/{id}")
-	public static String getBookById(@PathParam("id")  int id) {
-		
-		Book book = BookStore.getBookById(id);
-		
-		if (book != null)
-			return book.toString();
+	public static Book getBookById( int id) {
+
+		if (books.size() > id)
+			return books.get(id);
 		else
-			return "Not found!";
+			return null;
         }
 
 	public static void updateBook(int id, Book book) {
@@ -59,11 +52,9 @@ public class BookStoreRS {
 		return found;
         }
 
-	@GET
-	@Path("/books")
-	public static String getAllBooks() {
+	public static List<Book> getAllBooks() {
 
-		return BookStore.getAllBooks().toString();
+		return Collections.unmodifiableList(books);
         }
 }
 
