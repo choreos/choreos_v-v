@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.jws.WebService;
 
-import br.usp.ime.choreos.vvws.model.CD;
-import br.usp.ime.choreos.vvws.model.Customer;
 
 @WebService(endpointInterface="br.usp.ime.choreos.vvws.ws.Store")
 public class StoreWS implements Store {

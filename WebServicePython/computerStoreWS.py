@@ -8,7 +8,7 @@ from soaplib.core.server  import wsgi
 from soaplib.core.service import soap
 from soaplib.core.service import DefinitionBase
 
-from soaplib.core.model.primitive import String, Integer, Float
+from soaplib.core.model.primitive import String, Integer, Float, Boolean
 from soaplib.core.model.clazz     import Array, ClassModel
 
 import computerStoreItems
@@ -99,6 +99,12 @@ class InfoStoreService(DefinitionBase):
         else:
             raise Exception("No item in this category")
         return item_model
+
+    @soap(Item, _returns=Boolean)
+    def isMouse(self, item):
+	if item.category == mouse:
+	    return true
+	return false
 
 if __name__=='__main__':
     try:

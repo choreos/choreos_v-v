@@ -3,7 +3,6 @@ package br.usp.ime.choreos.vvws.ws;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.usp.ime.choreos.vvws.model.CD;
 
 public class MockCDs {
 

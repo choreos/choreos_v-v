@@ -8,8 +8,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import br.usp.ime.choreos.vvws.model.CD;
-import br.usp.ime.choreos.vvws.model.Customer;
 
 public class StoreTest {
 
