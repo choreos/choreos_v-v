@@ -32,11 +32,13 @@
   </repositories>
   
   <dependencies>
+  <!--  
     <dependency>
      <groupId>br.usp.ime.choreos.vvws</groupId>
      <artifactId>webservice</artifactId>
      <version>1.0-SNAPSHOT</version>
     </dependency>
+   -->
     
     <!-- Java Sun's JARs -->
     <dependency>
