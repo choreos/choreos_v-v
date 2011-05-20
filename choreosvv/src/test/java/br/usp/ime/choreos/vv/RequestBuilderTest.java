@@ -76,14 +76,13 @@ public class RequestBuilderTest {
 	public void shouldReturnXmlWithSeveralParametersReplacedWithTheProperContent() throws ParserException{
 		String sampleXml = "<senv:Envelope " + 
 		"xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " + 
-		"xmlns:tns=\"tns\"> " + 
+		"xmlns:tns=\"tns\">" + 
 		"<senv:Body>" +
-		"<tns:search_by_categoryResponse>  " +
-		"<tns:search_by_categoryResult>" +
+		"<tns:search_by_category>" +
 		"<s1:Item>" +
-		"<s1:category>?</s1:category>  " +
+		"<s1:category>?</s1:category>" +
 		"<s1:price>?</s1:price>" +
-		"<s1:model>?</s1:model>  " +
+		"<s1:model>?</s1:model>" +
 		"<s1:brand>?</s1:brand>" +
 		"</s1:Item>" +
 		"<s1:Item>" +
@@ -94,12 +93,11 @@ public class RequestBuilderTest {
 		"</s1:Item>" +
 		"<s1:Item>" +
 		"<s1:category>?</s1:category>" +
-		"<s1:price>?</s1:price>  " +
+		"<s1:price>?</s1:price>" +
 		"<s1:model>?</s1:model>" +
 		"<s1:brand>?</s1:brand>" +
 		"</s1:Item>" +                                  
-		"</tns:search_by_categoryResult>" +
-		"</tns:search_by_categoryResponse>" +
+		"</tns:search_by_category>" +
 		"</senv:Body>" +
 		"</senv:Envelope>";
 		
@@ -154,14 +152,13 @@ public class RequestBuilderTest {
 		
 		String expectedXml = "<senv:Envelope " + 
 		"xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " + 
-		"xmlns:tns=\"tns\"> " + 
+		"xmlns:tns=\"tns\">" + 
 		"<senv:Body>" +
-		"<tns:search_by_categoryResponse>  " +
-		"<tns:search_by_categoryResult>" +
+		"<tns:search_by_category>" +
 		"<s1:Item>" +
-		"<s1:category>mouse</s1:category>  " +
-		"<s1:price>89.2</s1:price>  " +
-		"<s1:model>RZG145</s1:model>  " +
+		"<s1:category>mouse</s1:category>" +
+		"<s1:price>89.2</s1:price>" +
+		"<s1:model>RZG145</s1:model>" +
 		"<s1:brand>Razor</s1:brand>" +
 		"</s1:Item>" +
 		"<s1:Item>" +
@@ -172,16 +169,101 @@ public class RequestBuilderTest {
 		"</s1:Item>" +
 		"<s1:Item>" +
 		"<s1:category>mouse</s1:category>" +
-		"<s1:price>  61.0</s1:price>  " +
+		"<s1:price>61.0</s1:price>" +
 		"<s1:model>MS23F</s1:model>" +
 		"<s1:brand>Microsoft</s1:brand>" +
 		"</s1:Item>" +                                  
-		"</tns:search_by_categoryResult>" +
-		"</tns:search_by_categoryResponse>" +
+		"</tns:search_by_category>" +
 		"</senv:Body>" +
 		"</senv:Envelope>";
 		
 		assertEquals(expectedXml, result);
 	}
+	
+	@Test
+	public void xmlWithComplexHierarchyAndSameNamesShouldReturnProperContent() throws ParserException{
+		String sampleXml = "<senv:Envelope " 
+			+ "                             xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
+			+ "                             xmlns:tns=\"tns\">" 
+			+ "<senv:Body>"
+			+ "    <tns:search_by_brand xmln=\"schema\">" 
+			+ "            <s1:item>"
+			+ "                <s1:item>?</s1:item>"
+			+ "            </s1:item>"
+			+ "            <s1:item>?</s1:item>"
+			+ "    </tns:search_by_brand>" 
+			+ "</senv:Body>" 
+			+ "</senv:Envelope>";
+		
+		Item root = new ItemImpl("search_by_brand");
+		Item child1 = new ItemImpl("item");
+		Item child2 = new ItemImpl("item");
+		Item grandChild = new ItemImpl("item");
+		grandChild.setContent("test1");
+		child2.setContent("test2");
+		root.addChild(child1);
+		root.addChild(child2);
+		child1.addChild(grandChild);
+		
+		String result = new RequestBuilder().buildRequest(sampleXml, root);
+		
+		String expectedXml = "<senv:Envelope " 
+			+ "xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
+			+ "xmlns:tns=\"tns\">" 
+			+ "<senv:Body>"
+			+ "<tns:search_by_brand xmln=\"schema\">" 
+			+ "<s1:item>"
+			+ "<s1:item>test1</s1:item>"
+			+ "</s1:item>"
+			+ "<s1:item>test2</s1:item>"
+			+ "</tns:search_by_brand>" 
+			+ "</senv:Body>" 
+			+ "</senv:Envelope>";
+		
+		assertEquals(expectedXml, result);
+	}
+	
+	@Test(expected=Exception.class)
+	public void xmlWithComplexHierarchyAndSameNamesWithWrongHierarchyRequestItemShouldRaiseException() throws ParserException{
+		
+		/*
+		 	Expected:
+			|
+			|--Item
+			|----Item
+			|--Item
+			
+			Passed:
+			|
+			|--Item
+			|----Item
+			|----Item
+		*/
+		String sampleXml = "<senv:Envelope " 
+			+ "                             xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
+			+ "                             xmlns:tns=\"tns\">" 
+			+ "<senv:Body>"
+			+ "    <tns:search_by_brand xmln=\"schema\">" 
+			+ "            <s1:item>"
+			+ "                <s1:item>?</s1:item>"
+			+ "            </s1:item>"
+			+ "            <s1:item>?</s1:item>"
+			+ "    </tns:search_by_brand>" 
+			+ "</senv:Body>" 
+			+ "</senv:Envelope>";
+		
+		Item root = new ItemImpl("search_by_brand");
+		Item child1 = new ItemImpl("item");
+		Item grandChild1 = new ItemImpl("item");
+		Item grandChild2 = new ItemImpl("item");
+		grandChild1.setContent("test1");
+		grandChild2.setContent("test2");
+		root.addChild(child1);
+		child1.addChild(grandChild1);
+		child1.addChild(grandChild2);
+		
+		new RequestBuilder().buildRequest(sampleXml, root);
+	}
+	
 
 }

@@ -22,8 +22,22 @@ class RequestBuilder {
 	private StringBuilder outputBuilder = new StringBuilder();
 
 	private class RequestParserHandler extends DefaultHandler {
+		
+		private Integer currentLevel = 0;
+
+		private Item currentItem;
 		private Item item;
-		private Stack<HashMap<String, List<Item>>> itemStack = new Stack<HashMap<String, List<Item>>>();
+		
+		private class TreeItem {
+			public Integer level = 0;
+			public HashMap<String, List<Item>> itens = new HashMap<String, List<Item>>();
+
+			public TreeItem(Integer level){
+				this.level = level;
+			}
+		}
+		
+		private Stack<TreeItem> itemStack = new Stack<TreeItem>();
 
 		public RequestParserHandler(Item item){
 			super();
@@ -41,11 +55,43 @@ class RequestBuilder {
 
 			String trimmed = new String(ch, start, lenght).trim();
 
-			if (!trimmed.isEmpty() && !itemStack.empty()){
-				//TODO
+			if (!trimmed.isEmpty()){
+				if(trimmed.equals("?")){
+					if(currentItem == null || currentItem.getContent() == null){
+						throw new SAXException("Found ?, content is null");
+					} else {
+						outputBuilder.append(currentItem.getContent());
+					}
+				} else {
+					outputBuilder.append(trimmed);
+				}
 			}
 		}
 
+		/**
+		 * Adds the children of the <code>currentItem</code> to the <code>itemStack</code>
+		 * as a <code>TreeItem</code>
+		 */
+		private void addChildrenToStack(){
+			// inserts all children in the stack as a "bag"
+			TreeItem bag = new TreeItem(currentLevel + 1);
+			for(Item child : currentItem.getChildren()){
+				List<Item> children = bag.itens.get(child.getName());
+
+				if(children == null){
+					children = new LinkedList<Item>();
+					bag.itens.put(child.getName(), children);
+				}
+
+				children.add(child);
+				
+			}
+			
+			if(!bag.itens.isEmpty()){
+				itemStack.push(bag);
+			}
+		}
+		
 		/**
 		 * @param uri       - The Namespace URI.
 		 * @param localName - The local name (without prefix).
@@ -55,6 +101,7 @@ class RequestBuilder {
 		public void endElement(String uri, String localName, String qName)
 		throws SAXException {
 			outputBuilder.append("</" + qName + ">");
+			currentLevel--;
 		}
 
 		/**
@@ -68,23 +115,38 @@ class RequestBuilder {
 		throws SAXException {
 
 			String name = getNameWithoutNamespace(qName);
-			
-			if(!itemStack.empty() && itemStack.peek().containsKey(name)){
-				// inserts all children in the stack as a "bag"
+	
+			if(itemStack.empty() && name.equals(item.getName())){
+				// root found for the first time
+				currentItem = item;
+				addChildrenToStack();
 				
-				HashMap<String, List<Item>> bag = new HashMap<String, List<Item>>();
-				
-				for(Item child : item.getChildren()){
-					List<Item> children = bag.get(child.getName());
+			} else if(!itemStack.empty() && itemStack.peek().itens.containsKey(name)){
+				if(currentLevel == itemStack.peek().level){
+
+					// Remove from the stack bag and update current item
+					List<Item> itens = itemStack.peek().itens.get(name);
+					currentItem = itens.get(0);
+					itens.remove(0);
 					
-					if(children == null){
-						children = new LinkedList<Item>();
-						bag.put(child.getName(), children);
+					// if List is empty, remove key from hash
+					if(itens.isEmpty()){
+						itemStack.peek().itens.remove(name);
 					}
 					
-					children.add(child);
+					// Remove bag from stack if it's empty
+					if(itemStack.peek().itens.isEmpty()){
+						itemStack.pop();
+					}
+					
+					addChildrenToStack();
+					
+				} else {
+					throw new SAXException("Incosistent hierarchy 1");
 				}
-			} 
+			} else if(!itemStack.empty()){
+				throw new SAXException("Incosistent hierarchy 2");
+			}
 
 			outputBuilder.append("<" + qName);
 			
@@ -97,6 +159,8 @@ class RequestBuilder {
 			}
 			
 			outputBuilder.append(">");
+
+			currentLevel++;
 		}
 
 		private String getNameWithoutNamespace(String qName) {
