@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>br.usp.ime.choreos</groupId>
+  <artifactId>restclienttest</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>restclienttest</name>
+  <url>http://maven.apache.org</url>
+  
+  <repositories>
+    <repository>
+    <id>Java.Net</id>
+    <url>http://download.java.net/maven/2/</url>
+    </repository>
+    <repository>
+      <id>repository.jboss.org-public</id>
+      <name>JBoss repository</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public</url>
+    </repository>
+    <repository>
+      <id>eviwarePluginRepository</id>
+      <name>eviWare</name>
+      <url>http://www.eviware.com/repository/maven2/</url>
+    </repository>
+
+    <repository>
+    <id>repo2.maven</id>
+    <name>repo2.maven</name>
+    <url>http://repo2.maven.org/maven2/</url>
+    </repository>
+  </repositories>
+  
+  <dependencies>
+    <dependency>
+      <groupId>com.jayway.restassured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>1.2.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
