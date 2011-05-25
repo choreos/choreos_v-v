@@ -58,7 +58,7 @@ class RequestBuilder {
 			if (!trimmed.isEmpty()){
 				if(trimmed.equals("?")){
 					if(currentItem == null || currentItem.getContent() == null){
-						throw new SAXException("Found ?, content is null");
+						throw new SAXException("Expected content for \"" + currentItem.getName() + "\", but found none.");
 					} else {
 						outputBuilder.append(currentItem.getContent());
 					}
