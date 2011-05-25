@@ -72,6 +72,35 @@ public class RequestBuilderTest {
 		assertEquals(expectedXml, result);
 	}
 	
+	@Test(expected=ParserException.class)
+	public void shouldRaiseExceptionWithWrongHierarchy() throws ParserException{
+		String sampleXml = "<senv:Envelope " 
+			+ "                             xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
+			+ "                             xmlns:tns=\"tns\">" 
+			+ "<senv:Body>"
+			+ "    <tns:search_by_brand xmln=\"schema\">" 
+			+ "            <s1:name>?</s1:name>" 
+			+ "    </tns:search_by_brand>" 
+			+ "</senv:Body>" 
+			+ "</senv:Envelope>";
+		
+		Item root = new ItemImpl("search_by_brand");
+		
+		String result = new RequestBuilder().buildRequest(sampleXml, root);
+		
+		String expectedXml = "<senv:Envelope " 
+			+ "xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
+			+ "xmlns:tns=\"tns\">" 
+			+ "<senv:Body>"
+			+ "<tns:search_by_brand xmln=\"schema\">" 
+			+ "<s1:name>test</s1:name>" 
+			+ "</tns:search_by_brand>" 
+			+ "</senv:Body>" 
+			+ "</senv:Envelope>";
+		
+		assertEquals(expectedXml, result);
+	}
+	
 	@Test
 	public void shouldReturnXmlWithSeveralParametersReplacedWithTheProperContent() throws ParserException{
 		String sampleXml = "<senv:Envelope " + 
@@ -223,7 +252,7 @@ public class RequestBuilderTest {
 		assertEquals(expectedXml, result);
 	}
 	
-	@Test(expected=Exception.class)
+	@Test(expected=ParserException.class)
 	public void xmlWithComplexHierarchyAndSameNamesWithWrongHierarchyRequestItemShouldRaiseException() throws ParserException{
 		
 		/*

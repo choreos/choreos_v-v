@@ -28,6 +28,8 @@ class RequestBuilder {
 		private Item currentItem;
 		private Item item;
 		
+		private boolean foundRoot = false;
+		
 		private class TreeItem {
 			public Integer level = 0;
 			public HashMap<String, List<Item>> itens = new HashMap<String, List<Item>>();
@@ -118,6 +120,8 @@ class RequestBuilder {
 	
 			if(itemStack.empty() && name.equals(item.getName())){
 				// root found for the first time
+				foundRoot = true;
+				
 				currentItem = item;
 				addChildrenToStack();
 				
@@ -142,10 +146,13 @@ class RequestBuilder {
 					addChildrenToStack();
 					
 				} else {
-					throw new SAXException("Incosistent hierarchy 1");
+					throw new SAXException("Found item with wrong hierarchy level. Found \"" 
+							+ currentItem.getName() + "\" on level [" + itemStack.peek().level 
+							+ "], expected \"" + name + "\" on level [" + currentLevel + "]");
 				}
-			} else if(!itemStack.empty()){
-				throw new SAXException("Incosistent hierarchy 2");
+			} else if(!itemStack.empty() || foundRoot){
+				throw new SAXException("Expected \"" + name + "\" on level [" + currentLevel
+						+ "] but found none.");
 			}
 
 			outputBuilder.append("<" + qName);
