@@ -4,13 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.xmlbeans.XmlException;
-import org.xml.sax.SAXException;
 
 import br.usp.ime.choreos.vv.exceptions.FrameworkException;
 import br.usp.ime.choreos.vv.exceptions.InvalidOperationNameException;
+import br.usp.ime.choreos.vv.exceptions.ParserException;
 import br.usp.ime.choreos.vv.exceptions.WSDLException;
 
 import com.eviware.soapui.impl.WsdlInterfaceFactory;
@@ -20,8 +18,8 @@ import com.eviware.soapui.impl.wsdl.WsdlProject;
 import com.eviware.soapui.impl.wsdl.WsdlRequest;
 import com.eviware.soapui.impl.wsdl.WsdlSubmit;
 import com.eviware.soapui.impl.wsdl.WsdlSubmitContext;
-import com.eviware.soapui.model.iface.Request.SubmitException;
 import com.eviware.soapui.model.iface.Response;
+import com.eviware.soapui.model.iface.Request.SubmitException;
 import com.eviware.soapui.support.SoapUIException;
 
 /**
@@ -29,6 +27,8 @@ import com.eviware.soapui.support.SoapUIException;
  *
  */
 public class WSClient {
+
+	private enum Strategy {STRING, ITEM}; // used on request
 
 	private final String wsdl;
 	private WsdlInterface iface;
@@ -88,27 +88,66 @@ public class WSClient {
 	}
 
 	/**
-	 * Makes a request to a web service operation
-	 * @param operationName
-	 * @param parameters
-	 * @return the operation response
-	 * @throws InvalidOperationName
+	 * Makes the request using String parameters
+	 * 
+	 * @param operationName Name of the operation to invoke
+	 * @param arguments Variable number of string arguments to use in the request.
+	 * The arguments must be ordered according to the request wsdl. For complex types with
+	 * lots of arguments, it's better to use {@link #request(String, Item)}
+	 * @return An <code>Item</code> representing the request response.
+	 * @throws InvalidOperationNameException
 	 * @throws FrameworkException
-	 * @throws MissingResponseTagException 
-	 * @throws SAXException 
-	 * @throws ParserConfigurationException 
 	 */
-	public Item request(String operationName, String... parameters) throws InvalidOperationNameException, FrameworkException  {
+	public Item request(String operationName, String... arguments) throws InvalidOperationNameException, FrameworkException  {
+		
+		return makeRequest(operationName, Strategy.STRING, null, arguments);
+	}
+
+	/**
+	 * Makes the request using an Item as argument
+	 * 
+	 * @param operationName Name of the operation to invoke
+	 * @param requestRoot An Item representing the root of a tree
+	 * that represents the structure of the complex type arguments.
+	 * @return An <code>Item</code> representing the request response.
+	 * @throws InvalidOperationNameException
+	 * @throws FrameworkException
+	 */
+	public Item request(String operationName, Item requestRoot) throws InvalidOperationNameException, FrameworkException  {
+		
+		return makeRequest(operationName, Strategy.ITEM, requestRoot);
+	}	
+
+	/**
+	 * Makes the actual request to the web service. It uses a strategy passed as a parameter
+	 * to determine which type of arguments to use to generate the final SOAP request envelope.
+	 * 
+	 * @param operationName
+	 * @param strategy  
+	 * @param requestRoot
+	 * @param parameters
+	 * @return
+	 * @throws FrameworkException
+	 * @throws ParserException
+	 * @throws InvalidOperationNameException
+	 */
+	private Item makeRequest(String operationName, Strategy strategy, Item requestRoot, String... parameters)
+			throws FrameworkException, ParserException, InvalidOperationNameException {
 		
 		if (!operations.contains(operationName))
 			throw new InvalidOperationNameException();
 
 		WsdlOperation operation = (WsdlOperation) iface.getOperationByName(operationName);
-
 		String defaultRequestContent = operation.getRequestAt(0).getRequestContent();
-
-		String requestContent = SoapEnvelopeHelper.generate(defaultRequestContent, parameters);
-
+		
+		
+		String requestContent = null;
+		if (strategy == Strategy.STRING) {
+			requestContent = SoapEnvelopeHelper.generate(defaultRequestContent, parameters);
+		} else if (strategy == Strategy.ITEM) {
+			requestContent = new RequestBuilder().buildRequest(defaultRequestContent, requestRoot); 
+		}
+		
 		WsdlRequest request = operation.addNewRequest("myRequest");
 		request.setRequestContent(requestContent);
 
@@ -132,5 +171,6 @@ public class WSClient {
 		System.out.println(responseContent);
 		return parser.parse(responseContent) ;
 	}
+	
 
 }

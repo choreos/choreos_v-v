@@ -19,16 +19,19 @@ import br.usp.ime.choreos.vv.util.WebServiceController;
 
 public class WSClientTest {
 
-	private static final String WSDL = "http://localhost:1234/SimpleStore?wsdl";
+	private static final String SIMPLE_STORE_WSDL = "http://localhost:1234/SimpleStore?wsdl";
+	private static final String STORE_WSDL = "http://localhost:1234/Store?wsdl";
 
 	private static final int NUMBER_OF_OPERATIONS = 6;
 
-	private static WSClient wsClient;
+	private static WSClient wsSimpleStoreClient;
+	private static WSClient wsStoreClient;
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
 		WebServiceController.deployService();
-		wsClient = new WSClient(WSDL);
+		wsSimpleStoreClient = new WSClient(SIMPLE_STORE_WSDL);
+		wsStoreClient = new WSClient(STORE_WSDL);
 	}
 	
 	@AfterClass
@@ -39,7 +42,7 @@ public class WSClientTest {
 	@Test
 	public void checkValidWsdlUri() {
 		
-		assertEquals(WSDL, wsClient.getWsdl());
+		assertEquals(SIMPLE_STORE_WSDL, wsSimpleStoreClient.getWsdl());
 	}
 
 	@Test(expected=WSDLException.class)
@@ -51,28 +54,28 @@ public class WSClientTest {
 	@Test
 	public void checkServiceOperationsListIsNotEmpty() {
 		
-		assertTrue(!wsClient.getOperations().isEmpty());
+		assertTrue(!wsSimpleStoreClient.getOperations().isEmpty());
 	}
 	
 	@Test
 	public void checkNumberOfOperations() {
-		assertEquals(NUMBER_OF_OPERATIONS, wsClient.getOperations().size());
+		assertEquals(NUMBER_OF_OPERATIONS, wsSimpleStoreClient.getOperations().size());
 	}
 
 	@Test
 	public void shouldMakeValidRequestWithOneParameter() throws Exception {	
-		Item cd = wsClient.request("searchByArtist", "Floyd");
+		Item cd = wsSimpleStoreClient.request("searchByArtist", "Floyd");
 		assertEquals("The dark side of the moon;", cd.getChild("return").getContent());	
 	}
 	
 	public void shouldMakeValidRequestWithTwoParameters() throws Exception {
-		Item status = wsClient.request("purchase", "Album Name", "Client Name");
+		Item status = wsSimpleStoreClient.request("purchase", "Album Name", "Client Name");
 		assertEquals("true", status.getContent());	
 	}
 	
 	@Test(expected=InvalidOperationNameException.class)
 	public void shouldComplainAboutInvalidOperationName() throws InvalidOperationNameException, FrameworkException {
-		wsClient.request("Invalid Operation", "");
+		wsSimpleStoreClient.request("Invalid Operation", "");
 	}
 	
 	@Test
@@ -81,7 +84,7 @@ public class WSClientTest {
 		// just testing if no Exception is thrown because the void return
 
 		try {
-			wsClient.request("cancelPurchase", "cd name", "customer name");
+			wsSimpleStoreClient.request("cancelPurchase", "cd name", "customer name");
 		}
 		catch (Exception e) {
 			assertTrue(false); // if exceptions is thrown, test fail
@@ -91,7 +94,7 @@ public class WSClientTest {
 	@Test
 	public void requestToVoidWebServiceShouldHaveNullContent() throws InvalidOperationNameException, FrameworkException {
 
-		Item item = wsClient.request("cancelPurchase", "cd name", "customer name");
+		Item item = wsSimpleStoreClient.request("cancelPurchase", "cd name", "customer name");
 		
 		assertNull(item.getContent());
 		assertEquals((Integer) 0, item.getChildrenCount());
@@ -101,10 +104,48 @@ public class WSClientTest {
 	@Ignore
 	public void oneWayMethodsShouldHaveNullItem() throws InvalidOperationNameException, FrameworkException {
 
-		Item item = wsClient.request("sendPurchaseFeedback", "Great Store!");
+		Item item = wsSimpleStoreClient.request("sendPurchaseFeedback", "Great Store!");
 		
 		assertNull(item.getContent());
 		assertEquals((Integer) 0, item.getChildrenCount());
+	}
+	
+	@Test
+	public void complexTypeRequestWithItemAsRoot() throws InvalidOperationNameException, FrameworkException, NoSuchFieldException {
+		
+		Item root = new ItemImpl("purchase");
+		
+		Item cd = new ItemImpl("arg0");
+		Item title = new ItemImpl("title");
+		title.setContent("Pulse");
+		Item artist = new ItemImpl("artist");
+		artist.setContent("Pink Floyd");
+		Item genre = new ItemImpl("genre");
+		genre.setContent("Alternative Rock");
+		Item numberOfTracks = new ItemImpl("numberOfTracks");
+		numberOfTracks.setContent("13");
+		cd.addChild(title);
+		cd.addChild(artist);
+		cd.addChild(genre);
+		cd.addChild(numberOfTracks);
+		root.addChild(cd);
+		
+		Item customer = new ItemImpl("arg1");
+		Item name = new ItemImpl("name");
+		name.setContent("Piva");
+		Item address = new ItemImpl("address");
+		address.setContent("IME");
+		Item creditCard = new ItemImpl("creditCard");
+		creditCard.setContent("Visa");
+		customer.addChild(name);
+		customer.addChild(address);
+		customer.addChild(creditCard);
+		root.addChild(customer);
+		
+		Item item = wsStoreClient.request("purchase", root);
+		
+		assertEquals("false", item.getChild("return").getContent());
+		
 	}
 
 }
