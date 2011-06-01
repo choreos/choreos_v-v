@@ -1,5 +1,6 @@
 package br.usp.ime.choreos.vv;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.jayway.restassured.RestAssured;
@@ -53,6 +54,10 @@ public class RSClient {
 		return RestAssured.with().parameters(parameters).get(path).asString();
 
 	}
+	
+	public String get(String path){
+		return get(path, new HashMap<String, String>());
+	}
 
 	/**
 	 * 
@@ -66,6 +71,10 @@ public class RSClient {
 		
 		return RestAssured.with().parameters(parameters).post(path).asString();
 
+	}
+	
+	public String post(String path){
+		return post(path, new HashMap<String, String>());
 	}
 
 	/**
@@ -81,6 +90,10 @@ public class RSClient {
 		return RestAssured.with().parameters(parameters).put(path).asString();
 
 	}
+	
+	public String put(String path){
+		return put(path, new HashMap<String, String>());
+	}
 
 	/**
 	 * 
@@ -94,6 +107,10 @@ public class RSClient {
 		
 		return RestAssured.with().parameters(parameters).delete(path).asString();
 
+	}
+	
+	public String delete(String path){
+		return delete(path, new HashMap<String, String>());
 	}
 
 }
