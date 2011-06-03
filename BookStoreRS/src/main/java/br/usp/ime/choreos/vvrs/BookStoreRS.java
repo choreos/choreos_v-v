@@ -1,35 +1,27 @@
 package br.usp.ime.choreos.vvrs;
 
-import java.net.URI;
-import java.util.List;
-
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import br.usp.ime.choreos.vvrs.model.Book;
-import br.usp.ime.choreos.vvrs.model.MockBooks;
 
 @Path("/bookstore")
 public class BookStoreRS {
 
-	private static List<Book> books = MockBooks.bookList; 
-	
 	@POST
-	@Path("/addBook")
+	@Path("/updateBook")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public static String addBook(@FormParam("title") String title, @FormParam("author") String author ) {
-	       
+	public static String updateBook(@FormParam("title") String title, @FormParam("author") String author, @FormParam("id") Integer id) {
 		Book newBook = new Book(title, author);
-		books.add(newBook);
-		int id = books.size()-1;
-		return  Integer.toString(id);
+		return BookStore.updateBook(id, newBook);		
         }
 
 	@GET
@@ -44,19 +36,20 @@ public class BookStoreRS {
 			return "Not found!";
         }
 	
-	public static void updateBook(int id, Book book) {
+	@PUT
+	
+	public static String addBook(int id, Book book) {
+		//Book newBook = new Book(title, author);
+		Integer bookID = BookStore.addBook(book);
+		return "" + bookID;
 
-		books.set(id, book);
         }
 
-	public static void removeBook(int id) {
-
-		books.remove(id);
-        }
-
-	public static void clear() {
-
-		books.clear();
+	@DELETE
+	@Path("/book/{id}")
+	public static String removeBook(@PathParam("id") int id) {
+		
+		return BookStore.removeBook(id);
         }
 	
 	@GET

@@ -1,7 +1,10 @@
 package br.usp.ime.choreos.vvrs;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -70,8 +73,7 @@ public class BookStoreTest {
 
 	@Test
 	public void shouldGetAllBookByTitle() {
-
-		List<Book> books = MockBooks.bookList;
+		List<Book> books = new ArrayList<Book>( MockBooks.bookList.values() );
 		List<Book> retrieved = BookStore.getAllBooks();
 		
 		assertEquals(books, retrieved);
