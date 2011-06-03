@@ -16,55 +16,53 @@ import br.usp.ime.choreos.vvrs.model.Book;
 @Path("/bookstore")
 public class BookStoreRS {
 
-	@POST
-	@Path("/updateBook")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public static String updateBook(@FormParam("title") String title, @FormParam("author") String author, @FormParam("id") Integer id) {
-		Book newBook = new Book(title, author);
-		return BookStore.updateBook(id, newBook);		
-        }
+	@PUT
+	public static String updateBook(int id, Book book) {
+		return BookStore.updateBook(id, book);		
+	}
 
 	@GET
 	@Path("/book/{id}")
 	public static String getBookById(@PathParam("id")  int id) {
-		
+
 		Book book = BookStore.getBookById(id);
-		
+
 		if (book != null)
 			return book.toString();
 		else
 			return "Not found!";
-        }
-	
-	@PUT
-	
-	public static String addBook(int id, Book book) {
-		//Book newBook = new Book(title, author);
+	}
+
+	@POST
+	@Path("/addBook")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public static String addBook(@FormParam("title") String title, @FormParam("author") String author) {
+		Book book = new Book(title, author);
 		Integer bookID = BookStore.addBook(book);
 		return "" + bookID;
 
-        }
+	}
 
 	@DELETE
 	@Path("/book/{id}")
 	public static String removeBook(@PathParam("id") int id) {
-		
+
 		return BookStore.removeBook(id);
-        }
-	
+	}
+
 	@GET
 	@Path("searchBook")
 	public static String  getBookByTitle(@QueryParam("title") String title) {
 
 		return BookStore.getBookByTitle(title).toString();
-        }
+	}
 
 	@GET
 	@Path("/books")
 	public static String getAllBooks() {
 
 		return BookStore.getAllBooks().toString();
-        }
+	}
 }
 
 

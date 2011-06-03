@@ -14,6 +14,7 @@ import com.jayway.restassured.RestAssured;
  */
 public class RSClient {
 
+	private String basePath;
 	private String baseUri;
 	private int port;
 	
@@ -23,8 +24,9 @@ public class RSClient {
 	 * @param baseUri The URI where the service is hosted.
 	 * @param port The port where the service can be called.
 	 */
-	public RSClient(String baseUri, int port){
+	public RSClient(String baseUri, String basePath, int port){
 		this.baseUri = baseUri;
+		this.basePath = basePath;
 		this.port = port;
 	}
 
@@ -38,6 +40,7 @@ public class RSClient {
 	 */
 	private void setRequestUrl(){
 		RestAssured.baseURI = baseUri;
+		RestAssured.basePath = basePath;
 		RestAssured.port = port;
 	}
 	

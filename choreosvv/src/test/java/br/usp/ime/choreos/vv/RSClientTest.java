@@ -1,14 +1,16 @@
 package br.usp.ime.choreos.vv;
 
 import static com.jayway.restassured.RestAssured.get;
-import static org.junit.Assert.assertEquals;
+import static junit.framework.Assert.assertEquals;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 
 public class RSClientTest {
 	
@@ -16,12 +18,20 @@ public class RSClientTest {
 	
 	@BeforeClass
 	public static void setup() throws IllegalArgumentException, SQLException, ClassNotFoundException, IOException{
-		client = new RSClient("http://localhost", 9881);
+		// FIXME:
+//		RestServiceController.deployService();
+		client = new RSClient("http://localhost", "/bookstore", 9881);
+	}
+	
+	@AfterClass
+	public static void tearDown(){
+		// FIXME:
+//		RestServiceController.undeployService();
 	}
 	
 	@Test
 	public void shouldGetCorrectBook(){
-		String retrievedBook = client.get("/bookstore/book/0");
+		String retrievedBook = client.get("/book/0");
 		String expectedBook = "Book [title=O Hobbit, author=J. R. R. Tolkien]";
 		
 		assertEquals(retrievedBook, expectedBook);
@@ -29,12 +39,30 @@ public class RSClientTest {
 	
 	@Test
 	public void shouldDeleteFirstBook(){
-		String deletedBook = client.delete("/bookstore/book/0");
+		String deletedBook = client.delete("/book/0");
 		String expectedBook = "Book [title=O Hobbit, author=J. R. R. Tolkien]";
 		
 		assertEquals(deletedBook, expectedBook);
 		
-		assertEquals("Not found!", get("/bookstore/book/0").asString());
+		assertEquals("Not found!", get("/book/0").asString());
 	}
+	
+	@Test
+	public void shouldCreateABook() {
+
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("title", "New Moon");
+		parameters.put("author", "Stephanie Mayer");
+		
+		String id = client.post("/addBook", parameters);
+		
+		String retrievedBook = client.get("/book/" + id);
+		String expectedBook = "Book [title=New Moon, author=Stephanie Mayer]";
+		
+		assertEquals(expectedBook, retrievedBook);
+		
+		client.delete("/book/" + id);
+	}
+	
 
 }
