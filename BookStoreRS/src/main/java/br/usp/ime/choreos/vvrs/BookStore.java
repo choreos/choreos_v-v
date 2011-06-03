@@ -1,38 +1,39 @@
 package br.usp.ime.choreos.vvrs;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import br.usp.ime.choreos.vvrs.model.Book;
 import br.usp.ime.choreos.vvrs.model.MockBooks;
 
 public class BookStore {
 
-	private static List<Book> books = MockBooks.bookList; 
+	private static Map<Integer, Book> books = MockBooks.bookList; 
 	
-	public static int addBook(Book book) {
-	        
-		books.add(book);
-		return books.size()-1;
+	public static Integer addBook(Book book) {
+		Integer newID = MockBooks.getNextId();
+		books.put(newID, book);
+		return newID;
         }
 
 	public static Book getBookById( int id) {
 
-		if (books.size() > id)
-			return books.get(id);
-		else
-			return null;
+		Book book = books.get(id);
+		return book;
         }
 
-	public static void updateBook(int id, Book book) {
-
-		books.set(id, book);
+	public static String updateBook(int id, Book book) {
+		Book insertedBook = books.put(id, book);
+		if (insertedBook != null) return insertedBook.toString();
+		return null;
         }
 
-	public static void removeBook(int id) {
-
-		books.remove(id);
+	public static String removeBook(int id) {
+		
+		Book book = books.remove(id);
+		if (book != null) return book.toString();
+		return null;
         }
 
 	public static void clear() {
@@ -44,7 +45,7 @@ public class BookStore {
 
 		List<Book> found = new ArrayList<Book>();
 		
-		for (Book b: books) {
+		for (Book b: books.values()) {
 			if (b.getTitle().toUpperCase().contains(title.toUpperCase()))
 				found.add(b);
 		}
@@ -53,8 +54,8 @@ public class BookStore {
         }
 
 	public static List<Book> getAllBooks() {
-
-		return Collections.unmodifiableList(books);
+			List<Book> found = new ArrayList<Book>(books.values());
+			return found;
         }
 }
 

@@ -1,18 +1,24 @@
 package br.usp.ime.choreos.vvrs.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class MockBooks {
 
-	public static List<Book> bookList = new ArrayList<Book>();
+	private static AtomicInteger ai = new AtomicInteger();
+	public static Map<Integer, Book> bookList = new HashMap<Integer, Book>();
 	
 	static {
-		bookList.add(new Book("O Hobbit", "J. R. R. Tolkien"));
-		bookList.add(new Book("O Senhor dos Anéis - A Sociedade do Anel", "J. R. R. Tolkien"));
-		bookList.add(new Book("O Senhor dos Anéis - As Duas Torres", "J. R. R. Tolkien"));
-		bookList.add(new Book("O Senhor dos Anéis - O Retorno do Rei", "J. R. R. Tolkien"));
-		bookList.add(new Book("O silmarillion", "J. R. R. Tolkien"));
+		bookList.put(ai.getAndIncrement(),  new Book("O Hobbit", "J. R. R. Tolkien"));
+		bookList.put(ai.getAndIncrement(),  new Book("O Senhor dos Anéis - A Sociedade do Anel", "J. R. R. Tolkien"));
+		bookList.put(ai.getAndIncrement(),  new Book("O Senhor dos Anéis - As Duas Torres", "J. R. R. Tolkien"));
+		bookList.put(ai.getAndIncrement(),  new Book("O Senhor dos Anéis - O Retorno do Rei", "J. R. R. Tolkien"));
+		bookList.put(ai.getAndIncrement(),  new Book("O Silmarillion", "J. R. R. Tolkien"));
 	}	
+	
+	public static Integer getNextId(){
+		return ai.getAndIncrement();
+	}
 }
