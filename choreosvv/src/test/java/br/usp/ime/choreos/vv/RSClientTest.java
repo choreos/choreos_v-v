@@ -1,6 +1,5 @@
 package br.usp.ime.choreos.vv;
 
-import static com.jayway.restassured.RestAssured.get;
 import static junit.framework.Assert.assertEquals;
 
 import java.io.IOException;
@@ -8,7 +7,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -18,15 +16,7 @@ public class RSClientTest {
 	
 	@BeforeClass
 	public static void setup() throws IllegalArgumentException, SQLException, ClassNotFoundException, IOException{
-		// FIXME:
-//		RestServiceController.deployService();
-		client = new RSClient("http://localhost", "/bookstore", 9881);
-	}
-	
-	@AfterClass
-	public static void tearDown(){
-		// FIXME:
-//		RestServiceController.undeployService();
+		client = new RSClient("http://choreos.ime.usp.br", "/rest/bookstore", 53111);
 	}
 	
 	@Test
@@ -44,7 +34,7 @@ public class RSClientTest {
 		
 		assertEquals(deletedBook, expectedBook);
 		
-		assertEquals("Not found!", get("/book/0").asString());
+		assertEquals("Not found!", client.get("/book/0"));
 	}
 	
 	@Test
