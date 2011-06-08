@@ -39,12 +39,12 @@ public class BookStoreTest {
 		Book book = new Book("O sr. Dos Anéis", "Tolkien");
 		int id = BookStore.addBook(book);
 		
-		book.setAuthor("J. R. R. Tolkien");
+		book.author = "J. R. R. Tolkien";
 		BookStore.updateBook(id, book);
 		
-		String retrieved = BookStore.getBookById(id).getAuthor();
+		String retrieved = BookStore.getBookById(id).author;
 		
-		assertEquals(book.getAuthor(), retrieved);
+		assertEquals(book.author, retrieved);
 	}
 	
 	@Test
