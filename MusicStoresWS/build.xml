@@ -6,7 +6,7 @@
 	<delete dir="bin" />
 	<mkdir dir="bin" />
 	
-	<javac srcdir="src" destdir="bin" >
+	<javac srcdir="src/main/java" destdir="bin" >
 		<classpath>
 			<fileset dir="WebContent/WEB-INF/lib">
 				<include name="*.jar" />
