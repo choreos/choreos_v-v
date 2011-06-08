@@ -9,7 +9,7 @@ import com.sun.jersey.api.container.grizzly.GrizzlyWebContainerFactory;
 
 public class RunServer {
 
-	public void publishBookStoreRS() throws SQLException, ClassNotFoundException, 
+	private static void publishBookStoreRS() throws SQLException, ClassNotFoundException, 
 	IllegalArgumentException, IOException{
 		final String baseUri = "http://localhost:9881/";
 		final Map<String, String> initParams = new HashMap<String, String>();
@@ -18,11 +18,20 @@ public class RunServer {
 		"br.usp.ime.choreos.vvrs");
 
 		GrizzlyWebContainerFactory.create(baseUri, initParams);
+		
+	}
+	
+	public static void runServers() throws IllegalArgumentException, SQLException, ClassNotFoundException, IOException {
+		publishBookStoreRS();
+	}
+	
+	public static void killServers(){
+		//FIXME:
+	}
+	
+	public static void main(String [] args) throws IllegalArgumentException, SQLException, ClassNotFoundException, IOException{
+		runServers();
 	}
 
-	public static void main(String[] args) throws IllegalArgumentException, SQLException, ClassNotFoundException, IOException {
-		
-		RunServer run = new RunServer();
-		run.publishBookStoreRS();
-	}
 }
+
