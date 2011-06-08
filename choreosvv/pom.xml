@@ -39,6 +39,14 @@
      <version>1.0-SNAPSHOT</version>
     </dependency>
    -->
+
+  <!-- REST library -->
+  <dependency>
+        <groupId>com.jayway.restassured</groupId>
+        <artifactId>rest-assured</artifactId>
+        <version>1.2.1</version>
+        <scope>test</scope>
+  </dependency>
     
     <!-- Java Sun's JARs -->
     <dependency>
