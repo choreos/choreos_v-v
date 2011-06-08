@@ -23,17 +23,13 @@ public class BookStore {
 		return book;
         }
 
-	public static String updateBook(int id, Book book) {
-		Book insertedBook = books.put(id, book);
-		if (insertedBook != null) return insertedBook.toString();
-		return null;
+	public static Book updateBook(int id, Book book) {
+		return books.put(id, book);
         }
 
-	public static String removeBook(int id) {
-		
+	public static Book removeBook(int id) {
 		Book book = books.remove(id);
-		if (book != null) return book.toString();
-		return null;
+		return book;
         }
 
 	public static void clear() {
@@ -46,7 +42,7 @@ public class BookStore {
 		List<Book> found = new ArrayList<Book>();
 		
 		for (Book b: books.values()) {
-			if (b.getTitle().toUpperCase().contains(title.toUpperCase()))
+			if (b.title.toUpperCase().contains(title.toUpperCase()))
 				found.add(b);
 		}
 		
