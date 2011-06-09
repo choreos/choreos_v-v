@@ -1,6 +1,10 @@
 package br.usp.ime.choreos.vv;
 
+import static com.jayway.restassured.RestAssured.delete;
+import static com.jayway.restassured.RestAssured.get;
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -9,6 +13,8 @@ import java.util.Map;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.jayway.restassured.RestAssured;
 
 public class RSClientTest {
 	
@@ -22,23 +28,13 @@ public class RSClientTest {
 	@Test
 	public void shouldGetCorrectBook(){
 		String retrievedBook = client.get("/book/0");
-		String expectedBook = "Book [title=O Hobbit, author=J. R. R. Tolkien]";
+		String expectedBook = "{\"title\":\"O Hobbit\",\"author\":\"J. R. R. Tolkien\"}";
 		
-		assertEquals(retrievedBook, expectedBook);
+		assertEquals(expectedBook, retrievedBook);
 	}
 	
 	@Test
-	public void shouldDeleteFirstBook(){
-		String deletedBook = client.delete("/book/0");
-		String expectedBook = "Book [title=O Hobbit, author=J. R. R. Tolkien]";
-		
-		assertEquals(deletedBook, expectedBook);
-		
-		assertEquals("Not found!", client.get("/book/0"));
-	}
-	
-	@Test
-	public void shouldCreateABook() {
+	public void shouldAddAndDeleteAtBook(){
 
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("title", "New Moon");
@@ -47,12 +43,15 @@ public class RSClientTest {
 		String id = client.post("/addBook", parameters);
 		
 		String retrievedBook = client.get("/book/" + id);
-		String expectedBook = "Book [title=New Moon, author=Stephanie Mayer]";
-		
+		String expectedBook = "{\"title\":\"New Moon\",\"author\":\"Stephanie Mayer\"}";
+
 		assertEquals(expectedBook, retrievedBook);
 		
-		client.delete("/book/" + id);
+		String deletedBook = client.delete("/book/" + id);
+		
+		assertEquals(deletedBook, expectedBook);
+		assertEquals("", client.get("/book/" + id));
 	}
-	
+		
 
 }

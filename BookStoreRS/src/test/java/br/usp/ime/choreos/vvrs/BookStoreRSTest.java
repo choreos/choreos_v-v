@@ -32,13 +32,18 @@ public class BookStoreRSTest {
 	}
 	
 	@Test
-	public void shouldDeleteFirstBook(){
-		String deletedBook = delete("/book/4").asString();
-		String expectedBook = "{\"title\":\"O Silmarillion\",\"author\":\"J. R. R. Tolkien\"}";
+	public void shouldAddAndDeleteABook(){
+		String bookID = RestAssured.given().parameters("title", "Monalisa Overdrive", "author", "William Gibson").post("/addBook").asString();
+		String retrievedBook = get("/book/" + bookID).asString();
+		String expectedBook = "{\"title\":\"Monalisa Overdrive\",\"author\":\"William Gibson\"}";
+		
+		assertEquals(expectedBook, retrievedBook);
+				
+		String deletedBook = delete("/book/" +  bookID).asString();
 		
 		assertEquals(expectedBook, deletedBook);
 		
-		assertFalse(expectedBook.equals(get("/book/4")));
+		assertFalse(expectedBook.equals(get("/book/" +  bookID)));		
 	}
 	
 	@Test
@@ -50,15 +55,4 @@ public class BookStoreRSTest {
 		assertEquals(expectedBook, responseString);
 	}
 	
-	@Test
-	public void shouldAddBook(){
-		String bookID = RestAssured.given().parameters("title", "Monalisa Overdrive", "author", "William Gibson").post("/addBook").asString();
-		System.out.println(bookID);
-		
-		String retrievedBook = get("/book/" + bookID).asString();
-		String expectedBook = "{\"title\":\"Monalisa Overdrive\",\"author\":\"William Gibson\"}";
-		
-		assertEquals(expectedBook, retrievedBook);
-	}
-
 }
