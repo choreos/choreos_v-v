@@ -290,5 +290,10 @@
         <version>2.4.0</version>
         <type>jar</type>
     </dependency>
+	<dependency>
+		<groupId>com.jayway.restassured</groupId>
+		<artifactId>rest-assured</artifactId>
+		<version>1.2.1</version>
+	</dependency>
   </dependencies>
 </project>
