@@ -7,6 +7,13 @@
   <version>1.0-SNAPSHOT</version>
   <name>choreosvv</name>
   <url>http://maven.apache.org</url>
+  
+  <parent>
+	  <groupId>br.usp.ime.choreos</groupId>
+  	<artifactId>choreos_v-v</artifactId>
+  	<version>1.0-SNAPSHOT</version>
+	</parent>
+	
 
 <build>
     <plugins>
@@ -24,24 +31,47 @@
   
   <repositories>
     <repository>
-    <id>Java.Net</id>
-    <url>http://download.java.net/maven/2/</url>
-    </repository>
+      <id>maven-restlet</id>
+      <name>Public online Restlet repository</name>
+      <url>http://maven.restlet.org</url>
+    </repository> 
     <repository>
-      <id>repository.jboss.org-public</id>
+      <id>jboss</id>
       <name>JBoss repository</name>
-      <url>https://repository.jboss.org/nexus/content/groups/public</url>
+      <url>http://repository.jboss.org/maven2</url>
+      <releases>
+        <enabled>false</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
     </repository>
     <repository>
-      <id>eviwarePluginRepository</id>
+      <id>eviware</id>
       <name>eviWare</name>
       <url>http://www.eviware.com/repository/maven2/</url>
     </repository>
-
     <repository>
-    <id>repo2.maven</id>
-    <name>repo2.maven</name>
-    <url>http://repo2.maven.org/maven2/</url>
+      <id>petals</id>
+      <url>http://maven.ow2.org/maven2</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+        <id>petalslink</id>
+        <name>Petalslink</name>
+        <url>http://maven.petalslink.com/public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+    <repository>
+      <id>ccslrepository</id>
+      <name>ccsl</name>
+      <url>http://valinhos.ime.usp.br:54080/maven/</url>
     </repository>
   </repositories>
   

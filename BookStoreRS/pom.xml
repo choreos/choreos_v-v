@@ -7,6 +7,13 @@
   <version>1.0-SNAPSHOT</version>
   <name>BookStoreRS</name>
   <url>http://maven.apache.org</url>
+  
+  <parent>
+	  <groupId>br.usp.ime.choreos</groupId>
+  	<artifactId>choreos_v-v</artifactId>
+  	<version>1.0-SNAPSHOT</version>
+	</parent>
+  
 
   <build>
     <plugins>
@@ -37,6 +44,7 @@
   </repositories>
   
   <dependencies>
+<<<<<<< HEAD
 	
     <dependency>
       <groupId>junit</groupId>
@@ -47,6 +55,9 @@
       <optional>true</optional>
     </dependency>
 
+=======
+  
+>>>>>>> d790146ec500bc3af566ce57a36dfa3723ec2906
 	<!-- Jersey -->
 	<dependency>
 	    <groupId>com.sun.jersey</groupId>

@@ -5,3 +5,4 @@ Servers/
 *.jar
 *build/*
 *target/*
+**/target/*

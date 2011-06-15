@@ -1,0 +1,18 @@
+This is the Choreos Testing Framework, Choreos Verification and Validation. 
+
+0) Requirements
+
+- Java (sun, preferably) JDK Version 1.6
+- Maven version 3
+
+1) Installation
+
+1.1) Build the MusicStoreWS project, because it's a dependency of the choreosvv project.
+To build the project, enter the MusicStoreWS directory and issue the command:
+$ mvn install
+
+1.2) Build the choreosvv project. Enter choreosvv directory and issue the command:
+$ mvn install
+
+If everything is working, you should get a "Build Success".
+
