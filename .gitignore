@@ -3,3 +3,5 @@ Servers/
 *.class
 *.log
 *.jar
+*build/*
+*target/*

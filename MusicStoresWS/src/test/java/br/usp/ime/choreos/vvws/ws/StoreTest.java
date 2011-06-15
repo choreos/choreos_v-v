@@ -16,12 +16,10 @@ import br.usp.ime.choreos.vvws.storews.StoreWSImpl;
 public class StoreTest {
 
 	@Test
-	public void testPurchaseShouldAlwaysWork(){
+	public void testPurchaseShouldntWork(){
 		StoreWS ws = new StoreWSImpl();
 
-		assertTrue(ws.purchase(null, null));
-		
-		assertTrue(ws.purchase(new CD(), new Customer()));
+		assertFalse(ws.purchase(new CD(), new Customer()));
 		
 	}
 	
