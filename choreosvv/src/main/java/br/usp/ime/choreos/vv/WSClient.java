@@ -4,6 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.xmlbeans.XmlException;
 
 import br.usp.ime.choreos.vv.exceptions.FrameworkException;
@@ -18,8 +24,8 @@ import com.eviware.soapui.impl.wsdl.WsdlProject;
 import com.eviware.soapui.impl.wsdl.WsdlRequest;
 import com.eviware.soapui.impl.wsdl.WsdlSubmit;
 import com.eviware.soapui.impl.wsdl.WsdlSubmitContext;
-import com.eviware.soapui.model.iface.Response;
 import com.eviware.soapui.model.iface.Request.SubmitException;
+import com.eviware.soapui.model.iface.Response;
 import com.eviware.soapui.support.SoapUIException;
 
 /**
@@ -43,6 +49,10 @@ public class WSClient {
 	 * @throws WSDLException
 	 */
 	public WSClient(String wsdl) throws XmlException, IOException, FrameworkException, WSDLException {
+		
+			if (!verifyDomainAvailability(wsdl))
+				throw new WSDLException("The url " + wsdl + " is not accessible");
+		
 		
 		WsdlProject project;
 		try {
@@ -170,6 +180,21 @@ public class WSClient {
 		
 		System.out.println(responseContent);
 		return parser.parse(responseContent) ;
+	}
+	
+	
+	private boolean verifyDomainAvailability(String url) throws HttpException, IOException{
+		HttpClient client = new HttpClient();
+		GetMethod method = new GetMethod(url);
+		
+		method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, 
+				    		new DefaultHttpMethodRetryHandler(3, false));
+		
+		int  statusCode = client.executeMethod(method); 
+				
+                method.releaseConnection();
+                 
+		return (statusCode == HttpStatus.SC_OK);
 	}
 	
 

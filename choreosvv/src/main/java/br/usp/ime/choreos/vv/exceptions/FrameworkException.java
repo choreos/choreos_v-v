@@ -18,6 +18,10 @@ public class FrameworkException extends Exception {
 		this.originalException = originalException;
 	}
 
+	public FrameworkException(String message) {
+		super(message);
+	}
+
 	public Exception getOriginalException() {
 		return originalException;
 	}

@@ -46,6 +46,12 @@ public class WSClientTest {
 	}
 
 	@Test(expected=WSDLException.class)
+	public void checkInvalidUri() throws WSDLException, XmlException, IOException, FrameworkException  {
+
+		new WSClient("http://localhost:1234/mess?wsdl"); // invalid uri
+	}
+	
+	@Test(expected=WSDLException.class)
 	public void checkInvalidWsdlUri() throws WSDLException, XmlException, IOException, FrameworkException  {
 
 		new WSClient("http://localhost:1234/SimpleStore?wsdl_invalid"); // invalid wsdl uri

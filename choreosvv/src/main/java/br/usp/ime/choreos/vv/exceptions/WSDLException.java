@@ -8,4 +8,8 @@ public class WSDLException extends FrameworkException {
 		super(originalException);
 	}
 
+	public WSDLException(String message) {
+	        super(message);
+        }
+
 }

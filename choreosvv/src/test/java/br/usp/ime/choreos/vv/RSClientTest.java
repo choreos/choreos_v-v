@@ -1,10 +1,6 @@
 package br.usp.ime.choreos.vv;
 
-import static com.jayway.restassured.RestAssured.delete;
-import static com.jayway.restassured.RestAssured.get;
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -13,8 +9,6 @@ import java.util.Map;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.jayway.restassured.RestAssured;
 
 public class RSClientTest {
 	
@@ -35,15 +29,17 @@ public class RSClientTest {
 	
 	@Test
 	public void shouldAddAndDeleteAtBook(){
+		
+		RSClient client = new RSClient("http://choreos.ime.usp.br", "/rest/bookstore", 53111);
 
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("title", "New Moon");
-		parameters.put("author", "Stephanie Mayer");
+		parameters.put("title", "The Hobbit");
+		parameters.put("author", "J. R. R. Tolkien");
 		
 		String id = client.post("/addBook", parameters);
 		
 		String retrievedBook = client.get("/book/" + id);
-		String expectedBook = "{\"title\":\"New Moon\",\"author\":\"Stephanie Mayer\"}";
+		String expectedBook = "{\"title\":\"The Hobbit\",\"author\":\"J. R. R. Tolkien\"}";
 
 		assertEquals(expectedBook, retrievedBook);
 		
