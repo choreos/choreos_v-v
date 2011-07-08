@@ -196,6 +196,4 @@ public class WSClient {
                  
 		return (statusCode == HttpStatus.SC_OK);
 	}
-	
-
 }

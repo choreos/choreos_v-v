@@ -7,13 +7,12 @@
   <version>1.0-SNAPSHOT</version>
   <name>choreosvv</name>
   <url>http://maven.apache.org</url>
-  
+
   <parent>
-	  <groupId>br.usp.ime.choreos</groupId>
-  	<artifactId>choreos_v-v</artifactId>
-  	<version>1.0-SNAPSHOT</version>
-	</parent>
-	
+<groupId>br.usp.ime.choreos</groupId>
+   <artifactId>choreos_v-v</artifactId>
+   <version>1.0-SNAPSHOT</version>
+</parent>
 
 <build>
     <plugins>
@@ -26,6 +25,34 @@
                <target>1.6</target>
            </configuration>
        </plugin>
+   <plugin>
+ 	<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+	<executions>
+	  <execution>
+	    <phase>package</phase>
+	      <goals>
+		<goal>shade</goal>
+	      </goals>
+	  </execution>
+        </executions>
+        <version>1.4</version>
+	<configuration>
+	         <filters>
+<filter>
+<artifact>*</artifact>
+<excludes>
+<exclude>META-INF/*.SF</exclude>
+<exclude>META-INF/*.RSA</exclude>
+<exclude>META-INF/*.INF</exclude>
+</excludes>
+</filter>
+</filters>
+	  <finalName>${project.artifactId}-${project.version}</finalName>
+	</configuration>
+
+      </plugin>
+
     </plugins>
   </build>
   
@@ -83,13 +110,13 @@
      <version>1.0-SNAPSHOT</version>
     </dependency>
 
-  <!-- REST library -->
-  <dependency>
+<dependency>
         <groupId>com.jayway.restassured</groupId>
         <artifactId>rest-assured</artifactId>
         <version>1.2.1</version>
         <scope>test</scope>
   </dependency>
+
     
     <!-- Java Sun's JARs -->
     <dependency>
@@ -320,10 +347,6 @@
         <version>2.4.0</version>
         <type>jar</type>
     </dependency>
-	<dependency>
-		<groupId>com.jayway.restassured</groupId>
-		<artifactId>rest-assured</artifactId>
-		<version>1.2.1</version>
-	</dependency>
+   
   </dependencies>
 </project>
