@@ -85,7 +85,7 @@ public class WSClient {
 		}
 	}
 
-	List<String> getOperations() {
+	public List<String> getOperations() {
 		return this.operations;
 	}
 
