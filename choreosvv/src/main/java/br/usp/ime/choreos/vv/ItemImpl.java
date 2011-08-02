@@ -171,5 +171,25 @@ public class ItemImpl implements Item{
 		}
 		return true;
 	}
+	
+	@Override
+	public int getListSizeFromItem(String tagName) {
+		int count = 0;
+		for (Item child : this.getChildren()) {
+	                if(child.getName().equals(tagName))
+	                	count++;
+                }
+		if(count == 0) {
+			for (Item child : this.getChildren()) {
+	                        count = child.getListSizeFromItem(tagName);
+	                        if(count > 0)
+	                        	return count;
+                        }
+		}
+		else {
+			return count;
+		}
+	        return 0;
+        }
 
 }

@@ -121,5 +121,14 @@ public interface Item {
          * 
          * @return The name of the tag.
          */
-		public String getName();
+	public String getName();
+	
+	/**
+	 * Return the number of occurrences of a tagName
+	 * 
+	 * @param tagName
+	 * @return
+	 */
+	public int getListSizeFromItem(String tagName);
+	
 }

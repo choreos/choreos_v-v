@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -185,6 +187,7 @@ class RequestBuilder {
 		}
 		
 		try {
+			baseXml = addListEntriesToXml(baseXml, root);
 			InputStream is = new ByteArrayInputStream(baseXml.getBytes("UTF-8"));
 			parser = parserFactory.newSAXParser();
 			parser.parse(is, new RequestParserHandler(root));
@@ -196,4 +199,41 @@ class RequestBuilder {
 		return outputBuilder.toString();
 	}
 
+	private String addListEntriesToXml(String baseXml, Item root) {
+		String result = baseXml;
+		Pattern LIST_ENTRY = Pattern.compile("<!--Zero or more repetitions:-->\\s*(<(\\w+)>.*<\\/\\2>)");
+		Matcher m = LIST_ENTRY.matcher(baseXml);
+		while (m.find()) {
+			String tagName = m.group(2);
+			int listSize = root.getListSizeFromItem(tagName);
+			String listOfTagName = multiplyString(m.group(1), listSize);
+			result = baseXml.replaceFirst("<!--Zero or more repetitions:-->\\s*(<(\\w+)>.*<\\/\\2>)", listOfTagName);
+		}
+	        return result;
+        }
+
+	private String multiplyString(String group, int listSize) {
+	        String resultString = "";
+	        for (int i = 0; i < listSize; i++)
+	        	resultString += group;
+	        return resultString;
+        }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

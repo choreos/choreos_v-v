@@ -294,5 +294,42 @@ public class RequestBuilderTest {
 		new RequestBuilder().buildRequest(sampleXml, root);
 	}
 	
+	@Test
+	public void xmlWithNumberOfSameItemsDefinedInRuntimeMustBeSupported() throws Exception{
+		String baseXml =      "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://services.choreos.eu/\">" +
+							    "<soapenv:Header/>" +
+							    "<soapenv:Body>" + 
+							    "		<ser:setSupermarketsList>" +
+							    "			<!--Zero or more repetitions:-->" +
+							    "			 <endpoint>?</endpoint>" +
+							    "		</ser:setSupermarketsList>" +
+							    "</soapenv:Body>" +
+							    "</soapenv:Envelope>";
+		
+		Item request = new ItemImpl("setSupermarketsList");
+		Item endpoint1 = new ItemImpl("endpoint");
+		endpoint1.setContent("endpoint1");
+		request.addChild(endpoint1);
+		
+		Item endpoint2 = new ItemImpl("endpoint");
+		endpoint2.setContent("endpoint2");
+		request.addChild(endpoint2);
+
+		String actualXml = new RequestBuilder().buildRequest(baseXml, request);
+		
+		String expectedXml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://services.choreos.eu/\">" +
+		    "<soapenv:Header></soapenv:Header>" +
+		    "<soapenv:Body>" + 
+		    "<ser:setSupermarketsList>" +
+		    "<endpoint>endpoint1</endpoint>" +
+		    "<endpoint>endpoint2</endpoint>" +
+		    "</ser:setSupermarketsList>" +
+		    "</soapenv:Body>" +
+		    "</soapenv:Envelope>";
+		
+	
+		assertEquals(expectedXml, actualXml);
+	}
+	
 
 }

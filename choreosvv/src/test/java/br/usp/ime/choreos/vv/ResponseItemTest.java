@@ -152,4 +152,58 @@ public class ResponseItemTest {
 	public void shouldThrowsAnExceptionWhenTheElementNotExist() throws NoSuchFieldException {
 		item.getChild("sirname");
 	}
+	
+	@Test
+        public void shouldReturnOneOccurrencesOfTagName() throws Exception {
+		Item request = new ItemImpl("setSupermarketsList");
+		Item endpoint1 = new ItemImpl("endpoint");
+		endpoint1.setContent("endpoint1");
+		request.addChild(endpoint1);
+		
+		assertEquals(1, request.getListSizeFromItem("endpoint"));
+        }
+	
+	@Test
+        public void shouldReturnTwoOccurrencesOfTagName() throws Exception {
+		Item request = new ItemImpl("setSupermarketsList");
+		Item endpoint1 = new ItemImpl("endpoint");
+		endpoint1.setContent("endpoint1");
+		request.addChild(endpoint1);
+		
+		Item endpoint2 = new ItemImpl("endpoint");
+		endpoint2.setContent("endpoint2");
+		request.addChild(endpoint2);
+		
+		assertEquals(2, request.getListSizeFromItem("endpoint"));
+        }	
+	
+	@Test
+        public void shouldReturnZeroOccurencesOfTagName() throws Exception {
+		Item request = new ItemImpl("setSupermarketsList");
+		Item endpoint1 = new ItemImpl("endpoint");
+		endpoint1.setContent("endpoint1");
+		request.addChild(endpoint1);
+		
+		Item endpoint2 = new ItemImpl("endpoint");
+		endpoint2.setContent("endpoint2");
+		request.addChild(endpoint2);
+		
+		assertEquals(0, request.getListSizeFromItem("strangeTagName"));
+	}
+	
+	@Test
+        public void testName() throws Exception {
+		Item root = new ItemImpl("root");
+		Item request = new ItemImpl("setSupermarketsList");
+		Item endpoint1 = new ItemImpl("endpoint");
+		endpoint1.setContent("endpoint1");
+		request.addChild(endpoint1);
+		
+		Item endpoint2 = new ItemImpl("endpoint");
+		endpoint2.setContent("endpoint2");
+		request.addChild(endpoint2);
+		root.addChild(request);
+		
+		assertEquals(2, request.getListSizeFromItem("endpoint"));	        
+        }
 }
