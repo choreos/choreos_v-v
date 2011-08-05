@@ -360,8 +360,8 @@ public class RequestBuilderTest {
 						"<soapenv:Header></soapenv:Header>" +
 						"<soapenv:Body>" +
 						"<cus:getPriceOfProductList>" +
-						"<item>milk</item>" +
-						"<item>cereal</item>" +
+						"<cus:item>milk</cus:item>" +
+						"<cus:item>cereal</cus:item>" +
 						"</cus:getPriceOfProductList>" +
 						"</soapenv:Body>" +
 						"</soapenv:Envelope>";

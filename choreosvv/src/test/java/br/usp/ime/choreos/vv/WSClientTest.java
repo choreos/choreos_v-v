@@ -153,5 +153,4 @@ public class WSClientTest {
 		assertEquals("false", item.getChild("return").getContent());
 		
 	}
-
 }
