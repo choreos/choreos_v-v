@@ -331,5 +331,42 @@ public class RequestBuilderTest {
 		assertEquals(expectedXml, actualXml);
 	}
 	
-
+	@Test
+	public void xmlWithNumberOfSameItemsDefinedInRuntimeWithNamespacesMustBeSupported() throws Exception{
+	
+		String baseXml =  "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:cus=\"http://petals.ow2.org/bpel/Customer/\">" +
+								"<soapenv:Header/>" +
+								"	<soapenv:Body>" +
+								"		<cus:getPriceOfProductList>" +
+								"			<!--Zero or more repetitions:-->" +
+								"			<cus:item>?</cus:item>" +
+								"			</cus:getPriceOfProductList>" +
+								"	</soapenv:Body>" +
+								"</soapenv:Envelope>";
+		
+		Item list = new ItemImpl("getPriceOfProductList");
+		
+		Item item1 = new ItemImpl("item");
+		item1.setContent("milk");
+		list.addChild(item1);
+		
+		Item item2 = new ItemImpl("item");
+		item2.setContent("cereal");
+		list.addChild(item2);
+	
+		String actualXml = new RequestBuilder().buildRequest(baseXml, list);
+		
+		String expectedXml =  "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:cus=\"http://petals.ow2.org/bpel/Customer/\">" +
+						"<soapenv:Header></soapenv:Header>" +
+						"<soapenv:Body>" +
+						"<cus:getPriceOfProductList>" +
+						"<item>milk</item>" +
+						"<item>cereal</item>" +
+						"</cus:getPriceOfProductList>" +
+						"</soapenv:Body>" +
+						"</soapenv:Envelope>";
+		
+		assertEquals(expectedXml, actualXml);
+		
+	}
 }
