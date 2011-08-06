@@ -113,8 +113,7 @@
 <dependency>
         <groupId>com.jayway.restassured</groupId>
         <artifactId>rest-assured</artifactId>
-        <version>1.2.1</version>
-        <scope>test</scope>
+        <version>1.2.2</version>
   </dependency>
 
     
@@ -260,6 +259,7 @@
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
+    
     <dependency>
     	<groupId>groovy</groupId>
     	<artifactId>groovy-all</artifactId>
@@ -308,19 +308,19 @@
     <dependency>
         <groupId>eviware</groupId>
         <artifactId>soapui-xmlbeans</artifactId>
-        <version>3.6.1</version>
+        <version>4.0.0</version>
+        <type>jar</type>
+    </dependency>
+	<dependency>
+        <groupId>eviware</groupId>
+        <artifactId>soap-xmlbeans</artifactId>
+        <version>1.2</version>
         <type>jar</type>
     </dependency>
     <dependency>
             <groupId>eviware</groupId>
-            <artifactId>soap-xmlbeans</artifactId>
-            <version>1.2</version>
-            <type>jar</type>
-    </dependency>
-    <dependency>
-            <groupId>eviware</groupId>
             <artifactId>soapui</artifactId>
-            <version>3.6</version>
+            <version>4.0.0</version>
             <type>jar</type>
     </dependency>
     <dependency>

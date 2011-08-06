@@ -22,7 +22,7 @@ class RequestBuilder {
 	private static SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 	private SAXParser parser;
 	private StringBuilder outputBuilder = new StringBuilder();
-	private final String REGEXP =  "<!--Zero or more repetitions:-->\\s*(<(\\w*:*\\w+)>.*<\\/\\2>)";
+	private final String REGEXP =  "<!--.* or more repetitions:-->\\s*(<(\\w*:*\\w+)>.*<\\/\\2>)";
 
 	private class RequestParserHandler extends DefaultHandler {
 		
@@ -187,6 +187,7 @@ class RequestBuilder {
 			return baseXml;
 		}
 		
+		
 		try {
 			baseXml = addListEntriesToXml(baseXml, root);
 			InputStream is = new ByteArrayInputStream(baseXml.getBytes("UTF-8"));
@@ -196,7 +197,7 @@ class RequestBuilder {
 		catch (Exception e) {
 			throw new ParserException(e);
 		}
-
+				
 		return outputBuilder.toString();
 	}
 
@@ -210,7 +211,7 @@ class RequestBuilder {
 			String formattedTagName = new RequestParserHandler(null).getNameWithoutNamespace(m.group(2));
 			
 			int listSize = root.getListSizeFromItem(formattedTagName);
-			String repeatedEntry = m.group(1).replace(tagName, formattedTagName);
+			String repeatedEntry = m.group(1).replace(tagName, tagName);
 			
 			String listOfTagName = multiplyString(repeatedEntry, listSize);
 			result = baseXml.replaceFirst(REGEXP, listOfTagName);
