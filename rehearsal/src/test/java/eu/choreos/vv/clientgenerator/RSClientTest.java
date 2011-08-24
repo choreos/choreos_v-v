@@ -1,4 +1,4 @@
-package eu.choreos.vv;
+package eu.choreos.vv.clientgenerator;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -10,7 +10,7 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.choreos.vv.RSClient;
+import eu.choreos.vv.clientgenerator.RSClient;
 
 
 public class RSClientTest {

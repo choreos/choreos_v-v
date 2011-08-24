@@ -9,11 +9,11 @@ ant-1.7.0.jar 			 		Apache License v2.0
 ant-apache-log4j-1.8.2.jar		Apache License v2.0
 ant-launcher-1.7.0.jar			Apache License v2.0
 antlr-2.7.7.jar					BSD License
-asm-3.2.jar						BSD License (according to httpclient)
-asm-analysis-3.2.jar			BSD License (according to httpclient)
-asm-commons-3.2.jar				BSD License (according to httpclient)
-asm-tree-3.2.jar				BSD License (according to httpclient)
-asm-util-3.2.jar				BSD License (according to httpclient)
+asm-3.2.jar						BSD License 
+asm-analysis-3.2.jar			BSD License 
+asm-commons-3.2.jar				BSD License 
+asm-tree-3.2.jar				BSD License 
+asm-util-3.2.jar				BSD License 
 bcprov-jdk15-1.44.jar			Bouncy Castle License
 commons-beanutils-1.8.3.jar		Apache License v2.0
 commons-cli-1.2.jar				Apache License v2.0
@@ -32,7 +32,7 @@ httpclient-4.0.3.jar			Apache License v2.0
 httpcore-4.0.1.jar				Apache License v2.0
 javaee-api-6.0.jar				CDDL + GPLv2 with classpath exception
 json-lib-2.3-jdk15.jar			Apache License v2.0
-musicstore-1.0-SNAPSHOT.jar
+musicstore-1.0-SNAPSHOT.jar		LGPL
 nekohtml-1.9.9.jar				Apache License v2.0
 not-yet-commons-ssl-0.3.11.jar	Apache License v2.0
 rest-assured-1.2.2.jar			Apache License v2.0

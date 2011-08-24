@@ -1,4 +1,4 @@
-package eu.choreos.vv;
+package eu.choreos.vv.clientgenerator;
 
 import java.util.ArrayList;
 import java.util.HashMap;

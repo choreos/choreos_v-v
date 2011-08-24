@@ -1,4 +1,4 @@
-package eu.choreos.vv;
+package eu.choreos.vv.clientgenerator;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import eu.choreos.vv.Item;
-import eu.choreos.vv.ItemImpl;
-import eu.choreos.vv.ResponseParser;
+import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.ItemImpl;
+import eu.choreos.vv.clientgenerator.ResponseParser;
 import eu.choreos.vv.exceptions.ParserException;
 
 

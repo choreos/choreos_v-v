@@ -1,12 +1,12 @@
-package eu.choreos.vv;
+package eu.choreos.vv.clientgenerator;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import eu.choreos.vv.Item;
-import eu.choreos.vv.ItemImpl;
-import eu.choreos.vv.RequestBuilder;
+import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.ItemImpl;
+import eu.choreos.vv.clientgenerator.RequestBuilder;
 import eu.choreos.vv.exceptions.ParserException;
 
 

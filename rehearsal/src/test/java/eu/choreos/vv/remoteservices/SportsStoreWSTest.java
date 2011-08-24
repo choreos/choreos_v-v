@@ -9,8 +9,8 @@ import org.apache.xmlbeans.XmlException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.choreos.vv.Item;
-import eu.choreos.vv.WSClient;
+import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.WSClient;
 import eu.choreos.vv.exceptions.FrameworkException;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.WSDLException;
