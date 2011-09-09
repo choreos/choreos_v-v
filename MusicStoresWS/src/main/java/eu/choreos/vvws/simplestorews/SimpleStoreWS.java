@@ -18,6 +18,9 @@ public class SimpleStoreWS {
 
 	@WebMethod
 	public String searchByArtist(String artist) {
+		
+		if(artist.equals("Justin Bieber"))
+			throw new NullPointerException("You will never find this artist here!");
 
 		StringBuilder result = new StringBuilder();
 		
