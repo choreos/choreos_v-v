@@ -117,6 +117,7 @@ public class WSClientTest {
 	}
 	
 	@Test(expected=NullPointerException.class)
+	@Ignore
 	public void shouldRaiseAnExceptionWhenTheResponseIsAnError() throws InvalidOperationNameException, FrameworkException, NoSuchFieldException {
 
 		Item cd = wsSimpleStoreClient.request("searchByArtist", "Justin Bieber");
