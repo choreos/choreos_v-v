@@ -33,14 +33,14 @@ public class WSClientTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
-		WebServiceController.deployService();
+		//WebServiceController.deployService();
 		wsSimpleStoreClient = new WSClient(SIMPLE_STORE_WSDL);
 		wsStoreClient = new WSClient(STORE_WSDL);
 	}
 	
 	@AfterClass
 	public static void tearDown(){
-		WebServiceController.undeployService();
+		//WebServiceController.undeployService();
 	}
 	
 	@Test
@@ -111,13 +111,16 @@ public class WSClientTest {
 	}
 	
 	@Test
-	@Ignore
 	public void oneWayMethodsShouldHaveNullItem() throws InvalidOperationNameException, FrameworkException {
+		//Should not raise a null pointer exception
+		wsSimpleStoreClient.request("sendPurchaseFeedback", "Great Store!");
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void shouldRaiseAnExceptionWhenTheResponseIsAnError() throws InvalidOperationNameException, FrameworkException, NoSuchFieldException {
 
-		Item item = wsSimpleStoreClient.request("sendPurchaseFeedback", "Great Store!");
-		
-		assertNull(item.getContent());
-		assertEquals((Integer) 0, item.getChildrenCount());
+		Item cd = wsSimpleStoreClient.request("searchByArtist", "Justin Bieber");
+		cd.getChild("return").getContent();
 	}
 	
 	@Test

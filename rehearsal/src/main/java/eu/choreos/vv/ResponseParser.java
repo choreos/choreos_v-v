@@ -101,6 +101,9 @@ class ResponseParser {
 
 	public Item parse(String xml) throws ParserException {
 		try {
+			if  (xml == null)
+				return null;
+			
 			InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
 			parser = parserFactory.newSAXParser();
 			parser.parse(is, new ResponseParserHandler());
