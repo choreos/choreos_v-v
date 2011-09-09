@@ -8,9 +8,9 @@
   <name>CHOReOS VV</name>
 
   <modules>
-    <module>rehearsal</module>
     <module>MusicStoresWS</module>
     <module>BookStoreRS</module>
+    <module>rehearsal</module>
   </modules>
   <scm>
     <connection>scm:git@github.com:choreos/choreos_v-v.git</connection>

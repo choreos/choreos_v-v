@@ -33,14 +33,14 @@ public class WSClientTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
-		//WebServiceController.deployService();
+		WebServiceController.deployService();
 		wsSimpleStoreClient = new WSClient(SIMPLE_STORE_WSDL);
 		wsStoreClient = new WSClient(STORE_WSDL);
 	}
 	
 	@AfterClass
 	public static void tearDown(){
-		//WebServiceController.undeployService();
+		WebServiceController.undeployService();
 	}
 	
 	@Test
