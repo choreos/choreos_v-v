@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "searchByTitleResponse", namespace = "http://storews.vvws.choreos.ime.usp.br/")
+@XmlRootElement(name = "searchByTitleResponse", namespace = "http://storews.vvws.choreos.eu/")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "searchByTitleResponse", namespace = "http://storews.vvws.choreos.ime.usp.br/")
+@XmlType(name = "searchByTitleResponse", namespace = "http://storews.vvws.choreos.eu/")
 public class SearchByTitleResponse {
 
     @XmlElement(name = "return", namespace = "")

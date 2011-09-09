@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "purchase", namespace = "http://simplestorews.vvws.choreos.ime.usp.br/")
+@XmlRootElement(name = "purchase", namespace = "http://simplestorews.vvws.choreos.eu/")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "purchase", namespace = "http://simplestorews.vvws.choreos.ime.usp.br/", propOrder = {
+@XmlType(name = "purchase", namespace = "http://simplestorews.vvws.choreos.eu/", propOrder = {
     "arg0",
     "arg1"
 })

@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "sendPurchaseFeedback", namespace = "http://simplestorews.vvws.choreos.ime.usp.br/")
+@XmlRootElement(name = "sendPurchaseFeedback", namespace = "http://simplestorews.vvws.choreos.eu/")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "sendPurchaseFeedback", namespace = "http://simplestorews.vvws.choreos.ime.usp.br/")
+@XmlType(name = "sendPurchaseFeedback", namespace = "http://simplestorews.vvws.choreos.eu/")
 public class SendPurchaseFeedback {
 
     @XmlElement(name = "arg0", namespace = "")
