@@ -1,6 +1,6 @@
 package eu.choreos.vv.util;
 
-import br.usp.ime.choreos.vvws.common.RunServer;
+import eu.choreos.vvws.common.RunServer;
 
 public class WebServiceController {
 

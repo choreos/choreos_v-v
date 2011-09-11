@@ -12,9 +12,6 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import eu.choreos.vv.Item;
-import eu.choreos.vv.ItemImpl;
-import eu.choreos.vv.WSClient;
 import eu.choreos.vv.exceptions.FrameworkException;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.WSDLException;
@@ -112,16 +109,14 @@ public class WSClientTest {
 	
 	@Test
 	public void oneWayMethodsShouldHaveNullItem() throws InvalidOperationNameException, FrameworkException {
-		//Should not raise a null pointer exception
+		//Should not throw a null pointer exception
 		wsSimpleStoreClient.request("sendPurchaseFeedback", "Great Store!");
 	}
 	
-	@Test(expected=NullPointerException.class)
-	@Ignore
+	@Test(expected=Exception.class)
 	public void shouldRaiseAnExceptionWhenTheResponseIsAnError() throws InvalidOperationNameException, FrameworkException, NoSuchFieldException {
-
-		Item cd = wsSimpleStoreClient.request("searchByArtist", "Justin Bieber");
-		cd.getChild("return").getContent();
+		//Should throw an internal exception
+		wsSimpleStoreClient.request("searchByArtist", "Justin Bieber");
 	}
 	
 	@Test

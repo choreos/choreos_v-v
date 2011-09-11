@@ -196,7 +196,7 @@ public class ResponseItemTest {
 	}
 	
 	@Test
-        public void testName() throws Exception {
+        public void shouldReturnTheCorrectListSize() throws Exception {
 		Item root = new ItemImpl("root");
 		Item request = new ItemImpl("setSupermarketsList");
 		Item endpoint1 = new ItemImpl("endpoint");
