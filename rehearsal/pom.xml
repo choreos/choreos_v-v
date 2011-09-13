@@ -61,11 +61,6 @@
       <id>ccslrepository</id>
       <name>ccsl</name>
       <url>http://valinhos.ime.usp.br:54080/maven/</url>
-        <releases>
-        <enabled>false</enabled>
-        <updatePolicy>always</updatePolicy>
-        <checksumPolicy>warn</checksumPolicy>
-      </releases>
     </repository>
     <repository>
       <id>maven-restlet</id>
