@@ -9,7 +9,6 @@ import java.io.IOException;
 import org.apache.xmlbeans.XmlException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.choreos.vv.exceptions.FrameworkException;
