@@ -8,11 +8,11 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(value = Parameterized.class)
-public class ConformanceTestCase {
+public class ComplianceTestCase {
 	
 	static String endpoint;
 	
-	public ConformanceTestCase(String entry){
+	public ComplianceTestCase(String entry){
 		endpoint = entry;
 	}	
 

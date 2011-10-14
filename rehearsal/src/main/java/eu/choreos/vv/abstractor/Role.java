@@ -1,12 +1,5 @@
 package eu.choreos.vv.abstractor;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
-import org.junit.runner.Result;
-import org.junit.runner.notification.Failure;
-
-import eu.choreos.vv.exceptions.NonJUnitTestCasesException;
 
 public class Role {
 
@@ -14,48 +7,56 @@ public class Role {
 	private String wsdl;
 	
 	public Role(String name, String wsdl) {
-		this.name = name;
-		this.wsdl = wsdl;
+		this.setName(name);
+		this.setWsdl(wsdl);
         }
 
-	public boolean runTests(Class<?> testClass) throws NonJUnitTestCasesException {	
-		
-		if(!isCompatibleWithTests(testClass))
-			throw new NonJUnitTestCasesException("Test case cannot be in found in " + testClass); 
-		
-		ConformanceTestCase.setName(wsdl);
-		Class<?> claz = testClass.asSubclass(ConformanceTestCase.class);
-		
-		Result result = org.junit.runner.JUnitCore.runClasses(claz);
-		
-		if (result.getFailureCount()<=0)
-			return true;
-		
-		String out = formatStackTrace(result);
-		
-		throw new AssertionError(out);
+	public String getName() {
+	        return name;
         }
 
-	private String formatStackTrace(Result result) {
-	        String out = "";
-		for (Failure failure : result.getFailures()) {
-	                out += failure.getTrace().toString() + "\n";
-                }
-	        return out;
+	public void setName(String name) {
+	        this.name = name;
         }
 
-	public static boolean isCompatibleWithTests(Class<?> testCases) {
-	        
-		for(Method method : testCases.getDeclaredMethods()){
-			
-			for(Annotation annotation : method.getAnnotations())
-				if(annotation.toString().startsWith("@org.junit.Test"))
-					return true;
-		}
-		
-	        return false;
+	public String getWsdl() {
+	        return wsdl;
         }
-	
+
+	public void setWsdl(String wsdl) {
+	        this.wsdl = wsdl;
+        }
+
+	@Override
+        public int hashCode() {
+	        final int prime = 31;
+	        int result = 1;
+	        result = prime * result + ((name == null) ? 0 : name.hashCode());
+	        result = prime * result + ((wsdl == null) ? 0 : wsdl.hashCode());
+	        return result;
+        }
+
+	@Override
+        public boolean equals(Object obj) {
+	        if (this == obj)
+		        return true;
+	        if (obj == null)
+		        return false;
+	        if (getClass() != obj.getClass())
+		        return false;
+	        Role other = (Role) obj;
+	        if (name == null) {
+		        if (other.name != null)
+			        return false;
+	        } else if (!name.equals(other.name))
+		        return false;
+	        if (wsdl == null) {
+		        if (other.wsdl != null)
+			        return false;
+	        } else if (!wsdl.equals(other.wsdl))
+		        return false;
+	        return true;
+        }
 	
 
 }

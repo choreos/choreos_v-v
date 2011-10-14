@@ -1,10 +1,12 @@
-package eu.choreos.vv.abstractor;
+package eu.choreos.vv.compliance;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class StoreRoleTest extends ConformanceTestCase{
+import eu.choreos.vv.abstractor.ComplianceTestCase;
+
+public class StoreRoleTest extends ComplianceTestCase{
 	
 	 String endpoint;
 	
