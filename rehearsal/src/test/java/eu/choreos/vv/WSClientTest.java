@@ -74,9 +74,10 @@ public class WSClientTest {
 		assertEquals("The dark side of the moon;", cd.getChild("return").getContent());	
 	}
 	
+	@Test
 	public void shouldMakeValidRequestWithTwoParameters() throws Exception {
 		Item status = wsSimpleStoreClient.request("purchase", "Album Name", "Client Name");
-		assertEquals("true", status.getContent());	
+		assertEquals("true", status.getChild("return").getContent());	
 	}
 	
 	@Test(expected=InvalidOperationNameException.class)
@@ -154,5 +155,27 @@ public class WSClientTest {
 		
 		assertEquals("false", item.getChild("return").getContent());
 		
+	}
+	
+	@Test
+	public void shouldUpdateTheEndpointCorrectly() throws Exception{
+		WSClient ws = new WSClient("file://" + System.getProperty("user.dir") + "/resource/store_with_wrong_endpoint.wsdl");
+		
+		String expectedEndpoint = "http://localhost:1234/SimpleStore";
+	
+		ws.setEndpoint("http://localhost:1234/SimpleStore");
+		assertEquals(expectedEndpoint, ws.getEndpoint());
+	}
+	
+	@Test
+	public void shouldUpdateTheEndpointAndTheOperationsMustKeepWorkingCorrectly() throws Exception{
+		WSClient ws = new WSClient("file://" + System.getProperty("user.dir") + "/resource/store_with_wrong_endpoint.wsdl");
+		
+		ws.setEndpoint("http://localhost:1234/SimpleStore");
+		Item cd = ws.request("searchByArtist", "Floyd");
+		assertEquals("The dark side of the moon;", cd.getChild("return").getContent());	
+
+		Item status = ws.request("purchase", "Album Name", "Client Name");
+		assertEquals("true", status.getChild("return").getContent());	
 	}
 }

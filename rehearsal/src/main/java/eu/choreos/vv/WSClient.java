@@ -40,7 +40,9 @@ public class WSClient {
 	private final String wsdl;
 	private WsdlInterface iface;
 	private List<String> operations;
-
+	private String endpoint;
+	private boolean remoteEndpoint = false;
+	
 	/**
 	 * 
 	 * @param wsdl the path or URL to the WSDL document
@@ -51,7 +53,7 @@ public class WSClient {
 	 */
 	public WSClient(String wsdl) throws XmlException, IOException, FrameworkException, WSDLException {
 		
-			if (!verifyDomainAvailability(wsdl))
+			if (!wsdl.startsWith("file") &&  !verifyDomainAvailability(wsdl))
 				throw new WSDLException("The url " + wsdl + " is not accessible");
 		
 		
@@ -161,6 +163,9 @@ public class WSClient {
 		
 		WsdlRequest request = operation.addNewRequest("myRequest");
 		request.setRequestContent(requestContent);
+		
+		if(remoteEndpoint)
+			request.setEndpoint(endpoint);
 
 		// submit the request
 		WsdlSubmit<WsdlRequest> submit = null;
@@ -197,4 +202,13 @@ public class WSClient {
                  
 		return (statusCode == HttpStatus.SC_OK);
 	}
+
+	public String getEndpoint() {
+	        return endpoint;
+        }
+	
+	public void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
+	        remoteEndpoint = true;
+        }
 }
