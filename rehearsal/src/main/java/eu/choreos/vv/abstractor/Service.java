@@ -8,7 +8,7 @@ import java.util.Set;
 public class Service {
 
 	private String WSDL;
-	private HashMap<Role, List<Service>> internalServices;
+	protected HashMap<Role, List<Service>> internalServices;
 	
 	public Service(){
 		internalServices = new HashMap<Role, List<Service>>();
@@ -48,7 +48,7 @@ public class Service {
 		internalServices.get(role).add(internalService);
         }
 
-	public List<Service> getInternalServicesForRole(Role role) {
+	public List<Service> getServicesForRole(Role role) {
 	        return internalServices.get(role);
         }
 
