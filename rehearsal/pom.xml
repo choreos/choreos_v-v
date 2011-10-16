@@ -58,6 +58,11 @@
   
   <repositories>
     <repository>
+      <id>ccslrepository</id>
+      <name>ccsl</name>
+      <url>http://valinhos.ime.usp.br:54080/maven/</url>
+    </repository>
+    <repository>
       <id>maven-restlet</id>
       <name>Public online Restlet repository</name>
       <url>http://maven.restlet.org</url>
@@ -72,6 +77,7 @@
         <checksumPolicy>warn</checksumPolicy>
       </releases>
     </repository>
+
     <repository>
       <id>eviware</id>
       <name>eviWare</name>
@@ -87,6 +93,7 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+
     <repository>
         <id>petalslink</id>
         <name>Petalslink</name>
@@ -95,17 +102,12 @@
         <enabled>true</enabled>
       </releases>
     </repository>
-    <repository>
-      <id>ccslrepository</id>
-      <name>ccsl</name>
-      <url>http://valinhos.ime.usp.br:54080/maven/</url>
-    </repository>
   </repositories>
   
   <dependencies>
   
     <dependency>
-     <groupId>br.usp.ime.choreos.vvws</groupId>
+     <groupId>eu.choreos.vvws</groupId>
      <artifactId>musicstore</artifactId>
      <version>1.0-SNAPSHOT</version>
     </dependency>

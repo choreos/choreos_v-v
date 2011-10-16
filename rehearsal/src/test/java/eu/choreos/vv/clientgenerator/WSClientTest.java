@@ -9,12 +9,8 @@ import java.io.IOException;
 import org.apache.xmlbeans.XmlException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import eu.choreos.vv.clientgenerator.Item;
-import eu.choreos.vv.clientgenerator.ItemImpl;
-import eu.choreos.vv.clientgenerator.WSClient;
 import eu.choreos.vv.exceptions.FrameworkException;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.WSDLException;
@@ -78,9 +74,10 @@ public class WSClientTest {
 		assertEquals("The dark side of the moon;", cd.getChild("return").getContent());	
 	}
 	
+	@Test
 	public void shouldMakeValidRequestWithTwoParameters() throws Exception {
 		Item status = wsSimpleStoreClient.request("purchase", "Album Name", "Client Name");
-		assertEquals("true", status.getContent());	
+		assertEquals("true", status.getChild("return").getContent());	
 	}
 	
 	@Test(expected=InvalidOperationNameException.class)
@@ -111,13 +108,15 @@ public class WSClientTest {
 	}
 	
 	@Test
-	@Ignore
 	public void oneWayMethodsShouldHaveNullItem() throws InvalidOperationNameException, FrameworkException {
-
-		Item item = wsSimpleStoreClient.request("sendPurchaseFeedback", "Great Store!");
-		
-		assertNull(item.getContent());
-		assertEquals((Integer) 0, item.getChildrenCount());
+		//Should not throw a null pointer exception
+		wsSimpleStoreClient.request("sendPurchaseFeedback", "Great Store!");
+	}
+	
+	@Test(expected=Exception.class)
+	public void shouldRaiseAnExceptionWhenTheResponseIsAnError() throws InvalidOperationNameException, FrameworkException, NoSuchFieldException {
+		//Should throw an internal exception
+		wsSimpleStoreClient.request("searchByArtist", "Justin Bieber");
 	}
 	
 	@Test
@@ -156,5 +155,27 @@ public class WSClientTest {
 		
 		assertEquals("false", item.getChild("return").getContent());
 		
+	}
+	
+	@Test
+	public void shouldUpdateTheEndpointCorrectly() throws Exception{
+		WSClient ws = new WSClient("file://" + System.getProperty("user.dir") + "/resource/store_with_wrong_endpoint.wsdl");
+		
+		String expectedEndpoint = "http://localhost:1234/SimpleStore";
+	
+		ws.setEndpoint("http://localhost:1234/SimpleStore");
+		assertEquals(expectedEndpoint, ws.getEndpoint());
+	}
+	
+	@Test
+	public void shouldUpdateTheEndpointAndTheOperationsMustKeepWorkingCorrectly() throws Exception{
+		WSClient ws = new WSClient("file://" + System.getProperty("user.dir") + "/resource/store_with_wrong_endpoint.wsdl");
+		
+		ws.setEndpoint("http://localhost:1234/SimpleStore");
+		Item cd = ws.request("searchByArtist", "Floyd");
+		assertEquals("The dark side of the moon;", cd.getChild("return").getContent());	
+
+		Item status = ws.request("purchase", "Album Name", "Client Name");
+		assertEquals("true", status.getChild("return").getContent());	
 	}
 }
