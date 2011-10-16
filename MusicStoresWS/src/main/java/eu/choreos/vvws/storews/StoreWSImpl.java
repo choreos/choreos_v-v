@@ -10,7 +10,7 @@ import eu.choreos.vvws.common.Customer;
 import eu.choreos.vvws.common.MockCDs;
 
 
-@WebService(endpointInterface="br.usp.ime.choreos.vvws.storews.StoreWS")
+@WebService(endpointInterface="eu.choreos.vvws.storews.StoreWS")
 public class StoreWSImpl implements StoreWS {
 
 	List<CD> cds = MockCDs.CDList;
