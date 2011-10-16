@@ -41,7 +41,7 @@ public class ServiceAbstractionTest {
 		
 		globalRecords.addService(paymentWS, store);
 		
-		List<Service> internalServices = globalRecords.getInternalServicesForRole(store);
+		List<Service> internalServices = globalRecords.getServicesForRole(store);
 		
 		String internalRoleName = internalServices.get(0).getRoles().get(0).getName();
 		String internalRoleWSDL = internalServices.get(0).getRoles().get(0).getWsdl();
@@ -62,7 +62,7 @@ public class ServiceAbstractionTest {
 		customerSupport.setWSDL("customer support wsdl");
 		globalRecords.addService(customerSupport, store);
 		
-		List<Service> internalServices = globalRecords.getInternalServicesForRole(store);
+		List<Service> internalServices = globalRecords.getServicesForRole(store);
 		
 		String internalServiceWSDL = internalServices.get(0).getWSDL();
 		String internalRoleName = internalServices.get(0).getRoles().get(0).getName();
