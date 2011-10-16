@@ -3,7 +3,6 @@ package eu.choreos.vv.compliance;
 import static eu.choreos.vv.assertions.RehearsalAsserts.assertRole;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.choreos.vv.abstractor.Role;
@@ -49,9 +48,13 @@ public class ComplianceTest {
 	}
 	
 	@Test
-	@Ignore
 	public void assertRoleShouldSucceedWhenAllTestCasesSucceed() throws Exception{
 		assertRole(store, abcStore, FullRoleComplianceTest.class);
+	}
+	
+	@Test(expected=junit.framework.AssertionFailedError.class)
+	public void assertRoleShouldNotSucceedWhenAtLeastOneTestCaseFailed() throws Exception{
+		assertRole(store, abcStore, RoleComplianceWithFailuresTest.class);
 	}
 
 }
