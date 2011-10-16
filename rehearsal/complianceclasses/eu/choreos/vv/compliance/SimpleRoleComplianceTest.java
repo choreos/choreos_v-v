@@ -6,11 +6,11 @@ import org.junit.Test;
 
 import eu.choreos.vv.abstractor.ComplianceTestCase;
 
-public class StoreRoleTest extends ComplianceTestCase{
+public class SimpleRoleComplianceTest extends ComplianceTestCase{
 	
 	 String endpoint;
 	
-	public  StoreRoleTest(String endpoint){
+	public  SimpleRoleComplianceTest(String endpoint){
 		super(endpoint);
 		this.endpoint = endpoint;
 	}
@@ -19,7 +19,7 @@ public class StoreRoleTest extends ComplianceTestCase{
 	
 	@Test
 	public void shouldReturnTheEndpoint(){
-		assertEquals("http://localhost:1234/simpleStore?wsdl", endpoint);
+		assertEquals("file://" + System.getProperty("user.dir") + "/resource/simpleStore.wsdl", endpoint);
 	}
 	
 }

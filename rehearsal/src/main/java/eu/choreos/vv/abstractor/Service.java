@@ -27,6 +27,10 @@ public class Service {
 	public void removeRole(Role role){
 		roles.remove(role);
 	}
+	
+	public List<Role> getRoles(){
+		return roles;
+	}
 
 	
 
