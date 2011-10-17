@@ -34,13 +34,13 @@ public class ChoreographyAbstractionTest {
 
 		Service registry = new Service();
 		registry.setWSDL("http://localhost:8080/petals/services/registry?wsdl");
-		carrefutur.addService(registry, supermarket);
+		carrefutur.addService(registry, "supermarket");
 
 		Service carefuturWS = new Service();
 		carefuturWS.setWSDL("http://localhost:8080/petals/services/carrefuturWS?wsdl");
-		carrefutur.addService(carefuturWS, supermarket);
+		carrefutur.addService(carefuturWS, "supermarket");
 
-		futureMarket.addService(carrefutur, supermarket);
+		futureMarket.addService(carrefutur, "supermarket");
 	}
 
 	@Test
@@ -48,9 +48,9 @@ public class ChoreographyAbstractionTest {
 		Service futureMart = new Service();
 		futureMart.setWSDL("http://localhost:8080/petals/services/futureMart?wsdl");
 		futureMart.addRole(supermarket);
-		futureMarket.addService(futureMart, supermarket);
+		futureMarket.addService(futureMart, "supermarket");
 
-		List<Service> services = futureMarket.getServicesForRole(supermarket);
+		List<Service> services = futureMarket.getServicesForRole("supermarket");
 
 		String carrefuturWSDL = services.get(0).getWSDL();
 		String futureMartWSDL = services.get(1).getWSDL();
@@ -63,8 +63,7 @@ public class ChoreographyAbstractionTest {
 
 	@Test
 	public void shouldServicesKeepTheRoleName() throws Exception {
-		List<Service> services = futureMarket.getServicesForRole(supermarket);
-
+		List<Service> services = futureMarket.getServicesForRole("supermarket");
 		String roleName = services.get(0).getRoles().get(0).getName();
 		
 		assertEquals("supermarket", roleName);

@@ -3,15 +3,17 @@ package eu.choreos.vv.abstractor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map.Entry;
 
 public class Service {
 
 	private String WSDL;
-	protected HashMap<Role, List<Service>> internalServices;
+	protected HashMap<String, Role> roles;
+	protected HashMap<String, List<Service>> internalServices;
 	
 	public Service(){
-		internalServices = new HashMap<Role, List<Service>>();
+		roles = new HashMap<String, Role>();
+		internalServices = new HashMap<String, List<Service>>();
 	}
 
 	public String getWSDL() {
@@ -23,33 +25,33 @@ public class Service {
         } 
 	
 	public void addRole(Role role){
-		internalServices.put(role, new ArrayList<Service>());
+		roles.put(role.getName(), role);
+		internalServices.put(role.getName(), new ArrayList<Service>());
 	}
 	
-	public void removeRole(Role role){
+	public void removeRole(String role){
 		internalServices.remove(role);
 	}
 	
 	public List<Role> getRoles(){
-		Set<Role> roleKeys =  internalServices.keySet();
-		ArrayList<Role> roles = new ArrayList<Role>();
+		ArrayList<Role> roleEntries = new ArrayList<Role>();
 		
-		for (Role role : roleKeys) 
-	                roles.add(role);
-                
-		return roles;
+		for (Entry<String, Role> entry : roles.entrySet()) 
+			roleEntries.add(entry.getValue());
+			
+		return roleEntries;
 	}
 
-	public void addService(Service internalService, Role role) {
-		int index = internalServices.get(role).size();
-		Role internalRole = new Role(role.getName() + index, "");
+	public void addService(Service service, String roleName) {
+		int index = internalServices.get(roleName).size();
+		Role internalRole = new Role(roleName + index, "");
 		
-		internalService.addRole(internalRole);
-		internalServices.get(role).add(internalService);
+		service.addRole(internalRole);
+		internalServices.get(roleName).add(service);
         }
 
-	public List<Service> getServicesForRole(Role role) {
-	        return internalServices.get(role);
+	public List<Service> getServicesForRole(String roleName) {
+	        return internalServices.get(roleName);
         }
 
 }

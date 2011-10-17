@@ -39,9 +39,9 @@ public class ServiceAbstractionTest {
 		Service paymentWS = new Service();
 		paymentWS.setWSDL("payment service wsdl");
 		
-		globalRecords.addService(paymentWS, store);
+		globalRecords.addService(paymentWS, "store");
 		
-		List<Service> internalServices = globalRecords.getServicesForRole(store);
+		List<Service> internalServices = globalRecords.getServicesForRole("store");
 		
 		String internalRoleName = internalServices.get(0).getRoles().get(0).getName();
 		String internalRoleWSDL = internalServices.get(0).getRoles().get(0).getWsdl();
@@ -55,14 +55,14 @@ public class ServiceAbstractionTest {
 	public void shouldAssignAnInternalRoleNameForAllInternalServices() throws Exception {
 		Service paymentWS = new Service();
 		paymentWS.setWSDL("payment service wsdl");
-		globalRecords.addService(paymentWS, store);
+		globalRecords.addService(paymentWS, "store");
 		
 		
 		Service customerSupport =new Service();
 		customerSupport.setWSDL("customer support wsdl");
-		globalRecords.addService(customerSupport, store);
+		globalRecords.addService(customerSupport, "store");
 		
-		List<Service> internalServices = globalRecords.getServicesForRole(store);
+		List<Service> internalServices = globalRecords.getServicesForRole("store");
 		
 		String internalServiceWSDL = internalServices.get(0).getWSDL();
 		String internalRoleName = internalServices.get(0).getRoles().get(0).getName();
