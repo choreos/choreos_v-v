@@ -1,15 +1,23 @@
 package eu.choreos.vv.abstractor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+
+import org.apache.xmlbeans.XmlException;
+
+import eu.choreos.vv.clientgenerator.WSClient;
+import eu.choreos.vv.exceptions.FrameworkException;
+import eu.choreos.vv.exceptions.WSDLException;
 
 public class Service {
 
 	private String WSDL;
 	protected HashMap<String, Role> roles;
 	protected HashMap<String, List<Service>> internalServices;
+	private WSClient serviceClient;
 	
 	public Service(){
 		roles = new HashMap<String, Role>();
@@ -21,7 +29,7 @@ public class Service {
         }
 
 	public void setWSDL(String wSDL) {
-	        WSDL = wSDL;
+	        this.WSDL = wSDL;
         } 
 	
 	public void addRole(Role role){
@@ -54,4 +62,20 @@ public class Service {
 	        return internalServices.get(roleName);
         }
 
+	public WSClient getWSClient() {
+	        
+	        try {
+	    				serviceClient = new WSClient (WSDL);
+	    			} catch (WSDLException e) {
+	    				e.printStackTrace();
+	    			} catch (XmlException e) {
+	    				e.printStackTrace();
+	    			} catch (IOException e) {
+	    				e.printStackTrace();
+	    			} catch (FrameworkException e) {
+	    				e.printStackTrace();
+	    			}
+	
+	return serviceClient;
+	}
 }

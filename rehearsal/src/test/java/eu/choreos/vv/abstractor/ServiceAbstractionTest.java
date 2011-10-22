@@ -1,12 +1,19 @@
 package eu.choreos.vv.abstractor;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.WSClient;
+import eu.choreos.vv.util.WebServiceController;
 
 public class ServiceAbstractionTest {
 	
@@ -15,6 +22,16 @@ public class ServiceAbstractionTest {
 
 	private static Service globalRecords;
 	private static Role store;
+	
+	@BeforeClass
+	public static void deployService() throws Exception {
+		WebServiceController.deployService();
+	}
+	
+	@AfterClass
+	public static void undeplyService(){
+		WebServiceController.undeployService();
+	}
 	
 	@Before
 	public  void setUp() throws Exception{
@@ -37,7 +54,7 @@ public class ServiceAbstractionTest {
 	@Test
 	public void shouldAssignAnInternalRoleNameForAnInternalService() throws Exception {
 		Service paymentWS = new Service();
-		paymentWS.setWSDL("payment service wsdl");
+		paymentWS.setWSDL("file://" + System.getProperty("user.dir") + "/resource/SM3.wsdl");
 		
 		globalRecords.addService(paymentWS, "store");
 		
@@ -53,28 +70,48 @@ public class ServiceAbstractionTest {
 	
 	@Test
 	public void shouldAssignAnInternalRoleNameForAllInternalServices() throws Exception {
+		String PAYMENT_WS_WSDL = "file://" + System.getProperty("user.dir") + "/resource/SM3.wsdl";
+		String CUSTOMER_WS_WSDL = "file://" + System.getProperty("user.dir") + "/resource/SM4.wsdl";
+		
 		Service paymentWS = new Service();
-		paymentWS.setWSDL("payment service wsdl");
+		paymentWS.setWSDL(PAYMENT_WS_WSDL);
 		globalRecords.addService(paymentWS, "store");
 		
 		
 		Service customerSupport =new Service();
-		customerSupport.setWSDL("customer support wsdl");
+		customerSupport.setWSDL(CUSTOMER_WS_WSDL);
 		globalRecords.addService(customerSupport, "store");
 		
 		List<Service> internalServices = globalRecords.getServicesForRole("store");
 		
 		String internalServiceWSDL = internalServices.get(0).getWSDL();
 		String internalRoleName = internalServices.get(0).getRoles().get(0).getName();
-		assertEquals("payment service wsdl", internalServiceWSDL);
+		assertEquals(PAYMENT_WS_WSDL, internalServiceWSDL);
 		assertEquals("store0", internalRoleName);
 		
 		internalServiceWSDL = internalServices.get(1).getWSDL();
 		internalRoleName = internalServices.get(1).getRoles().get(0).getName();
-		assertEquals("customer support wsdl", internalServiceWSDL);
+		assertEquals(CUSTOMER_WS_WSDL, internalServiceWSDL);
 		assertEquals("store1", internalRoleName);
-		
 
+	}
+	
+	@Test
+	public void throughTheServiceClientShouldBePossibleToRetrieveTheOperationNames() throws Exception {
+	        WSClient storeClient = globalRecords.getWSClient();
+	        
+	        List<String> operationNames = storeClient.getOperations();
+	        
+	        assertTrue(operationNames.contains("searchByTitle"));
+	        
+    }
+	
+	@Test
+	public void throughTheServiceClientShouldBePossibleToInvokeOperations() throws Exception {
+			WSClient storeClient = globalRecords.getWSClient();
+			
+			Item cd = storeClient.request("searchByArtist", "Floyd");
+			assertEquals("The dark side of the moon;", cd.getChild("return").getContent());	
 	}
 
 
