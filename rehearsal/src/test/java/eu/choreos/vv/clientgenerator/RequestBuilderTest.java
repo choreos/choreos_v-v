@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.clientgenerator.ItemImpl;
-import eu.choreos.vv.clientgenerator.RequestBuilder;
+import eu.choreos.vv.common.ItemBuilder;
 import eu.choreos.vv.exceptions.ParserException;
 
 
@@ -21,7 +21,7 @@ public class RequestBuilderTest {
 			+ "</senv:Body>" 
 			+ "</senv:Envelope>";
 
-		String result = new RequestBuilder().buildRequest(sampleXml, null);
+		String result = new ItemBuilder().buildItem(sampleXml, null);
 
 		assertEquals(sampleXml, result);
 	}
@@ -39,7 +39,7 @@ public class RequestBuilderTest {
 			+ "</senv:Body>" 
 			+ "</senv:Envelope>";
 
-		String result = new RequestBuilder().buildRequest(sampleXml, null);
+		String result = new ItemBuilder().buildItem(sampleXml, null);
 
 		assertEquals(sampleXml, result);
 	}
@@ -61,7 +61,7 @@ public class RequestBuilderTest {
 		child.setContent("test");
 		root.addChild(child);
 		
-		String result = new RequestBuilder().buildRequest(sampleXml, root);
+		String result = new ItemBuilder().buildItem(sampleXml, root);
 		
 		String expectedXml = "<senv:Envelope " 
 			+ "xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
@@ -90,7 +90,7 @@ public class RequestBuilderTest {
 		
 		Item root = new ItemImpl("search_by_brand");
 		
-		String result = new RequestBuilder().buildRequest(sampleXml, root);
+		String result = new ItemBuilder().buildItem(sampleXml, root);
 		
 		String expectedXml = "<senv:Envelope " 
 			+ "xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
@@ -181,7 +181,7 @@ public class RequestBuilderTest {
 		item3.addChild(childL);          
 		root.addChild(item3);
 		
-		String result = new RequestBuilder().buildRequest(sampleXml, root);
+		String result = new ItemBuilder().buildItem(sampleXml, root);
 		
 		String expectedXml = "<senv:Envelope " + 
 		"xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " + 
@@ -238,7 +238,7 @@ public class RequestBuilderTest {
 		root.addChild(child2);
 		child1.addChild(grandChild);
 		
-		String result = new RequestBuilder().buildRequest(sampleXml, root);
+		String result = new ItemBuilder().buildItem(sampleXml, root);
 		
 		String expectedXml = "<senv:Envelope " 
 			+ "xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2003/03/addressing\" " 
@@ -295,7 +295,7 @@ public class RequestBuilderTest {
 		child1.addChild(grandChild1);
 		child1.addChild(grandChild2);
 		
-		new RequestBuilder().buildRequest(sampleXml, root);
+		new ItemBuilder().buildItem(sampleXml, root);
 	}
 	
 	@Test
@@ -319,7 +319,7 @@ public class RequestBuilderTest {
 		endpoint2.setContent("endpoint2");
 		request.addChild(endpoint2);
 
-		String actualXml = new RequestBuilder().buildRequest(baseXml, request);
+		String actualXml = new ItemBuilder().buildItem(baseXml, request);
 		
 		String expectedXml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://services.choreos.eu/\">" +
 		    "<soapenv:Header></soapenv:Header>" +
@@ -358,7 +358,7 @@ public class RequestBuilderTest {
 		item2.setContent("cereal");
 		list.addChild(item2);
 	
-		String actualXml = new RequestBuilder().buildRequest(baseXml, list);
+		String actualXml = new ItemBuilder().buildItem(baseXml, list);
 		
 		String expectedXml =  "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:cus=\"http://petals.ow2.org/bpel/Customer/\">" +
 						"<soapenv:Header></soapenv:Header>" +

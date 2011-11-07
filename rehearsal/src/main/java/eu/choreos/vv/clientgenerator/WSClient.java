@@ -24,6 +24,7 @@ import com.eviware.soapui.model.iface.Request.SubmitException;
 import com.eviware.soapui.model.iface.Response;
 import com.eviware.soapui.support.SoapUIException;
 
+import eu.choreos.vv.common.ItemBuilder;
 import eu.choreos.vv.exceptions.FrameworkException;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.ParserException;
@@ -158,7 +159,7 @@ public class WSClient {
 		if (strategy == Strategy.STRING) {
 			requestContent = SoapEnvelopeHelper.generate(defaultRequestContent, parameters);
 		} else if (strategy == Strategy.ITEM) {
-			requestContent = new RequestBuilder().buildRequest(defaultRequestContent, requestRoot); 
+			requestContent = new ItemBuilder().buildItem(defaultRequestContent, requestRoot); 
 		}
 		
 		WsdlRequest request = operation.addNewRequest("myRequest");
