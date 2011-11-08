@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import com.eviware.soapui.impl.WsdlInterfaceFactory;
 import com.eviware.soapui.impl.wsdl.WsdlInterface;
 import com.eviware.soapui.impl.wsdl.WsdlProject;
@@ -13,6 +15,8 @@ import com.eviware.soapui.impl.wsdl.mock.WsdlMockService;
 import com.eviware.soapui.support.SoapUIException;
 
 import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.common.HttpUtils;
+import eu.choreos.vv.exceptions.MockDeploymentException;
 import eu.choreos.vv.exceptions.WSDLException;
 
 
@@ -43,7 +47,6 @@ public class Mock {
 			service = project.addNewMockService(name);
 			service.setPort(Integer.parseInt(port));
 			createMockOperations();
-			runner = new WsdlMockRunner(service, null);
 		}
 		catch(SoapUIException e){
 			throw new WSDLException(e);
@@ -86,12 +89,23 @@ public class Mock {
 		return null;
 	}
 
-	public void start() throws Exception {
+	public void start() throws MockDeploymentException {
 		iface.addEndpoint( service.getLocalEndpoint());
-		runner.start();
+		
+		try {
+
+			if(HttpUtils.UriAreUsed("http://" + domain + ":" + port))
+				throw new MockDeploymentException("Address already in use");
+			
+			runner = new WsdlMockRunner(service, null);
+			runner.start();
+			
+		} catch (Exception e) {
+			throw new MockDeploymentException(e);
+		}
 	}
 
-	public void stop() throws Exception {
+	public void stop()  {
 		runner.stop();
 	}
 

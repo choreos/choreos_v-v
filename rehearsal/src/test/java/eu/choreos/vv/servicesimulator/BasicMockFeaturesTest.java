@@ -6,15 +6,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.choreos.vv.clientgenerator.WSClient;
+import eu.choreos.vv.common.HttpUtils;
+import eu.choreos.vv.exceptions.MockDeploymentException;
 import eu.choreos.vv.exceptions.WSDLException;
 
 public class BasicMockFeaturesTest {
@@ -26,6 +24,12 @@ public class BasicMockFeaturesTest {
 	public static void setUp() throws Exception {
 		REAL_WSDL_URI = "file://" + System.getProperty("user.dir") + "/resource/simpleStore.wsdl";
 		aMock = new Mock("myMock", REAL_WSDL_URI);
+
+	}
+	
+	@AfterClass
+	public static void tearDown() throws Exception {
+		aMock.stop();
 
 	}
 	
@@ -77,17 +81,25 @@ public class BasicMockFeaturesTest {
 		
 		// Make a http request by accessing mock wsdl uri
 		//--------------------------------------------------
-		HttpClient client = new HttpClient();
-		GetMethod method = new GetMethod(aMock.getWSDL());
-		
-		method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, 
-				    		new DefaultHttpMethodRetryHandler(3, false));
-		//--------------------------------------------------
-		
-		assertEquals(HttpStatus.SC_OK, client.executeMethod(method));
-		
-		method.releaseConnection();
+		assertTrue(HttpUtils.verifyIfUriReturns0kforGET(aMock.getWSDL()));
 		
 		aMock.stop();
+	}
+	
+	
+	@Test(expected=MockDeploymentException.class)
+	public void shouldThrowAnExceptionThePortHaveAlreadyBeenUsed() throws Exception {
+		aMock.start();
+		String other_WSDL_URI = "file://" + System.getProperty("user.dir") + "/resource/sm1.wsdl";
+		Mock otherMock = new Mock("otherMock", other_WSDL_URI);
+		otherMock.start();
+		aMock.stop();
+	}
+	
+	// should be the last testcase
+	@Test(expected=MockDeploymentException.class)
+	public void shouldThrowAnExceptionWhenTheMockHaveAlreadyBeenStarted() throws Exception {
+		aMock.start();
+		aMock.start();
 	}
 }
