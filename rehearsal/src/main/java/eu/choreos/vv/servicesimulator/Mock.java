@@ -106,6 +106,7 @@ public class Mock {
 
 	public void stop()  {
 		runner.stop();
+		runner.release();
 	}
 
 	public void returnFor(String operation, String... parameters) {
