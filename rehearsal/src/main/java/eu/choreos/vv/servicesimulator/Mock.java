@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import com.eviware.soapui.impl.WsdlInterfaceFactory;
 import com.eviware.soapui.impl.wsdl.WsdlInterface;
 import com.eviware.soapui.impl.wsdl.WsdlProject;
@@ -17,6 +15,7 @@ import com.eviware.soapui.support.SoapUIException;
 import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.common.HttpUtils;
 import eu.choreos.vv.exceptions.MockDeploymentException;
+import eu.choreos.vv.exceptions.ParserException;
 import eu.choreos.vv.exceptions.WSDLException;
 
 
@@ -74,6 +73,7 @@ public class Mock {
 	}
 
 	public void setPort(String port) {
+		service.setPort(Integer.parseInt(port));
 		this.port = port;
 	}
 	
@@ -88,12 +88,11 @@ public class Mock {
 	public List<Item> getResponsesFor(String operationName) {
 		return null;
 	}
-
+	
 	public void start() throws MockDeploymentException {
 		iface.addEndpoint( service.getLocalEndpoint());
 		
 		try {
-
 			if(HttpUtils.UriAreUsed("http://" + domain + ":" + port))
 				throw new MockDeploymentException("Address already in use");
 			
@@ -107,6 +106,17 @@ public class Mock {
 
 	public void stop()  {
 		runner.stop();
+	}
+
+	public void returnFor(String operation, String... parameters) {
+		MockOperation mockedOperation = operations.get(operation);
+		mockedOperation.addResponse(parameters);
+		
+	}
+	
+	public void returnFor(String operation, Item root) throws ParserException {
+		MockOperation mockedOperation = operations.get(operation);
+		mockedOperation.addResponse(root);
 	}
 
 }

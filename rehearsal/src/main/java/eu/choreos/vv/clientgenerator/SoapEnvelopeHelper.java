@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * @author lucas, guilherme
  *
  */
-class SoapEnvelopeHelper {
+public class SoapEnvelopeHelper {
 
 	private static final String REGEX_MATCH = ">\\?<";
 

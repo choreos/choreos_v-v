@@ -33,7 +33,7 @@ public class HttpUtils {
 				    		new DefaultHttpMethodRetryHandler(3, false));
 		try {
 			client.executeMethod(method);
-			
+
 			if (method.getResponseBodyAsString().isEmpty())
 				return true;
 			
@@ -44,7 +44,7 @@ public class HttpUtils {
 		} 
 		 method.releaseConnection();
 		 
-		 return true;
+		 return false;
 		
 	}
 	

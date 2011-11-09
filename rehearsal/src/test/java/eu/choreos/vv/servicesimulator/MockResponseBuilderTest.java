@@ -14,6 +14,7 @@ import com.eviware.soapui.impl.wsdl.mock.WsdlMockService;
 
 import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.clientgenerator.ItemImpl;
+import eu.choreos.vv.clientgenerator.SoapEnvelopeHelper;
 import eu.choreos.vv.common.ItemBuilder;
 
 public class MockResponseBuilderTest {
@@ -29,19 +30,37 @@ public class MockResponseBuilderTest {
 		WsdlMockOperation operation = service.addNewMockOperation(iface.getOperationAt(2));
 		WsdlMockResponse response = operation.addNewMockResponse("response1", true);
 		defaultResponse = response.getResponseContent();
-		System.out.println(defaultResponse);
 	}
 	
 	@Test
-	public void testname() throws Exception {
+	public void shouldGeneratedTheXmlResponseUsingSoapHelper() throws Exception {
+		
+		String expectedXml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:sim=\"http://simplestorews.vvws.choreos.eu/\">" + "\n" + 
+		"   <soapenv:Header/>" + "\n" +
+		"   <soapenv:Body>" + "\n" +
+		"      <sim:searchByArtistResponse>" + "\n" +
+		"         <!--Optional:-->" + "\n" +
+		"         <return>mocked response</return>" + "\n" +
+		"      </sim:searchByArtistResponse>" + "\n" +
+		"   </soapenv:Body>" + "\n" +
+		"</soapenv:Envelope>";
+
+		String actualXml = SoapEnvelopeHelper.generate(defaultResponse, "mocked response");
+		assertEquals(expectedXml, actualXml.trim());
+
+	}
+	
+	
+	@Test
+	public void shouldGenerateTheXmlResponseUsingItemBuilder() throws Exception {
 		String expectedXml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:sim=\"http://simplestorews.vvws.choreos.eu/\">" +
-								"<soapenv:Header></soapenv:Header>" +
-								"<soapenv:Body>" + 
-									"<sim:searchByArtistResponse>" +
-										"<return>mocked response</return>" +
-									"</sim:searchByArtistResponse>" +
-								"</soapenv:Body>" +
-							"</soapenv:Envelope>";
+				"<soapenv:Header></soapenv:Header>" +
+				"<soapenv:Body>" + 
+				"<sim:searchByArtistResponse>" +
+				"<return>mocked response</return>" +
+				"</sim:searchByArtistResponse>" +
+				"</soapenv:Body>" +
+				"</soapenv:Envelope>";
 		
 		Item root = new ItemImpl("searchByArtistResponse");
 		Item result = new ItemImpl("return");
@@ -53,6 +72,5 @@ public class MockResponseBuilderTest {
 		assertEquals(expectedXml, actualXml);
 	}
 	
-
 
 }

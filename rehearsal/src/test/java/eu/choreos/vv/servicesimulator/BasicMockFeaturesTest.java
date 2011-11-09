@@ -90,13 +90,13 @@ public class BasicMockFeaturesTest {
 	@Test(expected=MockDeploymentException.class)
 	public void shouldThrowAnExceptionThePortHaveAlreadyBeenUsed() throws Exception {
 		aMock.start();
-		String other_WSDL_URI = "file://" + System.getProperty("user.dir") + "/resource/sm1.wsdl";
+		String other_WSDL_URI = "file://" + System.getProperty("user.dir") + "/resource/sm_plus.wsdl";
 		Mock otherMock = new Mock("otherMock", other_WSDL_URI);
 		otherMock.start();
 		aMock.stop();
 	}
 	
-	// should be the last testcase
+	// should be the last testcase to turn off the server
 	@Test(expected=MockDeploymentException.class)
 	public void shouldThrowAnExceptionWhenTheMockHaveAlreadyBeenStarted() throws Exception {
 		aMock.start();
