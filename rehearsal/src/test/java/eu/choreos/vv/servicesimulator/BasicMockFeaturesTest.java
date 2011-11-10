@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.choreos.vv.clientgenerator.WSClient;
@@ -86,20 +87,32 @@ public class BasicMockFeaturesTest {
 		aMock.stop();
 	}
 	
-	
 	@Test(expected=MockDeploymentException.class)
 	public void shouldThrowAnExceptionThePortHaveAlreadyBeenUsed() throws Exception {
 		aMock.start();
+		
 		String other_WSDL_URI = "file://" + System.getProperty("user.dir") + "/resource/sm_plus.wsdl";
 		Mock otherMock = new Mock("otherMock", other_WSDL_URI);
 		otherMock.start();
+	}
+	
+	@Test
+	@Ignore
+	public void AfterStoppedMockShoulReleaseItsPort() throws Exception {
 		aMock.stop();
+		aMock.start();
+
+		aMock.stop(); // it is not releasing
+		
 	}
 	
 	// should be the last testcase to turn off the server
 	@Test(expected=MockDeploymentException.class)
 	public void shouldThrowAnExceptionWhenTheMockHaveAlreadyBeenStarted() throws Exception {
+		aMock.stop();
+
 		aMock.start();
 		aMock.start();
+		
 	}
 }

@@ -14,6 +14,7 @@ import com.eviware.soapui.support.SoapUIException;
 
 import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.common.HttpUtils;
+import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.MockDeploymentException;
 import eu.choreos.vv.exceptions.ParserException;
 import eu.choreos.vv.exceptions.WSDLException;
@@ -109,15 +110,13 @@ public class Mock {
 		runner.release();
 	}
 
-	public void returnFor(String operation, String... parameters) {
-		MockOperation mockedOperation = operations.get(operation);
-		mockedOperation.addResponse(parameters);
+	public Mock returnFor(String operation, MockResponse mockReponse) throws ParserException, InvalidOperationNameException {
+		if(!operations.containsKey(operation))
+			throw new InvalidOperationNameException();
 		
-	}
-	
-	public void returnFor(String operation, Item root) throws ParserException {
 		MockOperation mockedOperation = operations.get(operation);
-		mockedOperation.addResponse(root);
+		mockedOperation.addResponse(mockReponse);
+		return this;
 	}
 
 }
