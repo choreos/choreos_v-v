@@ -33,7 +33,7 @@ public class MockOperation {
 		else
 			soapUIResponse = responses.get(mockResponse);
 
-		soapUIResponse.setResponseContent(mockResponse.buildContent(defaultResponse));	
+		soapUIResponse.setResponseContent(mockResponse.buildResponseContent(defaultResponse));	
 	}
 	
 }

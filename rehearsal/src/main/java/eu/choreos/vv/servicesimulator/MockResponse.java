@@ -10,6 +10,8 @@ import eu.choreos.vv.exceptions.ParserException;
 public class MockResponse {
 	
 	private boolean primitiveResponse;
+	private boolean primitiveRequest;
+
 	private String[] responseParam;
 	private String[] requestParam;
 	
@@ -18,6 +20,7 @@ public class MockResponse {
 	
 
 	public MockResponse whenReceive(String... requestParam) {
+		this.primitiveRequest = true;
 		this.requestParam = requestParam;
 		return this;
 	}
@@ -38,7 +41,7 @@ public class MockResponse {
 		return this;
 	}
 
-	public String buildContent(String baseXml) throws ParserException {
+	public String buildResponseContent(String baseXml) throws ParserException {
 		String resultXml = "";
 		
 		if(primitiveResponse)
@@ -49,12 +52,30 @@ public class MockResponse {
 		return resultXml;
 	}
 	
+	public String buildRequestContent(String baseXml) throws ParserException {
+		String resultXml = "";
+		
+		if(primitiveRequest)
+			resultXml = SoapEnvelopeHelper.generate(baseXml, requestParam);
+		else
+			resultXml = new ItemBuilder().buildItem(baseXml, requestItem);
+			
+		return resultXml;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 
 		MockResponse other = (MockResponse) obj;
-		if (Arrays.equals(requestParam, other.requestParam) || requestItem == other.requestItem)
-			return true;
+		if (other.requestParam != null){
+			if (Arrays.equals(requestParam, other.requestParam))
+				return true;
+		}
+		
+		if ( other.requestItem != null){
+			if (requestItem == other.requestItem)
+				return true;
+		}
 		
 		return false;
 	}

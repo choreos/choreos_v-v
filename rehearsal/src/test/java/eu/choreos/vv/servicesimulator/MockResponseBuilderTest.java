@@ -1,16 +1,9 @@
 package eu.choreos.vv.servicesimulator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.eviware.soapui.impl.WsdlInterfaceFactory;
-import com.eviware.soapui.impl.wsdl.WsdlInterface;
-import com.eviware.soapui.impl.wsdl.WsdlProject;
-import com.eviware.soapui.impl.wsdl.mock.WsdlMockOperation;
-import com.eviware.soapui.impl.wsdl.mock.WsdlMockResponse;
-import com.eviware.soapui.impl.wsdl.mock.WsdlMockService;
 
 import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.clientgenerator.ItemImpl;
@@ -23,13 +16,7 @@ public class MockResponseBuilderTest {
 	@BeforeClass
 	public static void setUp() throws Exception{
 		String wsdl = "file://" + System.getProperty("user.dir") + "/resource/simpleStore.wsdl";
-		WsdlProject project = new WsdlProject();
-		WsdlInterface iface = WsdlInterfaceFactory.importWsdl(project, wsdl, true)[0];
-		WsdlMockService service = project.addNewMockService("myMock");
-		service.setPort(8088);
-		WsdlMockOperation operation = service.addNewMockOperation(iface.getOperationAt(2));
-		WsdlMockResponse response = operation.addNewMockResponse("response1", true);
-		defaultResponse = response.getResponseContent();
+		defaultResponse = MockUtils.getDefaultResponse(wsdl, "searchByArtist");
 	}
 	
 	@Test

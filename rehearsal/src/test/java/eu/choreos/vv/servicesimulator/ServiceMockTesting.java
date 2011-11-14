@@ -208,7 +208,7 @@ public class ServiceMockTesting {
 
 		smMock.returnFor("getPrice", response1);		
 		
-		MockResponse response2 = new MockResponse().whenReceive("name=milk").replyWith("10");
+		MockResponse response2 = new MockResponse().whenReceive(" milk").replyWith("10");
 
 		smMock.returnFor("getPrice", response2);
 		smMock.start();
