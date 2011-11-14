@@ -1,6 +1,6 @@
 package eu.choreos.vv.servicesimulator;
 
-import java.util.Map;
+import javax.swing.JOptionPane;
 
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockOperation;
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockResponse;
@@ -10,12 +10,19 @@ import eu.choreos.vv.exceptions.ParserException;
 public class MockOperation {
 	
 	private WsdlMockOperation soapUIMockOperation;
-	private Map<MockResponse, WsdlMockResponse> responses;
 	private String defaultResponse;
-
-	public MockOperation(WsdlMockOperation soapUIMockOperation) {
+	private String defaultRequest;
+    private WsdlMockResponse soapUIResponse;
+    private ScriptBuilder builder;
+	
+	public MockOperation(String defaultRequest, WsdlMockOperation soapUIMockOperation) {
 		this.soapUIMockOperation = soapUIMockOperation;
-		responses = new MockResponseMap();
+		 soapUIResponse = soapUIMockOperation.addNewMockResponse("response 1", true);
+		this.defaultRequest = defaultRequest; 
+		this.defaultResponse =  soapUIResponse.getResponseContent();
+		builder = new ScriptBuilder();
+		builder.setDefaultRequest(defaultRequest);
+		builder.setDefaultResponse(defaultResponse);
 	}
 
 	public String getName() {
@@ -23,17 +30,9 @@ public class MockOperation {
 	}
 	
 	public void addResponse(MockResponse mockResponse) throws ParserException{
-		WsdlMockResponse soapUIResponse;
-		
-		if (!responses.containsKey(mockResponse)){
-			soapUIResponse = soapUIMockOperation.addNewMockResponse("response 1", true);
-			responses.put(mockResponse, soapUIResponse);
-			defaultResponse =  soapUIResponse.getResponseContent();
-		}
-		else
-			soapUIResponse = responses.get(mockResponse);
-
-		soapUIResponse.setResponseContent(mockResponse.buildResponseContent(defaultResponse));	
+		builder.addConditionFor(mockResponse);
+		soapUIResponse.setResponseContent("${message}");
+		soapUIResponse.setScript(builder.getScript());
 	}
 	
 }

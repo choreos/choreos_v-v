@@ -208,18 +208,18 @@ public class ServiceMockTesting {
 
 		smMock.returnFor("getPrice", response1);		
 		
-		MockResponse response2 = new MockResponse().whenReceive(" milk").replyWith("10");
+		MockResponse response2 = new MockResponse().whenReceive("milk").replyWith("10");
 
 		smMock.returnFor("getPrice", response2);
 		smMock.start();
 		
 		WSClient smClient = new WSClient(MOCK_WSDL_URI);
 		
-		Item response = smClient.request("getPrice", "bread");
-		assertEquals((Double)100.0, response.getChild("return").getContentAsDouble());
-		
-		response = smClient.request("getPrice", "milk");
+		Item response = smClient.request("getPrice", "milk");
 		assertEquals((Double)10.0, response.getChild("return").getContentAsDouble());
+		
+		response = smClient.request("getPrice", "bread");
+		assertEquals((Double)100.0, response.getChild("return").getContentAsDouble());
 		
 		response = smClient.request("getPrice", "orange juice");
 		assertEquals((Double)100.0, response.getChild("return").getContentAsDouble());

@@ -14,7 +14,6 @@ public class MockResponse {
 
 	private String[] responseParam;
 	private String[] requestParam;
-	
 	private Item responseItem;
 	private Item requestItem;
 	
@@ -41,6 +40,10 @@ public class MockResponse {
 		return this;
 	}
 
+	public String[] getRequestParam() {
+		return requestParam;
+	}
+
 	public String buildResponseContent(String baseXml) throws ParserException {
 		String resultXml = "";
 		
@@ -62,6 +65,8 @@ public class MockResponse {
 			
 		return resultXml;
 	}
+	
+	
 	
 	@Override
 	public boolean equals(Object obj) {

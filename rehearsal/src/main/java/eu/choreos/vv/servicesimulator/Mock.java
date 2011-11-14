@@ -56,7 +56,8 @@ public class Mock {
 	private void createMockOperations(){
 		for(int i=0; i<iface.getOperationCount(); i++){
 			WsdlMockOperation soapUIMockOperation = service.addNewMockOperation(iface.getOperationAt(i));
-			MockOperation rehearsalMockOperation = new MockOperation(soapUIMockOperation);
+			 soapUIMockOperation.setDispatchStyle("SCRIPT");
+			MockOperation rehearsalMockOperation = new MockOperation(iface.getOperationAt(i).getRequestAt(0).getRequestContent(), soapUIMockOperation);
 			operations.put(soapUIMockOperation.getName(), rehearsalMockOperation);
 		}
 	}
@@ -97,8 +98,7 @@ public class Mock {
 			if(HttpUtils.UriAreUsed("http://" + domain + ":" + port))
 				throw new MockDeploymentException("Address already in use");
 			
-			runner = new WsdlMockRunner(service, null);
-			runner.start();
+			service.start();
 			
 		} catch (Exception e) {
 			throw new MockDeploymentException(e);
@@ -106,8 +106,7 @@ public class Mock {
 	}
 
 	public void stop()  {
-		runner.stop();
-		runner.release();
+		service.getMockRunner().stop();
 	}
 
 	public Mock returnFor(String operation, MockResponse mockReponse) throws ParserException, InvalidOperationNameException {

@@ -9,6 +9,9 @@ import org.junit.Test;
 
 import com.eviware.soapui.support.SoapUIException;
 
+import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.ItemImpl;
+
 public class ScriptBuilderTest {
 	
 	@Test
@@ -167,11 +170,81 @@ public class ScriptBuilderTest {
 					"    <return>100</return>"+ "\n"+
 				"   </chor:getPriceResponse>" + "\n"+
 						"  </soapenv:Body>" + "\n"+
-				"</soapenv:Envelope>'''" + "\n";
+				"</soapenv:Envelope>'''";
 		
 		assertEquals(expectedScript.replace(" ", ""), builder.getScript().replace(" ", ""));
 	}
 	
+	@Test
+	public void shouldNotAddElseStatementWhenOnlyTheWildCardParameterIsReceived() throws Exception {
+		ScriptBuilder builder = getBuilder();
+		MockResponse response = new MockResponse().whenReceive("*").replyWith("10000");
+		builder.addConditionFor(response);
+
+		String expectedScript = "def request = new XmlSlurper().parseText(mockRequest.requestContent)" + "\n" +
+				"context.message = '''<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:chor=\"http://choreos.eu/\">" + "\n" +
+				" <soapenv:Header/>" + "\n" +
+				" <soapenv:Body>"+ "\n" +
+				" <chor:getPriceResponse>" + "\n"+
+				"   <!--Optional:-->" + "\n"+
+					"    <return>10000</return>"+ "\n"+
+				"   </chor:getPriceResponse>" + "\n"+
+						"  </soapenv:Body>" + "\n"+
+				"</soapenv:Envelope>'''";
+
+		assertEquals(expectedScript.replace(" ", ""), builder.getScript().replace(" ", ""));
+	}
+	
+	@Test
+	public void shouldAddAnIfStatementWhenReceiveAComplexItem() throws Exception {
+		Item request = new ItemImpl("getProductStatus");
+		Item nameRequest = new ItemImpl("name");
+		nameRequest.setContent("milk");
+		request.addChild(nameRequest);
+		
+		Item response = new ItemImpl("getProductStatusResponse");
+		Item responseContent = new ItemImpl("return");
+		Item nameResponse = new ItemImpl("name");
+		nameResponse.setContent("milk");
+		responseContent.addChild(nameResponse);
+
+		Item statusResponse = new ItemImpl("status");
+		statusResponse.setContent("empty");
+		responseContent.addChild(statusResponse);
+		
+		response.addChild(responseContent);
+		ScriptBuilder builder = new ScriptBuilder();
+		
+		String wsdl = "file://" + System.getProperty("user.dir") + "/resource/sm_plus.wsdl"; 
+		builder.setDefaultRequest(MockUtils.getDefaultRequest(wsdl, "getProductStatus"));
+		builder.setDefaultResponse(MockUtils.getDefaultResponse(wsdl, "getProductStatus"));
+		
+		MockResponse mockResponse = new MockResponse().whenReceive(request).replyWith(response);
+		builder.addConditionFor(mockResponse);
+
+		String expectedScript = "def request = new XmlSlurper().parseText(mockRequest.requestContent)" + "\n" +
+				"if ( request == new XmlSlurper().parseText('''<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:chor=\"http://choreos.eu/\">" + 
+					"<soapenv:Header></soapenv:Header>" + 
+					"<soapenv:Body>" + 
+					"<chor:getProductStatus>" + 
+					"<name>milk</name>" + 
+					"</chor:getProductStatus>" + 
+					"</soapenv:Body>" + 
+					"</soapenv:Envelope>'''))" + "\n" +
+					"context.message = '''<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:chor=\"http://choreos.eu/\">" + 
+					"<soapenv:Header></soapenv:Header>" + 
+					"<soapenv:Body>" + 
+					"<chor:getProductStatusResponse>" + 
+					"<return>" + 
+					"<name>milk</name>" + 
+					"<status>empty</status>" + 
+					"</return>" +
+					"</chor:getProductStatusResponse>" + 
+					"</soapenv:Body>" + 
+					"</soapenv:Envelope>'''" + "\n";
+
+		assertEquals(expectedScript.replace(" ", ""), builder.getScript().replace(" ", ""));
+	}
 	
 	private ScriptBuilder getBuilder() throws XmlException, IOException,
 	SoapUIException {

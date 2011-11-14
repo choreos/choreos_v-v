@@ -45,9 +45,22 @@ public class ScriptBuilder {
 	
 	private String createConditionStatements() throws ParserException{
 		String conditions = "";
+		String wildCard = "";
+		
 		for (MockResponse entry : responses) {
+			
+			if(entry.getRequestParam()!=null && entry.getRequestParam()[0].equals("*"))
+				wildCard = "context.message = '''" + entry.buildResponseContent(defaultResponse) + "'''";
+			else
 			conditions += "if ( request == new XmlSlurper().parseText('''" + entry.buildRequestContent(defaultRequest) +"'''))" + "\n"+
 										"context.message = '''" + entry.buildResponseContent(defaultResponse) + "'''" +"\n";
+		}
+		
+		if (!wildCard.isEmpty()){
+			if (responses.size() == 1)
+				return wildCard;
+			
+			conditions += "else" + "\n" + wildCard;
 		}
 		
 		return conditions;
