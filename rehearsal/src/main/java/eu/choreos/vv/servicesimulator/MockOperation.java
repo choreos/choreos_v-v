@@ -19,6 +19,7 @@ public class MockOperation {
 		builder = new ScriptBuilder();
 		builder.setDefaultRequest(defaultRequest);
 		builder.setDefaultResponse(defaultResponse);
+		soapUIResponse.setResponseContent("${message}");
 	}
 
 	public String getName() {
@@ -27,8 +28,12 @@ public class MockOperation {
 	
 	public void addResponse(MockResponse mockResponse) throws ParserException{
 		builder.addConditionFor(mockResponse);
-		soapUIResponse.setResponseContent("${message}");
 		soapUIResponse.setScript(builder.getScript());
+	}
+
+	public void doNotResponse() {
+		String timeoutScript = "Thread.sleep(300000)";
+		soapUIResponse.setScript(timeoutScript);
 	}
 	
 }

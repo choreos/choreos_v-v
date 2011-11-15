@@ -122,4 +122,17 @@ public class Mock {
 		for (MockResponse mockResponse : mockResponses)
 			mockedOperation.addResponse(mockResponse);
 	}
+
+	public void doNotRespond(String operation) throws InvalidOperationNameException {
+		if (!operations.containsKey(operation))
+			throw new InvalidOperationNameException();
+		
+		MockOperation mockedOperation = operations.get(operation);
+		mockedOperation.doNotResponse();
+	}
+
+	public void doNotRespondAll() {
+		for (MockOperation entry : operations.values()) 
+			entry.doNotResponse();
+	}
 }

@@ -169,6 +169,7 @@ public class WSClient {
 		} catch (SubmitException e) {
 			throw new FrameworkException(e);
 		}
+	
 
 		// wait for the response
 		Response response = submit.getResponse();
