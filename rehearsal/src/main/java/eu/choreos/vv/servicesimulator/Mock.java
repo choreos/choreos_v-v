@@ -8,7 +8,6 @@ import com.eviware.soapui.impl.WsdlInterfaceFactory;
 import com.eviware.soapui.impl.wsdl.WsdlInterface;
 import com.eviware.soapui.impl.wsdl.WsdlProject;
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockOperation;
-import com.eviware.soapui.impl.wsdl.mock.WsdlMockRunner;
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockService;
 import com.eviware.soapui.support.SoapUIException;
 
@@ -16,9 +15,9 @@ import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.common.HttpUtils;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.MockDeploymentException;
+import eu.choreos.vv.exceptions.NoMockResponseException;
 import eu.choreos.vv.exceptions.ParserException;
 import eu.choreos.vv.exceptions.WSDLException;
-
 
 public class Mock {
 
@@ -28,37 +27,39 @@ public class Mock {
 	private WsdlInterface iface;
 	private WsdlMockService service;
 	private HashMap<String, MockOperation> operations;
-	private WsdlMockRunner runner;
-	
+
 	public Mock(String name, String wsdl) throws Exception {
 		this.name = name;
-		port =  "8088";
+		port = "8088";
 		domain = "localhost";
 		operations = new HashMap<String, MockOperation>();
-		
+
 		buildWsdlPrject(name, wsdl);
 	}
 
 	private void buildWsdlPrject(String name, String wsdl) throws Exception {
-		try{
+		try {
 			WsdlProject project = new WsdlProject();
 			iface = WsdlInterfaceFactory.importWsdl(project, wsdl, true)[0];
-			
+
 			service = project.addNewMockService(name);
 			service.setPort(Integer.parseInt(port));
 			createMockOperations();
-		}
-		catch(SoapUIException e){
+		} catch (SoapUIException e) {
 			throw new WSDLException(e);
 		}
 	}
-	
-	private void createMockOperations(){
-		for(int i=0; i<iface.getOperationCount(); i++){
-			WsdlMockOperation soapUIMockOperation = service.addNewMockOperation(iface.getOperationAt(i));
-			 soapUIMockOperation.setDispatchStyle("SCRIPT");
-			MockOperation rehearsalMockOperation = new MockOperation(iface.getOperationAt(i).getRequestAt(0).getRequestContent(), soapUIMockOperation);
-			operations.put(soapUIMockOperation.getName(), rehearsalMockOperation);
+
+	private void createMockOperations() {
+		for (int i = 0; i < iface.getOperationCount(); i++) {
+			WsdlMockOperation soapUIMockOperation = service
+					.addNewMockOperation(iface.getOperationAt(i));
+			soapUIMockOperation.setDispatchStyle("SCRIPT");
+			MockOperation rehearsalMockOperation = new MockOperation(iface
+					.getOperationAt(i).getRequestAt(0).getRequestContent(),
+					soapUIMockOperation);
+			operations.put(soapUIMockOperation.getName(),
+					rehearsalMockOperation);
 		}
 	}
 
@@ -78,8 +79,8 @@ public class Mock {
 		service.setPort(Integer.parseInt(port));
 		this.port = port;
 	}
-	
-	public void setDomain(String domain){
+
+	public void setDomain(String domain) {
 		this.domain = domain;
 	}
 
@@ -90,32 +91,35 @@ public class Mock {
 	public List<Item> getResponsesFor(String operationName) {
 		return null;
 	}
-	
+
 	public void start() throws MockDeploymentException {
-		iface.addEndpoint( service.getLocalEndpoint());
-		
+		iface.addEndpoint(service.getLocalEndpoint());
+
 		try {
-			if(HttpUtils.UriAreUsed("http://" + domain + ":" + port))
+			if (HttpUtils.UriAreUsed("http://" + domain + ":" + port))
 				throw new MockDeploymentException("Address already in use");
-			
+
 			service.start();
-			
+
 		} catch (Exception e) {
 			throw new MockDeploymentException(e);
 		}
 	}
 
-	public void stop()  {
+	public void stop() {
 		service.getMockRunner().stop();
 	}
 
-	public Mock returnFor(String operation, MockResponse mockReponse) throws ParserException, InvalidOperationNameException {
-		if(!operations.containsKey(operation))
+	public void returnFor(String operation, MockResponse... mockResponses) throws ParserException, InvalidOperationNameException, NoMockResponseException {
+		if (!operations.containsKey(operation))
 			throw new InvalidOperationNameException();
 		
-		MockOperation mockedOperation = operations.get(operation);
-		mockedOperation.addResponse(mockReponse);
-		return this;
-	}
+		if (mockResponses.length == 0)
+			throw new NoMockResponseException("No mock response was defined for the operation " + operation);
 
+		MockOperation mockedOperation = operations.get(operation);
+
+		for (MockResponse mockResponse : mockResponses)
+			mockedOperation.addResponse(mockResponse);
+	}
 }

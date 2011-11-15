@@ -1,7 +1,5 @@
 package eu.choreos.vv.servicesimulator;
 
-import javax.swing.JOptionPane;
-
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockOperation;
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockResponse;
 
@@ -11,15 +9,13 @@ public class MockOperation {
 	
 	private WsdlMockOperation soapUIMockOperation;
 	private String defaultResponse;
-	private String defaultRequest;
-    private WsdlMockResponse soapUIResponse;
+	private WsdlMockResponse soapUIResponse;
     private ScriptBuilder builder;
 	
 	public MockOperation(String defaultRequest, WsdlMockOperation soapUIMockOperation) {
 		this.soapUIMockOperation = soapUIMockOperation;
 		 soapUIResponse = soapUIMockOperation.addNewMockResponse("response 1", true);
-		this.defaultRequest = defaultRequest; 
-		this.defaultResponse =  soapUIResponse.getResponseContent();
+		defaultResponse =  soapUIResponse.getResponseContent();
 		builder = new ScriptBuilder();
 		builder.setDefaultRequest(defaultRequest);
 		builder.setDefaultResponse(defaultResponse);
