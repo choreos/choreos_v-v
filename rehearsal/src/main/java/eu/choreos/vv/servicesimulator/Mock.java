@@ -52,14 +52,11 @@ public class Mock {
 
 	private void createMockOperations() {
 		for (int i = 0; i < iface.getOperationCount(); i++) {
-			WsdlMockOperation soapUIMockOperation = service
-					.addNewMockOperation(iface.getOperationAt(i));
+			WsdlMockOperation soapUIMockOperation = service.addNewMockOperation(iface.getOperationAt(i));
 			soapUIMockOperation.setDispatchStyle("SCRIPT");
-			MockOperation rehearsalMockOperation = new MockOperation(iface
-					.getOperationAt(i).getRequestAt(0).getRequestContent(),
-					soapUIMockOperation);
-			operations.put(soapUIMockOperation.getName(),
-					rehearsalMockOperation);
+			String defaultRequest = iface.getOperationAt(i).getRequestAt(0).getRequestContent();
+			MockOperation rehearsalMockOperation = new MockOperation(defaultRequest, soapUIMockOperation);
+			operations.put(soapUIMockOperation.getName(), rehearsalMockOperation);
 		}
 	}
 
@@ -134,5 +131,17 @@ public class Mock {
 	public void doNotRespondAll() {
 		for (MockOperation entry : operations.values()) 
 			entry.doNotResponse();
+	}
+
+	public void crash(String operation) throws InvalidOperationNameException {
+		if (!operations.containsKey(operation))
+			throw new InvalidOperationNameException();
+		
+		service.removeMockOperation(operations.get(operation).getSoapUIMockOperation());		
+	}
+
+	public void crashAll() {
+		for (MockOperation entry : operations.values()) 
+			service.removeMockOperation(entry.getSoapUIMockOperation());
 	}
 }

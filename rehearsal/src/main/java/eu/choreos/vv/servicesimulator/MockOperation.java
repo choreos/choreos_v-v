@@ -26,6 +26,10 @@ public class MockOperation {
 		return soapUIMockOperation.getName();
 	}
 	
+	public WsdlMockOperation getSoapUIMockOperation(){
+		return soapUIMockOperation;
+	}
+	
 	public void addResponse(MockResponse mockResponse) throws ParserException{
 		builder.addConditionFor(mockResponse);
 		soapUIResponse.setScript(builder.getScript());
