@@ -12,7 +12,7 @@ public class FaultScenarioOperationsTest {
 
 	private static final String MOCK_WSDL_URI = "http://localhost:4321/faltySupermarket?wsdl";
 	private static final String SM_WSDL_URI = "file://" + System.getProperty("user.dir") + "/resource/sm_plus.wsdl";
-	private Mock mock;
+	private WSMock mock;
 	
 	@After
 	public void turnOffMock(){
@@ -21,7 +21,7 @@ public class FaultScenarioOperationsTest {
 	
 	@Test
 	public void shouldDoNotRespondForTheOperation() throws Exception {
-		mock = new Mock("faltySupermarket", SM_WSDL_URI);
+		mock = new WSMock("faltySupermarket", SM_WSDL_URI);
 		mock.doNotRespond("getPrice");
 		mock.setPort("4321");
 		mock.start();
@@ -34,7 +34,7 @@ public class FaultScenarioOperationsTest {
 	
 	@Test
 	public void shouldDoNotRespondForAllOperations() throws Exception {
-		mock = new Mock("faltySupermarket", SM_WSDL_URI);
+		mock = new WSMock("faltySupermarket", SM_WSDL_URI);
 		mock.doNotRespondAll();
 		mock.setPort("4321");
 		mock.start();
@@ -47,7 +47,7 @@ public class FaultScenarioOperationsTest {
 	
 	@Test()
 	public void shouldSimulateAnOperationCrash() throws Exception {
-		mock = new Mock("faltySupermarket", SM_WSDL_URI);
+		mock = new WSMock("faltySupermarket", SM_WSDL_URI);
 		mock.crash("getPrice");
 		mock.setPort("4321");
 		mock.start();
@@ -60,7 +60,7 @@ public class FaultScenarioOperationsTest {
 	
 	@Test(expected=ArrayIndexOutOfBoundsException.class)
 	public void shouldSimulateAllOperationsCrash() throws Exception {
-		mock = new Mock("faltySupermarket", SM_WSDL_URI);
+		mock = new WSMock("faltySupermarket", SM_WSDL_URI);
 		mock.crashAll();
 		mock.setPort("4321");
 		mock.start();

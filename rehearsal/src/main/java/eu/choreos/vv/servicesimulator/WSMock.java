@@ -19,7 +19,7 @@ import eu.choreos.vv.exceptions.NoMockResponseException;
 import eu.choreos.vv.exceptions.ParserException;
 import eu.choreos.vv.exceptions.WSDLException;
 
-public class Mock {
+public class WSMock {
 
 	private String port;
 	private String name;
@@ -28,7 +28,7 @@ public class Mock {
 	private WsdlMockService service;
 	private HashMap<String, MockOperation> operations;
 
-	public Mock(String name, String wsdl) throws Exception {
+	public WSMock(String name, String wsdl) throws Exception {
 		this.name = name;
 		port = "8088";
 		domain = "localhost";

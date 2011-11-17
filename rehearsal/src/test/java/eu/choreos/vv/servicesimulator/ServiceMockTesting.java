@@ -19,7 +19,7 @@ public class ServiceMockTesting {
 
 	private static final String MOCK_WSDL_URI = "http://localhost:4321/supermarketMock?wsdl";
 	private static final String SM_WSDL_URI = "file://" + System.getProperty("user.dir") + "/resource/sm_plus.wsdl";
-	private Mock smMock;
+	private WSMock smMock;
 	
 	@Before
 	public void startMock() throws Exception{
@@ -175,7 +175,7 @@ public class ServiceMockTesting {
 		WSClient sm1Client = new WSClient(MOCK_WSDL_URI);
 		Item response1 = sm1Client.request("getPrice", "milk");
 		
-		Mock sm2Mock = getMock();
+		WSMock sm2Mock = getMock();
 		sm2Mock.setPort("1357");
 		 response = new MockResponse().whenReceive("*").replyWith("190");
 		sm2Mock.returnFor("getPrice", response);		
@@ -334,8 +334,8 @@ public class ServiceMockTesting {
 	}
 
 	
-	private Mock getMock() throws Exception {
-		Mock smMock = new Mock("supermarketMock", SM_WSDL_URI);
+	private WSMock getMock() throws Exception {
+		WSMock smMock = new WSMock("supermarketMock", SM_WSDL_URI);
 		smMock.setPort("4321");
 		return smMock;
 	}
