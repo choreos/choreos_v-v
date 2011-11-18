@@ -229,7 +229,6 @@ public class ServiceMockTesting {
 		assertEquals((Double)82.0, result.getChild("return").getContentAsDouble());
 	}
 	
-	
 	@Test
 	public void shouldReturnTenWhenAskMilkOtherwiseShouldReturnOneHundread() throws Exception{
 		MockResponse response1 = new MockResponse().whenReceive("*").replyWith("100");

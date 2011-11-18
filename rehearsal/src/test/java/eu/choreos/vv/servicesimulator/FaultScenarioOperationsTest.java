@@ -6,7 +6,6 @@ import org.junit.After;
 import org.junit.Test;
 
 import eu.choreos.vv.clientgenerator.WSClient;
-import eu.choreos.vv.exceptions.InvalidOperationNameException;
 
 public class FaultScenarioOperationsTest {
 

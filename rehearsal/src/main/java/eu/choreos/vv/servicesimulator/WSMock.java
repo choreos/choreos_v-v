@@ -11,7 +11,6 @@ import com.eviware.soapui.impl.wsdl.mock.WsdlMockOperation;
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockService;
 import com.eviware.soapui.support.SoapUIException;
 
-import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.common.HttpUtils;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.MockDeploymentException;
@@ -23,7 +22,7 @@ public class WSMock {
 
 	private String port;
 	private String name;
-	private String domain;
+	private String hostName;
 	private WsdlInterface iface;
 	private WsdlMockService service;
 	private HashMap<String, MockOperation> operations;
@@ -31,7 +30,7 @@ public class WSMock {
 	public WSMock(String name, String wsdl) throws Exception {
 		this.name = name;
 		port = "8088";
-		domain = "localhost";
+		hostName = "localhost";
 		operations = new HashMap<String, MockOperation>();
 
 		buildWsdlPrject(name, wsdl);
@@ -65,11 +64,11 @@ public class WSMock {
 	}
 
 	public String getWSDL() {
-		return "http://" + domain + ":" + port + "/" + name + "?wsdl";
+		return "http://" + hostName + ":" + port + "/" + name + "?wsdl";
 	}
 
-	public String getDomain() {
-		return domain;
+	public String getHostName() {
+		return hostName;
 	}
 
 	public void setPort(String port) {
@@ -77,23 +76,19 @@ public class WSMock {
 		this.port = port;
 	}
 
-	public void setDomain(String domain) {
-		this.domain = domain;
+	public void setHostName(String hostName) {
+		this.hostName = hostName;
 	}
 
 	public List<MockOperation> getOperations() {
 		return new ArrayList<MockOperation>(operations.values());
 	}
 
-	public List<Item> getResponsesFor(String operationName) {
-		return null;
-	}
-
 	public void start() throws MockDeploymentException {
 		iface.addEndpoint(service.getLocalEndpoint());
 
 		try {
-			if (HttpUtils.UriAreUsed("http://" + domain + ":" + port))
+			if (HttpUtils.UriAreUsed("http://" + hostName + ":" + port))
 				throw new MockDeploymentException("Address already in use");
 
 			service.start();

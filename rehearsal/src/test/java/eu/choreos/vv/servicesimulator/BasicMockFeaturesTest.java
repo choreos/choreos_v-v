@@ -1,7 +1,6 @@
 package eu.choreos.vv.servicesimulator;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -37,7 +36,7 @@ public class BasicMockFeaturesTest {
 	@Test
 	public void shouldCreateAMockWithDefautValuesForAGivenWsdl() throws Exception {
 		assertEquals("8088", aMock.getPort());
-		assertEquals("localhost", aMock.getDomain());
+		assertEquals("localhost", aMock.getHostName());
 		assertEquals("http://localhost:8088/myMock?wsdl", aMock.getWSDL());
 	}
 	
@@ -45,10 +44,10 @@ public class BasicMockFeaturesTest {
 	public void shouldCreateAMockWithCustomValuesForAGivenWsdl() throws Exception {
 		WSMock aMock = new WSMock("myMock", REAL_WSDL_URI);
 		aMock.setPort("9000");
-		aMock.setDomain("143.107.58.12");
+		aMock.setHostName("143.107.58.12");
 		
 		assertEquals("9000", aMock.getPort());
-		assertEquals("143.107.58.12", aMock.getDomain());
+		assertEquals("143.107.58.12", aMock.getHostName());
 		assertEquals("http://143.107.58.12:9000/myMock?wsdl", aMock.getWSDL());
 	}
 	
@@ -66,14 +65,6 @@ public class BasicMockFeaturesTest {
 		
 		for (MockOperation operation : mockOperations)
 			assertTrue(realOperationNames.contains(operation.getName()));
-	}
-	
-	@Test
-	public void whenCreatedAllMockResponsesDoNotHaveResponses() throws Exception{
-		List<MockOperation> mockOperations = aMock.getOperations();
-				
-		for (MockOperation operation : mockOperations)
-			assertNull(aMock.getResponsesFor(operation.getName()));
 	}
 	
 	@Test
