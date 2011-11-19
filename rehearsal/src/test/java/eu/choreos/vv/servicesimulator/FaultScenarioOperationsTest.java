@@ -9,7 +9,7 @@ import eu.choreos.vv.clientgenerator.WSClient;
 
 public class FaultScenarioOperationsTest {
 
-	private static final String MOCK_WSDL_URI = "http://localhost:4321/faltySupermarket?wsdl";
+	private static final String MOCK_WSDL_URI = "http://localhost:4321/faultySupermarket?wsdl";
 	private static final String SM_WSDL_URI = "file://" + System.getProperty("user.dir") + "/resource/sm_plus.wsdl";
 	private WSMock mock;
 	
@@ -20,7 +20,7 @@ public class FaultScenarioOperationsTest {
 	
 	@Test
 	public void shouldDoNotRespondForTheOperation() throws Exception {
-		mock = new WSMock("faltySupermarket", SM_WSDL_URI);
+		mock = new WSMock("faultySupermarket", SM_WSDL_URI);
 		mock.doNotRespond("getPrice");
 		mock.setPort("4321");
 		mock.start();
@@ -33,7 +33,7 @@ public class FaultScenarioOperationsTest {
 	
 	@Test
 	public void shouldDoNotRespondForAllOperations() throws Exception {
-		mock = new WSMock("faltySupermarket", SM_WSDL_URI);
+		mock = new WSMock("faultySupermarket", SM_WSDL_URI);
 		mock.doNotRespondAll();
 		mock.setPort("4321");
 		mock.start();
