@@ -26,7 +26,8 @@ public class FaultScenarioOperationsTest {
 		mock.start();
 		
 		WSClient client = new WSClient(MOCK_WSDL_URI);
-		
+		client.setResponseTimeout(1000);
+
 		// A java.net.SocketTimeoutException should also be thrown but I can not capture this exception in my test case
 		assertNull(client.request("getPrice", "milk")); 
 	}
@@ -39,12 +40,13 @@ public class FaultScenarioOperationsTest {
 		mock.start();
 		
 		WSClient client = new WSClient(MOCK_WSDL_URI);
+		client.setResponseTimeout(1000);
 		
 		// A java.net.SocketTimeoutException should also be thrown but I can not capture this exception in my test case
 		assertNull(client.request("purchase", "milk", "2")); 
 	}
 	
-	@Test()
+	@Test
 	public void shouldSimulateAnOperationCrash() throws Exception {
 		mock = new WSMock("faltySupermarket", SM_WSDL_URI);
 		mock.crash("getPrice");

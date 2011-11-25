@@ -37,6 +37,7 @@ public class WSClient {
 	private List<String> operations;
 	private String endpoint;
 	private boolean remoteEndpoint = false;
+	private int timeout;
 	
 	/**
 	 * 
@@ -68,6 +69,7 @@ public class WSClient {
 		parseWsdlOperations();
 
 		this.wsdl = wsdl;
+		timeout = 30000;
 	}
 	
 	/**
@@ -158,6 +160,7 @@ public class WSClient {
 		
 		WsdlRequest request = operation.addNewRequest("myRequest");
 		request.setRequestContent(requestContent);
+		request.setTimeout(((Integer)timeout).toString());
 		
 		if(remoteEndpoint)
 			request.setEndpoint(endpoint);
@@ -192,4 +195,8 @@ public class WSClient {
 		this.endpoint = endpoint;
 	        remoteEndpoint = true;
         }
+
+	public void setResponseTimeout(int timeout) {
+		this.timeout = timeout;
+	}
 }
