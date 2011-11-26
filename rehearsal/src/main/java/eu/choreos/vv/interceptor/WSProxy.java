@@ -25,7 +25,7 @@ public class WSProxy extends MockProject {
 			mockOperation.setDispatchStyle("SCRIPT");
 			
 			String responseContent = "${message}";
-			String script = getScript();
+			String script = getScript(mockOperation.getName());
 			
 			WsdlMockResponse response = mockOperation.addNewMockResponse( "Response 1", true );
 			response.setScript(script);
@@ -42,10 +42,9 @@ public class WSProxy extends MockProject {
 		return operationNames;
 	}
 
-	private String getScript() {
-		String script = "def wsdl = '"+ realWsdl + "'\n" +
-				"def proxy = new br.usp.ime.proxy.ProxyA()" + "\n" +
-				"context.message = proxy.getResponse(wsdl, mockRequest.requestContent)";
+	private String getScript(String operationName) {
+		String script = "context.message =  eu.choreos.vv.interceptor.RequestDispatcher.getResponse ('" + realWsdl + "','" +
+										operationName + "', mockRequest.requestContent)";
 		
 		return script;
 	}

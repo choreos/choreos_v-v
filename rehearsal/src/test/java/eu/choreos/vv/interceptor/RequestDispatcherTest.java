@@ -10,6 +10,8 @@ import eu.choreos.vv.util.WebServiceController;
 
 public class RequestDispatcherTest {
 
+	private final String SIMPLE_STORE_WSDL = "http://localhost:1234/SimpleStore?wsdl";
+
 	@BeforeClass
 	public static void setUp(){
 		WebServiceController.deployService();
@@ -23,27 +25,33 @@ public class RequestDispatcherTest {
 
 	@Test
 	public void shouldInvokeTheWSCorrectly() throws Exception {
-		String SIMPLE_STORE_WSDL = "http://localhost:1234/SimpleStore?wsdl";
-		String operationName = "searchByArtist";
-		String requestContent = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:sim=\"http://simplestorews.vvws.choreos.eu/\">" +
-																"<soapenv:Header/>" +
-																"<soapenv:Body>" +
-																"<sim:searchByArtist>" +
-																"<arg0>Pink Floyd</arg0>" +
-																"</sim:searchByArtist>" +
-																"</soapenv:Body>" +
-																"</soapenv:Envelope>";
+		InterceptedMessagesRegistry.getInstance().registerWsdl(SIMPLE_STORE_WSDL);
 		
-		String expectedResponse = "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">" + "\n" +
-																	"<S:Body>" + "\n" +
-																	"<ns2:searchByArtistResponse xmlns:ns2=\"http://simplestorews.vvws.choreos.eu/\">" + "\n" +
-																	"<return>The dark side of the moon;</return>" + "\n" +
-																	"</ns2:searchByArtistResponse>" + "\n" +
-																	"</S:Body>" + "\n" +
-																	"</S:Envelope>";
+		String operationName = "searchByArtist";
+		String requestContent = MessageTestData.getRequestContent();
+		
+		String expectedResponse = MessageTestData.getResponseContent();
 		
 		String actualResponse = RequestDispatcher.getResponse(SIMPLE_STORE_WSDL, operationName, requestContent);
 		
 		assertEquals(expectedResponse.replace(" ", ""), actualResponse.replace(" ", ""));
 	}
+
+	
+	@Test
+	public void shouldRegisterMessagesIntoTheRegistry() throws Exception {
+		InterceptedMessagesRegistry registry = InterceptedMessagesRegistry.getInstance();
+		registry.registerWsdl(SIMPLE_STORE_WSDL);
+		
+		String operationName = "searchByArtist";
+		String requestContent = MessageTestData.getRequestContent();
+		
+		RequestDispatcher.getResponse(SIMPLE_STORE_WSDL, operationName, requestContent);
+	
+		
+		assertEquals(requestContent.replace(" ", ""), registry.getMessages(SIMPLE_STORE_WSDL).get(0).replace(" ", ""));
+	}
+	
+	
+	
 }

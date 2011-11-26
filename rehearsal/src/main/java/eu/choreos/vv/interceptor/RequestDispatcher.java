@@ -18,6 +18,8 @@ import com.eviware.soapui.support.SoapUIException;
 public class RequestDispatcher {
 	
 	public static String getResponse(String wsdl, String operationName, String requestContent) throws XmlException, IOException, SoapUIException, SubmitException{
+		InterceptedMessagesRegistry.getInstance().addMessage(wsdl, requestContent);
+		
 		WsdlProject project = new WsdlProject();
 		WsdlInterface iface = WsdlInterfaceFactory.importWsdl(project, wsdl, true)[0];
 		
@@ -34,7 +36,7 @@ public class RequestDispatcher {
 
 		// print the response
 		String content = response.getContentAsString();
-				
+
 		return content;
 	}
 
