@@ -48,5 +48,13 @@ public class WSProxy extends MockProject {
 		
 		return script;
 	}
+
+	public String getRealWsdl() {
+		return realWsdl;
+	}
+	
+	public String getProxyWsdl(){
+		return super.getWSDL();
+	}
 	
 }

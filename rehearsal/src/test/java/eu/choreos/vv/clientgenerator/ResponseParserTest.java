@@ -8,9 +8,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import eu.choreos.vv.clientgenerator.Item;
-import eu.choreos.vv.clientgenerator.ItemImpl;
-import eu.choreos.vv.clientgenerator.ResponseParser;
 import eu.choreos.vv.exceptions.ParserException;
 
 
@@ -35,7 +32,7 @@ public class ResponseParserTest {
 			+ "</senv:Body>" 
 			+ "</senv:Envelope>";
 
-		ResponseParser parser = new ResponseParser();
+		ItemParser parser = new ItemParser();
 		Item actual = parser.parse(sampleXml);
 
 		HashMap<String, String> rootParameters = new HashMap<String, String>();
@@ -62,7 +59,7 @@ public class ResponseParserTest {
 			+ "</senv:Body>" 
 			+ "</senv:Envelope>";
 
-		ResponseParser parser = new ResponseParser();
+		ItemParser parser = new ItemParser();
 		Item actual = parser.parse(sampleXml);
 
 		assertEquals("search_by_brandResponse", actual.getName());
@@ -79,7 +76,7 @@ public class ResponseParserTest {
 			+ "   <brand>Nike</brand>"
 			+ "</senv:Body>";
 
-		ResponseParser parser = new ResponseParser();
+		ItemParser parser = new ItemParser();
 		parser.parse(sampleXml);
 	}
 
@@ -98,7 +95,7 @@ public class ResponseParserTest {
 			+ "</senv:Body>\n" 
 			+ "</senv:Envelope>";
 
-		ResponseParser parser = new ResponseParser();
+		ItemParser parser = new ItemParser();
 		Item actual = parser.parse(sampleXml);
 
 		ItemImpl root = new ItemImpl("search_by_brandResponse");
@@ -128,7 +125,7 @@ public class ResponseParserTest {
 			+ "</senv:Body>" 
 			+ "</senv:Envelope>"; 
 
-		ResponseParser parser = new ResponseParser();
+		ItemParser parser = new ItemParser();
 		Item actual = parser.parse(sampleXml);
 
 		Item child1 = actual.getChild("search_by_brandResult").getChild("name"); 
@@ -155,7 +152,7 @@ public class ResponseParserTest {
 		"</senv:Body>" +
 		"</senv:Envelope>";
 
-		ResponseParser parser = new ResponseParser();
+		ItemParser parser = new ItemParser();
 		Item actual = parser.parse(sampleXml);
 
 		assertEquals("search_by_categoryResponse", actual.getName());
@@ -268,7 +265,7 @@ public class ResponseParserTest {
 		item3.addChild(childD);          
 		expected.addChild(item3);
 
-		ResponseParser parser = new ResponseParser();
+		ItemParser parser = new ItemParser();
 		Item actual = parser.parse(sampleXml);
 
 		assertEquals("search_by_categoryResponse", actual.getName());
@@ -312,7 +309,7 @@ public class ResponseParserTest {
 			+ "  </soapenv:Body>"
 			+ "</soapenv:Envelope>";
 
-		ResponseParser parser = new ResponseParser();
+		ItemParser parser = new ItemParser();
 		Item actual = parser.parse(xml);
 
 		assertEquals("getItensByBrandResponse", actual.getName());
@@ -344,7 +341,7 @@ public class ResponseParserTest {
 		"</S:Body>" +
 		"</S:Envelope>";
 
-		ResponseParser parser = new ResponseParser();
+		ItemParser parser = new ItemParser();
 		Item item = null;
 		item = parser.parse(sampleXml);
 		
@@ -363,7 +360,7 @@ public class ResponseParserTest {
 		"</S:Body>" +
 		"</S:Envelope>";
 		
-		ResponseParser parser = new ResponseParser();
+		ItemParser parser = new ItemParser();
 		assertNull(parser.parse(sampleXml).getContent());
 	}
 	
@@ -377,7 +374,7 @@ public class ResponseParserTest {
 		"</S:Body>" +
 		"</S:Envelope>";
 		
-		ResponseParser parser = new ResponseParser();
+		ItemParser parser = new ItemParser();
 		assertEquals("this is some content", parser.parse(sampleXml).getContent());
 	}
 
@@ -394,7 +391,7 @@ public class ResponseParserTest {
 		"</S:Body>" +
 		"</S:Envelope>";
 		
-		ResponseParser parser = new ResponseParser();
+		ItemParser parser = new ItemParser();
 		assertNull(parser.parse(sampleXml).getChild("return").getContent());
 	}
 	
@@ -407,7 +404,26 @@ public class ResponseParserTest {
 		"</S:Body>" +
 		"</S:Envelope>";
 		
-		ResponseParser parser = new ResponseParser();
+		ItemParser parser = new ItemParser();
 		assertNull(parser.parse(sampleXml));
-	}	
+	}
+	
+	@Test
+	public void shouldReturnTheCorrectItemObjectEvenWhenTheMessageContainsResponseTag() throws Exception{
+	
+		String sampleXml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:sim=\"http://simplestorews.vvws.choreos.eu/\">" +
+													"<soapenv:Header/>" +
+													"<soapenv:Body>" +
+													"<sim:searchByArtist>" +
+													"<!--Optional:-->" +
+													"<arg0>Pink Floyd</arg0>" +
+													"</sim:searchByArtist>" +
+													"</soapenv:Body>" +
+													"</soapenv:Envelope>";
+		
+		ItemParser parser = new ItemParser();
+		Item message = parser.parse(sampleXml);
+		
+		assertEquals("Pink Floyd", message.getChild("arg0").getContent());
+	}
 }

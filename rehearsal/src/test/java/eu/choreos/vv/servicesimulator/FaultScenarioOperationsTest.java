@@ -1,5 +1,6 @@
 package eu.choreos.vv.servicesimulator;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.After;
@@ -56,7 +57,7 @@ public class FaultScenarioOperationsTest {
 		WSClient client = new WSClient(MOCK_WSDL_URI);
 		
 		// A com.eviware.soapui.impl.wsdl.mock.DispatchException is throw internally to jetty and it cannot be captured
-		assertNull(client.request("getPrice", "milk")); 
+		assertEquals("Fault", client.request("getPrice", "milk").getName()); 
 	}
 	
 	@Test(expected=ArrayIndexOutOfBoundsException.class)

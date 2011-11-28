@@ -5,8 +5,6 @@ import static eu.choreos.vv.assertions.RehearsalAsserts.assertRole;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.choreos.vv.abstractor.Role;
-import eu.choreos.vv.abstractor.Service;
 import eu.choreos.vv.compliance.FullRoleComplianceTest;
 import eu.choreos.vv.compliance.NonTestCases;
 import eu.choreos.vv.compliance.RoleComplianceWithFailuresTest;

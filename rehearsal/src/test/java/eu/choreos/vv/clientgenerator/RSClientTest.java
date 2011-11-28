@@ -10,8 +10,6 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.choreos.vv.clientgenerator.RSClient;
-
 
 public class RSClientTest {
 	

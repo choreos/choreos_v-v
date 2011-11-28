@@ -181,7 +181,7 @@ public class WSClient {
 		String responseContent = response.getContentAsString();
 
 		
-		ResponseParser parser = new ResponseParser();
+		ItemParser parser = new ItemParser();
 		
 		System.out.println(responseContent);
 		return parser.parse(responseContent) ;

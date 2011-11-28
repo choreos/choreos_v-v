@@ -8,9 +8,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.choreos.vv.clientgenerator.Item;
-import eu.choreos.vv.clientgenerator.ItemImpl;
-
 
 
 public class ResponseItemTest {

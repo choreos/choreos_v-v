@@ -17,12 +17,11 @@ import eu.choreos.vv.exceptions.ParserException;
 
 /**
  * Utility class to parse the Soap XML response of a Web Service operation
- * Obs: it's a package visibility class, since it's not used by the client
  * 
  * @author Leonardo Leite, Guilherme Nogueira
  *
  */
-class ResponseParser {
+public class ItemParser {
 
 	private static SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 	private SAXParser parser;
@@ -81,7 +80,7 @@ class ResponseParser {
 
 			String name = getNameWithoutNamespace(qName);
 
-			if (name.endsWith("Response") || !tagStack.empty()) {
+			if (doNotContainsHeaderInformation(name) || !tagStack.empty()) {
 				HashMap<String, String> parameters = new HashMap<String, String>();
 
 				for(int i=0; i< attributes.getLength(); i++)
@@ -90,6 +89,10 @@ class ResponseParser {
 				result = new ItemImpl(name, parameters);
 				tagStack.push(result);
 			}
+		}
+
+		private boolean doNotContainsHeaderInformation(String name) {
+			return !name.contains("Envelope")&&!name.contains("Header")&&!name.contains("Body");
 		}
 
 		private String getNameWithoutNamespace(String qName) {

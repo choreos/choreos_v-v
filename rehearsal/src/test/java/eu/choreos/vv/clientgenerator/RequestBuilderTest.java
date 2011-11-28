@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import eu.choreos.vv.clientgenerator.Item;
-import eu.choreos.vv.clientgenerator.ItemImpl;
 import eu.choreos.vv.common.ItemBuilder;
 import eu.choreos.vv.exceptions.ParserException;
 
