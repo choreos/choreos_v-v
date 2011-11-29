@@ -26,7 +26,7 @@ public class TimeoutSupportTest {
 		mock.stop();
 	}
 	
-	@Test(timeout=10000)
+	@Test(timeout=30000)
 	public void  shouldTheRequestTakeTwentyHundreadMilliseconds() throws Exception {
 		WSClient client = new WSClient(MOCK_WSDL_URI); 
 		client.setResponseTimeout(1000);
