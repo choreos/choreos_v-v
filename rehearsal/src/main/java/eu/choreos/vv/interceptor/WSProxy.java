@@ -13,8 +13,8 @@ public class WSProxy extends MockProject {
 	
 	private String realWsdl;
 	
-	public WSProxy(String uri, String realWsdl) throws Exception {
-		super(uri+ "Proxy", realWsdl);
+	public WSProxy(String proxyURI, String realWsdl) throws Exception {
+		super(proxyURI+ "Proxy", realWsdl);
 		this.realWsdl = realWsdl;
 		addOperationsToProxy();
 	}
@@ -54,7 +54,7 @@ public class WSProxy extends MockProject {
 	}
 	
 	public String getProxyWsdl(){
-		return super.getWSDL();
+		return super.getWsdl();
 	}
 	
 }

@@ -34,7 +34,7 @@ public class WSProxyTest {
 	public void shouldCreateTheProxyByAddingTheSuffixProxyInTheInterceptedService() throws Exception {
 		WSProxy proxy = new WSProxy("ws/sm_plus", SM_WSDL_URI);
 		
-		assertEquals("http://localhost:8088/ws/sm_plusProxy?wsdl", proxy.getWSDL());
+		assertEquals("http://localhost:8088/ws/sm_plusProxy?wsdl", proxy.getWsdl());
 	}
 	
 	@Test
@@ -42,7 +42,7 @@ public class WSProxyTest {
 		WSProxy proxy = new WSProxy("ws/sm_plus", SM_WSDL_URI);
 		proxy.setPort("1234");
 		
-		assertEquals("http://localhost:1234/ws/sm_plusProxy?wsdl", proxy.getWSDL());
+		assertEquals("http://localhost:1234/ws/sm_plusProxy?wsdl", proxy.getWsdl());
 	}
 	
 	@Test
@@ -51,7 +51,7 @@ public class WSProxyTest {
 		proxy.setPort("1234");
 		proxy.setHostName("myHome");
 		
-		assertEquals("http://myHome:1234/ws/sm_plusProxy?wsdl", proxy.getWSDL());
+		assertEquals("http://myHome:1234/ws/sm_plusProxy?wsdl", proxy.getWsdl());
 	}
 	
 	@Test
@@ -73,7 +73,7 @@ public class WSProxyTest {
 		proxy.setPort("9999");
 		proxy.start();
 		
-		WSClient client = new WSClient(proxy.getWSDL());
+		WSClient client = new WSClient(proxy.getWsdl());
 		client.request("searchByArtist", "Pink Floyd");
 		
 		String expectedMessage = MessageTestData.getRequestContentWithComments();
@@ -90,7 +90,7 @@ public class WSProxyTest {
 		proxy.setPort("9999");
 		proxy.start();
 	
-		WSClient client = new WSClient(proxy.getWSDL());
+		WSClient client = new WSClient(proxy.getWsdl());
 		Item response = client.request("searchByArtist", "Pink Floyd");
 	
 		assertEquals("The dark side of the moon;", response.getChild("return").getContent());

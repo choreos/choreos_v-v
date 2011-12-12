@@ -41,7 +41,7 @@ public class MockProject {
 			return port;
 		}
 
-		public String getWSDL() {
+		public String getWsdl() {
 			return "http://" + hostName + ":" + port + "/" + name + "?wsdl";
 		}
 

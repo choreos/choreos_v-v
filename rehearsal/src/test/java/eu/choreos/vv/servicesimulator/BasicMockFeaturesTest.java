@@ -37,7 +37,7 @@ public class BasicMockFeaturesTest {
 	public void shouldCreateAMockWithDefautValuesForAGivenWsdl() throws Exception {
 		assertEquals("8088", aMock.getPort());
 		assertEquals("localhost", aMock.getHostName());
-		assertEquals("http://localhost:8088/myMock?wsdl", aMock.getWSDL());
+		assertEquals("http://localhost:8088/myMock?wsdl", aMock.getWsdl());
 	}
 	
 	@Test
@@ -48,7 +48,7 @@ public class BasicMockFeaturesTest {
 		
 		assertEquals("9000", aMock.getPort());
 		assertEquals("143.107.58.12", aMock.getHostName());
-		assertEquals("http://143.107.58.12:9000/myMock?wsdl", aMock.getWSDL());
+		assertEquals("http://143.107.58.12:9000/myMock?wsdl", aMock.getWsdl());
 	}
 	
 	@Test(expected=WSDLException.class)
@@ -73,7 +73,7 @@ public class BasicMockFeaturesTest {
 		
 		// Make a http request by accessing mock wsdl uri
 		//--------------------------------------------------
-		assertTrue(HttpUtils.verifyIfUriReturns0kforGET(aMock.getWSDL()));
+		assertTrue(HttpUtils.verifyIfUriReturns0kforGET(aMock.getWsdl()));
 		
 		aMock.stop();
 	}
