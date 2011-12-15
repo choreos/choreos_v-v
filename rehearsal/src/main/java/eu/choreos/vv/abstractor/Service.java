@@ -12,6 +12,12 @@ import eu.choreos.vv.clientgenerator.WSClient;
 import eu.choreos.vv.exceptions.FrameworkException;
 import eu.choreos.vv.exceptions.WSDLException;
 
+/**
+ *  * This class represents the service object and belongs to the Abstraction Choreography feature
+ * 
+ * @author besson
+ *
+ */
 public class Service {
 
 	private String WSDL;

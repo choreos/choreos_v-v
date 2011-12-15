@@ -1,5 +1,11 @@
 package eu.choreos.vv.exceptions;
 
+/**
+ * This exception is thrown when the provided WSDL is not valid
+ * 
+ * @author besson
+ *
+ */
 public class WSDLException extends FrameworkException {
 
 	private static final long serialVersionUID = 2726146634585392449L;

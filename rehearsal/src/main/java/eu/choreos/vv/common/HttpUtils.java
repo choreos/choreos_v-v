@@ -9,6 +9,12 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
+/**
+ * This class provides feature for managing the HTTP requests and responses
+ * 
+ * @author besson
+ *
+ */
 public class HttpUtils {
 
 	public static boolean verifyIfUriReturns0kforGET(String url) throws HttpException, IOException{

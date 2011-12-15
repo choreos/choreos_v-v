@@ -2,6 +2,12 @@ package eu.choreos.vv.common;
 
 import java.util.regex.Pattern;
 
+/**
+ * This provides features for formating WSDL URIs
+ * 
+ * @author besson
+ *
+ */
 public class WsdlUtils {
 
 	public static String getBaseName(String wsdlUri) {

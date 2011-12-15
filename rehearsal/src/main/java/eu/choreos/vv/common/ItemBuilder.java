@@ -19,7 +19,12 @@ import org.xml.sax.helpers.DefaultHandler;
 import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.exceptions.ParserException;
 
-
+/**
+ * This class supports the Item (complex types) building
+ * 
+ * @author besson
+ *
+ */
 public class ItemBuilder {
 	private static SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 	private SAXParser parser;

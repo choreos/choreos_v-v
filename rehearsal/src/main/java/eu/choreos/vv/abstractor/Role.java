@@ -1,6 +1,11 @@
 package eu.choreos.vv.abstractor;
 
-
+/**
+ *  * This class represents the role object and belongs to the Abstraction Choreography feature
+ * 
+ * @author besson
+ *
+ */
 public class Role {
 
 	private String name;

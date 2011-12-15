@@ -8,28 +8,48 @@ import eu.choreos.vv.clientgenerator.ItemParser;
 import eu.choreos.vv.common.WsdlUtils;
 import eu.choreos.vv.exceptions.ParserException;
 
-
-
+/**
+ * This class provides the Message Interceptor feature
+ * 
+ * @author besson
+ *
+ */
 public class MessageInterceptor {
 
 	private WSProxy proxy;
 	private InterceptedMessagesRegistry registry; 
 	private String port;
 	
+	/**
+	 * Creates a message interceptor instance which will intercept the messages
+	 * by using a proxy deployed on the provided port
+	 * 
+	 * @param port
+	 */
 	public MessageInterceptor(String port){
 		registry = InterceptedMessagesRegistry.getInstance();
 		this.port = port;
 	}
 	
+	/**
+	 * Intercepts all messages sent to the provided WSDL
+	 * 
+	 * @param realWsdl
+	 * @throws Exception
+	 */
 	public void interceptTo(String realWsdl) throws Exception {
 		proxy = new WSProxy(WsdlUtils.getBaseName(realWsdl), realWsdl);
 		proxy.setPort(port);
 		proxy.start();
 		
 		registry.registerWsdl(realWsdl);
-		
 	}
 
+	/**
+	 * Retrieves all intercepted messages
+	 * 
+	 * @return a list of Messages in the Item format
+	 */
 	public List<Item> getMessages() {
 		List<Item> itemMessages = new ArrayList<Item>();
 		List<String> xmlMessages =  registry.getMessages(proxy.getRealWsdl());

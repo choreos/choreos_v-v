@@ -7,6 +7,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+/**
+ * This class represents the generic test case that must be extended in the compliance test creation
+ * 
+ * @author besson
+ *
+ */
 @RunWith(value = Parameterized.class)
 public class ComplianceTestCase {
 	

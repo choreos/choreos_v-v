@@ -15,6 +15,12 @@ import com.eviware.soapui.model.iface.Request.SubmitException;
 import com.eviware.soapui.model.iface.Response;
 import com.eviware.soapui.support.SoapUIException;
 
+/**
+ * This class provides features for routing the messages in the proxies
+ * 
+ * @author besson
+ *
+ */
 public class RequestDispatcher {
 	
 	public static String getResponse(String wsdl, String operationName, String requestContent) throws XmlException, IOException, SoapUIException, SubmitException{

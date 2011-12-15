@@ -13,8 +13,22 @@ import eu.choreos.vv.abstractor.Service;
 import eu.choreos.vv.exceptions.NonJUnitTestCasesException;
 import eu.choreos.vv.abstractor.ComplianceTestCase;
 
+/**
+ * This class provides the Rehearsal Assertions
+ * 
+ * @author besson
+ *
+ */
 public class RehearsalAsserts extends Assert{
 	
+	/**
+	 * Asserts if the a service is playing a role correctly
+	 * 
+	 * @param aRole
+	 * @param aService
+	 * @param testCases
+	 * @throws NonJUnitTestCasesException
+	 */
 	public static  void assertRole(Role aRole, Service aService, Class<?> testCases) throws NonJUnitTestCasesException{
 		if (!aService.getRoles().contains(aRole))
 			fail("The service does not implements " + aRole.getName());

@@ -48,7 +48,7 @@ public class WSMock extends MockProject {
 	/**
 	 * Retrieves all mocked operations
 	 * 
-	 * @return a list with all operations beloging to a WSMock object
+	 * @return a list containing all operations beloging to a WSMock object
 	 */
 	public List<MockOperation> getOperations() {
 		return new ArrayList<MockOperation>(operations.values());
