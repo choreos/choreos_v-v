@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -20,7 +21,8 @@ public class RSClientTest {
 		client = new RSClient("http://choreos.ime.usp.br", "/rest/bookstore", 53111);
 	}
 	
-	@Test
+	
+	@Test 
 	public void shouldGetCorrectBook(){
 		String retrievedBook = client.get("/book/0");
 		String expectedBook = "{\"title\":\"O Hobbit\",\"author\":\"J. R. R. Tolkien\"}";

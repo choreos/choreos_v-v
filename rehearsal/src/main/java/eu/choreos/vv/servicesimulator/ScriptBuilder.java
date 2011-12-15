@@ -5,12 +5,19 @@ import java.util.List;
 
 import eu.choreos.vv.exceptions.ParserException;
 
-public class ScriptBuilder {
+/**
+ * This class builds the script which is used to apply the WSMock dynamic behavior 
+ * 
+ * @author besson
+ *
+ */
+ class ScriptBuilder {
 
 	private String script; 
 	private String defaultRequest;
 	private String defaultResponse;
 	private List<MockResponse> responses;
+	
 	
 	public ScriptBuilder(){
 		script = "def request = new XmlSlurper().parseText(mockRequest.requestContent)" + "\n";

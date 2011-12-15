@@ -5,11 +5,14 @@ import java.util.Set;
 
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockResponse;
 
+/**
+ * A java.util.HashMap customization for storing WsdlMockResponse objects
+ * 
+ * @author besson
+ *
+ */
 public class MockResponseMap extends HashMap<MockResponse, WsdlMockResponse>{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Override

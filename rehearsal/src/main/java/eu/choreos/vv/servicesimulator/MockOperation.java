@@ -5,6 +5,11 @@ import com.eviware.soapui.impl.wsdl.mock.WsdlMockResponse;
 
 import eu.choreos.vv.exceptions.ParserException;
 
+/**
+ * This class represents a Mock Operation
+ * @author besson
+ *
+ */
 public class MockOperation {
 	
 	private WsdlMockOperation soapUIMockOperation;
@@ -12,6 +17,12 @@ public class MockOperation {
 	private WsdlMockResponse soapUIResponse;
     private ScriptBuilder builder;
 	
+    /**
+     * Receives the need information for mocking an operation
+     * 
+     * @param defaultRequest envelope
+     * @param soapUIMockOperation object which is used for mocking the operation
+     */
 	public MockOperation(String defaultRequest, WsdlMockOperation soapUIMockOperation) {
 		this.soapUIMockOperation = soapUIMockOperation;
 		 soapUIResponse = soapUIMockOperation.addNewMockResponse("response 1", true);
@@ -22,19 +33,38 @@ public class MockOperation {
 		soapUIResponse.setResponseContent("${message}");
 	}
 
+	/**
+	 * Gets the operation name
+	 * 
+	 * @return operation name
+	 */
 	public String getName() {
 		return soapUIMockOperation.getName();
 	}
 	
+	/**
+	 * Gets the SoapUI MockOperation object that represents the operation
+	 * 
+	 * @return SoapUI MockOperation 
+	 */
 	public WsdlMockOperation getSoapUIMockOperation(){
 		return soapUIMockOperation;
 	}
 	
+	/**
+	 * Adds a valid response to be returned for the mocked operation
+	 * 
+	 * @param mockResponse
+	 * @throws ParserException
+	 */
 	public void addResponse(MockResponse mockResponse) throws ParserException{
 		builder.addConditionFor(mockResponse);
 		soapUIResponse.setScript(builder.getScript());
 	}
 
+	/**
+	 * Configures the mocked operation to do not respond
+	 */
 	public void doNotResponse() {
 		String timeoutScript = "Thread.sleep(300000)";
 		soapUIResponse.setScript(timeoutScript);

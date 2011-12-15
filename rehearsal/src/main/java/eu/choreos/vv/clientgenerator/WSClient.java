@@ -25,7 +25,7 @@ import eu.choreos.vv.exceptions.ParserException;
 import eu.choreos.vv.exceptions.WSDLException;
 
 /**
- * Proxy to invoke and treat web services operations
+ * Dynamic client  to invoke and treat web service requests
  *
  */
 public class WSClient {
