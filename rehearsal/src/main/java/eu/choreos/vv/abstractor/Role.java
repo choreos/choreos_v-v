@@ -3,7 +3,7 @@ package eu.choreos.vv.abstractor;
 /**
  *  * This class represents the role object and belongs to the Abstraction Choreography feature
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class Role {

@@ -27,6 +27,7 @@ import eu.choreos.vv.exceptions.WSDLException;
 /**
  * Dynamic client  to invoke and treat web service requests
  *
+ * Felipe Besson, Pedro Leal, Leonardo Leite, Lucas Piva, Guilherme Nogueira
  */
 public class WSClient {
 

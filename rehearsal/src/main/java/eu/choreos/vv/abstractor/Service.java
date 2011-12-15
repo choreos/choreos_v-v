@@ -15,7 +15,7 @@ import eu.choreos.vv.exceptions.WSDLException;
 /**
  *  * This class represents the service object and belongs to the Abstraction Choreography feature
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class Service {

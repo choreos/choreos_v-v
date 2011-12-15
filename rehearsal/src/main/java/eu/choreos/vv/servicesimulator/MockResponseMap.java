@@ -8,7 +8,7 @@ import com.eviware.soapui.impl.wsdl.mock.WsdlMockResponse;
 /**
  * A java.util.HashMap customization for storing WsdlMockResponse objects
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class MockResponseMap extends HashMap<MockResponse, WsdlMockResponse>{

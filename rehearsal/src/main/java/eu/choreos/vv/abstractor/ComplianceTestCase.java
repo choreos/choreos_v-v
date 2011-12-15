@@ -10,7 +10,7 @@ import org.junit.runners.Parameterized.Parameters;
 /**
  * This class represents the generic test case that must be extended in the compliance test creation
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 @RunWith(value = Parameterized.class)

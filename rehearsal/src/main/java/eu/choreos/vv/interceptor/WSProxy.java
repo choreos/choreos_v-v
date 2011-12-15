@@ -12,7 +12,7 @@ import eu.choreos.vv.common.MockProject;
 /**
  * This class represents the WSProxy objects which are used in the message interception
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class WSProxy extends MockProject {

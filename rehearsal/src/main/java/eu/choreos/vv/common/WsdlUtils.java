@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 /**
  * This provides features for formating WSDL URIs
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class WsdlUtils {

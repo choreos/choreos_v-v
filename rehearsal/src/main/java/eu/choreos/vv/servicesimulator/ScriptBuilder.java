@@ -8,7 +8,7 @@ import eu.choreos.vv.exceptions.ParserException;
 /**
  * This class builds the script which is used to apply the WSMock dynamic behavior 
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
  class ScriptBuilder {

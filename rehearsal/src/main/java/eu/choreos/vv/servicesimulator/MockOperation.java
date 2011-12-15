@@ -7,7 +7,7 @@ import eu.choreos.vv.exceptions.ParserException;
 
 /**
  * This class represents a Mock Operation
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class MockOperation {

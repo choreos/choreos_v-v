@@ -3,7 +3,7 @@ package eu.choreos.vv.exceptions;
 /**
  * Generic exception used mainly when underlying libraries throw some unclear exception
  * 
- * @author leonardo, lucas
+ * @author Leonardo Leite, Lucas Piva
  *
  */
 public class FrameworkException extends Exception {

@@ -22,7 +22,7 @@ import eu.choreos.vv.exceptions.ParserException;
 /**
  * This class supports the Item (complex types) building
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class ItemBuilder {

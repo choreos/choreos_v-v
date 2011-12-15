@@ -18,7 +18,7 @@ import com.eviware.soapui.support.SoapUIException;
 /**
  * This class provides features for routing the messages in the proxies
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class RequestDispatcher {

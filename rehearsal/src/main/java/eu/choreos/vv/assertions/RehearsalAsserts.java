@@ -16,7 +16,7 @@ import eu.choreos.vv.abstractor.ComplianceTestCase;
 /**
  * This class provides the Rehearsal Assertions
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class RehearsalAsserts extends Assert{
@@ -24,9 +24,9 @@ public class RehearsalAsserts extends Assert{
 	/**
 	 * Asserts if the a service is playing a role correctly
 	 * 
-	 * @param aRole
-	 * @param aService
-	 * @param testCases
+	 * @param aRole is the reference role
+	 * @param aService is the service under test
+	 * @param testCases are the test applied in the service to verifiy its role compliance
 	 * @throws NonJUnitTestCasesException
 	 */
 	public static  void assertRole(Role aRole, Service aService, Class<?> testCases) throws NonJUnitTestCasesException{

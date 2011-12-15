@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * Utility class for handling the XML Soap envelope
  * Obs: it's a package visibility class, since it's not used by the client
  * 
- * @author lucas, guilherme
+ * @author Lucas Piva, Guilherme Nogueira
  *
  */
 public class SoapEnvelopeHelper {

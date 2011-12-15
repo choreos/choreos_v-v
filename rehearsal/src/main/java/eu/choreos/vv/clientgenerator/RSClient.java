@@ -9,7 +9,7 @@ import com.jayway.restassured.RestAssured;
  * RSClient is just a wrapper for the RESTAssured (v1.2.1) library
  * for REST communication. 
  * 
- * @author leonardo, piva
+ * @author Leonardo Leite, Lucas Piva
  *
  */
 public class RSClient {

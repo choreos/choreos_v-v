@@ -12,7 +12,7 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 /**
  * This class provides feature for managing the HTTP requests and responses
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class HttpUtils {

@@ -9,7 +9,7 @@ import eu.choreos.vv.exceptions.ParserException;
 
 /**
  * This class represents the Mock Response returned by WSMock
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class MockResponse {

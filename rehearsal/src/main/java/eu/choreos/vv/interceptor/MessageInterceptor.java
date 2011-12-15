@@ -11,7 +11,7 @@ import eu.choreos.vv.exceptions.ParserException;
 /**
  * This class provides the Message Interceptor feature
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class MessageInterceptor {

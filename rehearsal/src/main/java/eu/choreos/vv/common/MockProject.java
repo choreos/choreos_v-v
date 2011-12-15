@@ -12,7 +12,7 @@ import eu.choreos.vv.exceptions.WSDLException;
 /**
  * This class provides the common properties of WSMock and WSProxy
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class MockProject {

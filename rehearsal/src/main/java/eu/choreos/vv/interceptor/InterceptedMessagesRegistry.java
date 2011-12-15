@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * This singleton class stores the messages intercepted by Message Interceptor from a same host
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class InterceptedMessagesRegistry {

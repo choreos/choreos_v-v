@@ -5,7 +5,7 @@ package eu.choreos.vv.exceptions;
  * processing
  * 
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class ParserException extends FrameworkException{

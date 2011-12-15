@@ -13,7 +13,7 @@ import eu.choreos.vv.exceptions.ParserException;
 
 /**
  * This class provides the Service Mocking features
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class WSMock extends MockProject {

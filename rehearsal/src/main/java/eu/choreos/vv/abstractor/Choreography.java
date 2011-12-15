@@ -3,7 +3,7 @@ package eu.choreos.vv.abstractor;
 /**
  * This class represents the choreography object and belongs to the Abstraction Choreography feature
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class Choreography extends Service{

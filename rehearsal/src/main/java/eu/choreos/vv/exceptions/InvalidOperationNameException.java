@@ -3,7 +3,7 @@ package eu.choreos.vv.exceptions;
 /**
  * This exception is trhown if the an inexistent operation is invoked
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class InvalidOperationNameException extends Exception {

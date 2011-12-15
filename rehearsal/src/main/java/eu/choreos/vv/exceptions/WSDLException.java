@@ -3,7 +3,7 @@ package eu.choreos.vv.exceptions;
 /**
  * This exception is thrown when the provided WSDL is not valid
  * 
- * @author besson
+ * @author Felipe Besson
  *
  */
 public class WSDLException extends FrameworkException {
