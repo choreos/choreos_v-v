@@ -192,4 +192,30 @@ public class ItemImpl implements Item{
 	        return 0;
         }
 
+	@Override
+	public String getElementAsString() {
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append("<" + this.name);
+		
+		for (Map.Entry<String, String> entry : tagAttributes.entrySet()){
+			strBuilder.append(" " + entry.getKey() + "=\"" + entry.getValue() + "\"");
+		}
+		
+		strBuilder.append(">");
+		
+		for (LinkedList<Item> list : items.values()){
+			for (Item item : list){
+				strBuilder.append(item.getElementAsString());
+			}
+		}
+		
+		if (this.content != null){
+			strBuilder.append(this.content);
+		}
+		
+		strBuilder.append("</" + this.name + ">");
+		
+		return strBuilder.toString();
+	}
+
 }

@@ -207,4 +207,20 @@ public class ResponseItemTest {
 		
 		assertEquals(2, request.getListSizeFromItem("endpoint"));	        
         }
+	
+	@Test
+	public void shouldGetStringRepresentation() throws NoSuchFieldException {
+		Item root = new ItemImpl("root");
+		Item request = new ItemImpl("setSupermarketsList");
+		Item endpoint1 = new ItemImpl("endpoint");
+		endpoint1.setContent("endpoint1");
+		request.addChild(endpoint1);
+		
+		Item endpoint2 = new ItemImpl("endpoint");
+		endpoint2.setContent("endpoint2");
+		request.addChild(endpoint2);
+		root.addChild(request);
+		
+		assertEquals("<root><setSupermarketsList><endpoint>endpoint1</endpoint><endpoint>endpoint2</endpoint></setSupermarketsList></root>",root.getElementAsString());
+	}
 }
