@@ -1,5 +1,28 @@
-if mvn install fails, try to run this command:
+==============================================================
+Rehearsal - A framework to automate testing of Choreographies 
+==============================================================    
 
-cp resources/musicstore.jar ~/.m2/repository/br/usp/ime/choreos/vvws/webservice/1.0-SNAPSHOT/webservice-1.0-SNAPSHOT.jar
+To use the framework with all depedencies, please include in your pom.xml:
+
+
+Repository:
+
+<repository>
+      <id>ccslrepository</id>
+      <name>ccsl</name>
+      <url>http://valinhos.ime.usp.br:54080/maven/</url>
+</repository>
+
+Dependency:
+
+<dependency>
+      <groupId>eu.choreos</groupId>
+      <artifactId>rehearsal</artifactId>
+      <version>xx</version>
+      <scope>jar</scope>
+</dependency>
+
+More information about Rehearsal: http://ccsl.ime.usp.br/baile/VandV
+
 
 
