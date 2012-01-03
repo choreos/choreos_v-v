@@ -37,7 +37,7 @@ public class RehearsalAsserts extends Assert{
 			throw new NonJUnitTestCasesException("No @Test was found");
 		}
 		
-		ComplianceTestCase.setName(aService.getWSDL());
+		ComplianceTestCase.setName(aService.getUri());
 		Class<?> claz = testCases.asSubclass(ComplianceTestCase.class);
 
 		Result result = org.junit.runner.JUnitCore.runClasses(claz);

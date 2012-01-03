@@ -45,6 +45,7 @@
   <classpathentry kind="var" path="M2_REPO/com/jayway/restassured/rest-assured/1.2.2/rest-assured-1.2.2.jar" sourcepath="M2_REPO/com/jayway/restassured/rest-assured/1.2.2/rest-assured-1.2.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/net/sf/saxon/saxon/8.7/saxon-8.7.jar"/>
   <classpathentry kind="var" path="M2_REPO/saxon/saxon-jdom/6.5.3/saxon-jdom-6.5.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/yaml/snakeyaml/1.10-SNAPSHOT/snakeyaml-1.10-SNAPSHOT.jar" sourcepath="M2_REPO/org/yaml/snakeyaml/1.10-SNAPSHOT/snakeyaml-1.10-SNAPSHOT-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/eviware/soap-xmlbeans/1.2/soap-xmlbeans-1.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/eviware/soapui/4.0.0/soapui-4.0.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/eviware/soapui-xmlbeans/4.0.0/soapui-xmlbeans-4.0.0.jar"/>

@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class ChoreographyAbstractionTest {
+public class ChoreographyAbstractorTest {
 
 	private static Choreography futureMarket;
 	private static Role supermarket;
@@ -29,15 +29,15 @@ public class ChoreographyAbstractionTest {
 		// creating services
 		Service carrefutur = new Service();
 		carrefutur.addRole(supermarket);
-		carrefutur.setWSDL("http://localhost:8080/petals/services/carrefutur?wsdl");
+		carrefutur.setUri("http://localhost:8080/petals/services/carrefutur?wsdl");
 		carrefutur.addRole(supermarket);
 
 		Service registry = new Service();
-		registry.setWSDL("http://localhost:8080/petals/services/registry?wsdl");
+		registry.setUri("http://localhost:8080/petals/services/registry?wsdl");
 		carrefutur.addService(registry, "supermarket");
 
 		Service carefuturWS = new Service();
-		carefuturWS.setWSDL("http://localhost:8080/petals/services/carrefuturWS?wsdl");
+		carefuturWS.setUri("http://localhost:8080/petals/services/carrefuturWS?wsdl");
 		carrefutur.addService(carefuturWS, "supermarket");
 
 		futureMarket.addService(carrefutur, "supermarket");
@@ -46,14 +46,14 @@ public class ChoreographyAbstractionTest {
 	@Test
 	public void shouldGetAllServicesOfARole() throws Exception {
 		Service futureMart = new Service();
-		futureMart.setWSDL("http://localhost:8080/petals/services/futureMart?wsdl");
+		futureMart.setUri("http://localhost:8080/petals/services/futureMart?wsdl");
 		futureMart.addRole(supermarket);
 		futureMarket.addService(futureMart, "supermarket");
 
 		List<Service> services = futureMarket.getServicesForRole("supermarket");
 
-		String carrefuturWSDL = services.get(0).getWSDL();
-		String futureMartWSDL = services.get(1).getWSDL();
+		String carrefuturWSDL = services.get(0).getUri();
+		String futureMartWSDL = services.get(1).getUri();
 
 		assertEquals("http://localhost:8080/petals/services/carrefutur?wsdl",
 		                                carrefuturWSDL);

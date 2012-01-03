@@ -24,7 +24,7 @@ public class ComplianceTest {
 		store = new Role("store", STORE_WSDL);
 		
 		abcStore = new Service();
-		abcStore.setWSDL(ABC_STORE_WSDL);
+		abcStore.setUri(ABC_STORE_WSDL);
 		abcStore.addRole(store);
 	}
 	

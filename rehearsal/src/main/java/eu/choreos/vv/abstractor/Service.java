@@ -20,31 +20,31 @@ import eu.choreos.vv.exceptions.WSDLException;
  */
 public class Service {
 
-	private String WSDL;
+	private String uri;
 	protected HashMap<String, Role> roles;
-	protected HashMap<String, List<Service>> internalServices;
+	protected HashMap<String, List<Service>> participants;
 	private WSClient serviceClient;
 	
 	public Service(){
 		roles = new HashMap<String, Role>();
-		internalServices = new HashMap<String, List<Service>>();
+		participants = new HashMap<String, List<Service>>();
 	}
 
-	public String getWSDL() {
-	        return WSDL;
+	public String getUri() {
+	        return uri;
         }
 
-	public void setWSDL(String wSDL) {
-	        this.WSDL = wSDL;
+	public void setUri(String uri) {
+	        this.uri = uri;
         } 
 	
 	public void addRole(Role role){
 		roles.put(role.getName(), role);
-		internalServices.put(role.getName(), new ArrayList<Service>());
+		participants.put(role.getName(), new ArrayList<Service>());
 	}
 	
 	public void removeRole(String role){
-		internalServices.remove(role);
+		participants.remove(role);
 	}
 	
 	public List<Role> getRoles(){
@@ -57,21 +57,21 @@ public class Service {
 	}
 
 	public void addService(Service service, String roleName) {
-		int index = internalServices.get(roleName).size();
+		int index = participants.get(roleName).size();
 		Role internalRole = new Role(roleName + index, "");
 		
 		service.addRole(internalRole);
-		internalServices.get(roleName).add(service);
+		participants.get(roleName).add(service);
         }
 
 	public List<Service> getServicesForRole(String roleName) {
-	        return internalServices.get(roleName);
+	        return participants.get(roleName);
         }
 
 	public WSClient getWSClient() {
 	        
 	        try {
-	    				serviceClient = new WSClient (WSDL);
+	    				serviceClient = new WSClient (uri);
 	    			} catch (WSDLException e) {
 	    				e.printStackTrace();
 	    			} catch (XmlException e) {
