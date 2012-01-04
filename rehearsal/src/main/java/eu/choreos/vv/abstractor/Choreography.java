@@ -12,13 +12,13 @@ public class Choreography extends Service{
 	
 
 	/**
-	 * Receive a choreography deployment descriptor
+	 * Receive a choreography  descriptor
 	 * 
 	 * @param descriptorPath
 	 * @throws FileNotFoundException 
 	 */
 	public static Choreography build(String descriptorPath) throws FileNotFoundException {
-		return DeploymentDescriptor.buildChoreography(descriptorPath);
+		return ChoreographyDescriptor.buildChoreography(descriptorPath);
 	}
 	
 	public Choreography( ){}

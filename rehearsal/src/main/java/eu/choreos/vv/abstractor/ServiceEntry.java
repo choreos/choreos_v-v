@@ -2,6 +2,12 @@ package eu.choreos.vv.abstractor;
 
 import java.util.List;
 
+/**
+ * This class represents the service elements of the Choreography Descriptor (yaml file)
+ * 
+ * @author besson
+ *
+ */
 public class ServiceEntry {
 	
 	private String uri;

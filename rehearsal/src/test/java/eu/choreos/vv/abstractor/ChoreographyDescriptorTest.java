@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class DeploymentDescriptorTest {
+public class ChoreographyDescriptorTest {
 
 	private static Choreography choreography;
 	

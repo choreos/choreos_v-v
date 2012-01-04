@@ -34,7 +34,6 @@ services:
       participants:
        - uri: http://localhost:4321/SM2?wsdl
        - uri: http://localhost:1234/smregistry?wsdl
-
     - uri: http://localhost:8084/petals/services/supermarket3?wsdl
       role: *1
       participants:

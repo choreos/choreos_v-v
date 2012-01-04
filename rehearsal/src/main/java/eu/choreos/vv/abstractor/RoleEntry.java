@@ -1,5 +1,11 @@
 package eu.choreos.vv.abstractor;
 
+/**
+ * This class represents the role element of the Choreography descriptor (yaml file)
+ * 
+ * @author Felipe Besson
+ *
+ */
 public  class RoleEntry {
 	 
 	 private Role role;

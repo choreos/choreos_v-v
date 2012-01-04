@@ -9,7 +9,13 @@ import java.util.List;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-public class DeploymentDescriptor {
+/**
+ * This Java Bean class represents the YAML constructor model 
+ * 
+ * @author Felipe Besson
+ *
+ */
+public class ChoreographyDescriptor {
 
 	private List<RoleEntry> roles;
 	private List<ServiceEntry> services;
@@ -22,10 +28,17 @@ public class DeploymentDescriptor {
 		this.roles = roles;
 	}
 	
+	/**
+	 * Parses the yaml received and map it to a choreography object
+	 * 
+	 * @param path
+	 * @return
+	 * @throws FileNotFoundException
+	 */
 	public static Choreography buildChoreography(String path) throws FileNotFoundException{
-		Yaml yaml = new Yaml(new Constructor(DeploymentDescriptor.class));
+		Yaml yaml = new Yaml(new Constructor(ChoreographyDescriptor.class));
 		InputStream input = new FileInputStream(new File(path));
-		DeploymentDescriptor descriptor = (DeploymentDescriptor) yaml.load(input);
+		ChoreographyDescriptor descriptor = (ChoreographyDescriptor) yaml.load(input);
 		
 		Choreography choreography = new Choreography();
 		
@@ -35,7 +48,13 @@ public class DeploymentDescriptor {
 		return choreography;
 	}
 	
-	private static void buildChoreographyServices(Choreography choreography, DeploymentDescriptor descriptor) {
+	/**
+	 * Adds the choreography services into a choreography object
+	 * 
+	 * @param choreography
+	 * @param descriptor
+	 */
+	private static void buildChoreographyServices(Choreography choreography, ChoreographyDescriptor descriptor) {
 		List<ServiceEntry> serviceEntries = descriptor.getServices();
 		 
 		for (ServiceEntry serviceEntry : serviceEntries) {
@@ -56,7 +75,13 @@ public class DeploymentDescriptor {
 		 
 	}
 
-	private static void buildChoreographyRoles(Choreography choreography, DeploymentDescriptor descriptor){
+	/**
+	 * Adds the choreography roles into a choreography object
+	 * 
+	 * @param choreography
+	 * @param descriptor
+	 */
+	private static void buildChoreographyRoles(Choreography choreography, ChoreographyDescriptor descriptor){
 		List<RoleEntry> roleEntries = descriptor.getRoles();
 		
 		for (RoleEntry entry : roleEntries) 
