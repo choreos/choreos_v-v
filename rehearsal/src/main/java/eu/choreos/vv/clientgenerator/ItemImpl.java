@@ -218,4 +218,9 @@ public class ItemImpl implements Item{
 		return strBuilder.toString();
 	}
 
+	@Override
+	public String print() {
+		return ItemPrinter.print(this);
+	}
+
 }

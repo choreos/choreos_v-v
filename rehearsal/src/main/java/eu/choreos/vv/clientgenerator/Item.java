@@ -138,4 +138,11 @@ public interface Item {
 	 */
 	public String getElementAsString();
 
+	/**
+	 * Return the entire structure of the Item object
+	 * 
+	 * @return
+	 */
+	public String print();
+
 }

@@ -19,6 +19,7 @@ import com.eviware.soapui.support.SoapUIException;
 
 import eu.choreos.vv.common.HttpUtils;
 import eu.choreos.vv.common.ItemBuilder;
+import eu.choreos.vv.exceptions.EmptyRequetItemException;
 import eu.choreos.vv.exceptions.FrameworkException;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.ParserException;
@@ -39,6 +40,7 @@ public class WSClient {
 	private String endpoint;
 	private boolean remoteEndpoint = false;
 	private int timeout;
+	private WsdlOperation operation;
 	
 	/**
 	 * 
@@ -128,6 +130,15 @@ public class WSClient {
 		
 		return makeRequest(operationName, Strategy.ITEM, requestRoot);
 	}	
+	
+	
+	private String getDefaultRequestContent(String operationName) throws InvalidOperationNameException{
+		if (!operations.contains(operationName))
+			throw new InvalidOperationNameException();
+
+		operation = (WsdlOperation) iface.getOperationByName(operationName);
+		return  operation.getRequestAt(0).getRequestContent();
+	}
 
 	/**
 	 * Makes the actual request to the web service. It uses a strategy passed as a parameter
@@ -145,11 +156,7 @@ public class WSClient {
 	private Item makeRequest(String operationName, Strategy strategy, Item requestRoot, String... parameters)
 			throws FrameworkException, ParserException, InvalidOperationNameException {
 		
-		if (!operations.contains(operationName))
-			throw new InvalidOperationNameException();
-
-		WsdlOperation operation = (WsdlOperation) iface.getOperationByName(operationName);
-		String defaultRequestContent = operation.getRequestAt(0).getRequestContent();
+		String defaultRequestContent = getDefaultRequestContent(operationName);
 		
 		
 		String requestContent = null;
@@ -199,5 +206,15 @@ public class WSClient {
 
 	public void setResponseTimeout(int timeout) {
 		this.timeout = timeout;
+	}
+
+	public Item getItemParameterFor(String operationName) throws InvalidOperationNameException, ParserException, EmptyRequetItemException {
+		String defaultRequestContent = getDefaultRequestContent(operationName);
+		Item item=  new ItemParser().parse(defaultRequestContent);
+		
+		if(item.getChildren().size() == 0)
+			throw new EmptyRequetItemException("This operation has no parameter");
+		
+		return item;
 	}
 }
