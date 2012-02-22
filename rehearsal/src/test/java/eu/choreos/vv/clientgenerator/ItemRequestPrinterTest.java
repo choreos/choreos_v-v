@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import eu.choreos.vv.exceptions.EmptyRequetItemException;
 
-public class ItemParameterPrinterTest {
+public class ItemRequestPrinterTest {
 	
 
 	private static final String SM_WSDL_URI = "file://" + System.getProperty("user.dir") + "/resource/sm_plus.wsdl";
@@ -14,7 +14,7 @@ public class ItemParameterPrinterTest {
 	@Test
 	public void shouldGetTheParameterAsAnItem() throws Exception {
 		WSClient client = new WSClient(SM_WSDL_URI);
-		Item item = client.getItemParameterFor("getPrice");
+		Item item = client.getItemRequestFor("getPrice");
 		Item child = item.getChild("name");
 		
 		assertEquals("getPrice", item.getName());
@@ -25,7 +25,7 @@ public class ItemParameterPrinterTest {
 	@Test
 	public void shouldPrintTheParameterItem() throws Exception {
 		WSClient client = new WSClient(SM_WSDL_URI);
-		Item item = client.getItemParameterFor("getPrice");
+		Item item = client.getItemRequestFor("getPrice");
  
 		String expected = "Item getPrice = new ItemImpl(\"getPrice\");" + "\n" +
 												"Item name = new ItemImpl(\"name\");" + "\n" +
@@ -40,7 +40,7 @@ public class ItemParameterPrinterTest {
 	@Test(expected=EmptyRequetItemException.class)
 	public void shouldThrowAnExceptionWhenTheOperationHasNoParameter() throws Exception {
 		WSClient client = new WSClient(SM_WSDL_URI);
-		client.getItemParameterFor("getSpecialOffer");
+		client.getItemRequestFor("getSpecialOffer");
 	}
 	
 

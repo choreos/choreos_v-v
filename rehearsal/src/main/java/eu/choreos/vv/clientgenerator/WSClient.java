@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.apache.xmlbeans.XmlException;
 
 import com.eviware.soapui.impl.WsdlInterfaceFactory;
@@ -13,6 +15,9 @@ import com.eviware.soapui.impl.wsdl.WsdlProject;
 import com.eviware.soapui.impl.wsdl.WsdlRequest;
 import com.eviware.soapui.impl.wsdl.WsdlSubmit;
 import com.eviware.soapui.impl.wsdl.WsdlSubmitContext;
+import com.eviware.soapui.impl.wsdl.mock.WsdlMockOperation;
+import com.eviware.soapui.impl.wsdl.mock.WsdlMockResponse;
+import com.eviware.soapui.impl.wsdl.mock.WsdlMockService;
 import com.eviware.soapui.model.iface.Request.SubmitException;
 import com.eviware.soapui.model.iface.Response;
 import com.eviware.soapui.support.SoapUIException;
@@ -208,7 +213,7 @@ public class WSClient {
 		this.timeout = timeout;
 	}
 
-	public Item getItemParameterFor(String operationName) throws InvalidOperationNameException, ParserException, EmptyRequetItemException {
+	public Item getItemRequestFor(String operationName) throws InvalidOperationNameException, ParserException, EmptyRequetItemException {
 		String defaultRequestContent = getDefaultRequestContent(operationName);
 		Item item=  new ItemParser().parse(defaultRequestContent);
 		
@@ -216,5 +221,18 @@ public class WSClient {
 			throw new EmptyRequetItemException("This operation has no parameter");
 		
 		return item;
+	}
+
+	public Item getItemResponseFor(String operationName) throws ParserException, XmlException, IOException, SoapUIException {
+		WsdlProject project = new WsdlProject();
+		iface = WsdlInterfaceFactory.importWsdl(project, wsdl, true)[0];
+
+		WsdlMockService service = project.addNewMockService("name");
+		WsdlMockOperation mockOperation = service.addNewMockOperation(iface.getOperationByName(operationName));
+		WsdlMockResponse response = mockOperation.addNewMockResponse( "Response 1", true );
+		
+		String responseContent = response.getResponseContent();
+		
+		return new ItemParser().parse(responseContent);
 	}
 }
