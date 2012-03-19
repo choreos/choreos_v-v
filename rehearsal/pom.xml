@@ -25,45 +25,7 @@
           <windowtitle>API for ${project.name} ${project.version}</windowtitle>
   </configuration>
       </plugin>
-
-       <plugin>
-           <groupId>org.apache.maven.plugins</groupId>
-           <artifactId>maven-compiler-plugin</artifactId>
-           <version>2.3.1</version>
-           <configuration>
-               <source>1.6</source>
-               <target>1.6</target>
-           </configuration>
-       </plugin>
-<!--
-   <plugin>
- 	<groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-	<executions>
-	  <execution>
-	    <phase>package</phase>
-	      <goals>
-		<goal>shade</goal>
-	      </goals>
-	  </execution>
-        </executions>
-        <version>1.4</version>
-	<configuration>
-	         <filters>
-<filter>
-<artifact>*</artifact>
-<excludes>
-<exclude>META-INF/*.SF</exclude>
-<exclude>META-INF/*.RSA</exclude>
-<exclude>META-INF/*.INF</exclude>
-</excludes>
-</filter>
-</filters>
-	  <finalName>${project.artifactId}-${project.version}</finalName>
-	</configuration>
-
-      </plugin>
--->
+      
     </plugins>
   </build>
   
@@ -93,25 +55,6 @@
       <id>eviware</id>
       <name>eviWare</name>
       <url>http://www.eviware.com/repository/maven2/</url>
-    </repository>
-    <repository>
-      <id>petals</id>
-      <url>http://maven.ow2.org/maven2</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-
-    <repository>
-        <id>petalslink</id>
-        <name>Petalslink</name>
-        <url>http://maven.petalslink.com/public/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
     </repository>
     
     <repository>
