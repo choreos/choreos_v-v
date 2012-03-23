@@ -2,7 +2,6 @@ package eu.choreos.vv.servicesimulator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
@@ -343,7 +342,7 @@ public class ServiceMockTesting {
 	public void mockedServiceShouldInterceptIncommingMessages() throws Exception{
 		smMock.start();
 
-		WSMock interceptorMock = new WSMock("supermarketMock", SM_WSDL_URI, true, "5678");
+		WSMock interceptorMock = new WSMock("supermarketMock", SM_WSDL_URI,  "5678", true);
 		interceptorMock.start();
 		
 		MockResponse response = new MockResponse().whenReceive("*").replyWith("It is for free, I am an interceptor, be careful");
@@ -373,8 +372,7 @@ public class ServiceMockTesting {
 
 	
 	private WSMock getMock() throws Exception {
-		WSMock smMock = new WSMock("supermarketMock", SM_WSDL_URI);
-		smMock.setPort("4321");
+		WSMock smMock = new WSMock("supermarketMock", SM_WSDL_URI, "4321");
 		return smMock;
 	}
 	

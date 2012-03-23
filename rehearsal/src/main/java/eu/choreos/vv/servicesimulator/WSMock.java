@@ -30,8 +30,9 @@ public class WSMock extends MockProject {
 	 * @param  wsdl of the service that will be mocked
 	 * @throws Exception
 	 */
-	public WSMock(String name, String wsdl) throws Exception {
+	public WSMock(String name, String wsdl, String port) throws Exception {
 		super(name, wsdl);
+		setPort(port);
 		operations = new HashMap<String, MockOperation>();
 		createMockOperations(false);
 	}
@@ -43,8 +44,9 @@ public class WSMock extends MockProject {
 	 * @param  wsdl of the service that will be mocked
 	 * @throws Exception
 	 */
-	public WSMock(String name, String wsdl, boolean isInterceptor, String port) throws Exception {
+	public WSMock(String name, String wsdl, String port, boolean isInterceptor) throws Exception {
 		super(name, wsdl);
+		setPort(port);
 		operations = new HashMap<String, MockOperation>();
 		createMockOperations(isInterceptor);
 		registry = InterceptedMessagesRegistry.getInstance();

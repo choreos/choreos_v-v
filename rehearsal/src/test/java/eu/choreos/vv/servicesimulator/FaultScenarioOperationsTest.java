@@ -21,9 +21,8 @@ public class FaultScenarioOperationsTest {
 	
 	@Test
 	public void shouldDoNotRespondForTheOperation() throws Exception {
-		mock = new WSMock("faultySupermarket", SM_WSDL_URI);
+		mock = new WSMock("faultySupermarket", SM_WSDL_URI, "4321");
 		mock.doNotRespond("getPrice");
-		mock.setPort("4321");
 		mock.start();
 		
 		WSClient client = new WSClient(MOCK_WSDL_URI);
@@ -35,9 +34,8 @@ public class FaultScenarioOperationsTest {
 	
 	@Test
 	public void shouldDoNotRespondForAllOperations() throws Exception {
-		mock = new WSMock("faultySupermarket", SM_WSDL_URI);
+		mock = new WSMock("faultySupermarket", SM_WSDL_URI, "4321");
 		mock.doNotRespondAll();
-		mock.setPort("4321");
 		mock.start();
 		
 		WSClient client = new WSClient(MOCK_WSDL_URI);
@@ -49,9 +47,8 @@ public class FaultScenarioOperationsTest {
 	
 	@Test
 	public void shouldSimulateAnOperationCrash() throws Exception {
-		mock = new WSMock("faltySupermarket", SM_WSDL_URI);
+		mock = new WSMock("faltySupermarket", SM_WSDL_URI, "4321");
 		mock.crash("getPrice");
-		mock.setPort("4321");
 		mock.start();
 	
 		WSClient client = new WSClient(MOCK_WSDL_URI);
@@ -62,9 +59,8 @@ public class FaultScenarioOperationsTest {
 	
 	@Test(expected=ArrayIndexOutOfBoundsException.class)
 	public void shouldSimulateAllOperationsCrash() throws Exception {
-		mock = new WSMock("faltySupermarket", SM_WSDL_URI);
+		mock = new WSMock("faltySupermarket", SM_WSDL_URI, "4321");
 		mock.crashAll();
-		mock.setPort("4321");
 		mock.start();
 		
 		// throw an ArrayIndexOutOfBoundsException cause WSClient does not find any operation to build the wsdl project
