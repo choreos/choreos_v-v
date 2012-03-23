@@ -2,6 +2,7 @@ package eu.choreos.vv.servicesimulator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
@@ -229,6 +230,7 @@ public class ServiceMockTesting {
 		assertEquals((Double)82.0, result.getChild("return").getContentAsDouble());
 	}
 	
+	
 	@Test
 	public void shouldReturnTenWhenAskMilkOtherwiseShouldReturnOneHundread() throws Exception{
 		MockResponse response1 = new MockResponse().whenReceive("*").replyWith("100");
@@ -248,6 +250,7 @@ public class ServiceMockTesting {
 		response = smClient.request("getPrice", "orange juice");
 		assertEquals((Double)100.0, response.getChild("return").getContentAsDouble());
 	}
+	
 	
 	@Test
 	public void shouldReturnTheCorrectResponsesWhenThereAreThreeConditions() throws Exception{
@@ -270,6 +273,7 @@ public class ServiceMockTesting {
 		assertEquals((Double)4.00, response.getChild("return").getContentAsDouble());
 	}
 	
+	
 	@Test
 	public void shouldBePossibleDefineTwoParameterInTheConditionInputParameters() throws Exception{
 		MockResponse response1 = new MockResponse().whenReceive("beer", "2").replyWith("Be hurry, we only have 2 units");
@@ -282,6 +286,7 @@ public class ServiceMockTesting {
 		Item response = smClient.request("purchase", "beer", "2");
 		assertEquals("Be hurry, we only have 2 units", response.getChild("return").getContent());
 	}
+	
 	
 	@Test
 	public void shouldBePossibleDefineParametersAsItemObjects() throws Exception{
@@ -298,6 +303,7 @@ public class ServiceMockTesting {
 		assertEquals("milk", clientResponse.getChild("name").getContent());
 		assertEquals("empty", clientResponse.getChild("status").getContent());
 	}
+	
 	
 	@Test
 	public void shouldBePossibleUseSimpleAndComplexTypeTogetherInTheMockResponses() throws Exception{
@@ -325,11 +331,44 @@ public class ServiceMockTesting {
 		assertEquals("totally available", clientResponse.getChild("status").getContent());
 	}
 	
+	
 	@Test(expected=NoMockResponseException.class)
 	public void shouldThrowAnExceptionWhenNoResponseIsDefinedForAnOperation() throws Exception {
 		smMock.start();
 
 		smMock.returnFor("getProductStatus");
+	}
+	
+	@Test
+	public void mockedServiceShouldInterceptIncommingMessages() throws Exception{
+		smMock.start();
+
+		WSMock interceptorMock = new WSMock("supermarketMock", SM_WSDL_URI, true, "5678");
+		interceptorMock.start();
+		
+		MockResponse response = new MockResponse().whenReceive("*").replyWith("It is for free, I am an interceptor, be careful");
+		interceptorMock.returnFor("getPrice", response);
+		
+		WSClient client = new WSClient(interceptorMock.getWsdl());
+		client.request("getPrice", "apple juice");
+		
+		List<Item> messages = interceptorMock.getInterceptedMessages();
+		
+		assertEquals("apple juice", messages.get(0).getChild("name").getContent());
+		
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void mockedServiceshouldNotBeAnInterceptorForDefault() throws Exception {
+		smMock.start();
+		
+		MockResponse response = new MockResponse().whenReceive("*").replyWith("It is for free but I am not an interceptor");
+		smMock.returnFor("getPrice", response);
+		
+		WSClient client = new WSClient(smMock.getWsdl());
+		client.request("getPrice", "pineapple juice");
+		
+		smMock.getInterceptedMessages();
 	}
 
 	

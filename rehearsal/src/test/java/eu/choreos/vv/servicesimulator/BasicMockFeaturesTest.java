@@ -97,6 +97,10 @@ public class BasicMockFeaturesTest {
 		
 	}
 	
+	public void twoMocksInTwoDifferentPortShouldWorkProperly() throws Exception{
+		aMock.start();
+	}
+	
 	// should be the last testcase to turn off the server
 	@Test(expected=MockDeploymentException.class)
 	public void shouldThrowAnExceptionWhenTheMockHaveAlreadyBeenStarted() throws Exception {

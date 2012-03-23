@@ -19,8 +19,12 @@ import eu.choreos.vv.exceptions.ParserException;
 	private List<MockResponse> responses;
 	
 	
-	public ScriptBuilder(){
+	public ScriptBuilder(String mockWsdl, boolean interceptor){
 		script = "def request = new XmlSlurper().parseText(mockRequest.requestContent)" + "\n";
+		
+		if(interceptor)
+			script += "eu.choreos.vv.interceptor.RequestDispatcher.addResponse('" + mockWsdl + "',  mockRequest.requestContent)" + "\n";
+		
 		responses = new ArrayList<MockResponse>();
 	}
 	

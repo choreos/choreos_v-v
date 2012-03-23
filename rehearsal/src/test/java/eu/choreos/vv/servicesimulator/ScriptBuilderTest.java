@@ -16,7 +16,7 @@ public class ScriptBuilderTest {
 	
 	@Test
 	public void shouldScriptBeCreatedWithItsHeader() throws Exception {
-		ScriptBuilder builder = new ScriptBuilder();
+		ScriptBuilder builder = new ScriptBuilder(null, false);
 		String header = builder.getScript();
 		
 		String expectedScript = "def request = new XmlSlurper().parseText(mockRequest.requestContent)" + "\n";
@@ -213,7 +213,7 @@ public class ScriptBuilderTest {
 		responseContent.addChild(statusResponse);
 		
 		response.addChild(responseContent);
-		ScriptBuilder builder = new ScriptBuilder();
+		ScriptBuilder builder = new ScriptBuilder(null, false);
 		
 		String wsdl = "file://" + System.getProperty("user.dir") + "/resource/sm_plus.wsdl"; 
 		builder.setDefaultRequest(MockUtils.getDefaultRequest(wsdl, "getProductStatus"));
@@ -248,7 +248,7 @@ public class ScriptBuilderTest {
 	
 	private ScriptBuilder getBuilder() throws XmlException, IOException,
 	SoapUIException {
-		ScriptBuilder builder = new ScriptBuilder();
+		ScriptBuilder builder = new ScriptBuilder(null, false);
 		
 		String wsdl = "file://" + System.getProperty("user.dir") + "/resource/sm_plus.wsdl"; 
 		builder.setDefaultRequest(MockUtils.getDefaultRequest(wsdl, "getPrice"));

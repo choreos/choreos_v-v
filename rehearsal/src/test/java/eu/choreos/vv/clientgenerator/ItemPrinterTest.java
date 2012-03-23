@@ -1,11 +1,8 @@
 package eu.choreos.vv.clientgenerator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import eu.choreos.vv.clientgenerator.Item;
-import eu.choreos.vv.clientgenerator.ItemImpl;
 
 public class ItemPrinterTest {
 	

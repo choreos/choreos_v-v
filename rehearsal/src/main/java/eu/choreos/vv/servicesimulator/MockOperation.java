@@ -23,11 +23,11 @@ public class MockOperation {
      * @param defaultRequest envelope
      * @param soapUIMockOperation object which is used for mocking the operation
      */
-	public MockOperation(String defaultRequest, WsdlMockOperation soapUIMockOperation) {
+	public MockOperation(String defaultRequest, WsdlMockOperation soapUIMockOperation, String wsdl, boolean interceptor) {
 		this.soapUIMockOperation = soapUIMockOperation;
 		 soapUIResponse = soapUIMockOperation.addNewMockResponse("response 1", true);
 		defaultResponse =  soapUIResponse.getResponseContent();
-		builder = new ScriptBuilder();
+		builder = new ScriptBuilder(wsdl, interceptor);
 		builder.setDefaultRequest(defaultRequest);
 		builder.setDefaultResponse(defaultResponse);
 		soapUIResponse.setResponseContent("${message}");

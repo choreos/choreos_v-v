@@ -6,10 +6,13 @@ import java.util.List;
 
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockOperation;
 
+import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.ItemParser;
 import eu.choreos.vv.common.MockProject;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.NoMockResponseException;
 import eu.choreos.vv.exceptions.ParserException;
+import eu.choreos.vv.interceptor.InterceptedMessagesRegistry;
 
 /**
  * This class provides the Service Mocking features
@@ -19,6 +22,7 @@ import eu.choreos.vv.exceptions.ParserException;
 public class WSMock extends MockProject {
 
 	private HashMap<String, MockOperation> operations;
+	private 	InterceptedMessagesRegistry registry;
 
 	/**
 	 * 
@@ -29,18 +33,33 @@ public class WSMock extends MockProject {
 	public WSMock(String name, String wsdl) throws Exception {
 		super(name, wsdl);
 		operations = new HashMap<String, MockOperation>();
-		createMockOperations();
+		createMockOperations(false);
+	}
+	
+	
+	/**
+	 * 
+	 * @param name (address) in which the mocked service will be published 
+	 * @param  wsdl of the service that will be mocked
+	 * @throws Exception
+	 */
+	public WSMock(String name, String wsdl, boolean isInterceptor, String port) throws Exception {
+		super(name, wsdl);
+		operations = new HashMap<String, MockOperation>();
+		createMockOperations(isInterceptor);
+		registry = InterceptedMessagesRegistry.getInstance();
+		registry.registerWsdl(getWsdl());
 	}
 
 	/**
 	 * Mocks each operation found in the real service WSDL
 	 */
-	private void createMockOperations() {
+	private void createMockOperations(boolean isInterceptor) {
 		for (int i = 0; i < iface.getOperationCount(); i++) {
 			WsdlMockOperation soapUIMockOperation = service.addNewMockOperation(iface.getOperationAt(i));
 			soapUIMockOperation.setDispatchStyle("SCRIPT");
 			String defaultRequest = iface.getOperationAt(i).getRequestAt(0).getRequestContent();
-			MockOperation rehearsalMockOperation = new MockOperation(defaultRequest, soapUIMockOperation);
+			MockOperation rehearsalMockOperation = new MockOperation(defaultRequest, soapUIMockOperation, getWsdl(), isInterceptor);
 			operations.put(soapUIMockOperation.getName(), rehearsalMockOperation);
 		}
 	}
@@ -117,5 +136,19 @@ public class WSMock extends MockProject {
 	public void crashAll() {
 		for (MockOperation entry : operations.values()) 
 			service.removeMockOperation(entry.getSoapUIMockOperation());
+	}
+
+
+	public List<Item> getInterceptedMessages() {
+		List<Item> itemMessages = new ArrayList<Item>();
+		List<String> xmlMessages =  registry.getMessages(getWsdl());
+		ItemParser parser = new ItemParser();
+
+		try {
+			for (String xmlMessage : xmlMessages)
+					itemMessages.add(parser.parse(xmlMessage));
+		} catch (ParserException e) {e.printStackTrace();}
+		
+		return itemMessages;
 	}
 }
