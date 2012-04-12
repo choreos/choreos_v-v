@@ -21,8 +21,7 @@ public class ResponseItemTest {
 
 	@Test
 	public void shouldAddStringContent(){
-		Item itemName = new ItemImpl("name");
-		itemName.setContent("Fernando Pessoa");
+		Item itemName = new ItemImpl("name").setContent("Fernando Pessoa");
 
 		assertEquals("Fernando Pessoa", itemName.getContent());
 	}
@@ -70,23 +69,30 @@ public class ResponseItemTest {
 
 	@Test
 	public void shouldAddAnSimpleItem() throws NoSuchFieldException{
-		Item childItem = new ItemImpl("name");
-		childItem.setContent("Fernando Pessoa");
-		item.addChild(childItem);
-
-		assertEquals("Fernando Pessoa", item.getChild("name").getContent());
+		item.addChild("name").setContent("Fernando Pessoa");
+				
+		assertEquals("Fernando Pessoa", item.getContent("name"));
 	}
-
+	
+	@Test
+	public void shouldAddAnSimpleItemAnGetItsContentAsInt() throws NoSuchFieldException{
+		item.addChild("year").setContent("1930");
+				
+		assertEquals((Integer)1930, item.getContentAsInt("year"));
+	}
+	
+	@Test
+	public void shouldAddAnSimpleItemAnGetItsContentAsDouble() throws NoSuchFieldException{
+		item.addChild("price").setContent("12.0");
+				
+		assertEquals(12.0, item.getContentAsDouble("price"), 1e-9);
+	}
+	
 	@Test
 	public void shouldAddTwoSimpleItemWithTheSameName() throws NoSuchFieldException{
-		Item childItemA = new ItemImpl("name");
-		childItemA.setContent("Fernando Pessoa");
-		item.addChild(childItemA);
-
-		Item childItemB = new ItemImpl("name");
-		childItemB.setContent("Machado de Assis");
-		item.addChild(childItemB);
-
+		item.addChild("name").setContent("Fernando Pessoa");
+		item.addChild("name").setContent("Machado de Assis");
+		
 		List<Item> children = item.getChildAsList("name");
 
 		assertEquals("Fernando Pessoa", children.get(0).getContent());
@@ -95,43 +101,28 @@ public class ResponseItemTest {
 
 	@Test
 	public void shouldAddAComplexItem() throws NoSuchFieldException{
-		Item coAuthorItem = new ItemImpl("co-author");  
-		Item nameItem = new ItemImpl("name");
-		nameItem.setContent("Eça de Queiroz");
+		Item coAuthorItem = item.addChild("co-author");  
+		coAuthorItem.addChild("name").setContent("Eça de Queiroz");
 
-		coAuthorItem.addChild(nameItem);
-		item.addChild(coAuthorItem);
-
-		assertEquals("Eça de Queiroz", item.getChild("co-author").getChild("name").getContent());
+		assertEquals("Eça de Queiroz", item.getChild("co-author").getContent("name"));
 	}
 
 	@Test
 	public void shouldAddAComplexItemAnHaveContent() throws NoSuchFieldException{
-		Item coAuthorItem = new ItemImpl("co-author");  
-		Item nameItem = new ItemImpl("name");
-		nameItem.setContent("Eça de Queiroz");
-
-		coAuthorItem.addChild(nameItem);
-		item.addChild(coAuthorItem);
+		Item coAuthorItem = item.addChild("co-author");  
+		coAuthorItem.addChild("name").setContent("Eça de Queiroz");
 		item.setContent("1935");
 
 
-		assertEquals("Eça de Queiroz", item.getChild("co-author").getChild("name").getContent());
+		assertEquals("Eça de Queiroz", item.getChild("co-author").getContent("name"));
 		assertEquals((Integer)1935, item.getContentAsInt());
 	}
 
 	@Test
 	public void shouldAddAComplexWithTwoSimpleItems() throws NoSuchFieldException{
-		Item coAuthorItem = new ItemImpl("co-author");  
-		Item nameItemA = new ItemImpl("name");
-		nameItemA.setContent("Eça de Queiroz");
-
-		Item nameItemB = new ItemImpl("name");
-		nameItemB.setContent("Olavo Bilac");
-
-		coAuthorItem.addChild(nameItemA);
-		coAuthorItem.addChild(nameItemB);
-		item.addChild(coAuthorItem);
+		Item coAuthorItem = item.addChild("co-author");  
+		coAuthorItem.addChild("name").setContent("Eça de Queiroz");
+		coAuthorItem.addChild("name").setContent("Olavo Bilac");
 
 		List<Item> coAuthors = item.getChild("co-author").getChildAsList("name");
 
@@ -141,12 +132,10 @@ public class ResponseItemTest {
 
 	@Test
 	public void shouldGetAListWithOneElement() throws NoSuchFieldException {
-		Item childItem = new ItemImpl("name");
-		childItem.setContent("Fernando Pessoa");
-		item.addChild(childItem);
+		item.addChild("name").setContent("Fernando Pessoa");
 
 		assertEquals(1, item.getChildAsList("name").size());
-		assertEquals( "Fernando Pessoa", item.getChild("name").getContent());
+		assertEquals( "Fernando Pessoa", item.getContent("name"));
 	}
 
 	@Test (expected=NoSuchFieldException.class)
@@ -157,9 +146,7 @@ public class ResponseItemTest {
 	@Test
         public void shouldReturnOneOccurrencesOfTagName() throws Exception {
 		Item request = new ItemImpl("setSupermarketsList");
-		Item endpoint1 = new ItemImpl("endpoint");
-		endpoint1.setContent("endpoint1");
-		request.addChild(endpoint1);
+		request.addChild("endpoint").setContent("endpoint1");
 		
 		assertEquals(1, request.getListSizeFromItem("endpoint"));
         }
@@ -167,13 +154,8 @@ public class ResponseItemTest {
 	@Test
         public void shouldReturnTwoOccurrencesOfTagName() throws Exception {
 		Item request = new ItemImpl("setSupermarketsList");
-		Item endpoint1 = new ItemImpl("endpoint");
-		endpoint1.setContent("endpoint1");
-		request.addChild(endpoint1);
-		
-		Item endpoint2 = new ItemImpl("endpoint");
-		endpoint2.setContent("endpoint2");
-		request.addChild(endpoint2);
+		request.addChild("endpoint").setContent("endpoint1");
+		request.addChild("endpoint").setContent("endpoint2");
 		
 		assertEquals(2, request.getListSizeFromItem("endpoint"));
         }	
@@ -181,13 +163,8 @@ public class ResponseItemTest {
 	@Test
         public void shouldReturnZeroOccurencesOfTagName() throws Exception {
 		Item request = new ItemImpl("setSupermarketsList");
-		Item endpoint1 = new ItemImpl("endpoint");
-		endpoint1.setContent("endpoint1");
-		request.addChild(endpoint1);
-		
-		Item endpoint2 = new ItemImpl("endpoint");
-		endpoint2.setContent("endpoint2");
-		request.addChild(endpoint2);
+		request.addChild("endpoint").setContent("endpoint1");
+		request.addChild("endpoint").setContent("endpoint2");
 		
 		assertEquals(0, request.getListSizeFromItem("strangeTagName"));
 	}
@@ -195,15 +172,9 @@ public class ResponseItemTest {
 	@Test
         public void shouldReturnTheCorrectListSize() throws Exception {
 		Item root = new ItemImpl("root");
-		Item request = new ItemImpl("setSupermarketsList");
-		Item endpoint1 = new ItemImpl("endpoint");
-		endpoint1.setContent("endpoint1");
-		request.addChild(endpoint1);
-		
-		Item endpoint2 = new ItemImpl("endpoint");
-		endpoint2.setContent("endpoint2");
-		request.addChild(endpoint2);
-		root.addChild(request);
+		Item request = root.addChild("setSupermarketsList");
+		request.addChild("endpoint").setContent("endpoint1");
+		request.addChild("endpoint").setContent("endpoint2");
 		
 		assertEquals(2, request.getListSizeFromItem("endpoint"));	        
         }
@@ -211,15 +182,9 @@ public class ResponseItemTest {
 	@Test
 	public void shouldGetStringRepresentation() throws NoSuchFieldException {
 		Item root = new ItemImpl("root");
-		Item request = new ItemImpl("setSupermarketsList");
-		Item endpoint1 = new ItemImpl("endpoint");
-		endpoint1.setContent("endpoint1");
-		request.addChild(endpoint1);
-		
-		Item endpoint2 = new ItemImpl("endpoint");
-		endpoint2.setContent("endpoint2");
-		request.addChild(endpoint2);
-		root.addChild(request);
+		Item request = root.addChild("setSupermarketsList");
+		request.addChild("endpoint").setContent("endpoint1");
+		request.addChild("endpoint").setContent("endpoint2");
 		
 		assertEquals("<root><setSupermarketsList><endpoint>endpoint1</endpoint><endpoint>endpoint2</endpoint></setSupermarketsList></root>",root.getElementAsString());
 	}

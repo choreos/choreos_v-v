@@ -1,43 +1,43 @@
 package eu.choreos.vv.clientgenerator;
 
-import java.util.List;
+
+
 
 
 public class ItemPrinter {
 
 	public static String print(Item item) {
-		return printItem(item);
+		String name = toCamelCase(item.getName());
+		String printedItem = setContent(item, "Item " + name + " = new ItemImpl(\"" + name + "\");");
+		
+		for(Item entry : item.getChildren())
+			printedItem += printChildren(entry, item.getName());
+				
+		return printedItem;
 	}
 	
-	private static String formatRoot(Item item){
-		String name = toCamelCase(item.getName());
-		String printedItem =  "Item " + name + " = new ItemImpl(\"" + name + "\");" ;
+	private static String printChildren(Item item, String parentName){
+		String printedItem = "";
 		
-		if (item.getContent()!= null)
-			printedItem = printedItem + "\n" + name + ".setContent(\"" + item.getContent() + "\");";
+		if (item.getChildrenCount() == 0)
+			return  setContent(item, "\n" + parentName + ".addChild(\""+toCamelCase(item.getName())+"\");");
+
+		printedItem += setContent(item, "\nItem " + toCamelCase(item.getName()) + " = "  + parentName + ".addChild(\""+toCamelCase(item.getName())+"\");");
+		
+		for (Item  entry : item.getChildren())
+			printedItem += printChildren(entry, item.getName());
 		
 		return printedItem;
 	}
 	
-	private static String formatAddChildCommand(Item root, Item child){
-		return  toCamelCase(root.getName()) + ".addChild(" + toCamelCase(child.getName()) + ");";
+	private static String setContent(Item item, String itemPrint){
+		if (item.getContent() != null)
+			itemPrint = itemPrint.replaceAll(";", ".setContent(\"" + item.getContent() +  "\");");
+		
+		return itemPrint;
 	}
 	
-	private static String printItem(Item item){
-		String itemObject = formatRoot(item);
-		
-		List<Item> itemList = item.getChildren(); 
-	
-		if (itemList == null)
-			return itemObject;
-		
-		for(Item entry : itemList){
-			itemObject = itemObject + "\n" +
-											printItem(entry) + "\n" +
-											formatAddChildCommand(item, entry);			
-		}
-		return itemObject;
-	}
+
 	
 	private static String toCamelCase(String input){
 		if(!input.contains(" "))  
@@ -60,3 +60,4 @@ public class ItemPrinter {
 	}
 
 }
+

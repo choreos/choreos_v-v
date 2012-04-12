@@ -57,12 +57,8 @@ public class ServiceMockTesting {
 	public void shouldDefineAResponseWithSimpleTypesBeforeMockIsStarted() throws Exception {
 		
 		Item list = new ItemImpl("getSpecialOfferResponse");
-		Item item1 = new ItemImpl("return");
-		item1.setContent("nachos");
-		list.addChild(item1);
-		Item item2= new ItemImpl("return");
-		item2.setContent("beer");
-		list.addChild(item2);
+		list.addChild("return").setContent("nachos");
+		list.addChild("return").setContent("beer");
 		
 		MockResponse mockReponse = new MockResponse().whenReceive("*").replyWith(list);
 		smMock.returnFor("getSpecialOffer", mockReponse);		
@@ -81,12 +77,8 @@ public class ServiceMockTesting {
 		smMock.returnFor("getPrice", response);	
 		
 		Item list = new ItemImpl("getSpecialOfferResponse");
-		Item item1 = new ItemImpl("return");
-		item1.setContent("nachos");
-		list.addChild(item1);
-		Item item2= new ItemImpl("return");
-		item2.setContent("beer");
-		list.addChild(item2);
+		list.addChild("return").setContent("nachos");
+		list.addChild("return").setContent("beer");
 		
 		MockResponse mockReponse = new MockResponse().whenReceive("*").replyWith(list);
 		smMock.returnFor("getSpecialOffer", mockReponse);		
@@ -109,12 +101,8 @@ public class ServiceMockTesting {
 	public void shouldDefineAResponseWithComplexTypeBeforeMockIsStarted() throws Exception {
 		
 		Item result = new ItemImpl("return");
-		Item name  = new ItemImpl("name");
-		name.setContent("milk");
-		Item status = new ItemImpl("status");
-		status.setContent("zero units");
-		result.addChild(name);
-		result.addChild(status);
+		result.addChild("name").setContent("milk");
+		result.addChild("status").setContent("zero units");
 	
 		MockResponse mockReponse = new MockResponse().whenReceive("*").replyWith(result);
 
@@ -148,12 +136,8 @@ public class ServiceMockTesting {
 		smMock.start();
 		
 		Item result = new ItemImpl("return");
-		Item name  = new ItemImpl("name");
-		name.setContent("milk");
-		Item status = new ItemImpl("status");
-		status.setContent("zero units");
-		result.addChild(name);
-		result.addChild(status);
+		result.addChild("name").setContent("milk");
+		result.addChild("status").setContent("zero units");
 		
 		MockResponse mockResponse = new MockResponse().whenReceive("*").replyWith(result);
 		smMock.returnFor("getProductStatus", mockResponse);		
@@ -378,25 +362,18 @@ public class ServiceMockTesting {
 	
 	private Item getResponse(String name, String status) {
 		Item response = new ItemImpl("getProductStatusResponse");
-		Item responseContent = new ItemImpl("return");
-		Item nameResponse = new ItemImpl("name");
-		nameResponse.setContent(name);
-		responseContent.addChild(nameResponse);
+		Item responseContent = response.addChild("return");
+		responseContent.addChild("name").setContent(name);
+		responseContent.addChild("status").setContent(status);
 		
-		Item statusResponse = new ItemImpl("status");
-		statusResponse.setContent(status);
-		responseContent.addChild(statusResponse);
-		
-		response.addChild(responseContent);
 		return response;
 	}
 	
 	
 	private Item getRequest(String name) {
 		Item request = new ItemImpl("getProductStatus");
-		Item nameRequest = new ItemImpl("name");
-		nameRequest.setContent(name);
-		request.addChild(nameRequest);
+		request.addChild("name").setContent(name);
+
 		return request;
 	}
 	

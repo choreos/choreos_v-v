@@ -72,8 +72,6 @@
   <classpathentry kind="var" path="M2_REPO/org/codehaus/groovy/modules/http-builder/http-builder/0.5.1/http-builder-0.5.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpclient/4.0.3/httpclient-4.0.3.jar" sourcepath="M2_REPO/org/apache/httpcomponents/httpclient/4.0.3/httpclient-4.0.3-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar" sourcepath="M2_REPO/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/jetty/jetty/6.0.2/jetty-6.0.2.jar"/>
-  <classpathentry kind="var" path="M2_REPO/jetty/jetty-util/6.0.2/jetty-util-6.0.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/jline/jline/0.9.91/jline-0.9.91.jar" sourcepath="M2_REPO/jline/jline/0.9.91/jline-0.9.91-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/net/sf/json-lib/json-lib/2.3/json-lib-2.3-jdk15.jar" sourcepath="M2_REPO/net/sf/json-lib/json-lib/2.3/json-lib-2.3-jdk15-sources.jar">
     <attributes>
@@ -93,6 +91,7 @@
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/ca/juliusdavies/not-yet-commons-ssl/0.3.11/not-yet-commons-ssl-0.3.11.jar"/>
+  <classpathentry kind="src" path="/rehearsal"/>
   <classpathentry kind="var" path="M2_REPO/com/jayway/restassured/rest-assured/1.2.2/rest-assured-1.2.2.jar" sourcepath="M2_REPO/com/jayway/restassured/rest-assured/1.2.2/rest-assured-1.2.2-sources.jar">
     <attributes>
       <attribute value="jar:file:/home/besson/.m2/repository/com/jayway/restassured/rest-assured/1.2.2/rest-assured-1.2.2-javadoc.jar!/" name="javadoc_location"/>

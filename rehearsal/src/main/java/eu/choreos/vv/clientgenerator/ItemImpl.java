@@ -60,7 +60,7 @@ public class ItemImpl implements Item{
 		return new LinkedList<Item>(items.get(name)); // return copy to protect encapsulation
 	}
 
-	public void addChild(Item item) {
+	public Item addChild(Item item) {
 		LinkedList<Item> currentItems = items.get(item.getName());
 
 		if(currentItems == null)
@@ -68,10 +68,14 @@ public class ItemImpl implements Item{
 
 		currentItems.addLast(item);
 		items.put(item.getName(), currentItems);
+		
+		return this;
 	}
 
-	public void setContent(String content) {
+	public Item setContent(String content) {
 		this.content = content;
+		
+		return this;
 
 	}
 
@@ -221,6 +225,26 @@ public class ItemImpl implements Item{
 	@Override
 	public String print() {
 		return ItemPrinter.print(this);
+	}
+
+	public Item addChild(String name) {
+		Item child = new ItemImpl(name);
+		addChild(child);
+		
+		return child;
+	}
+
+	public String  getContent(String name) throws NoSuchFieldException {
+		return getChild(name).getContent();
+	}
+
+	public Integer getContentAsInt(String name) throws NoSuchFieldException {
+		return getChild(name).getContentAsInt();
+	}
+
+	@Override
+	public Double getContentAsDouble(String name) throws NoSuchFieldException {
+		return getChild(name).getContentAsDouble();
 	}
 
 }

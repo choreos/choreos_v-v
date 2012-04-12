@@ -50,9 +50,7 @@ public class MockResponseBuilderTest {
 				"</soapenv:Envelope>";
 		
 		Item root = new ItemImpl("searchByArtistResponse");
-		Item result = new ItemImpl("return");
-		result.setContent("mocked response");
-		root.addChild(result);
+		root.addChild("return").setContent("mocked response");
 		
 		String actualXml = new ItemBuilder().buildItem(defaultResponse, root);
 		

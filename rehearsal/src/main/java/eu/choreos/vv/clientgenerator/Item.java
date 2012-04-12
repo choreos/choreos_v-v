@@ -23,6 +23,16 @@ public interface Item {
 	 * @return The content of the item.
 	 */
 	public String getContent();
+	
+	/**
+	 * This method returns the content of the XML tag this item represents.
+	 * The content is any text written between the opening and closing tag,
+	 * that is not a child tag.
+	 * 
+	 * @param the name of the xml tag
+	 * @return The content of the item.
+	 */
+	public String getContent(String name)  throws NoSuchFieldException;
 
 	/**
 	 * This method returns the content of the XML tag this item represents as an Integer.
@@ -32,6 +42,16 @@ public interface Item {
 	 * @return The content of the item as an Integer.
 	 */
 	public Integer  getContentAsInt();
+	
+	/**
+	 * This method returns the content of the XML tag this item represents as an Integer.
+	 * The content is any text written between the opening and closing tag,
+	 * that is not a child tag.
+	 * 
+	 * 
+	 * @return The content of the item as an Integer.
+	 */
+	public Integer  getContentAsInt(String name) throws NoSuchFieldException;
 
 	/**
 	 * This method returns the content of the XML tag this item represents as a Double.
@@ -41,6 +61,16 @@ public interface Item {
 	 * @return The content of the item as a Double.
 	 */
 	public Double  getContentAsDouble();
+	
+	/**
+	 * This method returns the content of the XML tag this item represents as a Double.
+	 * The content is any text written between the opening and closing tag,
+	 * that is not a child tag.
+	 * 
+	 * @param the name of the xml tag
+	 * @return The content of the item as a Double.
+	 */
+	public Double  getContentAsDouble(String name) throws NoSuchFieldException;;
 
 	/**
 	 * This method returns a list of children items of this item. 
@@ -85,9 +115,9 @@ public interface Item {
 	 * This method is used when building the structure to add a child item to another item.
 	 * The child represents a child tag in the XML file.
 	 * 
-	 * @param item An Item representing the child.
+	 * @param name the name of the xml tag
 	 */
-	public void addChild(Item item);
+	public Item addChild(String name);
 
 	/**
 	 * This method sets the content of the XML tag this item represents.
@@ -95,8 +125,9 @@ public interface Item {
 	 * that is not a child tag.
 	 * 
 	 * @param content The content of the item.
+	 * @return 
 	 */
-	public void setContent(String content);
+	public Item setContent(String content);
 
 	/**
 	 * This method returns a Map containing the XML tag attributes of the tag

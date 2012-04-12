@@ -55,9 +55,7 @@ public class RequestBuilderTest {
 			+ "</senv:Envelope>";
 		
 		Item root = new ItemImpl("search_by_brand");
-		Item child = new ItemImpl("name");
-		child.setContent("test");
-		root.addChild(child);
+		root.addChild("name").setContent("test");
 		
 		String result = new ItemBuilder().buildItem(sampleXml, root);
 		
@@ -134,50 +132,23 @@ public class RequestBuilderTest {
 		
 		Item root = new ItemImpl("search_by_category");
 
-		Item item1 = new ItemImpl("Item");
-		Item childA = new ItemImpl("category");
-		childA.setContent("mouse");
-		item1.addChild(childA);                  
-		Item childB = new ItemImpl("price");
-		childB.setContent("89.2");
-		item1.addChild(childB);                  
-		Item childC = new ItemImpl("model");
-		childC.setContent("RZG145");
-		item1.addChild(childC);                  
-		Item childD = new ItemImpl("brand");
-		childD.setContent("Razor");
-		item1.addChild(childD);          
-		root.addChild(item1);
+		Item item1 = root.addChild("Item");
+		item1.addChild("category").setContent("mouse");
+		item1.addChild("price").setContent("89.2");
+		item1.addChild("model").setContent("RZG145");
+		item1.addChild("brand").setContent("Razor");
 
-		Item item2 = new ItemImpl("Item");
-		Item childE = new ItemImpl("category");
-		childE.setContent("mouse");
-		item2.addChild(childE);                  
-		Item childF = new ItemImpl("price");
-		childF.setContent("61.0");
-		item2.addChild(childF);                  
-		Item childG = new ItemImpl("model");
-		childG.setContent("CCCC");
-		item2.addChild(childG);                  
-		Item childH = new ItemImpl("brand");
-		childH.setContent("Clone");
-		item2.addChild(childH);          
-		root.addChild(item2);
+		Item item2 = root.addChild("Item");
+		item2.addChild("category").setContent("mouse");
+		item2.addChild("price").setContent("61.0");
+		item2.addChild("model").setContent("CCCC");
+		item2.addChild("brand").setContent("Clone");
 
-		Item item3 = new ItemImpl("Item");
-		Item childI = new ItemImpl("category");
-		childI.setContent("mouse");
-		item3.addChild(childI);                  
-		Item childJ = new ItemImpl("price");
-		childJ.setContent("61.0");
-		item3.addChild(childJ);                  
-		Item childK = new ItemImpl("model");
-		childK.setContent("MS23F");
-		item3.addChild(childK);                  
-		Item childL = new ItemImpl("brand");
-		childL.setContent("Microsoft");
-		item3.addChild(childL);          
-		root.addChild(item3);
+		Item item3 = root.addChild("Item");
+		item3.addChild("category").setContent("mouse");
+		item3.addChild("price").setContent("61.0");
+		item3.addChild("model").setContent("MS23F");
+		item3.addChild("brand").setContent("Microsoft");
 		
 		String result = new ItemBuilder().buildItem(sampleXml, root);
 		
@@ -227,14 +198,9 @@ public class RequestBuilderTest {
 			+ "</senv:Envelope>";
 		
 		Item root = new ItemImpl("search_by_brand");
-		Item child1 = new ItemImpl("item");
-		Item child2 = new ItemImpl("item");
-		Item grandChild = new ItemImpl("item");
-		grandChild.setContent("test1");
-		child2.setContent("test2");
-		root.addChild(child1);
-		root.addChild(child2);
-		child1.addChild(grandChild);
+		Item child1 = root.addChild("item");
+		root.addChild("item").setContent("test2");
+		child1.addChild("item").setContent("test1");
 		
 		String result = new ItemBuilder().buildItem(sampleXml, root);
 		
@@ -284,14 +250,9 @@ public class RequestBuilderTest {
 			+ "</senv:Envelope>";
 		
 		Item root = new ItemImpl("search_by_brand");
-		Item child1 = new ItemImpl("item");
-		Item grandChild1 = new ItemImpl("item");
-		Item grandChild2 = new ItemImpl("item");
-		grandChild1.setContent("test1");
-		grandChild2.setContent("test2");
-		root.addChild(child1);
-		child1.addChild(grandChild1);
-		child1.addChild(grandChild2);
+		Item child1 = root.addChild("item");
+		child1.addChild("item").setContent("test1");
+		child1.addChild("item").setContent("test2");
 		
 		new ItemBuilder().buildItem(sampleXml, root);
 	}
@@ -309,13 +270,9 @@ public class RequestBuilderTest {
 							    "</soapenv:Envelope>";
 		
 		Item request = new ItemImpl("setSupermarketsList");
-		Item endpoint1 = new ItemImpl("endpoint");
-		endpoint1.setContent("endpoint1");
-		request.addChild(endpoint1);
+		request.addChild("endpoint").setContent("endpoint1");
 		
-		Item endpoint2 = new ItemImpl("endpoint");
-		endpoint2.setContent("endpoint2");
-		request.addChild(endpoint2);
+		request.addChild("endpoint").setContent("endpoint2");
 
 		String actualXml = new ItemBuilder().buildItem(baseXml, request);
 		
@@ -347,14 +304,8 @@ public class RequestBuilderTest {
 								"</soapenv:Envelope>";
 		
 		Item list = new ItemImpl("getPriceOfProductList");
-		
-		Item item1 = new ItemImpl("item");
-		item1.setContent("milk");
-		list.addChild(item1);
-		
-		Item item2 = new ItemImpl("item");
-		item2.setContent("cereal");
-		list.addChild(item2);
+		list.addChild("item").setContent("milk");
+		list.addChild("item").setContent("cereal");
 	
 		String actualXml = new ItemBuilder().buildItem(baseXml, list);
 		

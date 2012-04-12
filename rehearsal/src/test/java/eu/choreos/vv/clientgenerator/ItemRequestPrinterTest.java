@@ -28,9 +28,7 @@ public class ItemRequestPrinterTest {
 		Item item = client.getItemRequestFor("getPrice");
  
 		String expected = "Item getPrice = new ItemImpl(\"getPrice\");" + "\n" +
-												"Item name = new ItemImpl(\"name\");" + "\n" +
-												"name.setContent(\"?\");" + "\n" +
-												"getPrice.addChild(name);";
+												"getPrice.addChild(\"name\").setContent(\"?\");";
 		
 		String actual = item.print();
 		

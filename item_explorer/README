@@ -1,0 +1,12 @@
+Item Converter
+---------------------------------------------------
+
+This tool aims at supporting the Rehearsal usage. Using 
+Item Converter, the developer can convert the XML request or
+response for a web service operation to an Item Object.
+
+To run the tool through the command line, please follow these steps:
+
+1. cd item_converter
+2. mvn compile
+3. mvn exec:java

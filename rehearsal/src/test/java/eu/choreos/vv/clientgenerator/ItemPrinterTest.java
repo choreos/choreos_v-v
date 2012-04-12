@@ -17,13 +17,11 @@ public class ItemPrinterTest {
 	@Test
 	public void shouldPrintAnItemWithAChild() throws Exception {
 		Item item = new ItemImpl("a");
-		Item b = new ItemImpl("b");
-		item.addChild(b);
+		item.addChild("b");
 		
 		String actual = ItemPrinter.print(item);
 		String expected = "Item a = new ItemImpl(\"a\"); " + "\n" + 
-												"Item b = new ItemImpl(\"b\"); " + "\n" +
-												"a.addChild(b);";
+												"a.addChild(\"b\");";
 		
 		assertEquals(expected.replace(" ", ""), actual.replace(" ", ""));
 	}
@@ -31,17 +29,13 @@ public class ItemPrinterTest {
 	@Test
 	public void shouldPrintAnItemWithNestedChildren() throws Exception {
 		Item item = new ItemImpl("a");
-		Item b = new ItemImpl("b");
-		Item b1 = new ItemImpl("b1");
-		b.addChild(b1);
-		item.addChild(b);
+		Item b = item.addChild("b");
+		b.addChild("b1");
 		
 		String actual = ItemPrinter.print(item);
 		String expected = "Item a = new ItemImpl(\"a\"); " + "\n" + 
-												"Item b = new ItemImpl(\"b\"); " + "\n" +
-												"Item b1 = new ItemImpl(\"b1\"); " + "\n" +
-												"b.addChild(b1);" + "\n" +
-												"a.addChild(b);";
+												"Item b = a.addChild(\"b\"); " + "\n" +
+												"b.addChild(\"b1\"); " ;
 		
 		assertEquals(expected.replace(" ", ""), actual.replace(" ", ""));
 	}
@@ -49,32 +43,25 @@ public class ItemPrinterTest {
 	@Test
 	public void shouldPrintAnItemWithNestedAndCommonChildren() throws Exception {
 		Item item = new ItemImpl("a");
-		Item b = new ItemImpl("b");
-		Item b1 = new ItemImpl("b1");
-		b.addChild(b1);
-		item.addChild(b);
-		Item c = new ItemImpl("c");
-		item.addChild(c);
+		Item b = item.addChild("b");
+		b.addChild("b1");
+		
+		item.addChild("c");
 		
 		String actual = ItemPrinter.print(item);
 		String expected = "Item a = new ItemImpl(\"a\"); " + "\n" + 
-												"Item b = new ItemImpl(\"b\"); " + "\n" +
-												"Item b1 = new ItemImpl(\"b1\"); " + "\n" +
-												"b.addChild(b1);" + "\n" +
-												"a.addChild(b);" + "\n" +
-												"Item c = new ItemImpl(\"c\"); " + "\n" +
-												"a.addChild(c);";
+												"Item b = a.addChild(\"b\"); " + "\n" +
+												"b.addChild(\"b1\"); " + "\n" +
+												"a.addChild(\"c\");";
 		
 		assertEquals(expected.replace(" ", ""), actual.replace(" ", ""));
 	}
 	
 	@Test
 	public void shouldReturnTheItemContent() throws Exception {
-		Item item = new ItemImpl("a");
-		item.setContent("firt letter of the alphabet");
+		Item item = new ItemImpl("a").setContent("firt letter of the alphabet");
 		
-		String expected = "Item a = new ItemImpl(\"a\");" + "\n" +
-												"a.setContent(\"firt letter of the alphabet\");";
+		String expected = "Item a = new ItemImpl(\"a\").setContent(\"firt letter of the alphabet\");";
 		
 		String actual = ItemPrinter.print(item);
 		
@@ -83,17 +70,12 @@ public class ItemPrinterTest {
 	
 	@Test
 	public void shouldReturnTheItemContentOfNestedItems() throws Exception {
-		Item a = new ItemImpl("a");
-		Item b = new ItemImpl("b");
-		b.setContent("second letter of the alphabet");
-		a.addChild(b);
-		a.setContent("firt letter of the alphabet");
+		Item a = new ItemImpl("a").setContent("firt letter of the alphabet");
+		a.addChild("b").setContent("second letter of the alphabet");
 		
-		String expected = "Item a = new ItemImpl(\"a\");" + "\n" +
-												"a.setContent(\"firt letter of the alphabet\");" + "\n" +
-												"Item b = new ItemImpl(\"b\");" + "\n" +
-												"b.setContent(\"second letter of the alphabet\");" + "\n" +
-												"a.addChild(b);";
+		
+		String expected = "Item a = new ItemImpl(\"a\").setContent(\"firt letter of the alphabet\");" + "\n" +
+												"a.addChild(\"b\").setContent(\"second letter of the alphabet\");";
 		
 		String actual = ItemPrinter.print(a);
 		

@@ -198,21 +198,14 @@ public class ScriptBuilderTest {
 	@Test
 	public void shouldAddAnIfStatementWhenReceiveAComplexItem() throws Exception {
 		Item request = new ItemImpl("getProductStatus");
-		Item nameRequest = new ItemImpl("name");
-		nameRequest.setContent("milk");
-		request.addChild(nameRequest);
+		request.addChild("name").setContent("milk");
 		
 		Item response = new ItemImpl("getProductStatusResponse");
-		Item responseContent = new ItemImpl("return");
-		Item nameResponse = new ItemImpl("name");
-		nameResponse.setContent("milk");
-		responseContent.addChild(nameResponse);
+		Item responseContent = response.addChild("return");
+		responseContent.addChild("name").setContent("milk");
 
-		Item statusResponse = new ItemImpl("status");
-		statusResponse.setContent("empty");
-		responseContent.addChild(statusResponse);
+		responseContent.addChild("status").setContent("empty");
 		
-		response.addChild(responseContent);
 		ScriptBuilder builder = new ScriptBuilder(null, false);
 		
 		String wsdl = "file://" + System.getProperty("user.dir") + "/resource/sm_plus.wsdl"; 

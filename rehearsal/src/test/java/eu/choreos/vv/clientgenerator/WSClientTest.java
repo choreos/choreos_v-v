@@ -71,7 +71,7 @@ public class WSClientTest {
 	@Test
 	public void shouldMakeValidRequestWithOneParameter() throws Exception {	
 		Item cd = wsSimpleStoreClient.request("searchByArtist", "Floyd");
-		assertEquals("The dark side of the moon;", cd.getChild("return").getContent());	
+		assertEquals("The dark side of the moon;", cd.getContent("return"));	
 	}
 	
 	@Test
@@ -113,43 +113,21 @@ public class WSClientTest {
 		wsSimpleStoreClient.request("sendPurchaseFeedback", "Great Store!");
 	}
 	
-	@Test(expected=Exception.class)
-	public void shouldRaiseAnExceptionWhenTheResponseIsAnError() throws InvalidOperationNameException, FrameworkException, NoSuchFieldException {
-		//Should throw an internal exception
-		wsSimpleStoreClient.request("searchByArtist", "Justin Bieber");
-	}
-	
 	@Test
 	public void complexTypeRequestWithItemAsRoot() throws InvalidOperationNameException, FrameworkException, NoSuchFieldException {
 		
 		Item root = new ItemImpl("purchase");
 		
-		Item cd = new ItemImpl("arg0");
-		Item title = new ItemImpl("title");
-		title.setContent("Pulse");
-		Item artist = new ItemImpl("artist");
-		artist.setContent("Pink Floyd");
-		Item genre = new ItemImpl("genre");
-		genre.setContent("Alternative Rock");
-		Item numberOfTracks = new ItemImpl("numberOfTracks");
-		numberOfTracks.setContent("13");
-		cd.addChild(title);
-		cd.addChild(artist);
-		cd.addChild(genre);
-		cd.addChild(numberOfTracks);
-		root.addChild(cd);
+		Item cd = root.addChild("arg0");
+		cd.addChild("title").setContent("Pulse");
+		cd.addChild("artist").setContent("Pink Floyd");
+		cd.addChild("genre").setContent("Alternative Rock");
+		cd.addChild("numberOfTracks").setContent("13");
 		
-		Item customer = new ItemImpl("arg1");
-		Item name = new ItemImpl("name");
-		name.setContent("Piva");
-		Item address = new ItemImpl("address");
-		address.setContent("IME");
-		Item creditCard = new ItemImpl("creditCard");
-		creditCard.setContent("Visa");
-		customer.addChild(name);
-		customer.addChild(address);
-		customer.addChild(creditCard);
-		root.addChild(customer);
+		Item customer = root.addChild("arg1");
+		customer.addChild("name").setContent("Piva");
+		customer.addChild("address").setContent("IME");
+		customer.addChild("creditCard").setContent("Visa");
 		
 		Item item = wsStoreClient.request("purchase", root);
 		
