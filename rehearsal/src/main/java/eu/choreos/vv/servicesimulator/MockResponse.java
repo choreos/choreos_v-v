@@ -21,6 +21,7 @@ public class MockResponse {
 	private String[] requestParam;
 	private Item responseItem;
 	private Item requestItem;
+	private boolean replyWithStatement;
 
 	public MockResponse(){
 		this.primitiveRequest = true;
@@ -62,6 +63,8 @@ public class MockResponse {
 	 */
 	public MockResponse replyWith(Item responseItem) {
 		this.responseItem = responseItem;
+		this.replyWithStatement  = true;
+		
 		return this;
 	}
 	
@@ -74,6 +77,8 @@ public class MockResponse {
 	public MockResponse replyWith(String... responseParam) {
 		primitiveResponse = true;
 		this.responseParam = responseParam;
+		this.replyWithStatement  = true;
+		
 		return this;
 	}
 
@@ -120,6 +125,11 @@ public class MockResponse {
 			resultXml = new ItemBuilder().buildItem(baseXml, requestItem);
 			
 		return resultXml;
+	}
+	
+	public boolean replyWithExists(){
+		
+		return replyWithStatement;
 	}
 	
 	

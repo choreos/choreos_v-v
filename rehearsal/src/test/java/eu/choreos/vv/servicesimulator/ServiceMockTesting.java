@@ -14,6 +14,7 @@ import eu.choreos.vv.clientgenerator.ItemImpl;
 import eu.choreos.vv.clientgenerator.WSClient;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.NoMockResponseException;
+import eu.choreos.vv.exceptions.NoReplyWithStatementException;
 
 public class ServiceMockTesting {
 
@@ -353,6 +354,14 @@ public class ServiceMockTesting {
 		
 		assertEquals("apple juice", messages.get(0).getChild("name").getContent());
 		
+	}
+
+	@Test(expected=NoReplyWithStatementException.class)
+	public void shouldThrowAnExceptionWhenReplyWithStatementIsNotDefined() throws Exception {
+		smMock.start();
+		
+		MockResponse mockReponse = new MockResponse();
+		smMock.returnFor("getSpecialOffer", mockReponse);		
 	}
 	
 	@Test(expected=NullPointerException.class)

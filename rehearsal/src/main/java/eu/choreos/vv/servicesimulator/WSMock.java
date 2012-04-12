@@ -14,6 +14,7 @@ import eu.choreos.vv.clientgenerator.ItemParser;
 import eu.choreos.vv.common.MockProject;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.NoMockResponseException;
+import eu.choreos.vv.exceptions.NoReplyWithStatementException;
 import eu.choreos.vv.exceptions.ParserException;
 import eu.choreos.vv.exceptions.WSDLException;
 import eu.choreos.vv.interceptor.InterceptedMessagesRegistry;
@@ -93,8 +94,9 @@ public class WSMock extends MockProject {
 	 * @throws ParserException
 	 * @throws InvalidOperationNameException
 	 * @throws NoMockResponseException
+	 * @throws NoReplyWithStatementException 
 	 */
-	public void returnFor(String operation, MockResponse... mockResponses) throws ParserException, InvalidOperationNameException, NoMockResponseException {
+	public void returnFor(String operation, MockResponse... mockResponses) throws ParserException, InvalidOperationNameException, NoMockResponseException, NoReplyWithStatementException {
 		if (!operations.containsKey(operation))
 			throw new InvalidOperationNameException();
 		
@@ -103,8 +105,13 @@ public class WSMock extends MockProject {
 
 		MockOperation mockedOperation = operations.get(operation);
 
-		for (MockResponse mockResponse : mockResponses)
+		for (MockResponse mockResponse : mockResponses){
+			
+			if (!mockResponse.replyWithExists())
+				throw new NoReplyWithStatementException("replyWith statement was not defined for this mock response");
+			
 			mockedOperation.addResponse(mockResponse);
+		}	
 	}
 
 	/**
