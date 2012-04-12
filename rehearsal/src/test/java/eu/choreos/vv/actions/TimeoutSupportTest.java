@@ -15,7 +15,7 @@ public class TimeoutSupportTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception{
-		mock = new WSMock("faultySupermarket", SM_WSDL_URI, "4321");
+		mock = new WSMock("faultySupermarket", "4321", SM_WSDL_URI);
 		mock.doNotRespond("getPrice");
 		mock.start();
 	}

@@ -30,16 +30,25 @@
   </build>
   
   <repositories>
+  
     <repository>
-      <id>ccslrepository</id>
-      <name>ccsl</name>
-      <url>http://valinhos.ime.usp.br:54080/maven/</url>
+      <id>eviware</id>
+      <name>eviWare</name>
+      <url>http://www.eviware.com/repository/maven2/</url>
     </repository>
+  
     <repository>
       <id>maven-restlet</id>
       <name>Public online Restlet repository</name>
       <url>http://maven.restlet.org</url>
     </repository> 
+    
+    <repository>
+      <id>ccslrepository</id>
+      <name>ccsl</name>
+      <url>http://valinhos.ime.usp.br:54080/maven/</url>
+    </repository>
+    
     <repository>
       <id>jboss</id>
       <name>JBoss repository</name>
@@ -49,12 +58,6 @@
         <updatePolicy>always</updatePolicy>
         <checksumPolicy>warn</checksumPolicy>
       </releases>
-    </repository>
-
-    <repository>
-      <id>eviware</id>
-      <name>eviWare</name>
-      <url>http://www.eviware.com/repository/maven2/</url>
     </repository>
     
     <repository>
@@ -238,7 +241,7 @@
     <dependency>
        <groupId>eviware</groupId>
        <artifactId>soapui</artifactId>
-       <version>4.0.0</version>
+       <version>4.0.1</version>
        <type>jar</type>
     </dependency>
     <dependency>

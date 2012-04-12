@@ -1,5 +1,9 @@
 package eu.choreos.vv.common;
 
+import java.io.IOException;
+
+import org.apache.xmlbeans.XmlException;
+
 import com.eviware.soapui.impl.WsdlInterfaceFactory;
 import com.eviware.soapui.impl.wsdl.WsdlInterface;
 import com.eviware.soapui.impl.wsdl.WsdlProject;
@@ -28,13 +32,15 @@ public class MockProject {
 		 * 
 		 * @param name (address) in which the mock will be published
 		 * @param wsdl of the mocked (real) service
+		 * @throws IOException 
+		 * @throws XmlException 
+		 * @throws WSDLException 
 		 * @throws Exception
 		 */
-		public MockProject(String name, String wsdl) throws Exception {
+		public MockProject(String name, String wsdl) throws WSDLException, XmlException, IOException {
 			this.name = name;
 			port = "8088";
 			hostName = "localhost";
-
 			buildWsdlPrject(name, wsdl);
 		}
 
@@ -43,9 +49,11 @@ public class MockProject {
 		 * 
 		 * @param name (address) in which the mock will be published
 		 * @param wsdl of the mocked (real) service
+		 * @throws IOException 
+		 * @throws XmlException 
 		 * @throws Exception
 		 */
-		private void buildWsdlPrject(String name, String wsdl) throws Exception {
+		private void buildWsdlPrject(String name, String wsdl) throws WSDLException, XmlException, IOException {
 			try {
 				WsdlProject project = new WsdlProject();
 				iface = WsdlInterfaceFactory.importWsdl(project, wsdl, true)[0];

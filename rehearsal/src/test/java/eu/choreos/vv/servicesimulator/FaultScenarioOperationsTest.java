@@ -21,7 +21,7 @@ public class FaultScenarioOperationsTest {
 	
 	@Test
 	public void shouldDoNotRespondForTheOperation() throws Exception {
-		mock = new WSMock("faultySupermarket", SM_WSDL_URI, "4321");
+		mock = new WSMock("faultySupermarket", "4321", SM_WSDL_URI);
 		mock.doNotRespond("getPrice");
 		mock.start();
 		
@@ -34,7 +34,7 @@ public class FaultScenarioOperationsTest {
 	
 	@Test
 	public void shouldDoNotRespondForAllOperations() throws Exception {
-		mock = new WSMock("faultySupermarket", SM_WSDL_URI, "4321");
+		mock = new WSMock("faultySupermarket", "4321", SM_WSDL_URI);
 		mock.doNotRespondAll();
 		mock.start();
 		
@@ -47,7 +47,7 @@ public class FaultScenarioOperationsTest {
 	
 	@Test
 	public void shouldSimulateAnOperationCrash() throws Exception {
-		mock = new WSMock("faltySupermarket", SM_WSDL_URI, "4321");
+		mock = new WSMock("faltySupermarket", "4321", SM_WSDL_URI);
 		mock.crash("getPrice");
 		mock.start();
 	
@@ -59,7 +59,7 @@ public class FaultScenarioOperationsTest {
 	
 	@Test(expected=ArrayIndexOutOfBoundsException.class)
 	public void shouldSimulateAllOperationsCrash() throws Exception {
-		mock = new WSMock("faltySupermarket", SM_WSDL_URI, "4321");
+		mock = new WSMock("faltySupermarket", "4321", SM_WSDL_URI);
 		mock.crashAll();
 		mock.start();
 		

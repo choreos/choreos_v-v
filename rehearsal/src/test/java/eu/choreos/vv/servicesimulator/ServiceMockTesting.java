@@ -45,6 +45,20 @@ public class ServiceMockTesting {
 		assertEquals((Double)90.0, result.getChild("return").getContentAsDouble());
 	}
 	
+	@Test
+	public void shouldUseWildCardConditionWhenWhenReceiveStatementIsAbsent() throws Exception {
+		smMock.start();
+		MockResponse response = new MockResponse().replyWith("90");
+		smMock.returnFor("getPrice", response);		
+		
+		WSClient smClient = new WSClient(MOCK_WSDL_URI);
+		Item result = smClient.request("getPrice", "milk");
+		assertEquals((Double)90.0, result.getChild("return").getContentAsDouble());
+		
+		result = smClient.request("getPrice", "bread");
+		assertEquals((Double)90.0, result.getChild("return").getContentAsDouble());
+	}
+	
 	@Test(expected=InvalidOperationNameException.class)
 	public void shouldThrowAnExceptionWhenTheOperationDoesNotExist() throws Exception{
 		MockResponse response = new MockResponse().whenReceive("*").replyWith("90");
@@ -326,7 +340,7 @@ public class ServiceMockTesting {
 	public void mockedServiceShouldInterceptIncommingMessages() throws Exception{
 		smMock.start();
 
-		WSMock interceptorMock = new WSMock("supermarketMock", SM_WSDL_URI,  "5678", true);
+		WSMock interceptorMock = new WSMock("supermarketMock",  "5678", SM_WSDL_URI,  true);
 		interceptorMock.start();
 		
 		MockResponse response = new MockResponse().whenReceive("*").replyWith("It is for free, I am an interceptor, be careful");
@@ -353,10 +367,9 @@ public class ServiceMockTesting {
 		
 		smMock.getInterceptedMessages();
 	}
-
 	
 	private WSMock getMock() throws Exception {
-		WSMock smMock = new WSMock("supermarketMock", SM_WSDL_URI, "4321");
+		WSMock smMock = new WSMock("supermarketMock", "4321", SM_WSDL_URI);
 		return smMock;
 	}
 	

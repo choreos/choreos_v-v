@@ -21,6 +21,13 @@ public class MockResponse {
 	private String[] requestParam;
 	private Item responseItem;
 	private Item requestItem;
+
+	public MockResponse(){
+		this.primitiveRequest = true;
+		requestParam = new String[1];
+		requestParam[0] = "*";
+		
+	}
 	
 	/**
 	 * Defines conditional parameters
@@ -41,6 +48,8 @@ public class MockResponse {
 	 * @return the current MockResponse 
 	 */
 	public MockResponse whenReceive(Item requestItem) {
+		this.primitiveRequest = false;
+		this.requestParam = null;
 		this.requestItem= requestItem;
 		return this;
 	}

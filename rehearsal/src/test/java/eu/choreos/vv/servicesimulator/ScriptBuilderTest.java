@@ -203,7 +203,6 @@ public class ScriptBuilderTest {
 		Item response = new ItemImpl("getProductStatusResponse");
 		Item responseContent = response.addChild("return");
 		responseContent.addChild("name").setContent("milk");
-
 		responseContent.addChild("status").setContent("empty");
 		
 		ScriptBuilder builder = new ScriptBuilder(null, false);

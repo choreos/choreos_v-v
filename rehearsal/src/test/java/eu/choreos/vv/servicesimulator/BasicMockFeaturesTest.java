@@ -23,7 +23,7 @@ public class BasicMockFeaturesTest {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		REAL_WSDL_URI = "file://" + System.getProperty("user.dir") + "/resource/simpleStore.wsdl";
-		aMock = new WSMock("myMock", REAL_WSDL_URI, "8088");
+		aMock = new WSMock("myMock","8088", REAL_WSDL_URI);
 
 	}
 	
@@ -41,7 +41,7 @@ public class BasicMockFeaturesTest {
 	
 	@Test
 	public void shouldCreateAMockWithCustomValuesForAGivenWsdl() throws Exception {
-		WSMock aMock = new WSMock("myMock", REAL_WSDL_URI, "9000");
+		WSMock aMock = new WSMock("myMock", "9000", REAL_WSDL_URI);
 		aMock.setHostName("143.107.58.12");
 		
 		assertEquals("9000", aMock.getPort());
@@ -51,7 +51,7 @@ public class BasicMockFeaturesTest {
 	
 	@Test(expected=WSDLException.class)
 	public void shouldThrowsAnExceptionIfTheWSDLIsInvalid() throws Exception{
-		new WSMock("isNotMyMock", "http://localhost/aMess?wsdl", "9000");
+		new WSMock("isNotMyMock", "9000", "http://localhost/aMess?wsdl");
 	}
 	
 	@Test
@@ -81,7 +81,7 @@ public class BasicMockFeaturesTest {
 		aMock.start();
 		
 		String other_WSDL_URI = "file://" + System.getProperty("user.dir") + "/resource/sm_plus.wsdl";
-		WSMock otherMock = new WSMock("otherMock", other_WSDL_URI, "8088");
+		WSMock otherMock = new WSMock("otherMock", "8088", other_WSDL_URI);
 		otherMock.start();
 	}
 	

@@ -1,8 +1,11 @@
 package eu.choreos.vv.servicesimulator;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.apache.xmlbeans.XmlException;
 
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockOperation;
 
@@ -12,6 +15,7 @@ import eu.choreos.vv.common.MockProject;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.NoMockResponseException;
 import eu.choreos.vv.exceptions.ParserException;
+import eu.choreos.vv.exceptions.WSDLException;
 import eu.choreos.vv.interceptor.InterceptedMessagesRegistry;
 
 /**
@@ -28,9 +32,12 @@ public class WSMock extends MockProject {
 	 * 
 	 * @param name (address) in which the mocked service will be published 
 	 * @param  wsdl of the service that will be mocked
+	 * @throws IOException 
+	 * @throws XmlException 
+	 * @throws WSDLException 
 	 * @throws Exception
 	 */
-	public WSMock(String name, String wsdl, String port) throws Exception {
+	public WSMock(String name, String port, String wsdl) throws WSDLException, XmlException, IOException  {
 		super(name, wsdl);
 		setPort(port);
 		operations = new HashMap<String, MockOperation>();
@@ -42,9 +49,12 @@ public class WSMock extends MockProject {
 	 * 
 	 * @param name (address) in which the mocked service will be published 
 	 * @param  wsdl of the service that will be mocked
+	 * @throws IOException 
+	 * @throws XmlException 
+	 * @throws WSDLException 
 	 * @throws Exception
 	 */
-	public WSMock(String name, String wsdl, String port, boolean isInterceptor) throws Exception {
+	public WSMock(String name, String port, String wsdl, boolean isInterceptor) throws WSDLException, XmlException, IOException  {
 		super(name, wsdl);
 		setPort(port);
 		operations = new HashMap<String, MockOperation>();

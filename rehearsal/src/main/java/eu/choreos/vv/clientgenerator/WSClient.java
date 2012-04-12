@@ -233,4 +233,8 @@ public class WSClient {
 		
 		return new ItemParser().parse(responseContent);
 	}
+	
+	public static void main(String[] args) {
+		
+	}
 }
