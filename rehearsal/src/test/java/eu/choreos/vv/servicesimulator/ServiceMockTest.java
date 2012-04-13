@@ -16,7 +16,7 @@ import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.NoMockResponseException;
 import eu.choreos.vv.exceptions.NoReplyWithStatementException;
 
-public class ServiceMockTesting {
+public class ServiceMockTest {
 
 	private static final String MOCK_WSDL_URI = "http://localhost:4321/supermarketMock?wsdl";
 	private static final String SM_WSDL_URI = "file://" + System.getProperty("user.dir") + "/resource/sm_plus.wsdl";
