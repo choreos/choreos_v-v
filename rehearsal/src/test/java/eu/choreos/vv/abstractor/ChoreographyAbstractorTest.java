@@ -29,15 +29,15 @@ public class ChoreographyAbstractorTest {
 		// creating services
 		Service carrefutur = new Service();
 		carrefutur.addRole(supermarket);
-		carrefutur.setUri("http://localhost:8080/petals/services/carrefutur?wsdl");
+		carrefutur.setUri("http://localhost:8080/petals/services/carrefutur");
 		carrefutur.addRole(supermarket);
 
 		Service registry = new Service();
-		registry.setUri("http://localhost:8080/petals/services/registry?wsdl");
+		registry.setUri("http://localhost:8080/petals/services/registry");
 		carrefutur.addService(registry, "supermarket");
 
 		Service carefuturWS = new Service();
-		carefuturWS.setUri("http://localhost:8080/petals/services/carrefuturWS?wsdl");
+		carefuturWS.setUri("http://localhost:8080/petals/services/carrefuturWS");
 		carrefutur.addService(carefuturWS, "supermarket");
 
 		futureMarket.addService(carrefutur, "supermarket");
@@ -46,7 +46,7 @@ public class ChoreographyAbstractorTest {
 	@Test
 	public void shouldGetAllServicesOfARole() throws Exception {
 		Service futureMart = new Service();
-		futureMart.setUri("http://localhost:8080/petals/services/futureMart?wsdl");
+		futureMart.setUri("http://localhost:8080/petals/services/futureMart");
 		futureMart.addRole(supermarket);
 		futureMarket.addService(futureMart, "supermarket");
 
@@ -55,9 +55,9 @@ public class ChoreographyAbstractorTest {
 		String carrefuturWSDL = services.get(0).getUri();
 		String futureMartWSDL = services.get(1).getUri();
 
-		assertEquals("http://localhost:8080/petals/services/carrefutur?wsdl",
+		assertEquals("http://localhost:8080/petals/services/carrefutur",
 		                                carrefuturWSDL);
-		assertEquals("http://localhost:8080/petals/services/futureMart?wsdl",
+		assertEquals("http://localhost:8080/petals/services/futureMart",
 		                                futureMartWSDL);
 	}
 
@@ -69,4 +69,30 @@ public class ChoreographyAbstractorTest {
 		assertEquals("supermarket", roleName);
 		
 	}
+	
+	@Test
+	public void shouldReturnAllServiceParticipantsIndependentOfTheirRoles() throws Exception {
+		Service sm1 = futureMarket.getServicesForRole("supermarket").get(0);
+			
+		Role aRole = new Role("aRole", "http://localhost:1234/aRole");
+		sm1.addRole(aRole);
+			
+		Service aService = new Service();
+		aService.setUri("http://localhost:1234/aService");
+		sm1.addService(aService, "aRole");
+		List<Service> participants = sm1.getParticipants();
+		
+		assertEquals("http://localhost:8080/petals/services/registry", participants.get(0).getUri());
+		assertEquals("http://localhost:1234/aService", participants.get(2).getUri());
+	}
+	
+	@Test
+	public void shouldReturnAllChoreographyParticipantsIndependentOfTheirRoles() throws Exception {
+		Choreography choreography = Choreography.build("./resource/futureMarket.yml");
+		List<Service> services = choreography.getParticipants();
+		
+		assertEquals("http://localhost:8084/petals/services/customer", services.get(4).getUri());
+		assertEquals("http://localhost:8084/petals/services/shipper1", services.get(3).getUri());			
+	}
+	
 }

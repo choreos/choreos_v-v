@@ -67,7 +67,7 @@ public class Service {
 	public List<Service> getServicesForRole(String roleName) {
 	        return participants.get(roleName);
         }
-
+	
 	public WSClient getWSClient() {
 	        
 	        try {
@@ -83,5 +83,18 @@ public class Service {
 	    			}
 	
 	return serviceClient;
+	
+	}
+
+	public List<Service> getParticipants() {
+		
+		List<Service> internalServices = new ArrayList<Service>();
+		
+		for (Entry<String, List<Service>> entry : participants.entrySet()) {
+			for (Service service : entry.getValue()) 
+				internalServices.add(service);
+		}
+		
+		return internalServices;
 	}
 }

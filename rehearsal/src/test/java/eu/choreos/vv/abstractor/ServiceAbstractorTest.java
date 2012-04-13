@@ -112,6 +112,6 @@ public class ServiceAbstractorTest {
 			Item cd = storeClient.request("searchByArtist", "Floyd");
 			assertEquals("The dark side of the moon;", cd.getChild("return").getContent());	
 	}
-
+	
 
 }

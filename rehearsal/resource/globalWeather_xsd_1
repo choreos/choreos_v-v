@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2.4-b01. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://choreos.eu/" version="1.0" targetNamespace="http://choreos.eu/">
+  <xs:element name="getWeather" type="tns:getWeather" />
+  <xs:element name="getWeatherResponse" type="tns:getWeatherResponse" />
+  <xs:complexType name="getWeather">
+    <xs:sequence>
+      <xs:element name="countryName" type="xs:string" minOccurs="0" />
+      <xs:element name="cityName" type="xs:string" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getWeatherResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:weatherResult" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="weatherResult">
+    <xs:sequence>
+      <xs:element name="date" type="xs:string" minOccurs="0" />
+      <xs:element name="location" type="xs:string" minOccurs="0" />
+      <xs:element name="relativeHumidity" type="xs:string" minOccurs="0" />
+      <xs:element name="temperature" type="xs:string" minOccurs="0" />
+      <xs:element name="time" type="xs:string" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

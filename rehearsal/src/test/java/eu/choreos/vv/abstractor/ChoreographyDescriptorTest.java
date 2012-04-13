@@ -42,8 +42,8 @@ public class ChoreographyDescriptorTest {
 		Service service = services.get(0);
 		
 		assertEquals("supermarket", service.getRoles().get(0).getName());
-		assertEquals("http://localhost:4321/SM1?wsdl", service.getServicesForRole("supermarket").get(0).getUri());
-		assertEquals("http://localhost:1234/smregistry?wsdl", service.getServicesForRole("supermarket").get(1).getUri());
+		assertEquals("http://localhost:4321/SM1", service.getServicesForRole("supermarket").get(0).getUri());
+		assertEquals("http://localhost:1234/smregistry", service.getServicesForRole("supermarket").get(1).getUri());
 	}
 
 	@Test
@@ -52,8 +52,8 @@ public class ChoreographyDescriptorTest {
 		Service service = services.get(1);
 		
 		assertEquals("supermarket", service.getRoles().get(0).getName());
-		assertEquals("http://localhost:4321/SM2?wsdl", service.getServicesForRole("supermarket").get(0).getUri());
-		assertEquals("http://localhost:1234/smregistry?wsdl", service.getServicesForRole("supermarket").get(1).getUri());
+		assertEquals("http://localhost:4321/SM2", service.getServicesForRole("supermarket").get(0).getUri());
+		assertEquals("http://localhost:1234/smregistry", service.getServicesForRole("supermarket").get(1).getUri());
 	}
 	
 	@Test
