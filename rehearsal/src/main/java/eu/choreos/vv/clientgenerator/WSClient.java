@@ -16,13 +16,9 @@ import com.eviware.soapui.impl.wsdl.WsdlSubmitContext;
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockOperation;
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockResponse;
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockService;
-import com.eviware.soapui.impl.wsdl.monitor.MonitorListenerAdapter;
-import com.eviware.soapui.impl.wsdl.monitor.MonitorMessageExchangeDataSource;
-import com.eviware.soapui.impl.wsdl.support.wsdl.WsdlContext;
 import com.eviware.soapui.model.iface.Request.SubmitException;
 import com.eviware.soapui.model.iface.Response;
 import com.eviware.soapui.support.SoapUIException;
-import com.eviware.soapui.support.UISupport;
 
 import eu.choreos.vv.common.HttpUtils;
 import eu.choreos.vv.common.ItemBuilder;

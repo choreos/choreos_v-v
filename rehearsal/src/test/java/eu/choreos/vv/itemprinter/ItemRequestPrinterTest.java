@@ -1,9 +1,11 @@
-package eu.choreos.vv.clientgenerator;
+package eu.choreos.vv.itemprinter;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.WSClient;
 import eu.choreos.vv.exceptions.EmptyRequetItemException;
 
 public class ItemRequestPrinterTest {

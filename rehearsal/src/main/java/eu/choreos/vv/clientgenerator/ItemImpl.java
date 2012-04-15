@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import eu.choreos.vv.itemprinter.ItemPrinter;
+
 public class ItemImpl implements Item{
 
 	private static AtomicInteger ai = new AtomicInteger();

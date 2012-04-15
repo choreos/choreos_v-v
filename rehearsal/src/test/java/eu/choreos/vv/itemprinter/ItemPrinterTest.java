@@ -1,8 +1,12 @@
-package eu.choreos.vv.clientgenerator;
+package eu.choreos.vv.itemprinter;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.ItemImpl;
+import eu.choreos.vv.itemprinter.ItemPrinter;
 
 public class ItemPrinterTest {
 	
