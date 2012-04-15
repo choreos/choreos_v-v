@@ -22,7 +22,7 @@ public class WSClientFeatures {
 	
 	public static String printRequestItem(WSClient client, String operationName){
 		try {
-			return client.getItemRequestFor(operationName).print();
+			return client.getItemRequestFor(operationName).printAsRequest();
 		} 
 		catch (ParserException e) { e.printStackTrace(); } 
 		catch (InvalidOperationNameException e) { e.printStackTrace(); } 
@@ -33,7 +33,7 @@ public class WSClientFeatures {
 	
 	public static String printResponseItem(WSClient client, String operationName) throws XmlException, IOException, SoapUIException{
 		try {
-			return client.getItemResponseFor(operationName).print();
+			return client.getItemResponseFor(operationName).printAsResponse();
 		} 
 		catch (ParserException e) { e.printStackTrace(); }
 		
