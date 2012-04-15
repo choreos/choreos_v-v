@@ -2,6 +2,12 @@ package eu.choreos.vv.itemprinter;
 
 import eu.choreos.vv.clientgenerator.Item;
 
+/**
+ * This class is the String representation of an Item Response Object
+ * 
+ * @author Felipe Besson
+ *
+ */
 public class ItemResponse implements ItemRepresentation{
 
 	private String name;
@@ -27,6 +33,20 @@ public class ItemResponse implements ItemRepresentation{
 		return printedItem;
 	}
 	
+	@Override
+	public String getChildAccessMethod(Item item, String parentName) {
+		return "\nItem " + PrinterUtils.toCamelCase(item.getName()) + " = "  + parentName + ".getChild();";
+	}
+	
+	@Override
+	public   String getLeafContent(Item item, String parentName){
+		
+		if (item.getContent() != null)
+			return "\nString " + item.getName() + " = " + parentName + ".getContent(\"" + PrinterUtils.toCamelCase(item.getName()) + "\");";
+		
+		return "\nItem " + item.getName() + " = " + parentName + ".getChild();";
+	}
+	
 	
 	private static String getContentRoot(Item item, String itemPrint){
 		if (item.getContent() != null)
@@ -35,18 +55,7 @@ public class ItemResponse implements ItemRepresentation{
 		return itemPrint;
 	}
 	
-	public   String getLeafContent(Item item, String parentName){
-	
-		if (item.getContent() != null)
-			return "\nString " + item.getName() + " = " + parentName + ".getContent(\"" + PrinterUtils.toCamelCase(item.getName()) + "\");";
-			
-		return "\nItem " + item.getName() + " = " + parentName + ".getChild();";
-	}
 
-	@Override
-	public String getChildAccessMethod(Item item, String parentName) {
-		return "\nItem " + PrinterUtils.toCamelCase(item.getName()) + " = "  + parentName + ".getChild();";
-	}
 
 	
 	

@@ -2,6 +2,12 @@ package eu.choreos.vv.itemprinter;
 
 import eu.choreos.vv.clientgenerator.Item;
 
+/**
+ * This class is the String representation of an Item Request Object
+ * 
+ * @author Felipe Besson
+ *
+ */
 public class ItemRequest implements ItemRepresentation{
 
 	private String name;
@@ -27,13 +33,6 @@ public class ItemRequest implements ItemRepresentation{
 		return printedItem;
 	}
 	
-	private static String setContent(Item item, String itemPrint){
-		if (item.getContent() != null)
-			itemPrint = itemPrint.replaceAll(";", ".setContent(\"" + item.getContent() +  "\");");
-		
-		return itemPrint;
-	}
-
 	@Override
 	public String getLeafContent(Item item, String parentName) {
 		return setContent(item, "\n" + parentName + ".addChild(\""+PrinterUtils.toCamelCase(item.getName())+"\");");
@@ -44,5 +43,11 @@ public class ItemRequest implements ItemRepresentation{
 		return setContent(item, "\nItem " + PrinterUtils.toCamelCase(item.getName()) + " = "  + parentName + ".addChild(\""+PrinterUtils.toCamelCase(item.getName())+"\");");
 	}
 	
+	private static String setContent(Item item, String itemPrint){
+		if (item.getContent() != null)
+			itemPrint = itemPrint.replaceAll(";", ".setContent(\"" + item.getContent() +  "\");");
+		
+		return itemPrint;
+	}
 
 }
