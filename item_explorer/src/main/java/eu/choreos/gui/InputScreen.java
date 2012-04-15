@@ -1,7 +1,6 @@
 package eu.choreos.gui;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -394,9 +393,7 @@ public class InputScreen extends JFrame {
     	formatedItem = formatStringValues(formatedItem);	
     	formatedItem = formatedItem.replace("new", "<b><font color = \"9900CC\">new</b>");
     	formatedItem = formatedItem.replace("\n", "<br>");
-    	
-    	System.out.println("<html><body><h2><font  face = \"Tahoma, sans-serif\">" + formatedItem + "</font></h2></body></html>");
-    	
+    	    	
     	return "<html><body><h2><font  face = \"Tahoma, sans-serif\">" + formatedItem + "</font></h2></body></html>";
     }
     
