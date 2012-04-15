@@ -170,10 +170,17 @@ public interface Item {
 	public String getElementAsString();
 
 	/**
-	 * Return the entire structure of the Item object
+	 * Return the entire structure of the Item object when it represents a request
 	 * 
 	 * @return
 	 */
-	public String print();
+	public String printAsRequest();
+	
+	/**
+	 * Return the entire structure of the Item object when it represents a response
+	 * 
+	 * @return
+	 */
+	public String printAsResponse();
 
 }

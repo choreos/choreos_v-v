@@ -35,9 +35,9 @@ public class ItemResponsePrinterTest {
 		Item item = client.getItemResponseFor("getPrice");
  
 		String expected = "Item getPriceResponse = new ItemImpl(\"getPriceResponse\");" + "\n" +
-												 "getPriceResponse.addChild(\"return\").setContent(\"?\");";
+												 "String return = getPriceResponse.getContent(\"return\");";
 		
-		String actual = item.print();
+		String actual = item.printAsResponse();
 		
 		assertEquals(expected, actual);
 	}
