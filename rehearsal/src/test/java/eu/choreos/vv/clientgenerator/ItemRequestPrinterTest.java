@@ -30,7 +30,7 @@ public class ItemRequestPrinterTest {
 		String expected = "Item getPrice = new ItemImpl(\"getPrice\");" + "\n" +
 												"getPrice.addChild(\"name\").setContent(\"?\");";
 		
-		String actual = item.print();
+		String actual = item.printAsRequest();
 		
 		assertEquals(expected, actual);
 	}

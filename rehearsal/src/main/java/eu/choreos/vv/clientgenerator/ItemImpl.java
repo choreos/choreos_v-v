@@ -222,11 +222,6 @@ public class ItemImpl implements Item{
 		return strBuilder.toString();
 	}
 
-	@Override
-	public String print() {
-		return ItemPrinter.print(this);
-	}
-
 	public Item addChild(String name) {
 		Item child = new ItemImpl(name);
 		addChild(child);
@@ -245,6 +240,16 @@ public class ItemImpl implements Item{
 	@Override
 	public Double getContentAsDouble(String name) throws NoSuchFieldException {
 		return getChild(name).getContentAsDouble();
+	}
+
+	@Override
+	public String printAsRequest() {
+		return ItemPrinter.printAsRequest(this);
+	}
+
+	@Override
+	public String printAsResponse() {
+		return ItemPrinter.printAsResponse(this);
 	}
 
 }
