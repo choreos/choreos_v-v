@@ -63,4 +63,27 @@ public class ChoreographyDescriptorTest {
 		assertEquals(3, services.size());
 	}
 	
+	@Test
+	public void theParticipantsPropertyShouldBeOptional() throws Exception {
+		Choreography choreography = Choreography.build("./resource/futureMarketSimpler.yml");
+		List<Service> sms = choreography.getServicesForRole("supermarket");
+		
+		assertEquals("http://localhost:8084/petals/services/supermarket1", sms.get(0).getUri());
+		assertEquals("http://localhost:8084/petals/services/supermarket2", sms.get(1).getUri());
+		assertEquals("http://localhost:8084/petals/services/supermarket3", sms.get(2).getUri());
+	}
+	
+	@Test(expected=IndexOutOfBoundsException.class)
+	public void shouldThrowAnExceptionWhenGetInexistentParticipants() throws Exception {
+		Choreography choreography = Choreography.build("./resource/futureMarketSimpler.yml");
+		List<Service> participants = choreography.getServicesForRole("supermarket").get(0).getParticipants();
+		participants.get(0);
+	}
+	
+	@Test(expected=IndexOutOfBoundsException.class)
+	public void shouldThrowAnExceptionWhenGetInexistentParticipantsForARole() throws Exception {
+		Choreography choreography = Choreography.build("./resource/futureMarketSimpler.yml");
+		List<Service> participants = choreography.getServicesForRole("supermarket").get(0).getServicesForRole("supermarket");
+		participants.get(0);
+	}
 }

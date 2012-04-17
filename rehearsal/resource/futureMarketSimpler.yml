@@ -1,0 +1,30 @@
+# FutureMarket Choreography
+---
+roles:
+    - role: &1
+       name: supermarket
+       contractUri: file:///home/besson/workspace/futureMarket/roles/supermarket.wsdl
+    - role: &2
+       name: shipper
+       contractUri: file:///home/besson/workspace/futureMarket/roles/shipper.wsdl
+    - role: &3
+       name: customer
+       contractUri: file:///home/besson/workspace/futureMarket/roles/customer.wsdl
+
+services:
+    - uri: http://localhost:8084/petals/services/customer
+      role: *3
+   
+    - uri: http://localhost:8084/petals/services/shipper1
+      role: *2
+
+    - uri: http://localhost:8084/petals/services/supermarket1
+      role: *1
+
+    - uri: http://localhost:8084/petals/services/supermarket2
+      role: *1
+
+    - uri: http://localhost:8084/petals/services/supermarket3
+      role: *1
+
+...

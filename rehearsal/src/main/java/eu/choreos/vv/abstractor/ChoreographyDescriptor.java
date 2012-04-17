@@ -10,10 +10,10 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 /**
- * This Java Bean class represents the YAML constructor model 
+ * This Java Bean class represents the YAML constructor model
  * 
  * @author Felipe Besson
- *
+ * 
  */
 public class ChoreographyDescriptor {
 
@@ -23,11 +23,11 @@ public class ChoreographyDescriptor {
 	public List<RoleEntry> getRoles() {
 		return roles;
 	}
-	
+
 	public void setRoles(List<RoleEntry> roles) {
 		this.roles = roles;
 	}
-	
+
 	/**
 	 * Parses the yaml received and map it to a choreography object
 	 * 
@@ -35,44 +35,50 @@ public class ChoreographyDescriptor {
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	public static Choreography buildChoreography(String path) throws FileNotFoundException{
+	public static Choreography buildChoreography(String path)
+			throws FileNotFoundException {
 		Yaml yaml = new Yaml(new Constructor(ChoreographyDescriptor.class));
 		InputStream input = new FileInputStream(new File(path));
-		ChoreographyDescriptor descriptor = (ChoreographyDescriptor) yaml.load(input);
-		
+		ChoreographyDescriptor descriptor = (ChoreographyDescriptor) yaml
+				.load(input);
+
 		Choreography choreography = new Choreography();
-		
+
 		buildChoreographyRoles(choreography, descriptor);
 		buildChoreographyServices(choreography, descriptor);
-		
+
 		return choreography;
 	}
-	
+
 	/**
 	 * Adds the choreography services into a choreography object
 	 * 
 	 * @param choreography
 	 * @param descriptor
 	 */
-	private static void buildChoreographyServices(Choreography choreography, ChoreographyDescriptor descriptor) {
+	private static void buildChoreographyServices(Choreography choreography,
+			ChoreographyDescriptor descriptor) {
 		List<ServiceEntry> serviceEntries = descriptor.getServices();
-		 
+
 		for (ServiceEntry serviceEntry : serviceEntries) {
 			Service service = new Service();
 			service.setUri(serviceEntry.getUri());
 			service.addRole(serviceEntry.getRole());
-			
+
 			String roleName = serviceEntry.getRole().getName();
-					
-			for(ServiceEntry internalEntry : serviceEntry.getParticipants()){
-				Service internalService = new Service();
-				internalService.setUri(internalEntry.getUri());
-				service.addService(internalService, roleName);
+
+			if (serviceEntry.getParticipants() != null) {
+				for (ServiceEntry internalEntry : serviceEntry
+						.getParticipants()) {
+					Service internalService = new Service();
+					internalService.setUri(internalEntry.getUri());
+					service.addService(internalService, roleName);
+				}
 			}
-			
-			choreography.addService(service, roleName);			
+
+			choreography.addService(service, roleName);
 		}
-		 
+
 	}
 
 	/**
@@ -81,10 +87,11 @@ public class ChoreographyDescriptor {
 	 * @param choreography
 	 * @param descriptor
 	 */
-	private static void buildChoreographyRoles(Choreography choreography, ChoreographyDescriptor descriptor){
+	private static void buildChoreographyRoles(Choreography choreography,
+			ChoreographyDescriptor descriptor) {
 		List<RoleEntry> roleEntries = descriptor.getRoles();
-		
-		for (RoleEntry entry : roleEntries) 
+
+		for (RoleEntry entry : roleEntries)
 			choreography.addRole(entry.getRole());
 	}
 
