@@ -346,7 +346,7 @@ public class InputScreen extends JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
             	String operationName = jComboBox5.getSelectedItem().toString();
             	requestItem = WSClientFeatures.printRequestItem(client, operationName);
-            	itemEditor.setText(requestItem);
+            	itemEditor.setText(formatNames(requestItem));
             	
             	responseItem = "";
             	
@@ -359,7 +359,7 @@ public class InputScreen extends JFrame {
 				} catch (SoapUIException e) {
 					e.printStackTrace();
 				}
-            	itemEditor1.setText(responseItem);
+            	itemEditor1.setText(formatNames(responseItem));
             }
         });
 	}
@@ -400,6 +400,13 @@ public class InputScreen extends JFrame {
             }
         });
 	}              
+	
+	private String formatNames(String itemContent){
+    	itemContent = itemContent.replaceAll("return", "return1");
+    	itemContent = itemContent.replaceAll("\"return1\"", "\"return\"");
+
+    	return itemContent;
+    }
     
  //	Get File parh for importing wsdl files
     private String getFilePath(){
