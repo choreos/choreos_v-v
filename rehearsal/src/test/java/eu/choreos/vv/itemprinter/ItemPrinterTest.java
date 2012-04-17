@@ -59,7 +59,7 @@ public class ItemPrinterTest {
 		
 		String actual = ItemPrinter.printAsResponse(item);
 		String expected = "Item a = new ItemImpl(\"a\"); " + "\n" + 
-												"Item b = a.getChild();";		
+												"Item b = a.getChild(\"b\");";		
 		assertEquals(expected.replace(" ", ""), actual.replace(" ", ""));
 	}
 	
@@ -97,8 +97,8 @@ public class ItemPrinterTest {
 		
 		String actual = ItemPrinter.printAsResponse(item);
 		String expected = "Item a = new ItemImpl(\"a\"); " + "\n" + 
-												"Item b = a.getChild(); " + "\n" +
-												"Item b1 = b.getChild(); " ;
+												"Item b = a.getChild(\"b\"); " + "\n" +
+												"Item b1 = b.getChild(\"b1\"); " ;
 		
 		assertEquals(expected.replace(" ", ""), actual.replace(" ", ""));
 	}
@@ -111,7 +111,7 @@ public class ItemPrinterTest {
 		
 		String actual = ItemPrinter.printAsResponse(item);
 		String expected = "Item a = new ItemImpl(\"a\"); " + "\n" + 
-												"Item b = a.getChild(); " + "\n" +
+												"Item b = a.getChild(\"b\"); " + "\n" +
 												"String b1 = b.getContent(\"b1\"); " ;
 		
 		assertEquals(expected.replace(" ", ""), actual.replace(" ", ""));
@@ -144,9 +144,9 @@ public class ItemPrinterTest {
 		
 		String actual = ItemPrinter.printAsResponse(item);
 		String expected = "Item a = new ItemImpl(\"a\"); " + "\n" + 
-												"Item b = a.getChild(); " + "\n" +
-												"Item b1 = b.getChild(); " + "\n" +
-												"Item c = a.getChild();";
+												"Item b = a.getChild(\"b\"); " + "\n" +
+												"Item b1 = b.getChild(\"b1\"); " + "\n" +
+												"Item c = a.getChild(\"c\");";
 		
 		assertEquals(expected.replace(" ", ""), actual.replace(" ", ""));
 	}

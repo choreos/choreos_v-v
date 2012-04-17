@@ -35,7 +35,7 @@ public class ItemResponse implements ItemRepresentation{
 	
 	@Override
 	public String getChildAccessMethod(Item item, String parentName) {
-		return "\nItem " + PrinterUtils.toCamelCase(item.getName()) + " = "  + parentName + ".getChild();";
+		return "\nItem " + PrinterUtils.toCamelCase(item.getName()) + " = "  + parentName + ".getChild(\"" + item.getName() + "\");";
 	}
 	
 	@Override
@@ -44,7 +44,7 @@ public class ItemResponse implements ItemRepresentation{
 		if (item.getContent() != null)
 			return "\nString " + item.getName() + " = " + parentName + ".getContent(\"" + PrinterUtils.toCamelCase(item.getName()) + "\");";
 		
-		return "\nItem " + item.getName() + " = " + parentName + ".getChild();";
+		return "\nItem " + item.getName() + " = " + parentName + ".getChild(\"" + item.getName() + "\");";
 	}
 	
 	
