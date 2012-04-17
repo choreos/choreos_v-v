@@ -206,19 +206,6 @@
     	<type>jar</type>
     	
     </dependency>
-    <dependency>
-    	<groupId>saxon</groupId>
-    	<artifactId>saxon</artifactId>
-    	<version>8.7</version>
-    	
-    </dependency>
-    <dependency>
-    	<groupId>saxon</groupId>
-    	<artifactId>saxon-jdom</artifactId>
-    	<version>6.5.3</version>
-    	<type>jar</type>
-    	
-    </dependency>
     
     <dependency>
     	<groupId>groovy</groupId>
