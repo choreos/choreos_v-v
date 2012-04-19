@@ -1,12 +1,17 @@
 package eu.choreos.vv.interceptor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.xmlbeans.XmlException;
 
 import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.clientgenerator.ItemParser;
 import eu.choreos.vv.common.WsdlUtils;
+import eu.choreos.vv.exceptions.MockDeploymentException;
 import eu.choreos.vv.exceptions.ParserException;
+import eu.choreos.vv.exceptions.WSDLException;
 
 /**
  * This class provides the Message Interceptor feature
@@ -35,9 +40,13 @@ public class MessageInterceptor {
 	 * Intercepts all messages sent to the provided WSDL
 	 * 
 	 * @param realWsdl
+	 * @throws IOException 
+	 * @throws XmlException 
+	 * @throws WSDLException 
+	 * @throws MockDeploymentException 
 	 * @throws Exception
 	 */
-	public void interceptTo(String realWsdl) throws Exception {
+	public void interceptTo(String realWsdl) throws WSDLException, XmlException, IOException, MockDeploymentException  {
 		proxy = new WSProxy(WsdlUtils.getBaseName(realWsdl), realWsdl);
 		proxy.setPort(port);
 		proxy.start();

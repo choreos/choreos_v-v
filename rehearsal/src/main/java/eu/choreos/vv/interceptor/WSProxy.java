@@ -1,13 +1,17 @@
 package eu.choreos.vv.interceptor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.xmlbeans.XmlException;
 
 import com.eviware.soapui.impl.wsdl.WsdlOperation;
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockOperation;
 import com.eviware.soapui.impl.wsdl.mock.WsdlMockResponse;
 
 import eu.choreos.vv.common.MockProject;
+import eu.choreos.vv.exceptions.WSDLException;
 
 /**
  * This class represents the WSProxy objects which are used in the message interception
@@ -25,9 +29,12 @@ public class WSProxy extends MockProject {
 	 * 
 	 * @param proxyURI
 	 * @param realWsdl
+	 * @throws IOException 
+	 * @throws XmlException 
+	 * @throws WSDLException 
 	 * @throws Exception
 	 */
-	public WSProxy(String proxyURI, String realWsdl) throws Exception {
+	public WSProxy(String proxyURI, String realWsdl) throws WSDLException, XmlException, IOException  {
 		super(proxyURI+ "Proxy", realWsdl);
 		this.realWsdl = realWsdl;
 		addOperationsToProxy();
