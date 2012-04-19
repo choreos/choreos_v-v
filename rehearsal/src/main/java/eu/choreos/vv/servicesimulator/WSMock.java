@@ -13,6 +13,7 @@ import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.clientgenerator.ItemParser;
 import eu.choreos.vv.common.MockProject;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
+import eu.choreos.vv.exceptions.NoMessageInterceptorException;
 import eu.choreos.vv.exceptions.NoMockResponseException;
 import eu.choreos.vv.exceptions.NoReplyWithStatementException;
 import eu.choreos.vv.exceptions.ParserException;
@@ -28,6 +29,7 @@ public class WSMock extends MockProject {
 
 	private HashMap<String, MockOperation> operations;
 	private 	InterceptedMessagesRegistry registry;
+	private boolean isInterceptor;
 
 	/**
 	 * 
@@ -57,6 +59,7 @@ public class WSMock extends MockProject {
 	 */
 	public WSMock(String name, String port, String wsdl, boolean isInterceptor) throws WSDLException, XmlException, IOException  {
 		super(name, wsdl);
+		this.isInterceptor = isInterceptor;
 		setPort(port);
 		operations = new HashMap<String, MockOperation>();
 		createMockOperations(isInterceptor);
@@ -158,10 +161,15 @@ public class WSMock extends MockProject {
 	}
 
 
-	public List<Item> getInterceptedMessages() {
+	public List<Item> getInterceptedMessages() throws NoMessageInterceptorException {
 		List<Item> itemMessages = new ArrayList<Item>();
-		List<String> xmlMessages =  registry.getMessages(getWsdl());
-		ItemParser parser = new ItemParser();
+	
+		if (!isInterceptor)
+			throw new NoMessageInterceptorException("This mock has not being defined as an interceptor");
+		
+		List<String>  xmlMessages =  registry.getMessages(getWsdl());
+			
+    	ItemParser parser = new ItemParser();
 
 		try {
 			for (String xmlMessage : xmlMessages)

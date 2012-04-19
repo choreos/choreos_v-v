@@ -96,7 +96,6 @@ public class MessageInterceptorTest {
 		
 		assertEquals(1, messages.size());
 		assertEquals("Bon Jovi", messages.get(0).getChild("arg0").getContent());
-		
 	}
-
+	
 }

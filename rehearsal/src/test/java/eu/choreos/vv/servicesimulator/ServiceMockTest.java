@@ -13,6 +13,7 @@ import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.clientgenerator.ItemImpl;
 import eu.choreos.vv.clientgenerator.WSClient;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
+import eu.choreos.vv.exceptions.NoMessageInterceptorException;
 import eu.choreos.vv.exceptions.NoMockResponseException;
 import eu.choreos.vv.exceptions.NoReplyWithStatementException;
 
@@ -364,15 +365,15 @@ public class ServiceMockTest {
 		smMock.returnFor("getSpecialOffer", mockReponse);		
 	}
 	
-	@Test(expected=NullPointerException.class)
-	public void mockedServiceshouldNotBeAnInterceptorForDefault() throws Exception {
+	@Test(expected=NoMessageInterceptorException.class)
+	public void shouldThrowAnExceptionWhenGetInterceptedMessageIsCalledButTheMockIsAnInterceptor() throws Exception {
 		smMock.start();
 		
-		MockResponse response = new MockResponse().whenReceive("*").replyWith("It is for free but I am not an interceptor");
-		smMock.returnFor("getPrice", response);
+		MockResponse response = new MockResponse().replyWith("90");
+		smMock.returnFor("getPrice", response);		
 		
-		WSClient client = new WSClient(smMock.getWsdl());
-		client.request("getPrice", "pineapple juice");
+		WSClient smClient = new WSClient(MOCK_WSDL_URI);
+		smClient.request("getPrice", "milk");
 		
 		smMock.getInterceptedMessages();
 	}
