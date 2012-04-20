@@ -354,6 +354,28 @@ public class ServiceMockTest {
 		List<Item> messages = interceptorMock.getInterceptedMessages();
 		
 		assertEquals("apple juice", messages.get(0).getChild("name").getContent());
+	}
+	
+	@Test
+	public void shouldReturnAMessageWithoutContentWhenAVoidOperationIsInvoked() throws Exception {
+		smMock.start();
+		
+		String hotelWSDL = "file://" + System.getProperty("user.dir") + "/resource/hotel.wsdl";
+		
+		WSMock mock = new WSMock("hotel", "8182", hotelWSDL, true);
+		Item responseItem = new ItemImpl("setInvocationAddressResponse");
+		MockResponse response = new MockResponse().whenReceive("*").replyWith(responseItem);
+		mock.returnFor("setInvocationAddress", response);
+		mock.start();
+		
+
+		WSClient client = new WSClient(mock.getWsdl());
+		Item result = client.request("setInvocationAddress", "airline", "http://localhost:8181/airline");
+		
+		assertEquals("setInvocationAddressResponse", result.getName());
+		Item interceptedMessage = mock.getInterceptedMessages().get(0);
+		
+		assertEquals("airline", interceptedMessage.getContent("arg0"));
 		
 	}
 

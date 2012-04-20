@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="HotelService" targetNamespace="http://services.choreos.org/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://services.choreos.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://services.choreos.org/" xmlns:tns="http://services.choreos.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="book" type="tns:book"/>
+   <xs:element name="bookResponse" type="tns:bookResponse"/>
+   <xs:element name="setChoreographyContext" type="tns:setChoreographyContext"/>
+   <xs:element name="setChoreographyContextResponse" type="tns:setChoreographyContextResponse"/>
+   <xs:element name="setInvocationAddress" type="tns:setInvocationAddress"/>
+   <xs:element name="setInvocationAddressResponse" type="tns:setInvocationAddressResponse"/>
+   <xs:complexType name="setInvocationAddress">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+         <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="setInvocationAddressResponse">
+      <xs:sequence/>
+   </xs:complexType>
+   <xs:complexType name="book">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="order" type="tns:bookingOrder"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="bookingOrder">
+      <xs:sequence/>
+   </xs:complexType>
+   <xs:complexType name="bookResponse">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="return" type="xs:string"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="setChoreographyContext">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="arg0" type="tns:hashMap"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="hashMap">
+      <xs:complexContent>
+         <xs:extension base="tns:abstractMap">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType abstract="true" name="abstractMap">
+      <xs:sequence/>
+   </xs:complexType>
+   <xs:complexType name="setChoreographyContextResponse">
+      <xs:sequence/>
+   </xs:complexType>
+   <xs:element name="ScenarioException" type="tns:ScenarioException"/>
+   <xs:complexType name="ScenarioException">
+      <xs:sequence/>
+   </xs:complexType>
+</xs:schema>  </wsdl:types>
+  <wsdl:message name="setChoreographyContextResponse">
+    <wsdl:part element="tns:setChoreographyContextResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ScenarioException">
+    <wsdl:part element="tns:ScenarioException" name="ScenarioException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setInvocationAddressResponse">
+    <wsdl:part element="tns:setInvocationAddressResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="bookResponse">
+    <wsdl:part element="tns:bookResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="book">
+    <wsdl:part element="tns:book" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setInvocationAddress">
+    <wsdl:part element="tns:setInvocationAddress" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setChoreographyContext">
+    <wsdl:part element="tns:setChoreographyContext" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Hotel">
+    <wsdl:operation name="setInvocationAddress">
+      <wsdl:input message="tns:setInvocationAddress" name="setInvocationAddress">
+    </wsdl:input>
+      <wsdl:output message="tns:setInvocationAddressResponse" name="setInvocationAddressResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="book">
+      <wsdl:input message="tns:book" name="book">
+    </wsdl:input>
+      <wsdl:output message="tns:bookResponse" name="bookResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ScenarioException" name="ScenarioException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="setChoreographyContext">
+      <wsdl:input message="tns:setChoreographyContext" name="setChoreographyContext">
+    </wsdl:input>
+      <wsdl:output message="tns:setChoreographyContextResponse" name="setChoreographyContextResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="HotelServiceSoapBinding" type="tns:Hotel">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="setInvocationAddress">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setInvocationAddress">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setInvocationAddressResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="book">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="book">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="bookResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ScenarioException">
+        <soap:fault name="ScenarioException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="setChoreographyContext">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setChoreographyContext">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setChoreographyContextResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="HotelService">
+    <wsdl:port binding="tns:HotelServiceSoapBinding" name="HotelPort">
+      <soap:address location="http://localhost:8181/hotel"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
