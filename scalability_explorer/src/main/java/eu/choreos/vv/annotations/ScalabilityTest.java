@@ -13,5 +13,6 @@ import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ScalabilityTest {
 	Class<? extends ScalabilityFunction> scalabilityFunction() default LinearIncrease.class;
-	int maxIncreaseTimes();
+	int maxIncreaseTimes() default Integer.MAX_VALUE;
+	double maxMeasurement() default Double.MAX_VALUE;
 }

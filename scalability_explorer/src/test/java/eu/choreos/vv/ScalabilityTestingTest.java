@@ -98,5 +98,11 @@ public class ScalabilityTestingTest {
 		}
 		assertEquals("countQuadratic", report.getName());
 	}
+	
+	@Test
+	public void shouldRunFiveTimes() throws Exception {
+		ScalabilityReport report = run(sumCount, "goUpToTheLimit", 1);
+		assertEquals(6, report.size());
+	}
 
 }

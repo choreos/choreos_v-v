@@ -11,6 +11,7 @@ public class ScalabilityTesting {
 
 	private static ScalabilityFunction function;
 	private static int times;
+	private static double limit;
 	private static ScalabilityTestMethod method;
 	private static ScalabilityReport report;
 
@@ -20,6 +21,7 @@ public class ScalabilityTesting {
 		method = new ScalabilityTestMethod(scalabilityTests, methodName);
 		function = method.getScalabilityFunctionObject();
 		times = method.getNumberOfTimesToExecute();
+		limit = method.getMaxMeasurementPermitted();
 		report = new ScalabilityReport(methodName);
 		executeIncreasingParams(scalabilityTests, params);
 		return report;
@@ -30,7 +32,7 @@ public class ScalabilityTesting {
 		Object[] actualParams = Arrays.copyOf(params, params.length);
 		Annotation[][] parametersAnnotation = method.getParameterAnnotations();
 		double value = 0.0;
-		for (int i = 0; i < times; i++) {
+		for (int i = 0; i < times && value <= limit; i++) {
 			value = invokeMethodWithParamsUpdated(scalabilityTestingObject, actualParams);
 			report.add(value);
 			increaseEachParamOfParamsArray(actualParams, parametersAnnotation, params);

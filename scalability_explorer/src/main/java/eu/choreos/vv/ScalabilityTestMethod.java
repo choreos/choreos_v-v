@@ -38,6 +38,11 @@ public class ScalabilityTestMethod {
 		ScalabilityTest scalabilityTest = method.getAnnotation(ScalabilityTest.class);
 		return scalabilityTest.maxIncreaseTimes();
 	}
+	
+	public double getMaxMeasurementPermitted() {
+		ScalabilityTest scalabilityTest = method.getAnnotation(ScalabilityTest.class);
+		return scalabilityTest.maxMeasurement();
+	}
 
 	private Method searchScalabilityTestMethod(String methodName, Object scalabilityTests) throws NoSuchMethodException {
 		Class<? extends Object> scalabilityTestingClass = scalabilityTests.getClass();
