@@ -1,6 +1,6 @@
 package eu.choreos.vv.increasefunctions;
 
 
-public abstract class ScalabilityFunction {
-	public abstract Object increaseParams(int actualParam, int fixedParam);
+public interface ScalabilityFunction {
+	public Object increaseParams(int actualParam, int fixedParam);
 }

@@ -1,6 +1,6 @@
 package eu.choreos.vv.increasefunctions;
 
-public class QuadraticIncrease extends ScalabilityFunction {
+public class QuadraticIncrease implements ScalabilityFunction {
 	
 
 	private int actualIncreasingTime;
