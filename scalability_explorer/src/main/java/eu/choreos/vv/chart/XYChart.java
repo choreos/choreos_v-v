@@ -68,9 +68,8 @@ public class XYChart extends JFrame {
 	
     private void createDataset(XYSeriesCollection dataset, ScalabilityReport report) {
     	XYSeries series = new XYSeries(report.getName());
-    	double[] values = report.getSeries();
-    	for (int i = 1; i < values.length; i++) {
-			series.add((double)i, values[i]);
+    	for (int i = 1; i < report.size(); i++) {
+			series.add((double)i, report.get(i));
 		}
     	dataset.addSeries(series);
     }

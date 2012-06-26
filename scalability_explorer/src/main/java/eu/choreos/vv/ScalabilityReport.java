@@ -1,27 +1,18 @@
 package eu.choreos.vv;
 
-public class ScalabilityReport {
+import java.util.ArrayList;
 
+public class ScalabilityReport extends ArrayList<Double> {
 
+	private static final long serialVersionUID = -2993273004741518768L;
 	private String methodName;
-	private double[] series;
 
-	public ScalabilityReport(String methodName, int times) {
+	public ScalabilityReport(String methodName) {
 		this.methodName = methodName;
-		series = new double[times+1];
 	}
 
-	public double[] getSeries() {
-		return series;
-	}
-
-	@SuppressWarnings("rawtypes")
-	public Comparable getName() {
+	public Comparable<String> getName() {
 		return methodName;
-	}
-
-	public void add(int i, double value) {
-		series[i] = value;
 	}
 
 }

@@ -20,7 +20,7 @@ public class ScalabilityTesting {
 		method = new ScalabilityTestMethod(scalabilityTests, methodName);
 		function = method.getScalabilityFunctionObject();
 		times = method.getNumberOfTimesToExecute();
-		report = new ScalabilityReport(methodName, times);
+		report = new ScalabilityReport(methodName);
 		executeIncreasingParams(scalabilityTests, params);
 		return report;
 	}
@@ -29,9 +29,10 @@ public class ScalabilityTesting {
 			throws IllegalAccessException, InvocationTargetException, InstantiationException {
 		Object[] actualParams = Arrays.copyOf(params, params.length);
 		Annotation[][] parametersAnnotation = method.getParameterAnnotations();
+		double value = 0.0;
 		for (int i = 0; i < times; i++) {
-			double value = invokeMethodWithParamsUpdated(scalabilityTestingObject, actualParams);
-			report.add(i+1, value);
+			value = invokeMethodWithParamsUpdated(scalabilityTestingObject, actualParams);
+			report.add(value);
 			increaseEachParamOfParamsArray(actualParams, parametersAnnotation, params);
 		}
 	}

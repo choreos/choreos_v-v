@@ -46,5 +46,10 @@ public class SumCount {
 	public double countQuadratic(@Scale int number) {
 		return number;
 	}
+	
+	@ScalabilityTest(maxMeasurement=5.0)
+	public int goUpToTheLimit(@Scale int number) {
+		return number;
+	}
 
 }
