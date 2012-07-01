@@ -68,7 +68,7 @@ public class XYChart extends JFrame {
 	
     private void createDataset(XYSeriesCollection dataset, ScalabilityReport report) {
     	XYSeries series = new XYSeries(report.getName());
-    	for (int i = 1; i < report.size(); i++) {
+    	for (int i = 0; i < report.size(); i++) {
 			series.add((double)i, report.get(i));
 		}
     	dataset.addSeries(series);
@@ -103,7 +103,7 @@ public class XYChart extends JFrame {
         NumberAxis domain = (NumberAxis) plot.getDomainAxis();
         domain.setStandardTickUnits(ticks);
         domain.resizeRange(1.1);
-        domain.setLowerBound(0.5);
+        domain.setLowerBound(-0.5);
 
         NumberAxis range = (NumberAxis) plot.getRangeAxis();
         range.setStandardTickUnits(ticks);
