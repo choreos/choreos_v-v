@@ -1,8 +1,8 @@
 package eu.choreos.vv;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
-public class ScalabilityReport extends ArrayList<Double> {
+public class ScalabilityReport extends HashMap<Double, Double> {
 
 	private static final long serialVersionUID = -2993273004741518768L;
 	private String methodName;

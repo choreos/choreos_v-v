@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import eu.choreos.vv.annotations.ScalabilityTest;
+import eu.choreos.vv.annotations.Scale;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 
 public class ScalabilityTestMethod {
@@ -79,4 +80,16 @@ public class ScalabilityTestMethod {
 		if (!scalabilityTestingMethod.isAnnotationPresent(ScalabilityTest.class))
 			throw new NoSuchMethodException("Method " + methodName + "without annotation ScalabilityTest");
 	}
+	
+	public int getChartDomainParamIndex() {
+		Annotation[][] annotations = method.getParameterAnnotations();
+		for (int i = 0; i < annotations.length; i++) {
+			Annotation[] parameterAnnotations = annotations[i];
+			for (Annotation annotation: parameterAnnotations)
+				if ( (annotation instanceof Scale) && ((Scale)annotation).chartDomain() )
+					return i;
+		}
+		return -1;
+	}
+	
 }

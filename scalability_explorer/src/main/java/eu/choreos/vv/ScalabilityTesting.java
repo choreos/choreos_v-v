@@ -32,11 +32,23 @@ public class ScalabilityTesting {
 		Object[] actualParams = Arrays.copyOf(params, params.length);
 		Annotation[][] parametersAnnotation = method.getParameterAnnotations();
 		double value = 0.0;
+		double key = 0.0;
+		int chartDomainParameterIndex = method.getChartDomainParamIndex();
 		for (int i = 0; i < times && value <= limit; i++) {
+			key = getChartKey(actualParams, chartDomainParameterIndex, i);
 			value = invokeMethodWithParamsUpdated(scalabilityTestingObject, actualParams);
-			report.add(value);
+			report.put(key, value);
 			increaseEachParamOfParamsArray(actualParams, parametersAnnotation, params);
+			
 		}
+	}
+
+	private static double getChartKey(Object[] actualParams,
+			int chartDomainParamIndex, int noParam) {
+		if (chartDomainParamIndex == -1)
+			return noParam;
+		else
+			return ( (Number) actualParams[chartDomainParamIndex]).doubleValue();
 	}
 
 	private static Double invokeMethodWithParamsUpdated(Object scalabilityTestingObject, Object[] actualParams) throws IllegalAccessException, InvocationTargetException {
