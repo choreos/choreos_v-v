@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import eu.choreos.vv.loadgenerator.Executable;
 import eu.choreos.vv.loadgenerator.LoadGenerator;
 import eu.choreos.vv.loadgenerator.UniformLoadGenerator;
+import eu.choreos.vv.loadgenerator.executable.Executable;
 
 public class LoadGeneratorTest {
 
@@ -17,14 +17,31 @@ public class LoadGeneratorTest {
 		loadGen.execute(10, 180, new Executable() {
 			
 			@Override
-			public Double execute() {
+			public void run() {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				return null;
+			}
+
+			@Override
+			public void setUp() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			protected double initialMeasurement() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			protected double finalMeasurement() {
+				// TODO Auto-generated method stub
+				return 0;
 			}
 		});
 		long endTime = System.currentTimeMillis();
@@ -47,6 +64,30 @@ public class LoadGeneratorTest {
 					e.printStackTrace();
 				}
 				return null;
+			}
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void setUp() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			protected double initialMeasurement() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			protected double finalMeasurement() {
+				// TODO Auto-generated method stub
+				return 0;
 			}
 		});
 		long endTime = System.currentTimeMillis();

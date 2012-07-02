@@ -3,6 +3,8 @@ package eu.choreos.vv.loadgenerator;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.choreos.vv.loadgenerator.executable.Executable;
+
 public class UniformLoadGenerator implements LoadGenerator {
 
 	@Override
