@@ -32,7 +32,7 @@ public class ScalabilityTestingTest {
 	public void shouldIncreaseTheNumberOfBothParameters() throws Exception {
 		ScalabilityReport report = run(sumCount, "sumBoth", 1, 2);
 		for(double i=1; i<=5; i++) {
-			assertEquals(i*(1.0+2.0), report.get(i-1), EPSILON);
+			assertEquals(i*(1.0+2.0), report.get(i), EPSILON);
 		}
 		assertEquals("sumBoth", report.getName());
 	}

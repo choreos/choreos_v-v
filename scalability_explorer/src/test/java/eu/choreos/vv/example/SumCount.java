@@ -13,7 +13,7 @@ public class SumCount {
 	}
 	
 	@ScalabilityTest(maxIncreaseTimes=5)
-	public int sumBoth(@Scale int a, @Scale int b) {
+	public int sumBoth(@Scale(chartDomain=true) int a, @Scale int b) {
 		return a+b;
 	}
 	
