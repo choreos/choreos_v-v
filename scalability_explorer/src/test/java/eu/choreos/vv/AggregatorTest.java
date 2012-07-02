@@ -26,13 +26,13 @@ public class AggregatorTest {
 	public void sholdGet50Percentile() {
 		Aggregator aggr = new Percentile(50);
 		double value = aggr.aggregate(aList);
-		assertEquals(21693.0 ,value, 0);
+		assertEquals(21630.0 ,value, 0);
 	}
 
 	@Test
 	public void sholdGet95Percentile() {
 		Aggregator aggr = new Percentile(95);
 		double value = aggr.aggregate(aList);
-		assertEquals(31871.0 ,value, 0);
+		assertEquals(31748.0 ,value, 0);
 	}
 }

@@ -18,7 +18,9 @@ public class Percentile implements Aggregator{
 		int size = series.size();
 		Vector<Double> vector = new Vector<Double>(series); 
 		Collections.sort(vector);
-		int index = (int) Math.round( Math.floor(size * percentile) + 1 );
+		int index = (int) Math.round( Math.floor(size * percentile) );
+		if (index >= size)
+			index = size - 1;
 		Double result = vector.get(index);
 		return result;
 	}
