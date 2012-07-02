@@ -21,7 +21,7 @@ public class ScalabilityTestingTest {
 	@Test
 	public void shouldIncreaseTheNumberParameterAndReturnReport() throws Exception {
 		ScalabilityReport report = run(sumCount, "count", 1);
-		for(int i=1; i<=5; i++) {
+		for(double i=1; i<=5; i++) {
 			assertEquals((double) i, report.get(i-1), EPSILON);
 		}
 		assertEquals("count", report.getName());
@@ -31,7 +31,7 @@ public class ScalabilityTestingTest {
 	@Test
 	public void shouldIncreaseTheNumberOfBothParameters() throws Exception {
 		ScalabilityReport report = run(sumCount, "sumBoth", 1, 2);
-		for(int i=1; i<=5; i++) {
+		for(double i=1; i<=5; i++) {
 			assertEquals(i*(1.0+2.0), report.get(i-1), EPSILON);
 		}
 		assertEquals("sumBoth", report.getName());
@@ -40,7 +40,7 @@ public class ScalabilityTestingTest {
 	@Test
 	public void shouldIncreaseTheNumberOfParametersWithAnnotationScale() throws Exception {
 		ScalabilityReport report =  run(sumCount, "sumBothAndMultiple", 1, 2, 10);
-		for(int i=1; i<=5; i++) {
+		for(double i=1; i<=5; i++) {
 			assertEquals(i*10*(1.0+2.0), report.get(i-1), EPSILON);
 		}
 		assertEquals("sumBothAndMultiple", report.getName());
@@ -50,7 +50,7 @@ public class ScalabilityTestingTest {
 	@Test
 	public void shouldReceiveAsReturnADoubleValue() throws Exception {		
 		ScalabilityReport report = run(sumCount, "countReturningDouble", 1);
-		for(int i=1; i<=5; i++) {
+		for(double i=1; i<=5; i++) {
 			assertEquals((double) i, report.get(i-1), EPSILON);
 		}
 		assertEquals("countReturningDouble", report.getName());
@@ -59,7 +59,7 @@ public class ScalabilityTestingTest {
 	@Test
 	public void shouldExecuteMethodIfHasNoParameterWithScaleAnnotation() throws Exception {
 		ScalabilityReport report = run(sumCount, "withoutScaleParameter", 1);
-		for(int i=1; i<=5; i++) {
+		for(double i=1; i<=5; i++) {
 			assertEquals(1.0, report.get(i-1), EPSILON);
 		}
 		assertEquals("withoutScaleParameter", report.getName());
@@ -81,7 +81,7 @@ public class ScalabilityTestingTest {
 	public void shouldIncreaseExponentially() throws Exception {	
 		ScalabilityReport report = run(sumCount, "countExponential", 1);
 		int value = 1;
-		for(int i=1; i<=5; i++) {
+		for(double i=1; i<=5; i++) {
 			assertEquals((double) value, report.get(i-1), EPSILON);
 			value*=2;
 		}
@@ -93,7 +93,7 @@ public class ScalabilityTestingTest {
 	@Test
 	public void shouldIncreaseQuadratically() throws Exception {
 		ScalabilityReport report = run(sumCount, "countQuadratic", 1);
-		for(int i=1; i<=5; i++) {
+		for(double i=1; i<=5; i++) {
 			assertEquals((double) (i*i), report.get(i-1), EPSILON);
 		}
 		assertEquals("countQuadratic", report.getName());
