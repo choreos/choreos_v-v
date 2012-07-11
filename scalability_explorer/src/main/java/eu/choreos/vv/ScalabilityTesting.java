@@ -15,11 +15,47 @@ public class ScalabilityTesting {
 	private static ScalabilityTestMethod method;
 	private static ScalabilityReport report;
 
+	public static ScalabilityReport run(ScalabilityFunction scalabilityfunction, int numberOfTimes, double measurementLimit, Object scalabilityTests, String methodName, Object... params)
+			throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
+			InstantiationException {
+		method = new ScalabilityTestMethod(scalabilityfunction, numberOfTimes, measurementLimit, scalabilityTests, methodName);
+		function = method.getScalabilityFunction();
+		times = method.getNumberOfTimesToExecute();
+		limit = method.getMaxMeasurementPermitted();
+		report = new ScalabilityReport(methodName);
+		executeIncreasingParams(scalabilityTests, params);
+		return report;
+	}
+	
+	public static ScalabilityReport run(ScalabilityFunction scalabilityfunction, int numberOfTimes, Object scalabilityTests, String methodName, Object... params)
+			throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
+			InstantiationException {
+		method = new ScalabilityTestMethod(scalabilityfunction, numberOfTimes, Double.MAX_VALUE, scalabilityTests, methodName);
+		function = method.getScalabilityFunction();
+		times = method.getNumberOfTimesToExecute();
+		limit = method.getMaxMeasurementPermitted();
+		report = new ScalabilityReport(methodName);
+		executeIncreasingParams(scalabilityTests, params);
+		return report;
+	}
+	
+	public static ScalabilityReport run(ScalabilityFunction scalabilityfunction, double measurementLimit, Object scalabilityTests, String methodName, Object... params)
+			throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
+			InstantiationException {
+		method = new ScalabilityTestMethod(scalabilityfunction, Integer.MAX_VALUE, measurementLimit, scalabilityTests, methodName);
+		function = method.getScalabilityFunction();
+		times = method.getNumberOfTimesToExecute();
+		limit = method.getMaxMeasurementPermitted();
+		report = new ScalabilityReport(methodName);
+		executeIncreasingParams(scalabilityTests, params);
+		return report;
+	}
+	
 	public static ScalabilityReport run(Object scalabilityTests, String methodName, Object... params)
 			throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
 			InstantiationException {
 		method = new ScalabilityTestMethod(scalabilityTests, methodName);
-		function = method.getScalabilityFunctionObject();
+		function = method.getScalabilityFunction();
 		times = method.getNumberOfTimesToExecute();
 		limit = method.getMaxMeasurementPermitted();
 		report = new ScalabilityReport(methodName);

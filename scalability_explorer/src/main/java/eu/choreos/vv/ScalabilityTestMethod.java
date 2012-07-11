@@ -11,11 +11,31 @@ import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 public class ScalabilityTestMethod {
 
 	private Method method;
+	private String methodName;
 	private Object scalabilityTestObject;
-
-	public ScalabilityTestMethod(Object scalabilityTests, String methodName) throws NoSuchMethodException {
-		method = searchScalabilityTestMethod(methodName, scalabilityTests);
-		scalabilityTestObject = scalabilityTests;
+	private ScalabilityFunction function;
+	private int timesToRun;
+	private double returnLimit;
+	
+	public ScalabilityTestMethod(ScalabilityFunction scalabilityFunction, int numberOfTimes, double returnLimit, Object scalabilityTests, String methodName) throws NoSuchMethodException {
+		init(scalabilityTests, methodName);
+		this.function = scalabilityFunction;
+		this.timesToRun = numberOfTimes;
+		this.returnLimit = returnLimit;
+	}
+	
+	public ScalabilityTestMethod(Object scalabilityTests, String methodName) throws NoSuchMethodException, InstantiationException, IllegalAccessException {
+		init(scalabilityTests, methodName);
+		verifyIfMethodHasScalabilityTestAnnotation();
+		this.function = getScalabilityFunctionFromMethod();
+		this.timesToRun = getNumberOfTimesToExecuteFromMethod();
+		this.returnLimit = getMaxMeasurementPermitteddFromMethod();
+	}
+	
+	private void init(Object scalabilityTests, String methodName) throws NoSuchMethodException {
+		this.methodName = methodName; 
+		this.scalabilityTestObject = scalabilityTests;
+		this.method = searchScalabilityTestMethod();
 	}
 	
 	public Annotation[][] getParameterAnnotations() {
@@ -27,7 +47,11 @@ public class ScalabilityTestMethod {
 		return (Number) method.invoke(scalabilityTestObject, actualParams);
 	}
 
-	public ScalabilityFunction getScalabilityFunctionObject() throws InstantiationException,
+	public ScalabilityFunction getScalabilityFunction() {
+		return function;
+	}
+	
+	private ScalabilityFunction getScalabilityFunctionFromMethod() throws InstantiationException,
 			IllegalAccessException {
 		ScalabilityTest scalabilityTest = method.getAnnotation(ScalabilityTest.class);
 		Class<? extends ScalabilityFunction> functionClass = scalabilityTest.scalabilityFunction();
@@ -36,49 +60,49 @@ public class ScalabilityTestMethod {
 	}
 	
 	public int getNumberOfTimesToExecute() {
+		return timesToRun;
+	}
+	
+	private int getNumberOfTimesToExecuteFromMethod() {
 		ScalabilityTest scalabilityTest = method.getAnnotation(ScalabilityTest.class);
 		return scalabilityTest.maxIncreaseTimes();
 	}
 	
 	public double getMaxMeasurementPermitted() {
+		return returnLimit;
+	}
+	
+	private double getMaxMeasurementPermitteddFromMethod() {
 		ScalabilityTest scalabilityTest = method.getAnnotation(ScalabilityTest.class);
 		return scalabilityTest.maxMeasurement();
 	}
 
-	private Method searchScalabilityTestMethod(String methodName, Object scalabilityTests) throws NoSuchMethodException {
-		Class<? extends Object> scalabilityTestingClass = scalabilityTests.getClass();
-		Method scalabilityTestingMethod = getMethodWithMethodName(methodName, scalabilityTestingClass);
-		verifyIfMethodExistsAndHasAnnotation(methodName, scalabilityTestingMethod);
+	private Method searchScalabilityTestMethod() throws NoSuchMethodException {
+		Class<? extends Object> scalabilityTestingClass = scalabilityTestObject.getClass();
+		Method scalabilityTestingMethod = getMethodWithMethodName(scalabilityTestingClass);
 		return scalabilityTestingMethod;
 	}
 
-	private Method getMethodWithMethodName(String methodName, Class<? extends Object> scalabilityTestingClass) {
+	private Method getMethodWithMethodName(Class<? extends Object> scalabilityTestingClass) throws NoSuchMethodException {
 		for (Method method : scalabilityTestingClass.getDeclaredMethods()) {
-			if (methodIsEqualToMethodName(method, methodName))
+			if (methodIsEqualToMethodName(method))
 				return method;
 		}
-		return null;
+		throw new NoSuchMethodException("Method " + methodName + " does not exist");
 	}
 
-	private void verifyIfMethodExistsAndHasAnnotation(String methodName, Method scalabilityTestingMethod)
-			throws NoSuchMethodException {
-		verifyIfMethodExists(methodName, scalabilityTestingMethod);
-		verifyIfMethodHasScalabilityTestAnnotation(methodName, scalabilityTestingMethod);
-	}
-
-	private Boolean methodIsEqualToMethodName(Method method, String methodName) {
+	private Boolean methodIsEqualToMethodName(Method method) {
 		return method.getName().equals(methodName);
 	}
 
-	private void verifyIfMethodExists(String methodName, Method scalabilityTestingMethod) throws NoSuchMethodException {
-		if (scalabilityTestingMethod == null)
-			throw new NoSuchMethodException("Method " + methodName + " does not exist");
-	}
-
-	private void verifyIfMethodHasScalabilityTestAnnotation(String methodName, Method scalabilityTestingMethod)
+	private void verifyIfMethodHasScalabilityTestAnnotation()
 			throws NoSuchMethodException {
-		if (!scalabilityTestingMethod.isAnnotationPresent(ScalabilityTest.class))
-			throw new NoSuchMethodException("Method " + methodName + "without annotation ScalabilityTest");
+		if (!methodHasScalabilityTestAnnotation())
+			throw new NoSuchMethodException("Method " + methodName + " without annotation ScalabilityTest");
+	}
+	
+	private boolean methodHasScalabilityTestAnnotation() {
+		return this.method.isAnnotationPresent(ScalabilityTest.class);
 	}
 	
 	public int getChartDomainParamIndex() {

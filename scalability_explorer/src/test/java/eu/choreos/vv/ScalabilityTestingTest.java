@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.choreos.vv.example.SumCount;
+import eu.choreos.vv.increasefunctions.LinearIncrease;
 
 public class ScalabilityTestingTest {
 	
@@ -65,10 +66,36 @@ public class ScalabilityTestingTest {
 		assertEquals("withoutScaleParameter", report.getName());
 	}
 	
-	
 	@Test(expected=NoSuchMethodException.class)
 	public void shouldNotExecuteMethodWithoutScalabilityTestAnnotation() throws Exception {
 		run(sumCount, "withoutScalabilityTestAnnotation", 1);
+	}
+	
+	@Test
+	public void shouldExecuteMethodWithoutScalabilityTestAnnotationWithNumberOfTimesToExecute() throws Exception {
+		ScalabilityReport report = run(new LinearIncrease(), 5, sumCount, "withoutScalabilityTestAnnotation", 1);
+		assertEquals(5, report.size());
+		for(double i=1; i<=5; i++ ) {
+			assertEquals(1.0, report.get(i-1), EPSILON);
+		}
+	}
+	
+	@Test
+	public void shouldExecuteMethodWithoutScalabilityTestAnnotationWithMeasurementLimit() throws Exception {
+		ScalabilityReport report = run(new LinearIncrease(), 4.0, sumCount, "withScaleOnly", 1);
+		assertEquals(5, report.size());
+		for(double i=1; i<=5; i++ ) {
+			assertEquals(i, report.get(i-1), EPSILON);
+		}
+	}
+	
+	@Test
+	public void shouldExecuteMethodWithoutScalabilityTestAnnotationWithNumberOfTimesAndMeasurementLimit() throws Exception {
+		ScalabilityReport report = run(new LinearIncrease(), 10, 4.0, sumCount, "withScaleOnly", 1);
+		assertEquals(5, report.size());
+		for(double i=1; i<=5; i++ ) {
+			assertEquals(i, report.get(i-1), EPSILON);
+		}
 	}
 	
 	@Test(expected=NoSuchMethodException.class)

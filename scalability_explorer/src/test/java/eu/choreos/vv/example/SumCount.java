@@ -31,6 +31,10 @@ public class SumCount {
 		return a;
 	}
 	
+	public int withScaleOnly(@Scale int a) {
+		return a;
+	}
+	
 	@ScalabilityTest(maxIncreaseTimes=5)
 	public double countReturningDouble(@Scale int number) {
 		double total = 1.0*number;
