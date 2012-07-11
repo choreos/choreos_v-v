@@ -1,82 +1,53 @@
 package eu.choreos.vv;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
-import eu.choreos.vv.annotations.Scale;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 
 public class ScalabilityTesting {
 
-	private static ScalabilityFunction function;
-	private static int times;
-	private static double limit;
-	private static ScalabilityTestMethod method;
-	private static ScalabilityReport report;
-
 	public static ScalabilityReport run(ScalabilityFunction scalabilityfunction, int numberOfTimes, double measurementLimit, Object scalabilityTests, String methodName, Object... params)
 			throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
 			InstantiationException {
-		method = new ScalabilityTestMethod(scalabilityfunction, numberOfTimes, measurementLimit, scalabilityTests, methodName);
-		function = method.getScalabilityFunction();
-		times = method.getNumberOfTimesToExecute();
-		limit = method.getMaxMeasurementPermitted();
-		report = new ScalabilityReport(methodName);
-		executeIncreasingParams(scalabilityTests, params);
-		return report;
+		ScalabilityTestMethod method = new ScalabilityTestMethod(scalabilityfunction, numberOfTimes, measurementLimit, scalabilityTests, methodName);
+		return executeIncreasingParams(method, params);
 	}
 	
 	public static ScalabilityReport run(ScalabilityFunction scalabilityfunction, int numberOfTimes, Object scalabilityTests, String methodName, Object... params)
 			throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
 			InstantiationException {
-		method = new ScalabilityTestMethod(scalabilityfunction, numberOfTimes, Double.MAX_VALUE, scalabilityTests, methodName);
-		function = method.getScalabilityFunction();
-		times = method.getNumberOfTimesToExecute();
-		limit = method.getMaxMeasurementPermitted();
-		report = new ScalabilityReport(methodName);
-		executeIncreasingParams(scalabilityTests, params);
-		return report;
+		return run(scalabilityfunction, numberOfTimes, Double.MAX_VALUE, scalabilityTests, methodName, params);
 	}
 	
 	public static ScalabilityReport run(ScalabilityFunction scalabilityfunction, double measurementLimit, Object scalabilityTests, String methodName, Object... params)
 			throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
 			InstantiationException {
-		method = new ScalabilityTestMethod(scalabilityfunction, Integer.MAX_VALUE, measurementLimit, scalabilityTests, methodName);
-		function = method.getScalabilityFunction();
-		times = method.getNumberOfTimesToExecute();
-		limit = method.getMaxMeasurementPermitted();
-		report = new ScalabilityReport(methodName);
-		executeIncreasingParams(scalabilityTests, params);
-		return report;
+		return run(scalabilityfunction, Integer.MAX_VALUE, measurementLimit, scalabilityTests, methodName, params);
 	}
 	
 	public static ScalabilityReport run(Object scalabilityTests, String methodName, Object... params)
 			throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
 			InstantiationException {
-		method = new ScalabilityTestMethod(scalabilityTests, methodName);
-		function = method.getScalabilityFunction();
-		times = method.getNumberOfTimesToExecute();
-		limit = method.getMaxMeasurementPermitted();
-		report = new ScalabilityReport(methodName);
-		executeIncreasingParams(scalabilityTests, params);
-		return report;
+		ScalabilityTestMethod method = new ScalabilityTestMethod(scalabilityTests, methodName);
+		return executeIncreasingParams(method, params);
 	}
-
-	public static void executeIncreasingParams(Object scalabilityTestingObject, Object... params)
+	
+	public static ScalabilityReport executeIncreasingParams(ScalabilityTestMethod method, Object... params)
 			throws IllegalAccessException, InvocationTargetException, InstantiationException {
-		Object[] actualParams = Arrays.copyOf(params, params.length);
-		Annotation[][] parametersAnnotation = method.getParameterAnnotations();
+		Object[] currentParams = Arrays.copyOf(params, params.length);
 		double value = 0.0;
 		double key = 0.0;
+		ScalabilityReport report = new ScalabilityReport(method.getName());
 		int chartDomainParameterIndex = method.getChartDomainParamIndex();
-		for (int i = 0; i < times && value <= limit; i++) {
-			key = getChartKey(actualParams, chartDomainParameterIndex, i);
-			value = invokeMethodWithParamsUpdated(scalabilityTestingObject, actualParams);
+		for (int i = 0; i < method.getNumberOfTimesToExecute() && value <= method.getMaxMeasurementPermitted(); i++) {
+			key = getChartKey(currentParams, chartDomainParameterIndex, i);
+			value = invokeMethod(method, currentParams);
 			report.put(key, value);
-			increaseEachParamOfParamsArray(actualParams, parametersAnnotation, params);
+			method.increaseParametersValue(params, currentParams);
 			
 		}
+		return report;
 	}
 
 	private static double getChartKey(Object[] actualParams,
@@ -87,25 +58,9 @@ public class ScalabilityTesting {
 			return ( (Number) actualParams[chartDomainParamIndex]).doubleValue();
 	}
 
-	private static Double invokeMethodWithParamsUpdated(Object scalabilityTestingObject, Object[] actualParams) throws IllegalAccessException, InvocationTargetException {
+	private static Double invokeMethod(ScalabilityTestMethod method, Object[] actualParams) throws IllegalAccessException, InvocationTargetException {
 		Number value = (Number) method.invoke(actualParams);
 		return value.doubleValue();
-	}
-
-	private static void increaseEachParamOfParamsArray(Object[] actualParams,
-			Annotation[][] parametersAnnotation, Object... params) {
-		for (int j = 0; j < params.length; j++) {
-			if (parameterHasScaleAnnotation(parametersAnnotation[j]))
-				actualParams[j] = function.increaseParams((Integer) actualParams[j], (Integer) params[j]);
-		}
-	}
-
-	private static boolean parameterHasScaleAnnotation(Annotation[] annotations) {
-		for (Annotation annotation : annotations) {
-			if (annotation instanceof Scale)
-				return true;
-		}
-		return false;
 	}
 
 }

@@ -38,8 +38,8 @@ public class ScalabilityTestMethod {
 		this.method = searchScalabilityTestMethod();
 	}
 	
-	public Annotation[][] getParameterAnnotations() {
-		return method.getParameterAnnotations();
+	private Annotation[] getParameterAnnotations(int index) {
+		return method.getParameterAnnotations()[index];
 	}
 
 	public Number invoke(Object[] actualParams) throws IllegalArgumentException, IllegalAccessException,
@@ -114,6 +114,24 @@ public class ScalabilityTestMethod {
 					return i;
 		}
 		return -1;
+	}
+	
+	public String getName() {
+		return methodName;
+	}
+
+	public void increaseParametersValue(Object[] initialParameters, Object[] currentParameters) {
+		for (int i = 0; i < initialParameters.length; i++)
+			if (parameterHasScaleAnnotation(getParameterAnnotations(i)))
+				currentParameters[i] = function.increaseParams((Integer)currentParameters[i], (Integer)initialParameters[i]);
+	}
+	
+	private boolean parameterHasScaleAnnotation(Annotation[] annotations) {
+		for (Annotation annotation : annotations) {
+			if (annotation instanceof Scale)
+				return true;
+		}
+		return false;
 	}
 	
 }
