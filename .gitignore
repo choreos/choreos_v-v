@@ -6,3 +6,5 @@ Servers/
 *build/*
 *target/*
 **/target/*
+.classpath
+.project
