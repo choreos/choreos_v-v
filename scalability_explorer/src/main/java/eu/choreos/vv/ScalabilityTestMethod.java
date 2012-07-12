@@ -84,7 +84,7 @@ public class ScalabilityTestMethod {
 	}
 
 	private Method getMethodWithMethodName(Class<? extends Object> scalabilityTestingClass) throws NoSuchMethodException {
-		for (Method method : scalabilityTestingClass.getDeclaredMethods()) {
+		for (Method method : scalabilityTestingClass.getMethods()) {
 			if (methodIsEqualToMethodName(method))
 				return method;
 		}
