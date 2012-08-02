@@ -1,6 +1,6 @@
 package eu.choreos.vv;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.choreos.vv.aggregations.Aggregator;
+import eu.choreos.vv.aggregations.Mean;
 import eu.choreos.vv.aggregations.Percentile;
 
 public class AggregatorTest {
@@ -26,13 +27,22 @@ public class AggregatorTest {
 	public void sholdGet50Percentile() {
 		Aggregator aggr = new Percentile(50);
 		double value = aggr.aggregate(aList);
-		assertEquals(21630.0 ,value, 0);
+		assertEquals(20566.0 ,value, 0);
+//		assertEquals(21630.0 ,value, 0);
 	}
 
 	@Test
 	public void sholdGet95Percentile() {
 		Aggregator aggr = new Percentile(95);
 		double value = aggr.aggregate(aList);
-		assertEquals(31748.0 ,value, 0);
+		assertEquals(31803.35 ,value, 0);
+//		assertEquals(31748.0 ,value, 0);
+	}
+	
+	@Test
+	public void sholdGetMean() {
+		Aggregator aggr = new Mean();
+		double value = aggr.aggregate(aList);
+		assertEquals(18427.8, value, 0);
 	}
 }
