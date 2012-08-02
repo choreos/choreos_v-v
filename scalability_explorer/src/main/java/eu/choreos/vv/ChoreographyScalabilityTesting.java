@@ -15,17 +15,23 @@ import eu.choreos.vv.loadgenerator.executable.LatencyMeasurementExecutable;
 
 public abstract class ChoreographyScalabilityTesting {
 	
-	public abstract void setUp();
+	private List<ScalabilityReport> reports;
+	
+	public void setUp() throws Exception {}
 
-	public abstract void resourceScaling(int resourceQuantity);
+	public void resourceScaling(int resourceQuantity) throws Exception {}
 	
-	public abstract void beforeTest();
+	public void beforeTest() throws Exception {}
 	
-	public abstract void test();
+	public void test() throws Exception {}
 	
-	public abstract void tearDown();
+	public void tearDown() throws Exception {}
 	
-	public double scalabilityTest(@Scale int requestsPerMinute, @Scale(chartDomain=true) int resourceQuantity, int numberOfExecutions) {
+	public ChoreographyScalabilityTesting() {
+		reports = new ArrayList<ScalabilityReport>();
+	}
+	
+	public double scalabilityTest(@Scale int requestsPerMinute, @Scale(chartDomain=true) int resourceQuantity, int numberOfExecutions) throws Exception {
 		LoadGenerator loadGen = new UniformLoadGenerator();
 		List<Double> results = new ArrayList<Double>();
 
@@ -34,12 +40,12 @@ public abstract class ChoreographyScalabilityTesting {
 		try {
 			results = loadGen.execute(numberOfExecutions, requestsPerMinute, new LatencyMeasurementExecutable() {
 				@Override
-				public void setUp() {
+				public void setUp() throws Exception {
 					beforeTest();
 				}
 				
 				@Override
-				public void run() {
+				public void run() throws Exception {
 					test();
 				}
 			});
@@ -60,26 +66,16 @@ public abstract class ChoreographyScalabilityTesting {
 			setUp();
 			report = ScalabilityTesting.run(new LinearIncrease(), timesToRun, latencyLimit, this, "scalabilityTest", initialRequestsPerMinute, inititalResoucesQuantity, numberOfExecutionsPerTest);
 			tearDown();
-			ScalabilityReportChart chart = new ScalabilityReportChart();
-			ArrayList<ScalabilityReport> list = new ArrayList<ScalabilityReport>();
-			list.add(report);
-			chart.createChart(list);
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
+			reports.add(report);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void showChart() {
+		ScalabilityReportChart chart = new ScalabilityReportChart();
+		chart.createChart(reports);		
 	}
 
 }

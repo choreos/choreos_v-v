@@ -2,11 +2,11 @@ package eu.choreos.vv.loadgenerator.executable;
 
 public abstract class Executable {
 	
-	public abstract void run();
+	public abstract void run() throws Exception;
 	
-	public abstract void setUp();
+	public abstract void setUp() throws Exception;
 	
-	public Double execute() {
+	public Double execute() throws Exception {
 		setUp();
 		double start = initialMeasurement();
 		run();

@@ -8,7 +8,7 @@ import eu.choreos.vv.loadgenerator.executable.Executable;
 public class UniformLoadGenerator implements LoadGenerator {
 
 	@Override
-	public List<Double> execute(int numberOfCalls, int callsPerMin, Executable e) throws InterruptedException {
+	public List<Double> execute(int numberOfCalls, int callsPerMin, Executable e) throws Exception {
 		long delay = 60000 / callsPerMin;
 		List<Double> results = new ArrayList<Double>();
 		for(int i = 0; i < numberOfCalls; i++) {

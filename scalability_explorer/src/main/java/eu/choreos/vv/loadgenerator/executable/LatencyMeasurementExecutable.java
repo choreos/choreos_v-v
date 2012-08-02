@@ -3,10 +3,10 @@ package eu.choreos.vv.loadgenerator.executable;
 public abstract class LatencyMeasurementExecutable extends Executable {
 
 	@Override
-	public abstract void run();
+	public abstract void run() throws Exception;
 	
 	@Override
-	public abstract void setUp();
+	public abstract void setUp() throws Exception;
 	
 	@Override
 	protected double initialMeasurement() {
