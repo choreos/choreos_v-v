@@ -13,7 +13,7 @@ import eu.choreos.vv.loadgenerator.LoadGenerator;
 import eu.choreos.vv.loadgenerator.UniformLoadGenerator;
 import eu.choreos.vv.loadgenerator.executable.LatencyMeasurementExecutable;
 
-public abstract class ChoreographyScalabilityTesting {
+public abstract class ScalabilityTestingModel {
 	
 	private List<ScalabilityReport> reports;
 	
@@ -27,7 +27,7 @@ public abstract class ChoreographyScalabilityTesting {
 	
 	public void tearDown() throws Exception {}
 	
-	public ChoreographyScalabilityTesting() {
+	public ScalabilityTestingModel() {
 		reports = new ArrayList<ScalabilityReport>();
 	}
 	

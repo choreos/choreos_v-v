@@ -3,9 +3,9 @@ package eu.choreos.vv.example;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.choreos.vv.ChoreographyScalabilityTesting;
+import eu.choreos.vv.ScalabilityTestingModel;
 
-public class ChoreographyScalabilityTestExample extends ChoreographyScalabilityTesting {
+public class ScalabilityTestExample extends ScalabilityTestingModel {
 
 	List<Integer> resources;
 	long sleepTime;
@@ -40,7 +40,7 @@ public class ChoreographyScalabilityTestExample extends ChoreographyScalabilityT
 	public void tearDown() {}
 	
 	public static void main(String[] args) {
-		ChoreographyScalabilityTestExample example = new ChoreographyScalabilityTestExample();
+		ScalabilityTestExample example = new ScalabilityTestExample();
 		example.run(5, 1000, 10, 20, 1);
 	}
 
