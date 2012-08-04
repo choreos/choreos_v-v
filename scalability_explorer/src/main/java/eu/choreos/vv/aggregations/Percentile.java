@@ -1,10 +1,6 @@
 package eu.choreos.vv.aggregations;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
-
-import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 
 
 public class Percentile implements Aggregator{

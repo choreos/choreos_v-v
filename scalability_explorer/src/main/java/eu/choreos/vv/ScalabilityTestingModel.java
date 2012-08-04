@@ -1,6 +1,5 @@
 package eu.choreos.vv;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
