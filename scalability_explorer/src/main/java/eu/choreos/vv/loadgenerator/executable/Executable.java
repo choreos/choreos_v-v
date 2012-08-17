@@ -1,17 +1,39 @@
 package eu.choreos.vv.loadgenerator.executable;
 
-public abstract class Executable {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public abstract class Executable implements Runnable {
 	
-	public abstract void run() throws Exception;
+	private final List<Number> results = new ArrayList<Number>();
+	
+	public abstract void experiment() throws Exception;
 	
 	public abstract void setUp() throws Exception;
 	
-	public Double execute() throws Exception {
-		setUp();
-		double start = initialMeasurement();
-		run();
-		double end = finalMeasurement();
-		return end - start;
+	public List<Number> getResults() {
+		return results;
+	}
+
+	public void clearResults() {
+		results.clear();
+	}
+	
+	@Override
+	public void run() {
+		try {
+			setUp();
+			double start = initialMeasurement();
+			experiment();
+			double end = finalMeasurement();
+			results.add(end - start);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+
 	}
 	
 	protected abstract double initialMeasurement();

@@ -32,7 +32,7 @@ public abstract class ScalabilityTestingModel {
 	
 	public double scalabilityTest(@Scale int requestsPerMinute, @Scale(chartDomain=true) int resourceQuantity, int numberOfExecutions) throws Exception {
 		LoadGenerator loadGen = new UniformLoadGenerator();
-		List<Double> results = new ArrayList<Double>();
+		List<Number> results = new ArrayList<Number>();
 
 		resourceScaling(resourceQuantity);
 		
@@ -44,7 +44,7 @@ public abstract class ScalabilityTestingModel {
 				}
 				
 				@Override
-				public void run() throws Exception {
+				public void experiment() throws Exception {
 					test();
 				}
 			});
