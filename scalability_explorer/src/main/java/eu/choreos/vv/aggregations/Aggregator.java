@@ -3,5 +3,5 @@ package eu.choreos.vv.aggregations;
 import java.util.List;
 
 public interface Aggregator {
-	public Double aggregate(List<Double> series);
+	public Double aggregate(List<Number> series);
 }

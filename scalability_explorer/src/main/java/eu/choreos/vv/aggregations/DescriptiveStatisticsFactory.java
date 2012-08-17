@@ -6,10 +6,10 @@ import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 
 public class DescriptiveStatisticsFactory {
 	
-	public static DescriptiveStatistics create(List<Double> series) {
+	public static DescriptiveStatistics create(List<Number> series) {
 		DescriptiveStatistics stats = new DescriptiveStatistics();
-		for(Double d:series) {
-			stats.addValue(d);
+		for(Number d:series) {
+			stats.addValue(d.doubleValue());
 		}
 		return stats;
 	}

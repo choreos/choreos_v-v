@@ -12,7 +12,7 @@ public class Percentile implements Aggregator{
 	}
 	
 	@Override
-	public Double aggregate(List<Double> series) {
+	public Double aggregate(List<Number> series) {
 		return DescriptiveStatisticsFactory.create(series).getPercentile(percentile);
 		
 //		int size = series.size();
