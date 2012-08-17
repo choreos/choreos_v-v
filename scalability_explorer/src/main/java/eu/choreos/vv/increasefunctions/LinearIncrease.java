@@ -4,8 +4,8 @@ package eu.choreos.vv.increasefunctions;
 public class LinearIncrease implements ScalabilityFunction {
 
 	@Override
-	public int increaseParams(int actualParam, int fixedParam) {
-		return actualParam + fixedParam;
+	public Number increaseParams(Number actualParam, Number fixedParam) {
+		return actualParam.intValue() + fixedParam.intValue();
 	}
 
 }

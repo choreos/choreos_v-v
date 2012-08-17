@@ -10,8 +10,8 @@ public class QuadraticIncrease implements ScalabilityFunction {
 	}
 
 	@Override
-	public int increaseParams(int actualParam, int fixedParam) {
-		int value = fixedParam*(actualIncreasingTime*actualIncreasingTime);
+	public Number increaseParams(Number actualParam, Number fixedParam) {
+		Number value = fixedParam.intValue()*(actualIncreasingTime*actualIncreasingTime);
 		actualIncreasingTime++;
 		return value;
 	}
