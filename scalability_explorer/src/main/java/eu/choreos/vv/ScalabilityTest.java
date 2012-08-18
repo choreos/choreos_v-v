@@ -85,7 +85,7 @@ public class ScalabilityTest {
 	
 	public void increaseParamentersValues() {
 		for (int i = 0; i < initialParameterValues.length; i++)
-			currentParameterValues[i] = function.increaseParams((Integer)currentParameterValues[i], (Integer)initialParameterValues[i]);
+			currentParameterValues[i] = function.increaseParams(currentParameterValues[i], initialParameterValues[i]);
 	}
 	
 	public Double execute() throws Exception {

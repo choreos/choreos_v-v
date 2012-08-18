@@ -36,8 +36,8 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	
 	@Override
 	public double test(Number... params) throws Exception {
-		int requestsPerMinute = (Integer)params[0];
-		int resourceQuantity = (Integer)params[1];
+		int requestsPerMinute = params[0].intValue();
+		int resourceQuantity = params[1].intValue();
 		LoadGenerator loadGen = new UniformLoadGenerator();
 		List<Number> results = new ArrayList<Number>();
 

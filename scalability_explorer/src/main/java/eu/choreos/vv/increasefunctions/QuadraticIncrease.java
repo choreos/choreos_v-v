@@ -3,7 +3,7 @@ package eu.choreos.vv.increasefunctions;
 public class QuadraticIncrease implements ScalabilityFunction {
 	
 
-	private int actualIncreasingTime;
+	private double actualIncreasingTime;
 
 	public QuadraticIncrease() {
 		actualIncreasingTime=2;
@@ -11,7 +11,7 @@ public class QuadraticIncrease implements ScalabilityFunction {
 
 	@Override
 	public Number increaseParams(Number actualParam, Number fixedParam) {
-		Number value = fixedParam.intValue()*(actualIncreasingTime*actualIncreasingTime);
+		Number value = fixedParam.doubleValue()*(actualIncreasingTime*actualIncreasingTime);
 		actualIncreasingTime++;
 		return value;
 	}

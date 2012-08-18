@@ -4,7 +4,7 @@ public class ExponentialIncrease implements ScalabilityFunction {
 
 	@Override
 	public Number increaseParams(Number actualParam, Number fixedParam) {
-		return actualParam.intValue()*2;
+		return actualParam.doubleValue()*fixedParam.doubleValue();
 	}
 
 }
