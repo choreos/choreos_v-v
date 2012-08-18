@@ -41,7 +41,10 @@ public class ScalabilityTestExample extends ScalabilityTester {
 	
 	public static void main(String[] args) {
 		ScalabilityTestExample example = new ScalabilityTestExample();
-		example.run("test", 5, 1000, 10, 20, 1);
+		if (example.run("test", 5, 1000, 10, 60, 1))
+			example.showChart();
+		else
+			example.getLastException().printStackTrace();
 	}
 
 }
