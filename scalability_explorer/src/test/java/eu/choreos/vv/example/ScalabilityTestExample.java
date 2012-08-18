@@ -3,9 +3,9 @@ package eu.choreos.vv.example;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.choreos.vv.ScalabilityTestingModel;
+import eu.choreos.vv.ScalabilityTester;
 
-public class ScalabilityTestExample extends ScalabilityTestingModel {
+public class ScalabilityTestExample extends ScalabilityTester {
 
 	List<Integer> resources;
 	long sleepTime;
@@ -41,7 +41,7 @@ public class ScalabilityTestExample extends ScalabilityTestingModel {
 	
 	public static void main(String[] args) {
 		ScalabilityTestExample example = new ScalabilityTestExample();
-		example.run(5, 1000, 10, 20, 1);
+		example.run("test", 5, 1000, 10, 20, 1);
 	}
 
 }

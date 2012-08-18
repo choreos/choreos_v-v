@@ -5,14 +5,17 @@ import java.util.List;
 
 import eu.choreos.vv.aggregations.Aggregator;
 import eu.choreos.vv.aggregations.Percentile;
-import eu.choreos.vv.annotations.Scale;
 import eu.choreos.vv.chart.ScalabilityReportChart;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.loadgenerator.LoadGenerator;
 import eu.choreos.vv.loadgenerator.UniformLoadGenerator;
 import eu.choreos.vv.loadgenerator.executable.LatencyMeasurementExecutable;
 
-public abstract class ScalabilityTestingModel {
+public abstract class ScalabilityTester implements ScalabilityTestItem {
+	
+	private int numberOfExecutions;
+	
+	private Exception lastException;
 	
 	private List<ScalabilityReport> reports;
 	
@@ -26,11 +29,15 @@ public abstract class ScalabilityTestingModel {
 	
 	public void tearDown() throws Exception {}
 	
-	public ScalabilityTestingModel() {
+	public ScalabilityTester() {
 		reports = new ArrayList<ScalabilityReport>();
 	}
 	
-	public double scalabilityTest(@Scale int requestsPerMinute, @Scale(chartDomain=true) int resourceQuantity, int numberOfExecutions) throws Exception {
+	
+	@Override
+	public double test(Number... params) throws Exception {
+		int requestsPerMinute = (Integer)params[0];
+		int resourceQuantity = (Integer)params[1];
 		LoadGenerator loadGen = new UniformLoadGenerator();
 		List<Number> results = new ArrayList<Number>();
 
@@ -58,23 +65,31 @@ public abstract class ScalabilityTestingModel {
 		return percentile.aggregate(results);
 	}
 	
-	
-	public void run(int timesToRun, double latencyLimit, int numberOfExecutionsPerTest, int initialRequestsPerMinute, int inititalResoucesQuantity) {
+	public boolean run(String name, int timesToRun, double latencyLimit, int numberOfExecutionsPerTest, int initialRequestsPerMinute, int inititalResoucesQuantity) {
+		numberOfExecutions = numberOfExecutionsPerTest;
+		ScalabilityTest scalabilityTtest = new ScalabilityTest(this, name, timesToRun, latencyLimit, new LinearIncrease());
+		scalabilityTtest.setInitialParametersValues(initialRequestsPerMinute, inititalResoucesQuantity);
+		
 		ScalabilityReport report;
 		try {
 			setUp();
-			report = ScalabilityTesting.run(new LinearIncrease(), timesToRun, latencyLimit, this, "scalabilityTest", initialRequestsPerMinute, inititalResoucesQuantity, numberOfExecutionsPerTest);
+			report = scalabilityTtest.executeIncreasingParams();
 			tearDown();
 			reports.add(report);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			lastException = e;
+			return false;
 		}
+		return true;
 	}
 	
 	public void showChart() {
 		ScalabilityReportChart chart = new ScalabilityReportChart();
 		chart.createChart(reports);		
+	}
+	
+	public Exception getLastException() {
+		return lastException;
 	}
 
 }
