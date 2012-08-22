@@ -15,7 +15,7 @@ public class LoadGeneratorTest {
 		LoadGenerator loadGen = new UniformLoadGenerator();
 		long startTime = System.currentTimeMillis();
 		loadGen.execute(10, 180, new Executable() {
-			
+
 			@Override
 			public void experiment() {
 				try {
@@ -29,7 +29,7 @@ public class LoadGeneratorTest {
 			@Override
 			public void setUp() {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
@@ -45,37 +45,38 @@ public class LoadGeneratorTest {
 			}
 		});
 		long endTime = System.currentTimeMillis();
-		double duration = (endTime - startTime)/1000;
+		double duration = (endTime - startTime) / 1000;
 		assertEquals(3.0, duration, 0.1);
 	}
-	
-	@Test//(expected=IllegalArgumentException.class)
+
+	@Test
+	// (expected=IllegalArgumentException.class)
 	public void executionShouldTakeLongerThanDelay() throws Exception {
 		LoadGenerator loadGen = new UniformLoadGenerator();
 		long startTime = System.currentTimeMillis();
 		loadGen.execute(10, 60, new Executable() {
-			
+
 			@Override
-			public void run() {
+			public Double call() {
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				//return null;
+				return 1.0;
 			}
 
 			@Override
 			public void experiment() {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void setUp() {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
@@ -91,7 +92,7 @@ public class LoadGeneratorTest {
 			}
 		});
 		long endTime = System.currentTimeMillis();
-		double duration = (endTime - startTime)/1000;
+		double duration = (endTime - startTime) / 1000;
 		assertEquals(11.0, duration, 0.1);
 	}
 
