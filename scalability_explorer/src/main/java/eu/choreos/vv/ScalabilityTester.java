@@ -14,7 +14,12 @@ import eu.choreos.vv.loadgenerator.executable.LatencyMeasurementExecutable;
 
 public abstract class ScalabilityTester implements ScalabilityTestItem {
 
-	private int numberOfExecutions;
+	private int numberOfExecutionsPerTest;
+	private Integer numberOfTestsToRun;
+	private Double latencyLimit;
+	private Number initialRequestsPerMinute;
+	private Number inititalResoucesQuantity;
+
 	private LoadGenerator loadGen;
 	private Aggregator aggregator;
 	private ScalabilityFunction function;
@@ -47,6 +52,11 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 		this.loadGen = loadGenerator;
 		this.aggregator = aggregator;
 		this.function = function;
+		this.numberOfTestsToRun = 1;
+		this.numberOfExecutionsPerTest = 1;
+		this.latencyLimit = Double.MAX_VALUE;
+		this.initialRequestsPerMinute = 60;
+		this.inititalResoucesQuantity = 1;
 		reports = new ArrayList<ScalabilityReport>();
 	}
 
@@ -74,6 +84,46 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 		this.function = function;
 	}
 
+	public int getNumberOfExecutionsPerTest() {
+		return numberOfExecutionsPerTest;
+	}
+
+	public void setNumberOfExecutionsPerTest(int numberOfExecutionsPerTest) {
+		this.numberOfExecutionsPerTest = numberOfExecutionsPerTest;
+	}
+
+	public Integer getNumberOfTestsToRun() {
+		return numberOfTestsToRun;
+	}
+
+	public void setNumberOfTestsToRun(Integer numberOfTestsToRun) {
+		this.numberOfTestsToRun = numberOfTestsToRun;
+	}
+
+	public Double getLatencyLimit() {
+		return latencyLimit;
+	}
+
+	public void setLatencyLimit(Double latencyLimit) {
+		this.latencyLimit = latencyLimit;
+	}
+
+	public Number getInitialRequestsPerMinute() {
+		return initialRequestsPerMinute;
+	}
+
+	public void setInitialRequestsPerMinute(Number initialRequestsPerMinute) {
+		this.initialRequestsPerMinute = initialRequestsPerMinute;
+	}
+
+	public Number getInititalResoucesQuantity() {
+		return inititalResoucesQuantity;
+	}
+
+	public void setInititalResoucesQuantity(Number inititalResoucesQuantity) {
+		this.inititalResoucesQuantity = inititalResoucesQuantity;
+	}
+
 	@Override
 	public double test(Number... params) throws Exception {
 		int requestsPerMinute = params[0].intValue();
@@ -82,7 +132,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 
 		resourceScaling(resourceQuantity);
 
-		results = loadGen.execute(numberOfExecutions, requestsPerMinute,
+		results = loadGen.execute(numberOfExecutionsPerTest, requestsPerMinute,
 				new LatencyMeasurementExecutable() {
 					@Override
 					public void setUp() throws Exception {
@@ -101,9 +151,28 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	public boolean run(String name, int timesToRun, double latencyLimit,
 			int numberOfExecutionsPerTest, int initialRequestsPerMinute,
 			int inititalResoucesQuantity) {
-		numberOfExecutions = numberOfExecutionsPerTest;
+		this.numberOfExecutionsPerTest = numberOfExecutionsPerTest;
 		ScalabilityTest scalabilityTest = new ScalabilityTest(this, name,
 				timesToRun, latencyLimit, function);
+		scalabilityTest.setInitialParametersValues(initialRequestsPerMinute,
+				inititalResoucesQuantity);
+
+		ScalabilityReport report;
+		try {
+			setUp();
+			report = scalabilityTest.executeIncreasingParams();
+			tearDown();
+			reports.add(report);
+		} catch (Exception e) {
+			lastException = e;
+			return false;
+		}
+		return true;
+	}
+
+	public boolean run(String name) {
+		ScalabilityTest scalabilityTest = new ScalabilityTest(this, name,
+				numberOfTestsToRun, latencyLimit, function);
 		scalabilityTest.setInitialParametersValues(initialRequestsPerMinute,
 				inititalResoucesQuantity);
 
@@ -129,7 +198,9 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	}
 
 	public void showChart(String title) {
-		ScalabilityReportChart chart = new ScalabilityReportChart("Scalability explorer", title, "execution", aggregator.getLabel() + " of " + loadGen.getLabel());
+		ScalabilityReportChart chart = new ScalabilityReportChart(
+				"Scalability explorer", title, "execution",
+				aggregator.getLabel() + " of " + loadGen.getLabel());
 		chart.createChart(reports);
 	}
 
