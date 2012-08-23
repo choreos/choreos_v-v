@@ -98,7 +98,7 @@ public class ScalabilityTest {
 		ScalabilityReport report = new ScalabilityReport(this.getName());
 		for (int i = 0; i < this.getTimesToExecute() && value <= this.getMeasurementLimit(); i++) {
 			value = this.execute();
-			report.put((double)i, value);
+			report.put((double)i+1, value);
 			this.increaseParamentersValues();
 		}
 		return report;

@@ -12,6 +12,12 @@ import eu.choreos.vv.loadgenerator.executable.Executable;
 public class UniformLoadGenerator implements LoadGenerator {
 
 	final int THREADS_TIMEOUT = 60;
+	final String LABEL = "response time (msec)";
+
+	@Override
+	public String getLabel() {
+		return LABEL;
+	}
 
 	@Override
 	public List<Number> execute(int numberOfCalls, int callsPerMin,
@@ -20,20 +26,21 @@ public class UniformLoadGenerator implements LoadGenerator {
 		final ExecutorService executor = Executors.newCachedThreadPool();
 		final List<Future<Double>> futureResults = new ArrayList<Future<Double>>();
 		final List<Number> results = new ArrayList<Number>();
-		for (int i = 0; i < numberOfCalls; i++) {
-			long start = System.currentTimeMillis();
-			Future<Double> result = executor.submit(executable);
-			futureResults.add(result);
-			long end = System.currentTimeMillis();
-			Thread.sleep(delay - end + start);
-		}
-		executor.shutdown();
 		try {
+			for (int i = 0; i < numberOfCalls; i++) {
+				long start = System.currentTimeMillis();
+				Future<Double> result = executor.submit(executable);
+				futureResults.add(result);
+				long end = System.currentTimeMillis();
+				Thread.sleep(delay - end + start);
+			}
+			executor.shutdown();
 			while (!executor
 					.awaitTermination(THREADS_TIMEOUT, TimeUnit.SECONDS))
 				;
 		} catch (InterruptedException e) {
 			executor.shutdownNow();
+			throw e;
 		}
 
 		for (Future<Double> future : futureResults)

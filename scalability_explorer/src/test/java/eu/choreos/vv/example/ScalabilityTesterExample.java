@@ -5,7 +5,7 @@ import java.util.List;
 
 import eu.choreos.vv.ScalabilityTester;
 
-public class ScalabilityTestExample extends ScalabilityTester {
+public class ScalabilityTesterExample extends ScalabilityTester {
 
 	List<Integer> resources;
 	long sleepTime;
@@ -38,11 +38,11 @@ public class ScalabilityTestExample extends ScalabilityTester {
 	}
 	
 	public void tearDown() {}
-	
+
 	public static void main(String[] args) {
-		ScalabilityTestExample example = new ScalabilityTestExample();
+		ScalabilityTesterExample example = new ScalabilityTesterExample();
 		if (example.run("test", 5, 1000, 10, 60, 1))
-			example.showChart();
+			example.showChart("simple test");
 		else
 			example.getLastException().printStackTrace();
 	}

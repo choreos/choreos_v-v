@@ -2,6 +2,8 @@ package eu.choreos.vv.aggregations;
 
 import java.util.List;
 
-public interface Aggregator {
+import eu.choreos.vv.chart.Labeled;
+
+public interface Aggregator extends Labeled {
 	public Double aggregate(List<Number> series);
 }

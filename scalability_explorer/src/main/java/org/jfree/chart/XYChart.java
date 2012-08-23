@@ -1,4 +1,4 @@
-package eu.choreos.vv.chart;
+package org.jfree.chart;
 
 /**
  * JFreeChartDemo
@@ -45,9 +45,15 @@ import eu.choreos.vv.ScalabilityReport;
 
 public class XYChart extends JFrame {
 	private static final long serialVersionUID = 1L;
+	private String xLabel;
+	private String yLabel;
 
-	public XYChart(String applicationTitle, String chartTitle, List<ScalabilityReport> reports) {
+	public XYChart(String applicationTitle, String chartTitle, List<ScalabilityReport> reports, String xLabel, String yLabel) {
         super(applicationTitle);
+        
+        this.xLabel = xLabel;
+        this.yLabel = yLabel;
+        
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         XYSeriesCollection dataset = new XYSeriesCollection();
@@ -65,7 +71,7 @@ public class XYChart extends JFrame {
         setContentPane(chartPanel);
 
     }
-	
+		
     private void createDataset(XYSeriesCollection dataset, ScalabilityReport report) {
     	XYSeries series = new XYSeries(report.getName());
 //    	for (int i = 0; i < report.size(); i++) {
@@ -80,8 +86,8 @@ public class XYChart extends JFrame {
         // create the chart...
         JFreeChart chart = ChartFactory.createXYLineChart(
             chartTitle, // chart title
-            "Execution size", // domain axis label
-            "Range", // range axis label
+            xLabel, // domain axis label
+            yLabel, // range axis label
             dataset,  // initial series
             PlotOrientation.VERTICAL, // orientation
             true, // include legend
@@ -104,7 +110,7 @@ public class XYChart extends JFrame {
         NumberAxis domain = (NumberAxis) plot.getDomainAxis();
         domain.setStandardTickUnits(ticks);
         domain.resizeRange(1.1);
-        domain.setLowerBound(-0.5);
+        domain.setLowerBound(0.5);
 
         NumberAxis range = (NumberAxis) plot.getRangeAxis();
         range.setStandardTickUnits(ticks);

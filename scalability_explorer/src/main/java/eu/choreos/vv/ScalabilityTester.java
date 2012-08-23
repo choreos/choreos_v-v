@@ -5,7 +5,6 @@ import java.util.List;
 
 import eu.choreos.vv.aggregations.Aggregator;
 import eu.choreos.vv.aggregations.Mean;
-import eu.choreos.vv.aggregations.Percentile;
 import eu.choreos.vv.chart.ScalabilityReportChart;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
@@ -42,8 +41,9 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	public ScalabilityTester() {
 		this(new UniformLoadGenerator(), new Mean(), new LinearIncrease());
 	}
-	
-	public ScalabilityTester(LoadGenerator loadGenerator, Aggregator aggregator, ScalabilityFunction function) {
+
+	public ScalabilityTester(LoadGenerator loadGenerator,
+			Aggregator aggregator, ScalabilityFunction function) {
 		this.loadGen = loadGenerator;
 		this.aggregator = aggregator;
 		this.function = function;
@@ -128,8 +128,8 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 				inititalResoucesQuantity);
 	}
 
-	public void showChart() {
-		ScalabilityReportChart chart = new ScalabilityReportChart();
+	public void showChart(String title) {
+		ScalabilityReportChart chart = new ScalabilityReportChart("Scalability explorer", title, "execution", aggregator.getLabel() + " of " + loadGen.getLabel());
 		chart.createChart(reports);
 	}
 
