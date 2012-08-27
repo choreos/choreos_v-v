@@ -12,6 +12,7 @@ import eu.choreos.vv.loadgenerator.executable.Executable;
 public class UniformLoadGenerator implements LoadGenerator {
 
 	final int THREADS_TIMEOUT = 60;
+	final int POOL_SIZE = 50;
 	final String LABEL = "response time (msec)";
 
 	@Override
@@ -23,7 +24,8 @@ public class UniformLoadGenerator implements LoadGenerator {
 	public List<Number> execute(int numberOfCalls, int callsPerMin,
 			Executable executable) throws Exception {
 		final long delay = 60000 / callsPerMin;
-		final ExecutorService executor = Executors.newCachedThreadPool();
+		final ExecutorService executor = Executors.newFixedThreadPool(POOL_SIZE);
+//		final ExecutorService executor = Executors.newCachedThreadPool();
 		final List<Future<Double>> futureResults = new ArrayList<Future<Double>>();
 		final List<Number> results = new ArrayList<Number>();
 		try {
