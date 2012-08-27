@@ -5,6 +5,10 @@ import java.util.Arrays;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 
+/**
+ * ScalabilityTest is the class in charge of executing a test multiple times increasing the scalable parameters. 
+ *
+ */
 public class ScalabilityTest {
 	
 	ScalabilityTestItem item;
@@ -83,15 +87,20 @@ public class ScalabilityTest {
 		return currentParameterValues;
 	}
 	
-	public void increaseParamentersValues() {
+	private void increaseParamentersValues() {
 		for (int i = 0; i < initialParameterValues.length; i++)
 			currentParameterValues[i] = function.increaseParams(currentParameterValues[i], initialParameterValues[i]);
 	}
 	
-	public Double execute() throws Exception {
+	private Double execute() throws Exception {
 		return item.test(currentParameterValues);
 	}
 	
+	/**
+	 * Executes the test, increasing the scalability parameters, up to the specified number of times ou measurement limit
+	 * @return a ScalabiltyReport of the execution
+	 * @throws Exception
+	 */
 	public ScalabilityReport executeIncreasingParams()
 			throws Exception {
 		double value = 0.0;

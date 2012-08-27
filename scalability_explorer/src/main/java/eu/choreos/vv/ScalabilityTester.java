@@ -12,11 +12,18 @@ import eu.choreos.vv.loadgenerator.LoadGenerator;
 import eu.choreos.vv.loadgenerator.UniformLoadGenerator;
 import eu.choreos.vv.loadgenerator.executable.LatencyMeasurementExecutable;
 
+/**
+ * This class implements a skeleton of a scalability test in which multiple test batteries will be executed.
+ * In each test battery, the frequency of requests and the quantity of resources will be increased according to a ScalabilityFunction.
+ * The test are executed a number of times, in each battery, and the return values are aggregated accordingly.
+ * Test batteries will be executed up to a determined number of executions or until one's aggregated return value surpasses a defined limit. 
+ *
+ */
 public abstract class ScalabilityTester implements ScalabilityTestItem {
 
 	private int numberOfExecutionsPerTest;
 	private Integer numberOfTestsToRun;
-	private Double latencyLimit;
+	private Double measurementLimit;
 	private Number initialRequestsPerMinute;
 	private Number inititalResoucesQuantity;
 
@@ -28,25 +35,55 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 
 	private List<ScalabilityReport> reports;
 
+	/**
+	 * This method can be overridden to be executed before all the test batteries.
+	 * @throws Exception
+	 */
 	public void setUp() throws Exception {
 	}
 
+	/**
+	 * This method can be overridden to define how to properly scale the resources. Is is executed before each test battery.
+	 * @param resourceQuantity current resource quantity
+	 * @throws Exception
+	 */
 	public void resourceScaling(int resourceQuantity) throws Exception {
 	}
 
+	/**
+	 * This method can be overridden to execute before each experiment
+	 * @throws Exception
+	 */
 	public void beforeTest() throws Exception {
 	}
 
+	/**
+	 * This method must be overridden in order to execute the proper test
+	 * @throws Exception
+	 */
 	public void test() throws Exception {
 	}
 
+	/**
+	 * This method can be overriden to execute after all test batteries
+	 * @throws Exception
+	 */
 	public void tearDown() throws Exception {
 	}
 
+	/**
+	 * Creates a new ScalabilityTester that uses UniformLoadGenarator, Mean and LinearIncrease
+	 */
 	public ScalabilityTester() {
 		this(new UniformLoadGenerator(), new Mean(), new LinearIncrease());
 	}
 
+	/**
+	 * Creates a new ScalabilityTester
+	 * @param loadGenerator load generator to run the tests
+	 * @param aggregator	aggregation function
+	 * @param function		scalability function
+	 */
 	public ScalabilityTester(LoadGenerator loadGenerator,
 			Aggregator aggregator, ScalabilityFunction function) {
 		this.loadGen = loadGenerator;
@@ -54,7 +91,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 		this.function = function;
 		this.numberOfTestsToRun = 1;
 		this.numberOfExecutionsPerTest = 1;
-		this.latencyLimit = Double.MAX_VALUE;
+		this.measurementLimit = Double.MAX_VALUE;
 		this.initialRequestsPerMinute = 60;
 		this.inititalResoucesQuantity = 1;
 		reports = new ArrayList<ScalabilityReport>();
@@ -100,12 +137,12 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 		this.numberOfTestsToRun = numberOfTestsToRun;
 	}
 
-	public Double getLatencyLimit() {
-		return latencyLimit;
+	public Double getMeasurementLimit() {
+		return measurementLimit;
 	}
 
-	public void setLatencyLimit(Double latencyLimit) {
-		this.latencyLimit = latencyLimit;
+	public void setMeasurementLimit(Double measurementLimit) {
+		this.measurementLimit = measurementLimit;
 	}
 
 	public Number getInitialRequestsPerMinute() {
@@ -147,32 +184,23 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 
 		return aggregator.aggregate(results);
 	}
-
+	
+	/**
+	 * runs a test battery according to the parameters
+	 * @param name 						name to identify the battery - used by ScalabilityReportChart 
+	 * @param timesToRun				maximum number of test batteries to be executed
+	 * @param latencyLimit				maximum return value allowed for a test battery
+	 * @param numberOfExecutionsPerTest	number of executions in each test battery 
+	 * @param initialRequestsPerMinute	initial frequency of requests
+	 * @param inititalResoucesQuantity	initial amount of resources
+	 * @return true if no exception was caught, false otherwise
+	 */
 	public boolean run(String name, int timesToRun, double latencyLimit,
 			int numberOfExecutionsPerTest, int initialRequestsPerMinute,
 			int inititalResoucesQuantity) {
 		this.numberOfExecutionsPerTest = numberOfExecutionsPerTest;
 		ScalabilityTest scalabilityTest = new ScalabilityTest(this, name,
 				timesToRun, latencyLimit, function);
-		scalabilityTest.setInitialParametersValues(initialRequestsPerMinute,
-				inititalResoucesQuantity);
-
-		ScalabilityReport report;
-		try {
-			setUp();
-			report = scalabilityTest.executeIncreasingParams();
-			tearDown();
-			reports.add(report);
-		} catch (Exception e) {
-			lastException = e;
-			return false;
-		}
-		return true;
-	}
-
-	public boolean run(String name) {
-		ScalabilityTest scalabilityTest = new ScalabilityTest(this, name,
-				numberOfTestsToRun, latencyLimit, function);
 		scalabilityTest.setInitialParametersValues(initialRequestsPerMinute,
 				inititalResoucesQuantity);
 
@@ -197,13 +225,45 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 				inititalResoucesQuantity);
 	}
 
+	/**
+	 * Runs a test battery according to current attributes of the ScalabilityTester
+	 * @param name label to be used in a ScalabilityReportChart
+	 * @return true if no exception was caught, false otherwise
+	 */
+	public boolean run(String name) {
+		ScalabilityTest scalabilityTest = new ScalabilityTest(this, name,
+				numberOfTestsToRun, measurementLimit, function);
+		scalabilityTest.setInitialParametersValues(initialRequestsPerMinute,
+				inititalResoucesQuantity);
+		
+		ScalabilityReport report;
+		try {
+			setUp();
+			report = scalabilityTest.executeIncreasingParams();
+			tearDown();
+			reports.add(report);
+		} catch (Exception e) {
+			lastException = e;
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Presents a chart with the results of all test batteries executed by this ScalabilityTester
+	 * @param title chart title
+	 */
 	public void showChart(String title) {
-		ScalabilityReportChart chart = new ScalabilityReportChart(
-				"Scalability explorer", title, "execution",
-				aggregator.getLabel() + " of " + loadGen.getLabel());
+		ScalabilityReportChart chart = new ScalabilityReportChart(title,
+				"execution", aggregator.getLabel() + " of "
+						+ loadGen.getLabel());
 		chart.createChart(reports);
 	}
 
+	/**
+	 * returns the last exception caught during tests
+	 * @return an Exception
+	 */
 	public Exception getLastException() {
 		return lastException;
 	}
