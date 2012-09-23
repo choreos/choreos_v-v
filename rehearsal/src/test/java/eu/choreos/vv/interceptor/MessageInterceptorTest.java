@@ -67,7 +67,7 @@ public class MessageInterceptorTest {
 		interceptor.setName("myStore");
 		interceptor.interceptTo(SIMPLE_STORE_WSDL);
 		
-		assertEquals("http://localhost:4321/myStoreProxy?wsdl", interceptor.getProxyWsdl());
+		assertEquals("http://localhost:4321/myStore?wsdl", interceptor.getProxyWsdl());
 		
 	}
 	

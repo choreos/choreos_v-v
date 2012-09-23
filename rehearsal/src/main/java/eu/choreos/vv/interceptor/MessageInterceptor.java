@@ -103,6 +103,6 @@ public class MessageInterceptor {
 		if (!StringUtils.isEmpty(name)) {
 			return name;
 		}
-		return WsdlUtils.getBaseName(realWsdl);
+		return WsdlUtils.getBaseName(realWsdl) + "Proxy";
 	}
 }

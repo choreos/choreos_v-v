@@ -41,7 +41,7 @@ public class MockProject {
 			this.name = name;
 			port = "8088";
 			hostName = "localhost";
-			buildWsdlPrject(name, wsdl);
+			buildWsdlProject(name, wsdl);
 		}
 
 		/**
@@ -53,7 +53,7 @@ public class MockProject {
 		 * @throws XmlException 
 		 * @throws Exception
 		 */
-		private void buildWsdlPrject(String name, String wsdl) throws WSDLException, XmlException, IOException {
+		private void buildWsdlProject(String name, String wsdl) throws WSDLException, XmlException, IOException {
 			try {
 				WsdlProject project = new WsdlProject();
 				iface = WsdlInterfaceFactory.importWsdl(project, wsdl, true)[0];
