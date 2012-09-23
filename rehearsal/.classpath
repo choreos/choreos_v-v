@@ -16,57 +16,17 @@
   <classpathentry kind="var" path="M2_REPO/asm/asm-commons/3.2/asm-commons-3.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/asm/asm-tree/3.2/asm-tree-3.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/asm/asm-util/3.2/asm-util-3.2.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/bouncycastle/bcprov-jdk15/1.44/bcprov-jdk15-1.44.jar" sourcepath="M2_REPO/org/bouncycastle/bcprov-jdk15/1.44/bcprov-jdk15-1.44-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/besson/.m2/repository/org/bouncycastle/bcprov-jdk15/1.44/bcprov-jdk15-1.44-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.8.3/commons-beanutils-1.8.3.jar" sourcepath="M2_REPO/commons-beanutils/commons-beanutils/1.8.3/commons-beanutils-1.8.3-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/besson/.m2/repository/commons-beanutils/commons-beanutils/1.8.3/commons-beanutils-1.8.3-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/commons-cli/commons-cli/1.2/commons-cli-1.2.jar" sourcepath="M2_REPO/commons-cli/commons-cli/1.2/commons-cli-1.2-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/besson/.m2/repository/commons-cli/commons-cli/1.2/commons-cli-1.2-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.4/commons-codec-1.4.jar" sourcepath="M2_REPO/commons-codec/commons-codec/1.4/commons-codec-1.4-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/besson/.m2/repository/commons-codec/commons-codec/1.4/commons-codec-1.4-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar" sourcepath="M2_REPO/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/besson/.m2/repository/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/bouncycastle/bcprov-jdk15/1.44/bcprov-jdk15-1.44.jar" sourcepath="M2_REPO/org/bouncycastle/bcprov-jdk15/1.44/bcprov-jdk15-1.44-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.8.3/commons-beanutils-1.8.3.jar" sourcepath="M2_REPO/commons-beanutils/commons-beanutils/1.8.3/commons-beanutils-1.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-cli/commons-cli/1.2/commons-cli-1.2.jar" sourcepath="M2_REPO/commons-cli/commons-cli/1.2/commons-cli-1.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.4/commons-codec-1.4.jar" sourcepath="M2_REPO/commons-codec/commons-codec/1.4/commons-codec-1.4-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar" sourcepath="M2_REPO/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar" sourcepath="M2_REPO/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar" sourcepath="M2_REPO/commons-io/commons-io/2.0.1/commons-io-2.0.1-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/besson/.m2/repository/commons-io/commons-io/2.0.1/commons-io-2.0.1-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.4/commons-lang-2.4.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.4/commons-lang-2.4-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/besson/.m2/repository/commons-lang/commons-lang/2.4/commons-lang-2.4-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/besson/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/net/sf/ezmorph/ezmorph/1.0.6/ezmorph-1.0.6.jar" sourcepath="M2_REPO/net/sf/ezmorph/ezmorph/1.0.6/ezmorph-1.0.6-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/besson/.m2/repository/net/sf/ezmorph/ezmorph/1.0.6/ezmorph-1.0.6-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/codehaus/groovy/groovy/1.7.10/groovy-1.7.10.jar" sourcepath="M2_REPO/org/codehaus/groovy/groovy/1.7.10/groovy-1.7.10-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/besson/.m2/repository/org/codehaus/groovy/groovy/1.7.10/groovy-1.7.10-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar" sourcepath="M2_REPO/commons-io/commons-io/2.0.1/commons-io-2.0.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.4/commons-lang-2.4.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.4/commons-lang-2.4-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/ezmorph/ezmorph/1.0.6/ezmorph-1.0.6.jar" sourcepath="M2_REPO/net/sf/ezmorph/ezmorph/1.0.6/ezmorph-1.0.6-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/groovy/groovy/1.7.11/groovy-1.7.11.jar" sourcepath="M2_REPO/org/codehaus/groovy/groovy/1.7.11/groovy-1.7.11-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/groovy/groovy-all/1.1-rc-1/groovy-all-1.1-rc-1.jar" sourcepath="M2_REPO/groovy/groovy-all/1.1-rc-1/groovy-all-1.1-rc-1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar" sourcepath="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1.jar" sourcepath="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1-sources.jar"/>
@@ -76,29 +36,13 @@
   <classpathentry kind="var" path="M2_REPO/jetty/jetty/6.0.2/jetty-6.0.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/jetty/jetty-util/6.0.2/jetty-util-6.0.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/jline/jline/0.9.91/jline-0.9.91.jar" sourcepath="M2_REPO/jline/jline/0.9.91/jline-0.9.91-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/net/sf/json-lib/json-lib/2.3/json-lib-2.3-jdk15.jar" sourcepath="M2_REPO/net/sf/json-lib/json-lib/2.3/json-lib-2.3-jdk15-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/besson/.m2/repository/net/sf/json-lib/json-lib/2.3/json-lib-2.3-jdk15-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/junit/junit/4.8.2/junit-4.8.2.jar" sourcepath="M2_REPO/junit/junit/4.8.2/junit-4.8.2-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/besson/.m2/repository/junit/junit/4.8.2/junit-4.8.2-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/net/sf/json-lib/json-lib/2.3/json-lib-2.3-jdk15.jar" sourcepath="M2_REPO/net/sf/json-lib/json-lib/2.3/json-lib-2.3-jdk15-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/4.8.2/junit-4.8.2.jar" sourcepath="M2_REPO/junit/junit/4.8.2/junit-4.8.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13.jar" sourcepath="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/eu/choreos/vvws/musicstore/1.0-SNAPSHOT/musicstore-1.0-SNAPSHOT.jar"/>
-  <classpathentry kind="var" path="M2_REPO/net/sourceforge/nekohtml/nekohtml/1.9.9/nekohtml-1.9.9.jar" sourcepath="M2_REPO/net/sourceforge/nekohtml/nekohtml/1.9.9/nekohtml-1.9.9-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/besson/.m2/repository/net/sourceforge/nekohtml/nekohtml/1.9.9/nekohtml-1.9.9-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/net/sourceforge/nekohtml/nekohtml/1.9.9/nekohtml-1.9.9.jar" sourcepath="M2_REPO/net/sourceforge/nekohtml/nekohtml/1.9.9/nekohtml-1.9.9-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/ca/juliusdavies/not-yet-commons-ssl/0.3.11/not-yet-commons-ssl-0.3.11.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/jayway/restassured/rest-assured/1.2.2/rest-assured-1.2.2.jar" sourcepath="M2_REPO/com/jayway/restassured/rest-assured/1.2.2/rest-assured-1.2.2-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/besson/.m2/repository/com/jayway/restassured/rest-assured/1.2.2/rest-assured-1.2.2-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/com/jayway/restassured/rest-assured/1.2.2/rest-assured-1.2.2.jar" sourcepath="M2_REPO/com/jayway/restassured/rest-assured/1.2.2/rest-assured-1.2.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/yaml/snakeyaml/1.10-SNAPSHOT/snakeyaml-1.10-SNAPSHOT.jar" sourcepath="M2_REPO/org/yaml/snakeyaml/1.10-SNAPSHOT/snakeyaml-1.10-SNAPSHOT-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/eviware/soap-xmlbeans/1.2/soap-xmlbeans-1.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/eviware/soapui/4.0.1/soapui-4.0.1.jar"/>
