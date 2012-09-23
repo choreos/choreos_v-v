@@ -3,6 +3,7 @@ package eu.choreos.vv.interceptor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.xmlbeans.XmlException;
@@ -65,7 +66,7 @@ public class MessageInterceptor {
 	 */
 	public List<Item> getMessages() {
 		List<Item> itemMessages = new ArrayList<Item>();
-		List<String> xmlMessages = registry.getMessages(proxy.getRealWsdl());
+		List<String> xmlMessages =  new CopyOnWriteArrayList<String>(registry.getMessages(proxy.getRealWsdl()));
 		ItemParser parser = new ItemParser();
 
 		try {
