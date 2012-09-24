@@ -22,6 +22,7 @@ import eu.choreos.vv.exceptions.WSDLException;
 public class WSProxy extends MockProject {
 	
 	private String realWsdl;
+	private String proxyName;
 	
 	/**
 	 * Creates a WSProxy object which will be deployed in the url provided, also, the 
@@ -35,7 +36,7 @@ public class WSProxy extends MockProject {
 	 * @throws Exception
 	 */
 	public WSProxy(String proxyURI, String realWsdl) throws WSDLException, XmlException, IOException  {
-		super(proxyURI+ "Proxy", realWsdl);
+		super(proxyURI, realWsdl);
 		this.realWsdl = realWsdl;
 		addOperationsToProxy();
 	}

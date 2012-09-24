@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.xmlbeans.XmlException;
 
 import eu.choreos.vv.clientgenerator.Item;
@@ -18,40 +19,43 @@ import eu.choreos.vv.exceptions.WSDLException;
  * This class provides the Message Interceptor feature
  * 
  * @author Felipe Besson
- *
+ * 
  */
 public class MessageInterceptor {
 
 	private WSProxy proxy;
-	private InterceptedMessagesRegistry registry; 
+	private InterceptedMessagesRegistry registry;
 	private String port;
-	
+	private String name;
+
 	/**
 	 * Creates a message interceptor instance which will intercept the messages
 	 * by using a proxy deployed on the provided port
 	 * 
 	 * @param port
 	 */
-	public MessageInterceptor(String port){
+	public MessageInterceptor(String port) {
 		registry = InterceptedMessagesRegistry.getInstance();
 		this.port = port;
 	}
-	
+
 	/**
 	 * Intercepts all messages sent to the provided WSDL
 	 * 
 	 * @param realWsdl
-	 * @throws IOException 
-	 * @throws XmlException 
-	 * @throws WSDLException 
-	 * @throws MockDeploymentException 
+	 * @throws IOException
+	 * @throws XmlException
+	 * @throws WSDLException
+	 * @throws MockDeploymentException
 	 * @throws Exception
 	 */
-	public void interceptTo(String realWsdl) throws WSDLException, XmlException, IOException, MockDeploymentException  {
-		proxy = new WSProxy(WsdlUtils.getBaseName(realWsdl), realWsdl);
+	public void interceptTo(String realWsdl) throws WSDLException,
+			XmlException, IOException, MockDeploymentException {
+
+		proxy = new WSProxy(getProxyName(realWsdl), realWsdl);
 		proxy.setPort(port);
 		proxy.start();
-		
+
 		registry.registerWsdl(realWsdl);
 	}
 
@@ -67,9 +71,11 @@ public class MessageInterceptor {
 
 		try {
 			for (String xmlMessage : xmlMessages)
-					itemMessages.add(parser.parse(xmlMessage));
-		} catch (ParserException e) {e.printStackTrace();}
-		
+				itemMessages.add(parser.parse(xmlMessage));
+		} catch (ParserException e) {
+			e.printStackTrace();
+		}
+
 		return itemMessages;
 	}
 
@@ -84,9 +90,19 @@ public class MessageInterceptor {
 	public String getPort() {
 		return proxy.getPort();
 	}
-	
-	public void stop(){
+
+	public void stop() {
 		proxy.stop();
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	private String getProxyName(String realWsdl) {
+		if (!StringUtils.isEmpty(name)) {
+			return name;
+		}
+		return WsdlUtils.getBaseName(realWsdl) + "Proxy";
+	}
 }

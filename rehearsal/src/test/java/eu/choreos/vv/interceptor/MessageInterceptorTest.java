@@ -63,6 +63,30 @@ public class MessageInterceptorTest {
 	}
 	
 	@Test
+	public void shouldDefineAProxyName() throws Exception {
+		interceptor.setName("myStore");
+		interceptor.interceptTo(SIMPLE_STORE_WSDL);
+		
+		assertEquals("http://localhost:4321/myStore?wsdl", interceptor.getProxyWsdl());
+		
+	}
+	
+	@Test
+	public void shouldBePossibleToInterceptAndRetrieveAMessageAfterDefiningAName() throws Exception {
+		interceptor.setName("myStore");
+		interceptor.interceptTo(SIMPLE_STORE_WSDL);
+		
+		WSClient client = new WSClient(interceptor.getProxyWsdl());
+		client.request("searchByArtist", "Pink Floyd");
+		
+		Item message = interceptor.getMessages().get(0);
+		
+		assertEquals("searchByArtist", message.getName());
+		assertEquals("Pink Floyd", message.getChild("arg0").getContent());
+		
+	}
+	
+	@Test
 	public void messagesShouldBeRetrievedInTheOrderTheyWereCollected() throws Exception {
 		interceptor.interceptTo(SIMPLE_STORE_WSDL);
 		
@@ -97,5 +121,6 @@ public class MessageInterceptorTest {
 		assertEquals(1, messages.size());
 		assertEquals("Bon Jovi", messages.get(0).getChild("arg0").getContent());
 	}
+
 	
 }

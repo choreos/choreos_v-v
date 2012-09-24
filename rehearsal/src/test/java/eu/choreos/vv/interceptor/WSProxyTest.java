@@ -31,8 +31,8 @@ public class WSProxyTest {
 
 	
 	@Test
-	public void shouldCreateTheProxyByAddingTheSuffixProxyInTheInterceptedService() throws Exception {
-		WSProxy proxy = new WSProxy("ws/sm_plus", SM_WSDL_URI);
+	public void shouldCreateTheProxyUsingTheProvidedName() throws Exception {
+		WSProxy proxy = new WSProxy("ws/sm_plusProxy", SM_WSDL_URI);
 		
 		assertEquals("http://localhost:8088/ws/sm_plusProxy?wsdl", proxy.getWsdl());
 	}
@@ -42,7 +42,7 @@ public class WSProxyTest {
 		WSProxy proxy = new WSProxy("ws/sm_plus", SM_WSDL_URI);
 		proxy.setPort("1234");
 		
-		assertEquals("http://localhost:1234/ws/sm_plusProxy?wsdl", proxy.getWsdl());
+		assertEquals("http://localhost:1234/ws/sm_plus?wsdl", proxy.getWsdl());
 	}
 	
 	@Test
@@ -51,7 +51,7 @@ public class WSProxyTest {
 		proxy.setPort("1234");
 		proxy.setHostName("myHome");
 		
-		assertEquals("http://myHome:1234/ws/sm_plusProxy?wsdl", proxy.getWsdl());
+		assertEquals("http://myHome:1234/ws/sm_plus?wsdl", proxy.getWsdl());
 	}
 	
 	@Test
