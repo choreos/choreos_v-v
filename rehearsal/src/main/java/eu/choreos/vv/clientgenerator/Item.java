@@ -112,12 +112,20 @@ public interface Item {
 	public List<Item> getChildAsList(String name) throws NoSuchFieldException;
 
 	/**
-	 * This method is used when building the structure to add a child item to another item.
+	 * This method is used when building the structure to add a child by using its name.
 	 * The child represents a child tag in the XML file.
 	 * 
 	 * @param name the name of the xml tag
 	 */
 	public Item addChild(String name);
+	
+	/**
+	 * This method is used when building the structure to add a child item to another item.
+	 * The child represents a child tag in the XML file.
+	 * 
+	 * @param item an Item object
+	 */
+	public Item addChild(Item item);
 
 	/**
 	 * This method sets the content of the XML tag this item represents.
