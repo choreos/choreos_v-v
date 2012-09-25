@@ -2,6 +2,9 @@ package eu.choreos.vv;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import eu.choreos.vv.loadgenerator.LoadGenerator;
@@ -9,6 +12,44 @@ import eu.choreos.vv.loadgenerator.UniformLoadGenerator;
 import eu.choreos.vv.loadgenerator.executable.Executable;
 
 public class LoadGeneratorTest {
+	
+	@Test
+	public void shouldRunManyTimes() {
+		final int CALLS_PER_MIN = 10000;
+		final int TIMES_TO_RUN = 1000;
+		final List<Long> times = new ArrayList<Long>();
+		LoadGenerator loadGen = new UniformLoadGenerator();
+		try {
+		loadGen.execute(TIMES_TO_RUN, CALLS_PER_MIN, new Executable() {
+
+			@Override
+			public void experiment() {
+					times.add(System.currentTimeMillis());
+			}
+
+			@Override
+			protected double initialMeasurement() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			protected double finalMeasurement() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public void setUp() throws Exception {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		assertEquals(TIMES_TO_RUN, times.size());
+	}
 
 	@Test
 	public void sholdRunForThreeSeconds() throws Exception {
@@ -27,12 +68,6 @@ public class LoadGeneratorTest {
 			}
 
 			@Override
-			public void setUp() {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
 			protected double initialMeasurement() {
 				// TODO Auto-generated method stub
 				return 0;
@@ -42,6 +77,12 @@ public class LoadGeneratorTest {
 			protected double finalMeasurement() {
 				// TODO Auto-generated method stub
 				return 0;
+			}
+
+			@Override
+			public void setUp() throws Exception {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 		long endTime = System.currentTimeMillis();
@@ -74,12 +115,6 @@ public class LoadGeneratorTest {
 			}
 
 			@Override
-			public void setUp() {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
 			protected double initialMeasurement() {
 				// TODO Auto-generated method stub
 				return 0;
@@ -89,6 +124,12 @@ public class LoadGeneratorTest {
 			protected double finalMeasurement() {
 				// TODO Auto-generated method stub
 				return 0;
+			}
+
+			@Override
+			public void setUp() throws Exception {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 		long endTime = System.currentTimeMillis();
