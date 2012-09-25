@@ -426,4 +426,5 @@ public class ResponseParserTest {
 		
 		assertEquals("Pink Floyd", message.getChild("arg0").getContent());
 	}
+	
 }

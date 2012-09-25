@@ -29,7 +29,7 @@ public class ItemBuilder {
 	private static SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 	private SAXParser parser;
 	private StringBuilder outputBuilder = new StringBuilder();
-	private final String REGEXP =  "<!--.* or more repetitions:-->\\s*(<(\\w*:*\\w+)>.*<\\/\\2>)";
+	private final String REGEXP =  "<!--Zero or more repetitions:-->\\s*(<(\\w*:*\\w+)>.*<\\/\\2>)";
 
 	private class RequestParserHandler extends DefaultHandler {
 		
