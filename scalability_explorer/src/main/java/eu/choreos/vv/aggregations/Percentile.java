@@ -6,7 +6,7 @@ import java.util.List;
  * Implements percentile computation, i. e., a value for which a given percentile of a list is bellow it. 
  *
  */
-public class Percentile implements Aggregator {
+public class Percentile implements AggregationFunction {
 
 	private int percentile;
 	final private String LABEL = "percentile";

@@ -6,7 +6,7 @@ import java.util.List;
  * Implements mean calculation 
  *
  */
-public class Mean implements Aggregator {
+public class Mean implements AggregationFunction {
 
 	final String LABEL = "mean";
 
