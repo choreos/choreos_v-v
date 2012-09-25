@@ -43,18 +43,16 @@ public class ScalabilityTesterExample extends ScalabilityTester {
 	public void tearDown() {
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		ScalabilityTesterExample example = new ScalabilityTesterExample();
 		example.setAggregator(new Percentile(75));
 		example.setNumberOfExecutionsPerTest(10);
 		example.setNumberOfTestsToRun(10);
 		example.setInitialRequestsPerMinute(600);
 
-		if (!example.run("test1"))
-			example.getLastException().printStackTrace();
+		example.run("test1");
 
-		if (!example.run("test2", 5, 1000, 10, 60, 1))
-			example.getLastException().printStackTrace();
+		example.run("test2", 5, 1000, 10, 60, 1);
 		example.showChart("simple test");
 	}
 

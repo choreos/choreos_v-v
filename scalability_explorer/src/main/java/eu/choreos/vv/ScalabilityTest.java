@@ -6,11 +6,12 @@ import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 
 /**
- * ScalabilityTest is the class in charge of executing a test multiple times increasing the scalable parameters. 
- *
+ * ScalabilityTest is the class in charge of executing a test multiple times
+ * increasing the scalable parameters.
+ * 
  */
 public class ScalabilityTest {
-	
+
 	ScalabilityTestItem item;
 	String name;
 	Integer timesToExecute;
@@ -18,9 +19,10 @@ public class ScalabilityTest {
 	ScalabilityFunction function;
 	Number[] initialParameterValues;
 	Number[] currentParameterValues;
-	
+
 	public ScalabilityTest(ScalabilityTestItem item, String name) {
-		this(item, name, Integer.MAX_VALUE, Double.MAX_VALUE, new LinearIncrease());
+		this(item, name, Integer.MAX_VALUE, Double.MAX_VALUE,
+				new LinearIncrease());
 	}
 
 	public ScalabilityTest(ScalabilityTestItem item, String name,
@@ -73,44 +75,51 @@ public class ScalabilityTest {
 	public void setFunction(ScalabilityFunction function) {
 		this.function = function;
 	}
-	
+
 	public void setInitialParametersValues(Number... values) {
 		initialParameterValues = values;
 		currentParameterValues = Arrays.copyOf(values, values.length);
 	}
-	
+
 	public Number[] getInitialParametersValues() {
 		return initialParameterValues;
 	}
-	
+
 	public Number[] getCurrentParametersValues() {
 		return currentParameterValues;
 	}
-	
+
 	private void increaseParamentersValues() {
 		for (int i = 0; i < initialParameterValues.length; i++)
-			currentParameterValues[i] = function.increaseParams(currentParameterValues[i], initialParameterValues[i]);
+			currentParameterValues[i] = function.increaseParams(
+					currentParameterValues[i], initialParameterValues[i]);
 	}
-	
+
 	private Double execute() throws Exception {
 		return item.test(currentParameterValues);
 	}
-	
+
 	/**
-	 * Executes the test, increasing the scalability parameters, up to the specified number of times ou measurement limit
+	 * Executes the test, increasing the scalability parameters, up to the
+	 * specified number of times ou measurement limit
+	 * 
 	 * @return a ScalabiltyReport of the execution
 	 * @throws Exception
 	 */
-	public ScalabilityReport executeIncreasingParams()
-			throws Exception {
+	public ScalabilityReport executeIncreasingParams() {
 		double value = 0.0;
 		ScalabilityReport report = new ScalabilityReport(this.getName());
-		for (int i = 0; i < this.getTimesToExecute() && value <= this.getMeasurementLimit(); i++) {
-			value = this.execute();
-			report.put((double)i+1, value);
-			this.increaseParamentersValues();
+		try {
+			for (int i = 0; i < this.getTimesToExecute()
+					&& value <= this.getMeasurementLimit(); i++) {
+				value = this.execute();
+				report.put((double) i + 1, value);
+				this.increaseParamentersValues();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return report;
 	}
-	
+
 }
