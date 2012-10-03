@@ -42,7 +42,7 @@ public class MessageInterceptorTest {
 	
 	@Test
 	public void shouldBePossibleToRetrieveTheProxyForTheWsdlIntercepted() throws Exception {
-		interceptor.interceptTo(SIMPLE_STORE_WSDL);
+		interceptor.interceptMessagesTo(SIMPLE_STORE_WSDL);
 		
 		assertEquals("http://localhost:1234/SimpleStore?wsdl", interceptor.getRealWsdl());
 		assertEquals("http://localhost:4321/SimpleStoreProxy?wsdl", interceptor.getProxyWsdl());
@@ -51,7 +51,7 @@ public class MessageInterceptorTest {
 	
 	@Test
 	public void shouldBePossibleToInterceptAndRetrieveAMessage() throws Exception {
-		interceptor.interceptTo(SIMPLE_STORE_WSDL);
+		interceptor.interceptMessagesTo(SIMPLE_STORE_WSDL);
 		
 		WSClient client = new WSClient(PROXY_SIMPLE_STORE_WSDL);
 		client.request("searchByArtist", "Pink Floyd");
@@ -65,7 +65,7 @@ public class MessageInterceptorTest {
 	@Test
 	public void shouldDefineAProxyName() throws Exception {
 		interceptor.setName("myStore");
-		interceptor.interceptTo(SIMPLE_STORE_WSDL);
+		interceptor.interceptMessagesTo(SIMPLE_STORE_WSDL);
 		
 		assertEquals("http://localhost:4321/myStore?wsdl", interceptor.getProxyWsdl());
 		
@@ -74,7 +74,7 @@ public class MessageInterceptorTest {
 	@Test
 	public void shouldBePossibleToInterceptAndRetrieveAMessageAfterDefiningAName() throws Exception {
 		interceptor.setName("myStore");
-		interceptor.interceptTo(SIMPLE_STORE_WSDL);
+		interceptor.interceptMessagesTo(SIMPLE_STORE_WSDL);
 		
 		WSClient client = new WSClient(interceptor.getProxyWsdl());
 		client.request("searchByArtist", "Pink Floyd");
@@ -88,7 +88,7 @@ public class MessageInterceptorTest {
 	
 	@Test
 	public void messagesShouldBeRetrievedInTheOrderTheyWereCollected() throws Exception {
-		interceptor.interceptTo(SIMPLE_STORE_WSDL);
+		interceptor.interceptMessagesTo(SIMPLE_STORE_WSDL);
 		
 		WSClient client = new WSClient(PROXY_SIMPLE_STORE_WSDL);
 		client.request("searchByArtist", "Pink Floyd");
@@ -104,7 +104,7 @@ public class MessageInterceptorTest {
 	
 	@Test
 	public void shouldCleanMessageListEachTimeInterceptToIsCalled() throws Exception {
-		interceptor.interceptTo(SIMPLE_STORE_WSDL);
+		interceptor.interceptMessagesTo(SIMPLE_STORE_WSDL);
 		WSClient client = new WSClient(PROXY_SIMPLE_STORE_WSDL);
 		client.request("searchByArtist", "Pink Floyd");
 
@@ -114,7 +114,7 @@ public class MessageInterceptorTest {
 		
 		interceptor.stop();
 		
-		interceptor.interceptTo(SIMPLE_STORE_WSDL);
+		interceptor.interceptMessagesTo(SIMPLE_STORE_WSDL);
 		client.request("searchByArtist", "Bon Jovi");
 		messages = interceptor.getMessages();
 		

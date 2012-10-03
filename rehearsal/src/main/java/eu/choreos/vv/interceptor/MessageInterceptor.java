@@ -49,7 +49,7 @@ public class MessageInterceptor {
 	 * @throws MockDeploymentException
 	 * @throws Exception
 	 */
-	public void interceptTo(String realWsdl) throws WSDLException,
+	public void interceptMessagesTo(String realWsdl) throws WSDLException,
 			XmlException, IOException, MockDeploymentException {
 
 		proxy = new WSProxy(getProxyName(realWsdl), realWsdl);
