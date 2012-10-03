@@ -24,17 +24,15 @@ import eu.choreos.vv.loadgenerator.executable.LatencyMeasurementExecutable;
  */
 public abstract class ScalabilityTester implements ScalabilityTestItem {
 
-	private int numberOfExecutionsPerTest;
-	private Integer numberOfTestsToRun;
+	private int numberOfExecutionsPerStep;
+	private Integer numberOfSteps;
 	private Double measurementLimit;
 	private Number initialRequestsPerMinute;
 	private Number inititalResoucesQuantity;
 
 	private LoadGenerator loadGen;
 	private AggregationFunction aggregator;
-	private ScalabilityFunction function;
-
-	private Exception lastException;
+	private ScalabilityFunction scalabilityFunction;
 
 	private List<ScalabilityReport> reports;
 
@@ -59,7 +57,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	}
 
 	/**
-	 * This method can be overridden to execute before each experiment
+	 * This method can be overridden to execute before each test
 	 * 
 	 * @throws Exception
 	 */
@@ -72,6 +70,13 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	 * @throws Exception
 	 */
 	public void test() throws Exception {
+	}
+
+	/**
+	 * This method can be overriden to execute after each test
+	 * @throws Exception
+	 */
+	public void afterTest() throws Exception {
 	}
 
 	/**
@@ -104,20 +109,20 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 			AggregationFunction aggregator, ScalabilityFunction function) {
 		this.loadGen = loadGenerator;
 		this.aggregator = aggregator;
-		this.function = function;
-		this.numberOfTestsToRun = 1;
-		this.numberOfExecutionsPerTest = 1;
+		this.scalabilityFunction = function;
+		this.numberOfSteps = 1;
+		this.numberOfExecutionsPerStep = 1;
 		this.measurementLimit = Double.MAX_VALUE;
 		this.initialRequestsPerMinute = 60;
 		this.inititalResoucesQuantity = 1;
 		reports = new ArrayList<ScalabilityReport>();
 	}
 
-	public LoadGenerator getLoadGen() {
+	public LoadGenerator getLoadGenerator() {
 		return loadGen;
 	}
 
-	public void setLoadGen(LoadGenerator loadGen) {
+	public void setLoadGenerator(LoadGenerator loadGen) {
 		this.loadGen = loadGen;
 	}
 
@@ -129,28 +134,28 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 		this.aggregator = aggregator;
 	}
 
-	public ScalabilityFunction getFunction() {
-		return function;
+	public ScalabilityFunction getScalabilityFunction() {
+		return scalabilityFunction;
 	}
 
-	public void setFunction(ScalabilityFunction function) {
-		this.function = function;
+	public void setScalabilityFunction(ScalabilityFunction function) {
+		this.scalabilityFunction = function;
 	}
 
-	public int getNumberOfExecutionsPerTest() {
-		return numberOfExecutionsPerTest;
+	public int getNumberOfExecutionsPerStep() {
+		return numberOfExecutionsPerStep;
 	}
 
-	public void setNumberOfExecutionsPerTest(int numberOfExecutionsPerTest) {
-		this.numberOfExecutionsPerTest = numberOfExecutionsPerTest;
+	public void setNumberOfExecutionsPerStep(int numberOfExecutionsPerTest) {
+		this.numberOfExecutionsPerStep = numberOfExecutionsPerTest;
 	}
 
-	public Integer getNumberOfTestsToRun() {
-		return numberOfTestsToRun;
+	public Integer getNumberOfSteps() {
+		return numberOfSteps;
 	}
 
-	public void setNumberOfTestsToRun(Integer numberOfTestsToRun) {
-		this.numberOfTestsToRun = numberOfTestsToRun;
+	public void setNumberOfSteps(Integer numberOfTestsToRun) {
+		this.numberOfSteps = numberOfTestsToRun;
 	}
 
 	public Double getMeasurementLimit() {
@@ -185,7 +190,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 
 		resourceScaling(resourceQuantity);
 
-		results = loadGen.execute(numberOfExecutionsPerTest, requestsPerMinute,
+		results = loadGen.execute(numberOfExecutionsPerStep, requestsPerMinute,
 				new LatencyMeasurementExecutable() {
 					@Override
 					public void setUp() throws Exception {
@@ -195,6 +200,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 					@Override
 					public void experiment() throws Exception {
 						test();
+						afterTest();
 					}
 				});
 
@@ -220,9 +226,9 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	public void run(String name, int timesToRun, double latencyLimit,
 			int numberOfExecutionsPerTest, int initialRequestsPerMinute,
 			int inititalResoucesQuantity) throws Exception {
-		this.numberOfExecutionsPerTest = numberOfExecutionsPerTest;
+		this.numberOfExecutionsPerStep = numberOfExecutionsPerTest;
 		ScalabilityTest scalabilityTest = new ScalabilityTest(this, name,
-				timesToRun, latencyLimit, function);
+				timesToRun, latencyLimit, scalabilityFunction);
 		scalabilityTest.setInitialParametersValues(initialRequestsPerMinute,
 				inititalResoucesQuantity);
 
@@ -249,7 +255,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	 */
 	public void run(String name) throws Exception {
 		ScalabilityTest scalabilityTest = new ScalabilityTest(this, name,
-				numberOfTestsToRun, measurementLimit, function);
+				numberOfSteps, measurementLimit, scalabilityFunction);
 		scalabilityTest.setInitialParametersValues(initialRequestsPerMinute,
 				inititalResoucesQuantity);
 
@@ -272,15 +278,6 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 				"execution", aggregator.getLabel() + " of "
 						+ loadGen.getLabel());
 		chart.createChart(reports);
-	}
-
-	/**
-	 * returns the last exception caught during tests
-	 * 
-	 * @return an Exception
-	 */
-	public Exception getLastException() {
-		return lastException;
 	}
 
 }

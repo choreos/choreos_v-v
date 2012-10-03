@@ -46,8 +46,8 @@ public class ScalabilityTesterExample extends ScalabilityTester {
 	public static void main(String[] args) throws Exception {
 		ScalabilityTesterExample example = new ScalabilityTesterExample();
 		example.setAggregator(new Percentile(75));
-		example.setNumberOfExecutionsPerTest(10);
-		example.setNumberOfTestsToRun(10);
+		example.setNumberOfExecutionsPerStep(10);
+		example.setNumberOfSteps(10);
 		example.setInitialRequestsPerMinute(600);
 
 		example.run("test1");
