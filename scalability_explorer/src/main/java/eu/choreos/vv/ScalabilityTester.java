@@ -6,6 +6,7 @@ import java.util.List;
 import eu.choreos.vv.aggregations.AggregationFunction;
 import eu.choreos.vv.aggregations.Mean;
 import eu.choreos.vv.chart.ScalabilityReportChart;
+import eu.choreos.vv.enactment.Enacter;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 import eu.choreos.vv.loadgenerator.LoadGenerator;
@@ -33,6 +34,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	private LoadGenerator loadGen;
 	private AggregationFunction aggregator;
 	private ScalabilityFunction scalabilityFunction;
+	private Enacter enacter;
 
 	private List<ScalabilityReport> reports;
 
@@ -142,6 +144,14 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 		this.scalabilityFunction = function;
 	}
 
+	public Enacter getEnacter() {
+		return enacter;
+	}
+
+	public void setEnacter(Enacter enacter) {
+		this.enacter = enacter;
+	}
+
 	public int getNumberOfExecutionsPerStep() {
 		return numberOfExecutionsPerStep;
 	}
@@ -188,6 +198,8 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 		int resourceQuantity = params[1].intValue();
 		List<Number> results = new ArrayList<Number>();
 
+		if (enacter != null)
+			enacter.scale(resourceQuantity);
 		resourceScaling(resourceQuantity);
 
 		results = loadGen.execute(numberOfExecutionsPerStep, requestsPerMinute,
@@ -233,6 +245,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 				inititalResoucesQuantity);
 
 		ScalabilityReport report;
+		enacter.enactChoreography();
 		setUp();
 		report = scalabilityTest.executeIncreasingParams();
 		tearDown();
@@ -260,6 +273,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 				inititalResoucesQuantity);
 
 		ScalabilityReport report;
+		enacter.enactChoreography();
 		setUp();
 		report = scalabilityTest.executeIncreasingParams();
 		tearDown();
