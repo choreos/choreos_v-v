@@ -5,6 +5,7 @@ import java.util.List;
 
 import eu.choreos.vv.ScalabilityTester;
 import eu.choreos.vv.aggregations.Percentile;
+import eu.choreos.vv.analysis.SimpleChart;
 
 public class ScalabilityTesterExample extends ScalabilityTester {
 
@@ -45,15 +46,13 @@ public class ScalabilityTesterExample extends ScalabilityTester {
 
 	public static void main(String[] args) throws Exception {
 		ScalabilityTesterExample example = new ScalabilityTesterExample();
-		example.setAggregator(new Percentile(75));
 		example.setNumberOfExecutionsPerStep(10);
 		example.setNumberOfSteps(10);
 		example.setInitialRequestsPerMinute(600);
+		example.setAnalyser(new SimpleChart("simple test", new Percentile(75)));
 
 		example.run("test1");
 
-		example.run("test2", 5, 1000, 10, 60, 1);
-		example.showChart("simple test");
 	}
 
 }

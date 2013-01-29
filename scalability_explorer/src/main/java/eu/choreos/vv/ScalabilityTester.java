@@ -9,6 +9,7 @@ import org.jfree.chart.PlotData;
 
 import eu.choreos.vv.aggregations.AggregationFunction;
 import eu.choreos.vv.aggregations.Mean;
+import eu.choreos.vv.analysis.Analyser;
 import eu.choreos.vv.chart.ScalabilityReportChart;
 import eu.choreos.vv.deployment.Deployer;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
@@ -36,9 +37,9 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	private Number inititalResoucesQuantity;
 
 	private LoadGenerator loadGen;
-	private AggregationFunction aggregator;
 	private ScalabilityFunction scalabilityFunction;
 	private Deployer enacter;
+	private Analyser analyser;
 
 	private List<ScalabilityReport> reports;
 
@@ -98,7 +99,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	 * LinearIncrease
 	 */
 	public ScalabilityTester() {
-		this(new UniformLoadGenerator(), new Mean(), new LinearIncrease());
+		this(new UniformLoadGenerator(), new LinearIncrease());
 	}
 
 	/**
@@ -111,10 +112,8 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	 * @param function
 	 *            scalability function
 	 */
-	public ScalabilityTester(LoadGenerator loadGenerator,
-			AggregationFunction aggregator, ScalabilityFunction function) {
+	public ScalabilityTester(LoadGenerator loadGenerator,ScalabilityFunction function) {
 		this.loadGen = loadGenerator;
-		this.aggregator = aggregator;
 		this.scalabilityFunction = function;
 		this.numberOfSteps = 1;
 		this.numberOfExecutionsPerStep = 1;
@@ -130,14 +129,6 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 
 	public void setLoadGenerator(LoadGenerator loadGen) {
 		this.loadGen = loadGen;
-	}
-
-	public AggregationFunction getAggregator() {
-		return aggregator;
-	}
-
-	public void setAggregator(AggregationFunction aggregator) {
-		this.aggregator = aggregator;
 	}
 
 	public ScalabilityFunction getScalabilityFunction() {
@@ -194,6 +185,14 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 
 	public void setInititalResoucesQuantity(Number inititalResoucesQuantity) {
 		this.inititalResoucesQuantity = inititalResoucesQuantity;
+	}
+	
+	public Analyser getAnalyser() {
+		return analyser;
+	}
+
+	public void setAnalyser(Analyser analyser) {
+		this.analyser = analyser;
 	}
 
 	@Override
@@ -278,30 +277,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 		report = scalabilityTest.executeIncreasingParams();
 		tearDown();
 		reports.add(report);
-	}
-
-	/**
-	 * Presents a chart with the results of all test batteries executed by this
-	 * ScalabilityTester
-	 * 
-	 * @param title
-	 *            chart title
-	 */
-	public void showChart(String title) {
-		List <PlotData> plotData = new ArrayList<PlotData>();
-		ScalabilityReportChart chart = new ScalabilityReportChart(title,
-				"execution", aggregator.getLabel() + " of "
-						+ loadGen.getLabel());
-		for(ScalabilityReport report: reports) {
-			PlotData aggregation = new PlotData();
-			aggregation.setName(report.getName().toString());
-			for(Number index: report.keySet()) {
-				aggregation.put((Double)index, aggregator.aggregate(report.get(index)));
-			}
-			plotData.add(aggregation);
-		}
-		
-		chart.createChart(plotData);
+		analyser.analyse(reports, loadGen.getLabel());
 	}
 
 }
