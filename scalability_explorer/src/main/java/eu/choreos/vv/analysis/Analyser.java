@@ -6,6 +6,6 @@ import eu.choreos.vv.ScalabilityReport;
 
 public interface Analyser {
 	
-	public void analyse(List<ScalabilityReport> reports, String unitLabel);
+	public void analyse(List<ScalabilityReport> reports, String unitLabel) throws Exception;
 
 }
