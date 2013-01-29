@@ -13,7 +13,7 @@ public class SimpleChart implements Analyser {
 
 	private String title;
 	private AggregationFunction function;
-	
+
 	public SimpleChart(String title, AggregationFunction function) {
 		this.title = title;
 		this.function = function;
@@ -23,8 +23,7 @@ public class SimpleChart implements Analyser {
 	public void analyse(List<ScalabilityReport> reports, String unitLabel) {
 		List<PlotData> plotData = new ArrayList<PlotData>();
 		ScalabilityReportChart chart = new ScalabilityReportChart(title,
-				"execution", function.getLabel() + " of "
-						+ unitLabel);
+				"execution", function.getLabel() + " of " + unitLabel);
 		for (ScalabilityReport report : reports) {
 			PlotData aggregation = new PlotData();
 			aggregation.setName(report.getName().toString());

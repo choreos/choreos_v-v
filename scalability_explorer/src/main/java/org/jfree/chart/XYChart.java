@@ -51,7 +51,7 @@ public class XYChart extends JFrame {
         this.xLabel = xLabel;
         this.yLabel = yLabel;
         
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
         XYSeriesCollection dataset = new XYSeriesCollection();
 
