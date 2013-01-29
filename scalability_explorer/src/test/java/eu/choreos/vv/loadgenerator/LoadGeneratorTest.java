@@ -1,4 +1,4 @@
-package eu.choreos.vv;
+package eu.choreos.vv.loadgenerator;
 
 import static org.junit.Assert.assertEquals;
 
