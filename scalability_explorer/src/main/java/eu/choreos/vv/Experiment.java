@@ -1,16 +1,9 @@
 package eu.choreos.vv;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.jfree.chart.PlotData;
-
-import eu.choreos.vv.aggregations.AggregationFunction;
-import eu.choreos.vv.aggregations.Mean;
 import eu.choreos.vv.analysis.Analyser;
-import eu.choreos.vv.chart.ScalabilityReportChart;
 import eu.choreos.vv.deployment.Deployer;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
@@ -19,16 +12,16 @@ import eu.choreos.vv.loadgenerator.UniformLoadGenerator;
 import eu.choreos.vv.loadgenerator.executable.LatencyMeasurementExecutable;
 
 /**
- * This class implements a skeleton of a scalability test in which multiple test
- * batteries will be executed. In each test battery, the frequency of requests
- * and the quantity of resources will be increased according to a
- * ScalabilityFunction. The test are executed a number of times, in each
- * battery, and the return values are aggregated accordingly. Test batteries
- * will be executed up to a determined number of executions or until one's
- * aggregated return value surpasses a defined limit.
+ * This class implements a skeleton of a scalability experiment consisted on
+ * many steps. In each test battery, the frequency of requests and the quantity
+ * of resources will be increased according to a ScalabilityFunction. A request
+ * is executed a number of times, in each step, and some metrics are collected
+ * for analysis. The steps will be executed up to a determined number of
+ * executions (or until one's aggregated return value surpasses a defined
+ * limit).
  * 
  */
-public abstract class ScalabilityTester implements ScalabilityTestItem {
+public abstract class Experiment implements ScalabilityTestItem {
 
 	private int numberOfExecutionsPerStep;
 	private Integer numberOfSteps;
@@ -39,66 +32,74 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	private LoadGenerator loadGen;
 	private ScalabilityFunction scalabilityFunction;
 	private Deployer enacter;
-	private Analyser analyser;
+	private Analyser analyser; // TODO: multiple analysers
 
 	private List<ScalabilityReport> reports;
 
 	/**
-	 * This method can be overridden to be executed before all the test
-	 * batteries.
+	 * This method can be overridden to be executed before the experiment begin.
 	 * 
 	 * @throws Exception
 	 */
-	public void setUp() throws Exception {
+	public void beforeExperiment() throws Exception {
 	}
 
 	/**
-	 * This method can be overridden to define how to properly scale the
-	 * resources. Is is executed before each test battery.
+	 * This method can be overridden to execute before each step
 	 * 
 	 * @param resourceQuantity
 	 *            current resource quantity
 	 * @throws Exception
 	 */
-	public void resourceScaling(int resourceQuantity) throws Exception {
+	public void beforeStep(int resourceQuantity) throws Exception {
 	}
 
 	/**
-	 * This method can be overridden to execute before each test
+	 * This method can be overridden to execute before each request
 	 * 
 	 * @throws Exception
 	 */
-	public void beforeTest() throws Exception {
+	public void beforeRequest() throws Exception {
 	}
 
 	/**
-	 * This method must be overridden in order to execute the proper test
+	 * This method must be overridden in order to execute the proper request
 	 * 
 	 * @throws Exception
 	 */
-	public void test() throws Exception {
+	public void request() throws Exception {
 	}
 
 	/**
-	 * This method can be overriden to execute after each test
-	 * @throws Exception
-	 */
-	public void afterTest() throws Exception {
-	}
-
-	/**
-	 * This method can be overriden to execute after all test batteries
+	 * This method can be overriden to execute after each request
 	 * 
 	 * @throws Exception
 	 */
-	public void tearDown() throws Exception {
+	public void afterRequest() throws Exception {
+	}
+
+	/**
+	 * This method can be overriden to execute after each step
+	 * 
+	 * @throws Expeption
+	 */
+	public void afterStep() throws Exception {
+
+	}
+
+	/**
+	 * This method can be overriden to execute after the experiment
+	 * 
+	 * @throws Exception
+	 */
+	public void afterExperiment() throws Exception {
 	}
 
 	/**
 	 * Creates a new ScalabilityTester that uses UniformLoadGenarator, Mean and
 	 * LinearIncrease
 	 */
-	public ScalabilityTester() {
+	public Experiment() {
 		this(new UniformLoadGenerator(), new LinearIncrease());
 	}
 
@@ -112,7 +113,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	 * @param function
 	 *            scalability function
 	 */
-	public ScalabilityTester(LoadGenerator loadGenerator,ScalabilityFunction function) {
+	public Experiment(LoadGenerator loadGenerator, ScalabilityFunction function) {
 		this.loadGen = loadGenerator;
 		this.scalabilityFunction = function;
 		this.numberOfSteps = 1;
@@ -186,7 +187,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	public void setInititalResoucesQuantity(Number inititalResoucesQuantity) {
 		this.inititalResoucesQuantity = inititalResoucesQuantity;
 	}
-	
+
 	public Analyser getAnalyser() {
 		return analyser;
 	}
@@ -203,23 +204,25 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 
 		if (enacter != null)
 			enacter.scale(resourceQuantity);
-		resourceScaling(resourceQuantity);
+		beforeStep(resourceQuantity);
 
 		results = loadGen.execute(numberOfExecutionsPerStep, requestsPerMinute,
 				new LatencyMeasurementExecutable() {
 					@Override
 					public void setUp() throws Exception {
-						beforeTest();
+						beforeRequest();
 					}
 
 					@Override
 					public void experiment() throws Exception {
-						test();
-						afterTest();
+						request();
+						afterRequest();
 					}
 				});
+		
+		afterStep();
 
-//		return aggregator.aggregate(results);
+		// return aggregator.aggregate(results);
 		return results;
 	}
 
@@ -246,7 +249,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 		this.measurementLimit = latencyLimit;
 		this.initialRequestsPerMinute = initialRequestsPerMinute;
 		this.inititalResoucesQuantity = inititalResoucesQuantity;
-		
+
 		run(name);
 	}
 
@@ -256,6 +259,10 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 		run(name, timesToRun, Double.MAX_VALUE, numberOfExecutionsPerTest,
 				initialRequestsPerMinute, inititalResoucesQuantity);
 	}
+	
+	public void run(String name) throws Exception {
+		run(name, true);
+	}
 
 	/**
 	 * Runs a test battery according to current attributes of the
@@ -264,7 +271,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	 * @param name
 	 *            label to be used in a ScalabilityReportChart
 	 */
-	public void run(String name) throws Exception {
+	public void run(String name, boolean analyse) throws Exception {
 		ScalabilityTest scalabilityTest = new ScalabilityTest(this, name,
 				numberOfSteps, measurementLimit, scalabilityFunction);
 		scalabilityTest.setInitialParametersValues(initialRequestsPerMinute,
@@ -273,11 +280,12 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 		ScalabilityReport report;
 		if (enacter != null)
 			enacter.enactChoreography();
-		setUp();
+		beforeExperiment();
 		report = scalabilityTest.executeIncreasingParams();
-		tearDown();
+		afterExperiment();
 		reports.add(report);
-		analyser.analyse(reports, loadGen.getLabel());
+		if (analyse)
+			analyser.analyse(reports, loadGen.getLabel());
 	}
 
 }
