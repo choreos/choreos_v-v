@@ -1,5 +1,7 @@
 package eu.choreos.vv;
 
+import java.util.List;
+
 /**
  * Interface to implement a scalability test item. Such an item is supposed to be invoked multiple times with it's parameters being increased by a ScalabilityFunction each time.
  * @author paulo
@@ -12,6 +14,6 @@ public interface ScalabilityTestItem {
 	 * @return a measurement of interest collected during the test.
 	 * @throws Exception
 	 */
-	public double test(Number... params) throws Exception;
+	public List<Number> test(Number... params) throws Exception;
 	
 }

@@ -27,9 +27,6 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.TickUnitSource;
 import org.jfree.chart.labels.StandardXYItemLabelGenerator;
@@ -48,7 +45,7 @@ public class XYChart extends JFrame {
 	private String xLabel;
 	private String yLabel;
 
-	public XYChart(String applicationTitle, String chartTitle, List<ScalabilityReport> reports, String xLabel, String yLabel) {
+	public XYChart(String applicationTitle, String chartTitle, List<PlotData> reports, String xLabel, String yLabel) {
         super(applicationTitle);
         
         this.xLabel = xLabel;
@@ -58,7 +55,7 @@ public class XYChart extends JFrame {
         
         XYSeriesCollection dataset = new XYSeriesCollection();
 
-        for (ScalabilityReport report : reports) {
+        for (PlotData report : reports) {
             createDataset(dataset, report);
 		}
         // based on the dataset we create the chart
@@ -72,7 +69,7 @@ public class XYChart extends JFrame {
 
     }
 		
-    private void createDataset(XYSeriesCollection dataset, ScalabilityReport report) {
+    private void createDataset(XYSeriesCollection dataset, PlotData report) {
     	XYSeries series = new XYSeries(report.getName());
 //    	for (int i = 0; i < report.size(); i++) {
     	for (Double x: report.keySet()) {

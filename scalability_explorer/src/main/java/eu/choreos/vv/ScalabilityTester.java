@@ -1,12 +1,16 @@
 package eu.choreos.vv;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.jfree.chart.PlotData;
 
 import eu.choreos.vv.aggregations.AggregationFunction;
 import eu.choreos.vv.aggregations.Mean;
 import eu.choreos.vv.chart.ScalabilityReportChart;
-import eu.choreos.vv.enactment.Enacter;
+import eu.choreos.vv.deployment.Deployer;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 import eu.choreos.vv.loadgenerator.LoadGenerator;
@@ -34,7 +38,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	private LoadGenerator loadGen;
 	private AggregationFunction aggregator;
 	private ScalabilityFunction scalabilityFunction;
-	private Enacter enacter;
+	private Deployer enacter;
 
 	private List<ScalabilityReport> reports;
 
@@ -144,11 +148,11 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 		this.scalabilityFunction = function;
 	}
 
-	public Enacter getEnacter() {
+	public Deployer getEnacter() {
 		return enacter;
 	}
 
-	public void setEnacter(Enacter enacter) {
+	public void setEnacter(Deployer enacter) {
 		this.enacter = enacter;
 	}
 
@@ -193,7 +197,7 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	}
 
 	@Override
-	public double test(Number... params) throws Exception {
+	public List<Number> test(Number... params) throws Exception {
 		int requestsPerMinute = params[0].intValue();
 		int resourceQuantity = params[1].intValue();
 		List<Number> results = new ArrayList<Number>();
@@ -216,7 +220,8 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 					}
 				});
 
-		return aggregator.aggregate(results);
+//		return aggregator.aggregate(results);
+		return results;
 	}
 
 	/**
@@ -238,18 +243,12 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	public void run(String name, int timesToRun, double latencyLimit,
 			int numberOfExecutionsPerTest, int initialRequestsPerMinute,
 			int inititalResoucesQuantity) throws Exception {
-		this.numberOfExecutionsPerStep = numberOfExecutionsPerTest;
-		ScalabilityTest scalabilityTest = new ScalabilityTest(this, name,
-				timesToRun, latencyLimit, scalabilityFunction);
-		scalabilityTest.setInitialParametersValues(initialRequestsPerMinute,
-				inititalResoucesQuantity);
-
-		ScalabilityReport report;
-		enacter.enactChoreography();
-		setUp();
-		report = scalabilityTest.executeIncreasingParams();
-		tearDown();
-		reports.add(report);
+		this.numberOfSteps = timesToRun;
+		this.measurementLimit = latencyLimit;
+		this.initialRequestsPerMinute = initialRequestsPerMinute;
+		this.inititalResoucesQuantity = inititalResoucesQuantity;
+		
+		run(name);
 	}
 
 	public void run(String name, int timesToRun, int numberOfExecutionsPerTest,
@@ -273,7 +272,8 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 				inititalResoucesQuantity);
 
 		ScalabilityReport report;
-		enacter.enactChoreography();
+		if (enacter != null)
+			enacter.enactChoreography();
 		setUp();
 		report = scalabilityTest.executeIncreasingParams();
 		tearDown();
@@ -288,10 +288,20 @@ public abstract class ScalabilityTester implements ScalabilityTestItem {
 	 *            chart title
 	 */
 	public void showChart(String title) {
+		List <PlotData> plotData = new ArrayList<PlotData>();
 		ScalabilityReportChart chart = new ScalabilityReportChart(title,
 				"execution", aggregator.getLabel() + " of "
 						+ loadGen.getLabel());
-		chart.createChart(reports);
+		for(ScalabilityReport report: reports) {
+			PlotData aggregation = new PlotData();
+			aggregation.setName(report.getName().toString());
+			for(Number index: report.keySet()) {
+				aggregation.put((Double)index, aggregator.aggregate(report.get(index)));
+			}
+			plotData.add(aggregation);
+		}
+		
+		chart.createChart(plotData);
 	}
 
 }

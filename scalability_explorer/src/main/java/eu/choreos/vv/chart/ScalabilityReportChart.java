@@ -3,9 +3,8 @@ package eu.choreos.vv.chart;
 import java.awt.EventQueue;
 import java.util.List;
 
+import org.jfree.chart.PlotData;
 import org.jfree.chart.XYChart;
-
-import eu.choreos.vv.ScalabilityReport;
 
 /**
  * Creates charts to present the results obtained by batteries of scalability tests.
@@ -34,7 +33,7 @@ public class ScalabilityReportChart {
 	 * Shows the chart with the given reports plotted.
 	 * @param reports a list of ScalabilityReport
 	 */
-    public void createChart(final List<ScalabilityReport> reports) {
+    public void createChart(final List<PlotData> reports) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 XYChart chart = new XYChart(applicationTitle, chartTitle, reports, xLabel, yLabel);

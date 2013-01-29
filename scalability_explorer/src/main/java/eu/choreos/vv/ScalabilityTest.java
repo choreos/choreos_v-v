@@ -1,6 +1,7 @@
 package eu.choreos.vv;
 
 import java.util.Arrays;
+import java.util.List;
 
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
@@ -95,7 +96,7 @@ public class ScalabilityTest {
 					currentParameterValues[i], initialParameterValues[i]);
 	}
 
-	private Double execute() throws Exception {
+	private List<Number> execute() throws Exception {
 		return item.test(currentParameterValues);
 	}
 
@@ -107,13 +108,13 @@ public class ScalabilityTest {
 	 * @throws Exception
 	 */
 	public ScalabilityReport executeIncreasingParams() {
-		double value = 0.0;
+		List<Number> values;
 		ScalabilityReport report = new ScalabilityReport(this.getName());
 		try {
 			for (int i = 0; i < this.getTimesToExecute()
-					&& value <= this.getMeasurementLimit(); i++) {
-				value = this.execute();
-				report.put((double) i + 1, value);
+					/*&& value <= this.getMeasurementLimit()*/; i++) {
+				values = this.execute();
+				report.put((double) i + 1, values);
 				this.increaseParamentersValues();
 			}
 		} catch (Exception e) {
