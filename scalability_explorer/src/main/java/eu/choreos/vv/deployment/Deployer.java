@@ -1,8 +1,8 @@
-package eu.choreos.vv.enactment;
+package eu.choreos.vv.deployment;
 
 
 
-public interface Enacter {
+public interface Deployer {
 	
 	public void enactChoreography() throws Exception;
 	public String getServiceUri(String serviceName);

@@ -1,4 +1,4 @@
-package eu.choreos.vv.enactment;
+package eu.choreos.vv.deployment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ import org.ow2.choreos.chors.datamodel.ChorSpec;
 import org.ow2.choreos.chors.datamodel.Choreography;
 import org.ow2.choreos.deployment.services.datamodel.Service;
 
-public abstract class EEEnacter implements Enacter {
+public abstract class EEDeployer implements Deployer {
 
 	private ChorDeployerClient eeClient;
 	private Map<String, String> deployedServices;
@@ -19,7 +19,7 @@ public abstract class EEEnacter implements Enacter {
 
 	protected abstract ChorSpec scaleSpec(int idx);
 
-	public EEEnacter(String host) {
+	public EEDeployer(String host) {
 		eeClient = new ChorDeployerClient(host);
 		deployedServices = new HashMap<String, String>();
 	}
