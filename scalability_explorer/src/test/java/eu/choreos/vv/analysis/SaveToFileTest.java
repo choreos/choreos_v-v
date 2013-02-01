@@ -13,7 +13,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.choreos.vv.ScalabilityReport;
+import eu.choreos.vv.data.ReportData;
+import eu.choreos.vv.data.ScalabilityReport;
 
 public class SaveToFileTest {
 	
@@ -33,15 +34,19 @@ public class SaveToFileTest {
 		reports = new ArrayList<ScalabilityReport>();
 		ScalabilityReport report = new ScalabilityReport();
 		report.setName(NAME);
-		report.put(0, listFor(1, 2, 3, 4));
-		report.put(1, listFor(2, 4, 6, 8));
+		ReportData data = new ReportData();
+		data.setMeasurements(listFor(1, 2, 3, 4));
+		report.put(0, data);
+		data = new ReportData();
+		data.setMeasurements(listFor(2, 4, 6, 8));
+		report.put(1, data);
 		reports.add(report);
 	}
 	
 	@Test
 	public void shouldSaveOneReportToAFile() throws Exception {
 		Analyser saver = new SaveToFile(file);
-		saver.analyse(reports, "");
+		saver.analyse(reports);
 		
 		InputStream is = new FileInputStream(file);
 		ObjectInputStream ois = new ObjectInputStream(is);
@@ -50,8 +55,8 @@ public class SaveToFileTest {
 		ScalabilityReport report = read.get(0);
 		assertEquals(report.getName(), NAME);
 		assertEquals(report.size(), 2);
-		assertEquals(report.get(0), listFor(1, 2, 3, 4));
-		assertEquals(report.get(1), listFor(2, 4, 6, 8));
+		assertEquals(report.get(0).getMeasurements(), listFor(1, 2, 3, 4));
+		assertEquals(report.get(1).getMeasurements(), listFor(2, 4, 6, 8));
 	}
 
 }

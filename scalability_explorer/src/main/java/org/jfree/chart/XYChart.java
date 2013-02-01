@@ -38,7 +38,7 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import eu.choreos.vv.ScalabilityReport;
+import eu.choreos.vv.data.ScalabilityReport;
 
 public class XYChart extends JFrame {
 	private static final long serialVersionUID = 1L;

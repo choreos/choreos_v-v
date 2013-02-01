@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import eu.choreos.vv.ScalabilityReport;
+import eu.choreos.vv.data.ScalabilityReport;
 
 public class SaveToFile implements Analyser {
 
@@ -24,7 +24,7 @@ public class SaveToFile implements Analyser {
 	}
 
 	@Override
-	public void analyse(List<ScalabilityReport> reports, String unitLabel)
+	public void analyse(List<ScalabilityReport> reports)
 			throws IOException {
 		OutputStream os = new FileOutputStream(file, append);
 		ObjectOutputStream oos = new ObjectOutputStream(os);

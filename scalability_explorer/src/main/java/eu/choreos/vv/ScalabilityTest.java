@@ -1,8 +1,12 @@
 package eu.choreos.vv;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import eu.choreos.vv.data.ReportData;
+import eu.choreos.vv.data.ScalabilityReport;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 
@@ -112,9 +116,12 @@ public class ScalabilityTest {
 		ScalabilityReport report = new ScalabilityReport(this.getName());
 		try {
 			for (int i = 0; i < this.getTimesToExecute()
-					/*&& value <= this.getMeasurementLimit()*/; i++) {
+					/*&& value <= this.getMeasurementLimit()*/; i++) { //TODO: consider limit again
 				values = this.execute();
-				report.put((double) i + 1, values);
+				List<Number> params = new ArrayList<Number>();
+				Collections.addAll(params, currentParameterValues);
+				ReportData data = new ReportData(params, values); //TODO: include labels
+				report.put((double) i + 1, data);
 				this.increaseParamentersValues();
 			}
 		} catch (Exception e) {

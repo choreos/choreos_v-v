@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.choreos.vv.analysis.Analyser;
+import eu.choreos.vv.data.ScalabilityReport;
 import eu.choreos.vv.deployment.Deployer;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
@@ -282,10 +283,11 @@ public abstract class Experiment implements ScalabilityTestItem {
 			enacter.enactChoreography();
 		beforeExperiment();
 		report = scalabilityTest.executeIncreasingParams();
+		report.setMeasurementUnit(loadGen.getLabel());
 		afterExperiment();
 		reports.add(report);
 		if (analyse)
-			analyser.analyse(reports, loadGen.getLabel());
+			analyser.analyse(reports);
 	}
 
 }
