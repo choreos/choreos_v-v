@@ -7,7 +7,7 @@ import java.util.List;
  * @author paulo
  *
  */
-public interface ScalabilityTestItem {
+public interface Scalable {
 	/**
 	 * Performs one step in a scalabilty test, with the given parameters.
 	 * @param params a number of numeric values

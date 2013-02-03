@@ -1,8 +1,10 @@
-package eu.choreos.vv;
+package eu.choreos.vv.experiments;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.choreos.vv.Scalable;
+import eu.choreos.vv.ScalingCaster;
 import eu.choreos.vv.analysis.Analyser;
 import eu.choreos.vv.data.ScalabilityReport;
 import eu.choreos.vv.deployment.Deployer;
@@ -22,17 +24,19 @@ import eu.choreos.vv.loadgenerator.executable.LatencyMeasurementExecutable;
  * limit).
  * 
  */
-public abstract class Experiment implements ScalabilityTestItem {
+public abstract class Experiment implements Scalable {
 
-	private int numberOfExecutionsPerStep;
+	private int numberOfRequestsPerStep;
+	private int numberOfRequestsPerMinute;
+	private int scaleSize;
 	private Integer numberOfSteps;
 	private Double measurementLimit;
-	private Number initialRequestsPerMinute;
-	private Number inititalResoucesQuantity;
+//	private Number initialRequestsPerMinute;
+//	private Number inititalResoucesQuantity;
 
 	private LoadGenerator loadGen;
 	private ScalabilityFunction scalabilityFunction;
-	private Deployer enacter;
+	private Deployer deployer;
 	private Analyser analyser; // TODO: multiple analysers
 
 	private List<ScalabilityReport> reports;
@@ -52,7 +56,7 @@ public abstract class Experiment implements ScalabilityTestItem {
 	 *            current resource quantity
 	 * @throws Exception
 	 */
-	public void beforeStep(int resourceQuantity) throws Exception {
+	public void beforeStep() throws Exception {
 	}
 
 	/**
@@ -118,10 +122,10 @@ public abstract class Experiment implements ScalabilityTestItem {
 		this.loadGen = loadGenerator;
 		this.scalabilityFunction = function;
 		this.numberOfSteps = 1;
-		this.numberOfExecutionsPerStep = 1;
+		this.numberOfRequestsPerStep = 1;
 		this.measurementLimit = Double.MAX_VALUE;
-		this.initialRequestsPerMinute = 60;
-		this.inititalResoucesQuantity = 1;
+//		this.initialRequestsPerMinute = 60;
+//		this.inititalResoucesQuantity = 1;
 		reports = new ArrayList<ScalabilityReport>();
 	}
 
@@ -141,20 +145,36 @@ public abstract class Experiment implements ScalabilityTestItem {
 		this.scalabilityFunction = function;
 	}
 
-	public Deployer getEnacter() {
-		return enacter;
+	public Deployer getDeployer() {
+		return deployer;
 	}
 
-	public void setEnacter(Deployer enacter) {
-		this.enacter = enacter;
+	public void setDeployer(Deployer enacter) {
+		this.deployer = enacter;
 	}
 
-	public int getNumberOfExecutionsPerStep() {
-		return numberOfExecutionsPerStep;
+	public int getNumberOfRequestsPerStep() {
+		return numberOfRequestsPerStep;
 	}
 
-	public void setNumberOfExecutionsPerStep(int numberOfExecutionsPerTest) {
-		this.numberOfExecutionsPerStep = numberOfExecutionsPerTest;
+	public void setNumberOfRequestsPerStep(int number) {
+		this.numberOfRequestsPerStep = number;
+	}
+
+	public int getNumberOfRequestsPerMinute() {
+		return numberOfRequestsPerMinute;
+	}
+	
+	public void setNumberOfRequestsPerMinute(int number) {
+		this.numberOfRequestsPerMinute = number;
+	}
+	
+	public int getScaleSize() {
+		return scaleSize;
+	}
+
+	public void setScaleSize(int scaleSize) {
+		this.scaleSize = scaleSize;
 	}
 
 	public Integer getNumberOfSteps() {
@@ -173,21 +193,21 @@ public abstract class Experiment implements ScalabilityTestItem {
 		this.measurementLimit = measurementLimit;
 	}
 
-	public Number getInitialRequestsPerMinute() {
-		return initialRequestsPerMinute;
-	}
-
-	public void setInitialRequestsPerMinute(Number initialRequestsPerMinute) {
-		this.initialRequestsPerMinute = initialRequestsPerMinute;
-	}
-
-	public Number getInititalResoucesQuantity() {
-		return inititalResoucesQuantity;
-	}
-
-	public void setInititalResoucesQuantity(Number inititalResoucesQuantity) {
-		this.inititalResoucesQuantity = inititalResoucesQuantity;
-	}
+//	public Number getInitialRequestsPerMinute() {
+//		return initialRequestsPerMinute;
+//	}
+//
+//	public void setInitialRequestsPerMinute(Number initialRequestsPerMinute) {
+//		this.initialRequestsPerMinute = initialRequestsPerMinute;
+//	}
+//
+//	public Number getInititalResoucesQuantity() {
+//		return inititalResoucesQuantity;
+//	}
+//
+//	public void setInititalResoucesQuantity(Number inititalResoucesQuantity) {
+//		this.inititalResoucesQuantity = inititalResoucesQuantity;
+//	}
 
 	public Analyser getAnalyser() {
 		return analyser;
@@ -196,18 +216,24 @@ public abstract class Experiment implements ScalabilityTestItem {
 	public void setAnalyser(Analyser analyser) {
 		this.analyser = analyser;
 	}
+	
+	protected abstract Number[] setInitialParameterValues();
+	
+	protected abstract void getParameterValues(Number... values);
 
 	@Override
 	public List<Number> test(Number... params) throws Exception {
-		int requestsPerMinute = params[0].intValue();
-		int resourceQuantity = params[1].intValue();
+//		int requestsPerMinute = params[0].intValue();
+//		int resourceQuantity = params[1].intValue();
+		getParameterValues(params);
+		
 		List<Number> results = new ArrayList<Number>();
 
-		if (enacter != null)
-			enacter.scale(resourceQuantity);
-		beforeStep(resourceQuantity);
+		if (deployer != null)
+			deployer.scale(getScaleSize());
+		beforeStep();
 
-		results = loadGen.execute(numberOfExecutionsPerStep, requestsPerMinute,
+		results = loadGen.execute(numberOfRequestsPerStep, numberOfRequestsPerMinute,
 				new LatencyMeasurementExecutable() {
 					@Override
 					public void setUp() throws Exception {
@@ -243,23 +269,23 @@ public abstract class Experiment implements ScalabilityTestItem {
 	 * @param inititalResoucesQuantity
 	 *            initial amount of resources
 	 */
-	public void run(String name, int timesToRun, double latencyLimit,
-			int numberOfExecutionsPerTest, int initialRequestsPerMinute,
-			int inititalResoucesQuantity) throws Exception {
-		this.numberOfSteps = timesToRun;
-		this.measurementLimit = latencyLimit;
-		this.initialRequestsPerMinute = initialRequestsPerMinute;
-		this.inititalResoucesQuantity = inititalResoucesQuantity;
-
-		run(name);
-	}
-
-	public void run(String name, int timesToRun, int numberOfExecutionsPerTest,
-			int initialRequestsPerMinute, int inititalResoucesQuantity)
-			throws Exception {
-		run(name, timesToRun, Double.MAX_VALUE, numberOfExecutionsPerTest,
-				initialRequestsPerMinute, inititalResoucesQuantity);
-	}
+//	public void run(String name, int timesToRun, double latencyLimit,
+//			int numberOfExecutionsPerTest, int initialRequestsPerMinute,
+//			int inititalResoucesQuantity) throws Exception {
+//		this.numberOfSteps = timesToRun;
+//		this.measurementLimit = latencyLimit;
+//		this.initialRequestsPerMinute = initialRequestsPerMinute;
+//		this.inititalResoucesQuantity = inititalResoucesQuantity;
+//
+//		run(name);
+//	}
+//
+//	public void run(String name, int timesToRun, int numberOfExecutionsPerTest,
+//			int initialRequestsPerMinute, int inititalResoucesQuantity)
+//			throws Exception {
+//		run(name, timesToRun, Double.MAX_VALUE, numberOfExecutionsPerTest,
+//				initialRequestsPerMinute, inititalResoucesQuantity);
+//	}
 	
 	public void run(String name) throws Exception {
 		run(name, true);
@@ -273,16 +299,17 @@ public abstract class Experiment implements ScalabilityTestItem {
 	 *            label to be used in a ScalabilityReportChart
 	 */
 	public void run(String name, boolean analyse) throws Exception {
-		ScalabilityTest scalabilityTest = new ScalabilityTest(this, name,
+		ScalingCaster scalingCaster = new ScalingCaster(this, name,
 				numberOfSteps, measurementLimit, scalabilityFunction);
-		scalabilityTest.setInitialParametersValues(initialRequestsPerMinute,
-				inititalResoucesQuantity);
+		
+//		scalingCaster.setInitialParametersValues(initialRequestsPerMinute, inititalResoucesQuantity);
+		scalingCaster.setInitialParametersValues(setInitialParameterValues());
 
 		ScalabilityReport report;
-		if (enacter != null)
-			enacter.enactChoreography();
+		if (deployer != null)
+			deployer.enactChoreography();
 		beforeExperiment();
-		report = scalabilityTest.executeIncreasingParams();
+		report = scalingCaster.executeIncreasingParams();
 		report.setMeasurementUnit(loadGen.getLabel());
 		afterExperiment();
 		reports.add(report);
