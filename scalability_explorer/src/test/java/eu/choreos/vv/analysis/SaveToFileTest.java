@@ -36,10 +36,10 @@ public class SaveToFileTest {
 		report.setName(NAME);
 		ReportData data = new ReportData();
 		data.setMeasurements(listFor(1, 2, 3, 4));
-		report.put(0, data);
+		report.put(0d, data);
 		data = new ReportData();
 		data.setMeasurements(listFor(2, 4, 6, 8));
-		report.put(1, data);
+		report.put(1d, data);
 		reports.add(report);
 	}
 	
@@ -55,8 +55,8 @@ public class SaveToFileTest {
 		ScalabilityReport report = read.get(0);
 		assertEquals(report.getName(), NAME);
 		assertEquals(report.size(), 2);
-		assertEquals(report.get(0).getMeasurements(), listFor(1, 2, 3, 4));
-		assertEquals(report.get(1).getMeasurements(), listFor(2, 4, 6, 8));
+		assertEquals(report.get(0d).getMeasurements(), listFor(1, 2, 3, 4));
+		assertEquals(report.get(1d).getMeasurements(), listFor(2, 4, 6, 8));
 	}
 
 }

@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-public class ScalabilityReport extends HashMap<Number, ReportData> {
+public class ScalabilityReport extends HashMap<Double, ReportData> {
 	private static final long serialVersionUID = -2993273004741518768L;
 	private String name;
 	List<String> parameterLabels;
