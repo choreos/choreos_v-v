@@ -222,7 +222,7 @@ public abstract class Experiment implements Scalable {
 	protected abstract void getParameterValues(Number... values);
 
 	@Override
-	public List<Number> test(Number... params) throws Exception {
+	public List<Number> execute(Number... params) throws Exception {
 //		int requestsPerMinute = params[0].intValue();
 //		int resourceQuantity = params[1].intValue();
 		getParameterValues(params);

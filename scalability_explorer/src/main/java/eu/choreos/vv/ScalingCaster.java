@@ -101,7 +101,7 @@ public class ScalingCaster {
 	}
 
 	private List<Number> execute() throws Exception {
-		return item.test(currentParameterValues);
+		return item.execute(currentParameterValues);
 	}
 
 	/**
