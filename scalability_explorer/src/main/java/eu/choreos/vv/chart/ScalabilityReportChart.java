@@ -6,6 +6,9 @@ import java.util.List;
 import org.jfree.chart.PlotData;
 import org.jfree.chart.XYChart;
 
+import eu.choreos.vv.aggregations.AggregationFunction;
+import eu.choreos.vv.data.ScalabilityReport;
+
 /**
  * Creates charts to present the results obtained by batteries of scalability tests.
  * @author paulo
@@ -27,6 +30,10 @@ public class ScalabilityReportChart {
 		this.chartTitle = chartTitle;
 		this.xLabel = xLabel;
 		this.yLabel = yLabel;
+	}
+	
+	public ScalabilityReportChart(String chartTitle, ScalabilityReport report, int paramIdx, AggregationFunction function) {
+		this(chartTitle, report.getParameterLabels().get(paramIdx), function.getLabel() + " of " + report.getMeasurementUnit());
 	}
 	
 	/**

@@ -48,17 +48,19 @@ public class ScalabilityTesterExample extends ScalabilityExperiment {
 
 	public static void execute() throws Exception {
 		ScalabilityTesterExample example = new ScalabilityTesterExample();
-		example.setNumberOfRequestsPerStep(10);
+		example.setNumberOfRequestsPerStep(20);
 		example.setNumberOfSteps(10);
 		example.setInitialRequestsPerMinute(600);
 		 example.setAnalyser(new SimpleChart("simple test", new
 		 Percentile(75)));
 //		example.setAnalyser(new ANOVATest());
 
-//		 example.run("test1", false);
-		example.run("test1");
+		 example.run("test1", false);
+//		example.run("test1");
 
-//		 example.run("test2", 10, 10, 60, 3);
+		 example.setNumberOfRequestsPerStep(10);
+		 example.setInitialRequestsPerMinute(600);
+		 example.run("test2");
 	}
 
 	public static void main(String[] args) throws Exception {

@@ -8,22 +8,20 @@ import org.apache.commons.math.stat.inference.TestUtils;
 import eu.choreos.vv.data.ReportData;
 import eu.choreos.vv.data.ScalabilityReport;
 
-public class ANOVATest implements Analyser {
+public class ANOVATest extends Analyser {
 
 	@Override
-	public void analyse(List<ScalabilityReport> reports) throws Exception {
+	public void analyse(ScalabilityReport report) throws Exception {
 		List<double[]> classes = new ArrayList<double[]>();
-		for (ScalabilityReport report: reports) {
-			for(ReportData data:report.values()) {
-				double[] sample = doubleArray(data.getMeasurements()); 
-				classes.add(sample);
-			}
-			String test = TestUtils.oneWayAnovaTest(classes, 0.01)?"not equivalent":"equivalent";
-			System.out.println("samples in " + report.getName() + " are " + test);
+		for (ReportData data : report.values()) {
+			double[] sample = doubleArray(data.getMeasurements());
+			classes.add(sample);
 		}
-
+		String test = TestUtils.oneWayAnovaTest(classes, 0.01) ? "not equivalent"
+				: "equivalent";
+		System.out.println("samples in " + report.getName() + " are " + test);
 	}
-	
+
 	private double[] doubleArray(List<Number> list) {
 		double[] result = new double[list.size()];
 		for (int i = 0; i < result.length; i++) {
