@@ -69,6 +69,14 @@ public abstract class WorkloadExperiment extends Experiment {
 	@Override
 	protected void getParameterValues(Number... values) {
 		super.setNumberOfRequestsPerMinute(values[0].intValue());
+		setDeployer(null);
+	}
+	
+	@Override
+	protected List<String> getParameterLabels() {
+		List<String> labels = new ArrayList<String>();
+		labels.add("load");
+		return labels;
 	}
 	
 }

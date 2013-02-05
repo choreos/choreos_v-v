@@ -220,6 +220,8 @@ public abstract class Experiment implements Scalable {
 	protected abstract Number[] setInitialParameterValues();
 	
 	protected abstract void getParameterValues(Number... values);
+	
+	protected abstract List<String> getParameterLabels();
 
 	@Override
 	public List<Number> execute(Number... params) throws Exception {
@@ -310,6 +312,7 @@ public abstract class Experiment implements Scalable {
 			deployer.enactChoreography();
 		beforeExperiment();
 		report = scalingCaster.executeIncreasingParams();
+		report.setParameterLabels(getParameterLabels());
 		report.setMeasurementUnit(loadGen.getLabel());
 		afterExperiment();
 		reports.add(report);

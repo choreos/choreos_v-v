@@ -83,4 +83,12 @@ public abstract class ScalabilityExperiment extends Experiment {
 		super.setScaleSize(values[1].intValue());
 	}
 	
+	@Override
+	protected List<String> getParameterLabels() {
+		List<String> labels = new ArrayList<String>();
+		labels.add("load");
+		labels.add("size");
+		return labels;
+	}
+	
 }
