@@ -8,7 +8,7 @@ import org.apache.commons.math.stat.inference.TestUtils;
 import eu.choreos.vv.data.ReportData;
 import eu.choreos.vv.data.ScalabilityReport;
 
-public class ANOVATest extends Analyser {
+public class ANOVATest extends Analyzer {
 
 	@Override
 	public void analyse(ScalabilityReport report) throws Exception {

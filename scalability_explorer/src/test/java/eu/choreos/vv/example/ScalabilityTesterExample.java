@@ -5,8 +5,12 @@ import java.util.List;
 
 import org.junit.Test;
 
+import eu.choreos.vv.aggregations.Mean;
 import eu.choreos.vv.aggregations.Percentile;
-import eu.choreos.vv.analysis.SimpleChart;
+import eu.choreos.vv.analysis.ANOVATest;
+import eu.choreos.vv.analysis.ComposedAnalysis;
+import eu.choreos.vv.analysis.SampleSizeEstimation;
+import eu.choreos.vv.analysis.AggregatePerformance;
 import eu.choreos.vv.experiments.ScalabilityExperiment;
 
 public class ScalabilityTesterExample extends ScalabilityExperiment {
@@ -22,7 +26,7 @@ public class ScalabilityTesterExample extends ScalabilityExperiment {
 	}
 	
 	@Override
-	public void beforeStep() {
+	public void beforeIteration() {
 		resources.add(300);
 	}
 
@@ -51,16 +55,16 @@ public class ScalabilityTesterExample extends ScalabilityExperiment {
 		example.setNumberOfRequestsPerStep(20);
 		example.setNumberOfSteps(10);
 		example.setInitialRequestsPerMinute(600);
-		 example.setAnalyser(new SimpleChart("simple test", new
-		 Percentile(75)));
+//		 example.setAnalyser(new SimpleChart("simple test", new Percentile(75)));
 //		example.setAnalyser(new ANOVATest());
+		 example.setAnalyser(new ComposedAnalysis(new ANOVATest(), new AggregatePerformance("Matrix multiplication", new Mean())));
 
-		 example.run("test1", false);
-//		example.run("test1");
+//		 example.run("test1", false);
+		example.run("test1");
 
-		 example.setNumberOfRequestsPerStep(10);
-		 example.setInitialRequestsPerMinute(600);
-		 example.run("test2");
+//		 example.setNumberOfRequestsPerStep(10);
+//		 example.setInitialRequestsPerMinute(600);
+//		 example.run("test2");
 	}
 
 	public static void main(String[] args) throws Exception {

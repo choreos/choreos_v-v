@@ -9,9 +9,9 @@ import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import eu.choreos.vv.aggregations.DescriptiveStatisticsFactory;
 import eu.choreos.vv.data.ScalabilityReport;
 
-public class SampleSize extends Analyser {
+public class SampleSizeEstimation extends Analyzer {
 
-	private double d;
+	private double precision;
 
 	/**
 	 * Calculates the appropriate sample size for the experiment.
@@ -20,8 +20,8 @@ public class SampleSize extends Analyser {
 	 *            a degree of precision given in the same unit as the
 	 *            measurements
 	 */
-	public SampleSize(double precision) {
-		d = precision;
+	public SampleSizeEstimation(double precision) {
+		this.precision = precision;
 	}
 
 	@Override
@@ -31,6 +31,8 @@ public class SampleSize extends Analyser {
 			int n = sample.size();
 			DescriptiveStatistics ds = DescriptiveStatisticsFactory
 					.create(sample);
+			double m = ds.getMean();
+			double d = m * (1 - precision);
 			double s = ds.getStandardDeviation();
 			TDistribution dist = new TDistributionImpl(n - 1);
 			double t = dist.cumulativeProbability(0.05);

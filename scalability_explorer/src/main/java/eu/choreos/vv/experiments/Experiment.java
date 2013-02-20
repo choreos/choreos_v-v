@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.choreos.vv.Scalable;
-import eu.choreos.vv.ScalingCaster;
-import eu.choreos.vv.analysis.Analyser;
+import eu.choreos.vv.ScaleCaster;
+import eu.choreos.vv.analysis.Analyzer;
 import eu.choreos.vv.data.ScalabilityReport;
 import eu.choreos.vv.deployment.Deployer;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
@@ -31,13 +31,11 @@ public abstract class Experiment implements Scalable {
 	private int scaleSize;
 	private Integer numberOfSteps;
 	private Double measurementLimit;
-//	private Number initialRequestsPerMinute;
-//	private Number inititalResoucesQuantity;
 
 	private LoadGenerator loadGen;
 	private ScalabilityFunction scalabilityFunction;
 	private Deployer deployer;
-	private Analyser analyser; // TODO: multiple analysers
+	private Analyzer analyzer;
 
 	private List<ScalabilityReport> reports;
 
@@ -56,7 +54,7 @@ public abstract class Experiment implements Scalable {
 	 *            current resource quantity
 	 * @throws Exception
 	 */
-	public void beforeStep() throws Exception {
+	public void beforeIteration() throws Exception {
 	}
 
 	/**
@@ -88,7 +86,7 @@ public abstract class Experiment implements Scalable {
 	 * 
 	 * @throws Expeption
 	 */
-	public void afterStep() throws Exception {
+	public void afterIteration() throws Exception {
 
 	}
 
@@ -124,8 +122,6 @@ public abstract class Experiment implements Scalable {
 		this.numberOfSteps = 1;
 		this.numberOfRequestsPerStep = 1;
 		this.measurementLimit = Double.MAX_VALUE;
-//		this.initialRequestsPerMinute = 60;
-//		this.inititalResoucesQuantity = 1;
 		reports = new ArrayList<ScalabilityReport>();
 	}
 
@@ -193,28 +189,12 @@ public abstract class Experiment implements Scalable {
 		this.measurementLimit = measurementLimit;
 	}
 
-//	public Number getInitialRequestsPerMinute() {
-//		return initialRequestsPerMinute;
-//	}
-//
-//	public void setInitialRequestsPerMinute(Number initialRequestsPerMinute) {
-//		this.initialRequestsPerMinute = initialRequestsPerMinute;
-//	}
-//
-//	public Number getInititalResoucesQuantity() {
-//		return inititalResoucesQuantity;
-//	}
-//
-//	public void setInititalResoucesQuantity(Number inititalResoucesQuantity) {
-//		this.inititalResoucesQuantity = inititalResoucesQuantity;
-//	}
-
-	public Analyser getAnalyser() {
-		return analyser;
+	public Analyzer getAnalyser() {
+		return analyzer;
 	}
 
-	public void setAnalyser(Analyser analyser) {
-		this.analyser = analyser;
+	public void setAnalyser(Analyzer analyser) {
+		this.analyzer = analyser;
 	}
 	
 	protected abstract Number[] setInitialParameterValues();
@@ -225,15 +205,13 @@ public abstract class Experiment implements Scalable {
 
 	@Override
 	public List<Number> execute(Number... params) throws Exception {
-//		int requestsPerMinute = params[0].intValue();
-//		int resourceQuantity = params[1].intValue();
 		getParameterValues(params);
 		
 		List<Number> results = new ArrayList<Number>();
 
 		if (deployer != null)
 			deployer.scale(getScaleSize());
-		beforeStep();
+		beforeIteration();
 
 		results = loadGen.execute(numberOfRequestsPerStep, numberOfRequestsPerMinute,
 				new LatencyMeasurementExecutable() {
@@ -249,9 +227,8 @@ public abstract class Experiment implements Scalable {
 					}
 				});
 		
-		afterStep();
+		afterIteration();
 
-		// return aggregator.aggregate(results);
 		return results;
 	}
 
@@ -301,15 +278,14 @@ public abstract class Experiment implements Scalable {
 	 *            label to be used in a ScalabilityReportChart
 	 */
 	public void run(String name, boolean analyse) throws Exception {
-		ScalingCaster scalingCaster = new ScalingCaster(this, name,
+		ScaleCaster scalingCaster = new ScaleCaster(this, name,
 				numberOfSteps, measurementLimit, scalabilityFunction);
 		
-//		scalingCaster.setInitialParametersValues(initialRequestsPerMinute, inititalResoucesQuantity);
 		scalingCaster.setInitialParametersValues(setInitialParameterValues());
 
 		ScalabilityReport report;
 		if (deployer != null)
-			deployer.enactChoreography();
+			deployer.enact();
 		beforeExperiment();
 		report = scalingCaster.executeIncreasingParams();
 		report.setParameterLabels(getParameterLabels());
@@ -317,7 +293,7 @@ public abstract class Experiment implements Scalable {
 		afterExperiment();
 		reports.add(report);
 		if (analyse)
-			analyser.analyse(reports);
+			analyzer.analyse(reports);
 	}
 
 }

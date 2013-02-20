@@ -4,7 +4,7 @@ import java.util.List;
 
 import eu.choreos.vv.data.ScalabilityReport;
 
-public abstract class Analyser {
+public abstract class Analyzer {
 	
 	public void analyse(List<ScalabilityReport> reports) throws Exception {
 		for(ScalabilityReport report: reports) {

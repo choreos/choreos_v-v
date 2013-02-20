@@ -3,8 +3,8 @@ package eu.choreos.vv.experiments;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.choreos.vv.ScalingCaster;
-import eu.choreos.vv.analysis.Analyser;
+import eu.choreos.vv.ScaleCaster;
+import eu.choreos.vv.analysis.Analyzer;
 import eu.choreos.vv.data.ScalabilityReport;
 import eu.choreos.vv.deployment.Deployer;
 import eu.choreos.vv.increasefunctions.LinearIncrease;

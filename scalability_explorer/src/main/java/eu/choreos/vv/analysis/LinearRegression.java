@@ -10,7 +10,7 @@ import eu.choreos.vv.aggregations.AggregationFunction;
 import eu.choreos.vv.data.LinearRegressionSample;
 import eu.choreos.vv.data.ScalabilityReport;
 
-public class LinearRegression extends Analyser {
+public class LinearRegression extends Analyzer {
 
 	private AggregationFunction function;
 

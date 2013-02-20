@@ -5,7 +5,7 @@ package eu.choreos.vv.loadgenerator.executable;
  * An Executable that collects initial and final system time. Hence, the result of call() is the latency of the execution. 
  *
  */
-public abstract class LatencyMeasurementExecutable extends Executable {
+public abstract class LatencyMeasurementExecutable extends Executer {
 
 	@Override
 	public abstract void experiment() throws Exception;

@@ -45,7 +45,7 @@ public class SaveToFileTest {
 	
 	@Test
 	public void shouldSaveOneReportToAFile() throws Exception {
-		Analyser saver = new SaveToFile(file);
+		Analyzer saver = new SaveToFile(file);
 		saver.analyse(reports);
 		
 		InputStream is = new FileInputStream(file);

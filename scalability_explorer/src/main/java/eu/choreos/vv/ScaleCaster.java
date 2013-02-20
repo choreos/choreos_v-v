@@ -15,7 +15,7 @@ import eu.choreos.vv.increasefunctions.ScalabilityFunction;
  * increasing the scalable parameters.
  * 
  */
-public class ScalingCaster {
+public class ScaleCaster {
 
 	Scalable item;
 	String name;
@@ -25,12 +25,12 @@ public class ScalingCaster {
 	Number[] initialParameterValues;
 	Number[] currentParameterValues;
 
-	public ScalingCaster(Scalable item, String name) {
+	public ScaleCaster(Scalable item, String name) {
 		this(item, name, Integer.MAX_VALUE, Double.MAX_VALUE,
 				new LinearIncrease());
 	}
 
-	public ScalingCaster(Scalable item, String name,
+	public ScaleCaster(Scalable item, String name,
 			Integer timesToExecute, Double measurementLimit,
 			ScalabilityFunction function) {
 		super();

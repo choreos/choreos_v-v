@@ -25,7 +25,7 @@ public abstract class EEDeployer implements Deployer {
 	}
 
 	@Override
-	public void enactChoreography() throws Exception {
+	public void enact() throws Exception {
 		ChorSpec enactSpec = enactmentSpec();
 		enact(enactSpec);
 	}

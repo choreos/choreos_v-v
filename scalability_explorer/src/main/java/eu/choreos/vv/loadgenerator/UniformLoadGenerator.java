@@ -7,7 +7,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import eu.choreos.vv.loadgenerator.executable.Executable;
+import eu.choreos.vv.loadgenerator.executable.Executer;
 
 /**
  * Load generator that keeps a constant delay between two consecutive executions. 
@@ -26,7 +26,7 @@ public class UniformLoadGenerator implements LoadGenerator {
 
 	@Override
 	public List<Number> execute(int numberOfCalls, int callsPerMin,
-			Executable executable) throws Exception {
+			Executer executable) throws Exception {
 		final long delay = 60000 / callsPerMin;
 		final ExecutorService executor = Executors.newFixedThreadPool(POOL_SIZE);
 		final List<Future<Double>> futureResults = new ArrayList<Future<Double>>();

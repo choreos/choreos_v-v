@@ -6,10 +6,10 @@ import java.util.List;
 import org.jfree.chart.PlotData;
 
 import eu.choreos.vv.aggregations.AggregationFunction;
-import eu.choreos.vv.chart.ScalabilityReportChart;
+import eu.choreos.vv.chart.ReportChart;
 import eu.choreos.vv.data.ScalabilityReport;
 
-public class SimpleChart extends Analyser {
+public class AggregatePerformance extends Analyzer {
 
 	private String title;
 	private AggregationFunction function;
@@ -17,13 +17,13 @@ public class SimpleChart extends Analyser {
 	
 	private List<PlotData> plotData;
 
-	public SimpleChart(String title, AggregationFunction function, int param) {
+	public AggregatePerformance(String title, AggregationFunction function, int param) {
 		this.title = title;
 		this.function = function;
 		this.paramIdx = param;
 	}
 
-	public SimpleChart(String title, AggregationFunction function) {
+	public AggregatePerformance(String title, AggregationFunction function) {
 		this(title, function, 0);
 		plotData = new ArrayList<PlotData>();
 	}
@@ -44,7 +44,7 @@ public class SimpleChart extends Analyser {
 	
 	@Override
 	public void analyse(List<ScalabilityReport> reports) throws Exception {
-		ScalabilityReportChart chart = new ScalabilityReportChart(title, // "execution",
+		ReportChart chart = new ReportChart(title, // "execution",
 				reports.get(0).getParameterLabels().get(paramIdx), function.getLabel()
 				+ " of " + reports.get(0).getMeasurementUnit());
 		super.analyse(reports);

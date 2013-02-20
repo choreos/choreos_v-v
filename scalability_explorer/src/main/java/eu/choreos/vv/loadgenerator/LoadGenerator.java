@@ -3,7 +3,7 @@ package eu.choreos.vv.loadgenerator;
 import java.util.List;
 
 import eu.choreos.vv.chart.Labeled;
-import eu.choreos.vv.loadgenerator.executable.Executable;
+import eu.choreos.vv.loadgenerator.executable.Executer;
 
 /**
  *  A load generator is a component capable to repeatedly run an Executable according to the defined execution pattern.
@@ -19,6 +19,6 @@ public interface LoadGenerator extends Labeled {
 	 * @return a list of the values returned by the executions
 	 * @throws Exception
 	 */
-	public List<Number> execute(int times, int callsPerMin, Executable exec) throws Exception;
+	public List<Number> execute(int times, int callsPerMin, Executer exec) throws Exception;
 	
 }

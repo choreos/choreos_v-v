@@ -3,8 +3,8 @@ package eu.choreos.vv.experiments;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.choreos.vv.ScalingCaster;
-import eu.choreos.vv.analysis.Analyser;
+import eu.choreos.vv.ScaleCaster;
+import eu.choreos.vv.analysis.Analyzer;
 import eu.choreos.vv.data.ScalabilityReport;
 import eu.choreos.vv.deployment.Deployer;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
@@ -14,7 +14,7 @@ import eu.choreos.vv.loadgenerator.UniformLoadGenerator;
 import eu.choreos.vv.loadgenerator.executable.LatencyMeasurementExecutable;
 
 /**
- * This class implements a skeleton of a scalability experiment consisted on
+ * This class implements a skeleton of a workload experiment consisted on
  * many steps. In each test battery, the frequency of requests and the quantity
  * of resources will be increased according to a ScalabilityFunction. A request
  * is executed a number of times, in each step, and some metrics are collected

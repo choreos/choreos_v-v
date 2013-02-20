@@ -10,7 +10,7 @@ import java.util.List;
 
 import eu.choreos.vv.data.ScalabilityReport;
 
-public class SaveToFile extends Analyser {
+public class SaveToFile extends Analyzer {
 
 	private File file;
 	private boolean append;
@@ -32,6 +32,7 @@ public class SaveToFile extends Analyser {
 	@Override
 	public void analyse(List<ScalabilityReport> reports)
 			throws IOException {
+		save(reports);
 	}
 
 	private void save(Object item)

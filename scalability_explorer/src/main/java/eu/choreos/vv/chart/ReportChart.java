@@ -14,7 +14,7 @@ import eu.choreos.vv.data.ScalabilityReport;
  * @author paulo
  *
  */
-public class ScalabilityReportChart {
+public class ReportChart {
 	
 	final static private String applicationTitle  = "Scalability explorer";;
 	private String chartTitle;
@@ -26,13 +26,13 @@ public class ScalabilityReportChart {
 	 * @param xLabel x-axis label
 	 * @param yLabel y-axis label
 	 */
-	public ScalabilityReportChart(String chartTitle, String xLabel, String yLabel) {
+	public ReportChart(String chartTitle, String xLabel, String yLabel) {
 		this.chartTitle = chartTitle;
 		this.xLabel = xLabel;
 		this.yLabel = yLabel;
 	}
 	
-	public ScalabilityReportChart(String chartTitle, ScalabilityReport report, int paramIdx, AggregationFunction function) {
+	public ReportChart(String chartTitle, ScalabilityReport report, int paramIdx, AggregationFunction function) {
 		this(chartTitle, report.getParameterLabels().get(paramIdx), function.getLabel() + " of " + report.getMeasurementUnit());
 	}
 	

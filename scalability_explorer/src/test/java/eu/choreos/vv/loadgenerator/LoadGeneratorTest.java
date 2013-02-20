@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import eu.choreos.vv.loadgenerator.LoadGenerator;
 import eu.choreos.vv.loadgenerator.UniformLoadGenerator;
-import eu.choreos.vv.loadgenerator.executable.Executable;
+import eu.choreos.vv.loadgenerator.executable.Executer;
 
 public class LoadGeneratorTest {
 	
@@ -20,7 +20,7 @@ public class LoadGeneratorTest {
 		final List<Long> times = new ArrayList<Long>();
 		LoadGenerator loadGen = new UniformLoadGenerator();
 		try {
-		loadGen.execute(TIMES_TO_RUN, CALLS_PER_MIN, new Executable() {
+		loadGen.execute(TIMES_TO_RUN, CALLS_PER_MIN, new Executer() {
 
 			@Override
 			public void experiment() {
@@ -55,7 +55,7 @@ public class LoadGeneratorTest {
 	public void sholdRunForThreeSeconds() throws Exception {
 		LoadGenerator loadGen = new UniformLoadGenerator();
 		long startTime = System.currentTimeMillis();
-		loadGen.execute(10, 180, new Executable() {
+		loadGen.execute(10, 180, new Executer() {
 
 			@Override
 			public void experiment() {
@@ -95,7 +95,7 @@ public class LoadGeneratorTest {
 	public void executionShouldTakeLongerThanDelay() throws Exception {
 		LoadGenerator loadGen = new UniformLoadGenerator();
 		long startTime = System.currentTimeMillis();
-		loadGen.execute(10, 60, new Executable() {
+		loadGen.execute(10, 60, new Executer() {
 
 			@Override
 			public Double call() {
