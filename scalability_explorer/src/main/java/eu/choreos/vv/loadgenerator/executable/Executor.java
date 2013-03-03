@@ -6,7 +6,7 @@ import java.util.concurrent.Callable;
  * An Executable is an object that can be called multiple times by a LoadGenerator 
  *
  */
-public abstract class Executer implements Callable<Double> {
+public abstract class Executor implements Callable<Double> {
 
 	/**
 	 * This method must be overridden to implement the proper experiment to be executed

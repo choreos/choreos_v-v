@@ -7,51 +7,39 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import eu.choreos.vv.loadgenerator.executable.Executer;
+import eu.choreos.vv.loadgenerator.executable.Executor;
 
 /**
- * Load generator that keeps a constant delay between two consecutive executions. 
- *
+ * Load generator that keeps a constant delay between two consecutive
+ * executions.
+ * 
  */
-public class UniformLoadGenerator implements LoadGenerator {
+public class DegeneratedLoadGenerator extends FastestLoadGenerator {
 
-	final int THREADS_TIMEOUT = 60;
-	final int POOL_SIZE = 50;
-	final String LABEL = "response time (msec)";
+	private int delay;
 
-	@Override
-	public String getLabel() {
-		return LABEL;
+	//TODO switch requestsPerMin parameter for delay (check usage to update)
+	public DegeneratedLoadGenerator(int poolSize, int timeout, int requestsPerMin) {
+		super(poolSize, timeout);
+		init(requestsPerMin);
+	}
+
+	private void init(int requestsPerMin) {
+		this.delay = 60000 / requestsPerMin;
+	}
+
+	public DegeneratedLoadGenerator(int requestsPerMin) {
+		super();
+		init(requestsPerMin);
 	}
 
 	@Override
-	public List<Number> execute(int numberOfCalls, int callsPerMin,
-			Executer executable) throws Exception {
-		final long delay = 60000 / callsPerMin;
-		final ExecutorService executor = Executors.newFixedThreadPool(POOL_SIZE);
-		final List<Future<Double>> futureResults = new ArrayList<Future<Double>>();
-		final List<Number> results = new ArrayList<Number>();
-		try {
-			for (int i = 0; i < numberOfCalls; i++) {
-				long start = System.currentTimeMillis();
-				Future<Double> result = executor.submit(executable);
-				futureResults.add(result);
-				long end = System.currentTimeMillis();
-				Thread.sleep(delay - end + start);
-			}
-			executor.shutdown();
-			while (!executor
-					.awaitTermination(THREADS_TIMEOUT, TimeUnit.SECONDS))
-				;
-		} catch (InterruptedException e) {
-			executor.shutdownNow();
-			throw e;
-		}
-
-		for (Future<Double> future : futureResults)
-			results.add(future.get());
-
-		return results;
+	protected void performRequest(Executor executable,
+			final ExecutorService executor,
+			final List<Future<Double>> futureResults) throws Exception {
+		long start = System.currentTimeMillis();
+		super.performRequest(executable, executor, futureResults);
+		long end = System.currentTimeMillis();
+		Thread.sleep(delay - end + start);
 	}
-
 }
