@@ -53,10 +53,10 @@ public class ScalabilityTesterExample extends ScalabilityExperiment {
 
 	public static void execute() throws Exception {
 		ScalabilityTesterExample example = new ScalabilityTesterExample();
-//		example.setLoadGenerator(new NormalLoadGenerator(10, 2));
+		example.setLoadGenerator(new TruncatedNormalLoadGenerator());
 		example.setNumberOfRequestsPerStep(10);
 		example.setNumberOfSteps(3);
-		example.setInitialRequestsPerMinute(600);
+		example.setInitialRequestsPerMinute(30);
 //		 example.setAnalyser(new SimpleChart("simple test", new Percentile(75)));
 //		example.setAnalyser(new ANOVATest());
 		 example.setAnalyser(new ComposedAnalysis(new ANOVATest(), new AggregatePerformance("Matrix multiplication", new Mean())));

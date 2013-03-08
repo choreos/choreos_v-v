@@ -18,7 +18,8 @@ public class LoadGeneratorTest {
 		final int CALLS_PER_MIN = 60000;
 		final int TIMES_TO_RUN = 1000;
 		final List<Long> times = new ArrayList<Long>();
-		LoadGenerator loadGen = new DegeneratedLoadGenerator(CALLS_PER_MIN);
+		LoadGenerator loadGen = new DegeneratedLoadGenerator();
+		loadGen.setDelay(CALLS_PER_MIN);
 		try {
 		loadGen.execute(TIMES_TO_RUN, new Executor() {
 
@@ -53,7 +54,8 @@ public class LoadGeneratorTest {
 
 	@Test
 	public void sholdRunForThreeSeconds() throws Exception {
-		LoadGenerator loadGen = new DegeneratedLoadGenerator(180);
+		LoadGenerator loadGen = new DegeneratedLoadGenerator();
+		loadGen.setDelay(180);
 		long startTime = System.currentTimeMillis();
 		loadGen.execute(10, new Executor() {
 
@@ -92,7 +94,8 @@ public class LoadGeneratorTest {
 
 	@Test
 	public void executionShouldTakeLongerThanDelay() throws Exception {
-		LoadGenerator loadGen = new DegeneratedLoadGenerator(60);
+		LoadGenerator loadGen = new DegeneratedLoadGenerator();
+		loadGen.setDelay(60);
 		long startTime = System.currentTimeMillis();
 		loadGen.execute(10, new Executor() {
 

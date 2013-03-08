@@ -10,6 +10,7 @@ import eu.choreos.vv.data.ScalabilityReport;
 import eu.choreos.vv.deployment.Deployer;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
+import eu.choreos.vv.loadgenerator.DegeneratedLoadGenerator;
 import eu.choreos.vv.loadgenerator.LoadGenerator;
 import eu.choreos.vv.loadgenerator.executable.LatencyMeasurementExecutable;
 
@@ -102,9 +103,7 @@ public abstract class Experiment implements Scalable {
 	 * LinearIncrease
 	 */
 	public Experiment() {
-		this(new DegeneratedLoadGenerator(10), new LinearIncrease()); // TODO:
-																	// remove
-																	// literal
+		this(new DegeneratedLoadGenerator(), new LinearIncrease()); 
 	}
 
 	/**
@@ -214,6 +213,7 @@ public abstract class Experiment implements Scalable {
 			deployer.scale(getScaleSize());
 		beforeIteration();
 
+		loadGen.setDelay(60000 / numberOfRequestsPerMinute);
 		results = loadGen.execute(numberOfRequestsPerStep,
 				new LatencyMeasurementExecutable() {
 					@Override

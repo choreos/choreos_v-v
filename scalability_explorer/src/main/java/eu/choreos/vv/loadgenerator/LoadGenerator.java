@@ -21,4 +21,6 @@ public interface LoadGenerator extends Labeled {
 	 */
 	public List<Number> execute(int times, Executor exec) throws Exception;
 	
+	public void setDelay(int delay);
+	
 }

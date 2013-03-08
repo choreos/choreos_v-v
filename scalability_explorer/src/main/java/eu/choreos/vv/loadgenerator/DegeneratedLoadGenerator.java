@@ -17,22 +17,12 @@ import eu.choreos.vv.loadgenerator.executable.Executor;
 public class DegeneratedLoadGenerator extends FastestLoadGenerator {
 
 	private int delay;
-
-	//TODO switch requestsPerMin parameter for delay (check usage to update)
-	public DegeneratedLoadGenerator(int poolSize, int timeout, int requestsPerMin) {
-		super(poolSize, timeout);
-		init(requestsPerMin);
+	
+	@Override
+	public void setDelay(int delay) {
+		this.delay = delay;
 	}
-
-	private void init(int requestsPerMin) {
-		this.delay = 60000 / requestsPerMin;
-	}
-
-	public DegeneratedLoadGenerator(int requestsPerMin) {
-		super();
-		init(requestsPerMin);
-	}
-
+	
 	@Override
 	protected void performRequest(Executor executable,
 			final ExecutorService executor,
