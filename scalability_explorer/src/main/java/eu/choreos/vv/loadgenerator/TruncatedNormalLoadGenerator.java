@@ -69,7 +69,6 @@ public class TruncatedNormalLoadGenerator extends FastestLoadGenerator {
 		cdfMax = normal.cumulativeProbability(upperBound);
 		random = Math.random() * (cdfMax - cdfMin);
 		truncatedGaussian = normal.inverseCumulativeProbability(cdfMin + random);
-		System.out.println("truncated gaussian: " + truncatedGaussian);
 		return truncatedGaussian;
 		
 	}
