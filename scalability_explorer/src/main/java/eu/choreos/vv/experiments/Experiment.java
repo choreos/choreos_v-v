@@ -11,7 +11,6 @@ import eu.choreos.vv.deployment.Deployer;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 import eu.choreos.vv.loadgenerator.LoadGenerator;
-import eu.choreos.vv.loadgenerator.UniformLoadGenerator;
 import eu.choreos.vv.loadgenerator.executable.LatencyMeasurementExecutable;
 
 /**
@@ -103,7 +102,9 @@ public abstract class Experiment implements Scalable {
 	 * LinearIncrease
 	 */
 	public Experiment() {
-		this(new UniformLoadGenerator(), new LinearIncrease());
+		this(new DegeneratedLoadGenerator(10), new LinearIncrease()); // TODO:
+																	// remove
+																	// literal
 	}
 
 	/**
@@ -160,11 +161,11 @@ public abstract class Experiment implements Scalable {
 	public int getNumberOfRequestsPerMinute() {
 		return numberOfRequestsPerMinute;
 	}
-	
+
 	public void setNumberOfRequestsPerMinute(int number) {
 		this.numberOfRequestsPerMinute = number;
 	}
-	
+
 	public int getScaleSize() {
 		return scaleSize;
 	}
@@ -196,24 +197,24 @@ public abstract class Experiment implements Scalable {
 	public void setAnalyser(Analyzer analyser) {
 		this.analyzer = analyser;
 	}
-	
+
 	protected abstract Number[] setInitialParameterValues();
-	
+
 	protected abstract void getParameterValues(Number... values);
-	
+
 	protected abstract List<String> getParameterLabels();
 
 	@Override
 	public List<Number> execute(Number... params) throws Exception {
 		getParameterValues(params);
-		
+
 		List<Number> results = new ArrayList<Number>();
 
 		if (deployer != null)
 			deployer.scale(getScaleSize());
 		beforeIteration();
 
-		results = loadGen.execute(numberOfRequestsPerStep, numberOfRequestsPerMinute,
+		results = loadGen.execute(numberOfRequestsPerStep,
 				new LatencyMeasurementExecutable() {
 					@Override
 					public void setUp() throws Exception {
@@ -226,7 +227,7 @@ public abstract class Experiment implements Scalable {
 						afterRequest();
 					}
 				});
-		
+
 		afterIteration();
 
 		return results;
@@ -248,24 +249,25 @@ public abstract class Experiment implements Scalable {
 	 * @param inititalResoucesQuantity
 	 *            initial amount of resources
 	 */
-//	public void run(String name, int timesToRun, double latencyLimit,
-//			int numberOfExecutionsPerTest, int initialRequestsPerMinute,
-//			int inititalResoucesQuantity) throws Exception {
-//		this.numberOfSteps = timesToRun;
-//		this.measurementLimit = latencyLimit;
-//		this.initialRequestsPerMinute = initialRequestsPerMinute;
-//		this.inititalResoucesQuantity = inititalResoucesQuantity;
-//
-//		run(name);
-//	}
-//
-//	public void run(String name, int timesToRun, int numberOfExecutionsPerTest,
-//			int initialRequestsPerMinute, int inititalResoucesQuantity)
-//			throws Exception {
-//		run(name, timesToRun, Double.MAX_VALUE, numberOfExecutionsPerTest,
-//				initialRequestsPerMinute, inititalResoucesQuantity);
-//	}
-	
+	// public void run(String name, int timesToRun, double latencyLimit,
+	// int numberOfExecutionsPerTest, int initialRequestsPerMinute,
+	// int inititalResoucesQuantity) throws Exception {
+	// this.numberOfSteps = timesToRun;
+	// this.measurementLimit = latencyLimit;
+	// this.initialRequestsPerMinute = initialRequestsPerMinute;
+	// this.inititalResoucesQuantity = inititalResoucesQuantity;
+	//
+	// run(name);
+	// }
+	//
+	// public void run(String name, int timesToRun, int
+	// numberOfExecutionsPerTest,
+	// int initialRequestsPerMinute, int inititalResoucesQuantity)
+	// throws Exception {
+	// run(name, timesToRun, Double.MAX_VALUE, numberOfExecutionsPerTest,
+	// initialRequestsPerMinute, inititalResoucesQuantity);
+	// }
+
 	public void run(String name) throws Exception {
 		run(name, true);
 	}
@@ -278,9 +280,9 @@ public abstract class Experiment implements Scalable {
 	 *            label to be used in a ScalabilityReportChart
 	 */
 	public void run(String name, boolean analyse) throws Exception {
-		ScaleCaster scalingCaster = new ScaleCaster(this, name,
-				numberOfSteps, measurementLimit, scalabilityFunction);
-		
+		ScaleCaster scalingCaster = new ScaleCaster(this, name, numberOfSteps,
+				measurementLimit, scalabilityFunction);
+
 		scalingCaster.setInitialParametersValues(setInitialParameterValues());
 
 		ScalabilityReport report;

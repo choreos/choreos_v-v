@@ -10,7 +10,7 @@ import eu.choreos.vv.deployment.Deployer;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 import eu.choreos.vv.loadgenerator.LoadGenerator;
-import eu.choreos.vv.loadgenerator.UniformLoadGenerator;
+import eu.choreos.vv.loadgenerator.DegeneratedLoadGenerator;
 import eu.choreos.vv.loadgenerator.executable.LatencyMeasurementExecutable;
 
 /**
@@ -33,7 +33,8 @@ public abstract class WorkloadExperiment extends Experiment {
 	 * LinearIncrease
 	 */
 	public WorkloadExperiment() {
-		this(new UniformLoadGenerator(), new LinearIncrease());
+		super();
+		init();
 	}
 
 	/**
@@ -48,6 +49,10 @@ public abstract class WorkloadExperiment extends Experiment {
 	 */
 	public WorkloadExperiment(LoadGenerator loadGenerator, ScalabilityFunction function) {
 		super(loadGenerator, function);
+		init();
+	}
+
+	private void init() {
 		this.initialRequestsPerMinute = 60;
 	}
 

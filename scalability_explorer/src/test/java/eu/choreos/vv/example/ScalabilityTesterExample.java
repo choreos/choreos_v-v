@@ -12,6 +12,7 @@ import eu.choreos.vv.analysis.ComposedAnalysis;
 import eu.choreos.vv.analysis.SampleSizeEstimation;
 import eu.choreos.vv.analysis.AggregatePerformance;
 import eu.choreos.vv.experiments.ScalabilityExperiment;
+import eu.choreos.vv.loadgenerator.TruncatedNormalLoadGenerator;
 
 public class ScalabilityTesterExample extends ScalabilityExperiment {
 
@@ -52,8 +53,9 @@ public class ScalabilityTesterExample extends ScalabilityExperiment {
 
 	public static void execute() throws Exception {
 		ScalabilityTesterExample example = new ScalabilityTesterExample();
-		example.setNumberOfRequestsPerStep(20);
-		example.setNumberOfSteps(10);
+//		example.setLoadGenerator(new NormalLoadGenerator(10, 2));
+		example.setNumberOfRequestsPerStep(10);
+		example.setNumberOfSteps(3);
 		example.setInitialRequestsPerMinute(600);
 //		 example.setAnalyser(new SimpleChart("simple test", new Percentile(75)));
 //		example.setAnalyser(new ANOVATest());

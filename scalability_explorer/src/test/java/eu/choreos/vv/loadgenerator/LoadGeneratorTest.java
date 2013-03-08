@@ -8,19 +8,19 @@ import java.util.List;
 import org.junit.Test;
 
 import eu.choreos.vv.loadgenerator.LoadGenerator;
-import eu.choreos.vv.loadgenerator.UniformLoadGenerator;
-import eu.choreos.vv.loadgenerator.executable.Executer;
+import eu.choreos.vv.loadgenerator.DegeneratedLoadGenerator;
+import eu.choreos.vv.loadgenerator.executable.Executor;
 
 public class LoadGeneratorTest {
 	
 	@Test
 	public void shouldRunManyTimes() {
-		final int CALLS_PER_MIN = 10000;
+		final int CALLS_PER_MIN = 60000;
 		final int TIMES_TO_RUN = 1000;
 		final List<Long> times = new ArrayList<Long>();
-		LoadGenerator loadGen = new UniformLoadGenerator();
+		LoadGenerator loadGen = new DegeneratedLoadGenerator(CALLS_PER_MIN);
 		try {
-		loadGen.execute(TIMES_TO_RUN, CALLS_PER_MIN, new Executer() {
+		loadGen.execute(TIMES_TO_RUN, new Executor() {
 
 			@Override
 			public void experiment() {
@@ -53,9 +53,9 @@ public class LoadGeneratorTest {
 
 	@Test
 	public void sholdRunForThreeSeconds() throws Exception {
-		LoadGenerator loadGen = new UniformLoadGenerator();
+		LoadGenerator loadGen = new DegeneratedLoadGenerator(180);
 		long startTime = System.currentTimeMillis();
-		loadGen.execute(10, 180, new Executer() {
+		loadGen.execute(10, new Executor() {
 
 			@Override
 			public void experiment() {
@@ -91,11 +91,10 @@ public class LoadGeneratorTest {
 	}
 
 	@Test
-	// (expected=IllegalArgumentException.class)
 	public void executionShouldTakeLongerThanDelay() throws Exception {
-		LoadGenerator loadGen = new UniformLoadGenerator();
+		LoadGenerator loadGen = new DegeneratedLoadGenerator(60);
 		long startTime = System.currentTimeMillis();
-		loadGen.execute(10, 60, new Executer() {
+		loadGen.execute(10, new Executor() {
 
 			@Override
 			public Double call() {
