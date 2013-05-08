@@ -22,6 +22,8 @@ public class FastestLoadGenerator implements LoadGenerator {
 	private int poolSize;
 	private int timeout;
 	
+	protected int delay;
+	
 	public FastestLoadGenerator(int poolSize, int timeout) {
 		this.poolSize = poolSize;
 		this.timeout = timeout;
@@ -38,20 +40,20 @@ public class FastestLoadGenerator implements LoadGenerator {
 
 	@Override
 	public List<Number> execute(int numberOfCalls,
-			Executor executable) throws Exception {
-		final ExecutorService executor = Executors.newFixedThreadPool(poolSize);
+			Executor executor) throws Exception {
+		final ExecutorService executorService = Executors.newFixedThreadPool(poolSize);
 		final List<Future<Double>> futureResults = new ArrayList<Future<Double>>();
 		final List<Number> results = new ArrayList<Number>();
 		try {
 			for (int i = 0; i < numberOfCalls; i++) {
-				performRequest(executable, executor, futureResults); //TODO: exception handling. count failed requests?)
+				performRequest(executor, executorService, futureResults); //TODO: exception handling. count failed requests?)
 			}
-			executor.shutdown();
-			while (!executor
+			executorService.shutdown();
+			while (!executorService
 					.awaitTermination(timeout, TimeUnit.SECONDS))
 				;
 		} catch (InterruptedException e) {
-			executor.shutdownNow();
+			executorService.shutdownNow();
 			throw e;
 		}
 
@@ -61,16 +63,23 @@ public class FastestLoadGenerator implements LoadGenerator {
 		return results;
 	}
 
-	protected void performRequest(Executor executable,
-			final ExecutorService executor,
+	protected void performRequest(Executor executor,
+			final ExecutorService executorService,
 			final List<Future<Double>> futureResults) throws Exception {
-		Future<Double> result = executor.submit(executable);
+		Future<Double> result = executorService.submit(executor);
 		futureResults.add(result);
 	}
 
 	@Override
 	public void setDelay(int delay) {
-
+		this.delay = delay;
+	}
+	
+	public void sleep(long delay) throws InterruptedException {
+		long millis = delay / 1000000;
+		int nanos = (int)(delay % 1000000);
+		Thread.sleep(millis, nanos);
+		
 	}
 
 }

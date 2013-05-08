@@ -16,20 +16,14 @@ import eu.choreos.vv.loadgenerator.executable.Executor;
  */
 public class DegeneratedLoadGenerator extends FastestLoadGenerator {
 
-	private int delay;
-	
-	@Override
-	public void setDelay(int delay) {
-		this.delay = delay;
-	}
 	
 	@Override
 	protected void performRequest(Executor executable,
 			final ExecutorService executor,
 			final List<Future<Double>> futureResults) throws Exception {
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 		super.performRequest(executable, executor, futureResults);
-		long end = System.currentTimeMillis();
-		Thread.sleep(delay - end + start);
+		long end = System.nanoTime();
+		sleep(delay - end + start);
 	}
 }

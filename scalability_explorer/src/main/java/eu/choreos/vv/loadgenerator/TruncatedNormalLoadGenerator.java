@@ -60,7 +60,7 @@ public class TruncatedNormalLoadGenerator extends FastestLoadGenerator {
 		long start = System.currentTimeMillis();
 		super.performRequest(executable, executor, futureResults);
 		long end = System.currentTimeMillis();
-		Thread.sleep(delay - end + start);
+		sleep(delay - end + start);
 	}
 	
 	private double nextTruncatedGaussian() throws MathException {

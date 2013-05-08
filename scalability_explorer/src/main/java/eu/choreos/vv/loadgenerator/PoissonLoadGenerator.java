@@ -24,11 +24,10 @@ public class PoissonLoadGenerator extends FastestLoadGenerator {
 			final ExecutorService executor,
 			final List<Future<Double>> futureResults) throws Exception {
 		long delay = nextPoisson();
-		System.out.println("delay: " + delay);
 		long start = System.currentTimeMillis();
 		super.performRequest(executable, executor, futureResults);
 		long end = System.currentTimeMillis();
-		Thread.sleep(delay - end + start);
+		sleep(delay - end + start);
 	}
 	
 	@Override

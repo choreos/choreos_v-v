@@ -7,19 +7,17 @@ import java.util.List;
 
 import org.junit.Test;
 
-import eu.choreos.vv.loadgenerator.LoadGenerator;
-import eu.choreos.vv.loadgenerator.DegeneratedLoadGenerator;
 import eu.choreos.vv.loadgenerator.executable.Executor;
 
 public class LoadGeneratorTest {
 	
 	@Test
 	public void shouldRunManyTimes() {
-		final int CALLS_PER_MIN = 60000;
+		final int DELAY = 500000;
 		final int TIMES_TO_RUN = 1000;
 		final List<Long> times = new ArrayList<Long>();
 		LoadGenerator loadGen = new DegeneratedLoadGenerator();
-		loadGen.setDelay(CALLS_PER_MIN);
+		loadGen.setDelay(DELAY);
 		try {
 		loadGen.execute(TIMES_TO_RUN, new Executor() {
 
@@ -51,18 +49,18 @@ public class LoadGeneratorTest {
 		}
 		assertEquals(TIMES_TO_RUN, times.size());
 	}
-
+	
 	@Test
-	public void sholdRunForThreeSeconds() throws Exception {
+	public void sholdRunForOneSecond() throws Exception {
 		LoadGenerator loadGen = new DegeneratedLoadGenerator();
-		loadGen.setDelay(180);
+		loadGen.setDelay(1000000);
 		long startTime = System.currentTimeMillis();
-		loadGen.execute(10, new Executor() {
+		loadGen.execute(100, new Executor() {
 
 			@Override
 			public void experiment() {
 				try {
-					Thread.sleep(100);
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -88,21 +86,21 @@ public class LoadGeneratorTest {
 			}
 		});
 		long endTime = System.currentTimeMillis();
-		double duration = (endTime - startTime) / 1000;
-		assertEquals(3.0, duration, 0.1);
+		double duration = (endTime - startTime)/1000d;
+		assertEquals(0.1, duration, 0.05);
 	}
 
 	@Test
 	public void executionShouldTakeLongerThanDelay() throws Exception {
 		LoadGenerator loadGen = new DegeneratedLoadGenerator();
-		loadGen.setDelay(60);
+		loadGen.setDelay(100000000);
 		long startTime = System.currentTimeMillis();
 		loadGen.execute(10, new Executor() {
 
 			@Override
 			public Double call() {
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(200);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -135,8 +133,8 @@ public class LoadGeneratorTest {
 			}
 		});
 		long endTime = System.currentTimeMillis();
-		double duration = (endTime - startTime) / 1000;
-		assertEquals(11.0, duration, 0.1);
+		double duration = (endTime - startTime) / 1000d;
+		assertEquals(1.1, duration, 0.01);
 	}
 
 }
