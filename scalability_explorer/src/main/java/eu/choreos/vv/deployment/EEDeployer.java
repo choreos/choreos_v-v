@@ -1,6 +1,7 @@
 package eu.choreos.vv.deployment;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.ow2.choreos.chors.ChoreographyNotFoundException;
@@ -13,7 +14,7 @@ import org.ow2.choreos.deployment.services.datamodel.Service;
 public abstract class EEDeployer implements Deployer {
 
 	private ChorDeployerClient eeClient;
-	private Map<String, String> deployedServices;
+	private Map<String, List<String>> deployedServices;
 
 	protected abstract ChorSpec enactmentSpec();
 
@@ -21,7 +22,7 @@ public abstract class EEDeployer implements Deployer {
 
 	public EEDeployer(String host) {
 		eeClient = new ChorDeployerClient(host);
-		deployedServices = new HashMap<String, String>();
+		deployedServices = new HashMap<String, List<String>>();
 	}
 
 	@Override
@@ -31,7 +32,7 @@ public abstract class EEDeployer implements Deployer {
 	}
 
 	@Override
-	public String getServiceUri(String serviceName) {
+	public List<String> getServiceUris(String serviceName) {
 		return deployedServices.get(serviceName);
 	}
 
@@ -50,7 +51,7 @@ public abstract class EEDeployer implements Deployer {
 
 	private void storeServices(final Choreography chor) {
 		for (Service service : chor.getDeployedServices()) {
-			deployedServices.put(service.getName(), service.getUri());
+			deployedServices.put(service.getName(), service.getUris());
 		}
 	}
 
