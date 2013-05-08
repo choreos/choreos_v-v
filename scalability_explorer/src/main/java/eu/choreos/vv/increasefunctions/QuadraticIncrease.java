@@ -10,18 +10,20 @@ public class QuadraticIncrease implements ScalabilityFunction {
 	 * factor of increase. initial value is 2.
 	 */
 	private double actualIncreasingTime;
+	private Number fixedParam;
 
-	public QuadraticIncrease() {
+	public QuadraticIncrease(Number fixedParam) {
 		actualIncreasingTime=2;
+		this.fixedParam = fixedParam;
 	}
 	/**
 	 * Returns fixedParam*(actualIncreasingTime^2) and increments actualIncreasingTime.
-	 * @param actualParam last value used
-	 * @param fixedParam initial value
+	 * currentParam is not used. 
+	 * @param currentParam last value used
 	 * @return next value to use
 	 */
 	@Override
-	public Number increaseParams(Number actualParam, Number fixedParam) {
+	public Number increaseParams(Number currentParam) {
 		Number value = fixedParam.doubleValue()*(actualIncreasingTime*actualIncreasingTime);
 		actualIncreasingTime++;
 		return value;

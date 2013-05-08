@@ -8,18 +8,18 @@ public class ScalabilityFunctionsTest {
 
 	@Test
 	public void shouldIncreaseLinearly() {
-		ScalabilityFunction function = new LinearIncrease();
 		final double fixedParam = 2;
+		ScalabilityFunction function = new LinearIncrease(fixedParam);
 		for(double i = 1; i<=10; i+=fixedParam)
-		assertEquals(i+fixedParam, function.increaseParams(i, fixedParam));
+		assertEquals(i+fixedParam, function.increaseParams(i));
 	}
 	
 	@Test
 	public void shouldIncreaseExponentialy() {
-		ScalabilityFunction function = new ExponentialIncrease();
 		final double fixedParam = 2;
+		ScalabilityFunction function = new ExponentialIncrease(fixedParam);
 		for(double i = 1; i<=10; i*=fixedParam)
-		assertEquals(i*fixedParam, function.increaseParams(i, fixedParam));
+		assertEquals(i*fixedParam, function.increaseParams(i));
 	}
 
 }

@@ -8,9 +8,8 @@ package eu.choreos.vv.increasefunctions;
 public interface ScalabilityFunction {
 	/**
 	 * Calculates the next value for a parameter
-	 * @param actualParam last value used
-	 * @param fixedParam initial value
+	 * @param currentValue last value used
 	 * @return next value to use
 	 */
-	public Number increaseParams(Number actualParam, Number fixedParam);
+	public Number increaseParams(Number currentValue);
 }

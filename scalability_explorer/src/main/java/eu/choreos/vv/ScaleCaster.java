@@ -22,12 +22,11 @@ public class ScaleCaster {
 	Integer timesToExecute;
 	Double measurementLimit;
 	ScalabilityFunction function;
-	Number[] initialParameterValues;
 	Number[] currentParameterValues;
 
 	public ScaleCaster(Scalable item, String name) {
 		this(item, name, Integer.MAX_VALUE, Double.MAX_VALUE,
-				new LinearIncrease());
+				new LinearIncrease(1));
 	}
 
 	public ScaleCaster(Scalable item, String name,
@@ -82,12 +81,7 @@ public class ScaleCaster {
 	}
 
 	public void setInitialParametersValues(Number... values) {
-		initialParameterValues = values;
-		currentParameterValues = Arrays.copyOf(values, values.length);
-	}
-
-	public Number[] getInitialParametersValues() {
-		return initialParameterValues;
+		currentParameterValues = values;
 	}
 
 	public Number[] getCurrentParametersValues() {
@@ -95,9 +89,9 @@ public class ScaleCaster {
 	}
 
 	private void increaseParamentersValues() {
-		for (int i = 0; i < initialParameterValues.length; i++)
+		for (int i = 0; i < currentParameterValues.length; i++)
 			currentParameterValues[i] = function.increaseParams(
-					currentParameterValues[i], initialParameterValues[i]);
+					currentParameterValues[i]);
 	}
 
 	private List<Number> execute() throws Exception {
