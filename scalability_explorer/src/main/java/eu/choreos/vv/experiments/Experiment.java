@@ -103,7 +103,7 @@ public abstract class Experiment implements Scalable {
 	 * LinearIncrease
 	 */
 	public Experiment() {
-		this(new DegeneratedLoadGenerator(), new LinearIncrease()); 
+		this(new DegeneratedLoadGenerator(), new LinearIncrease(1)); 
 	}
 
 	/**
@@ -213,7 +213,7 @@ public abstract class Experiment implements Scalable {
 			deployer.scale(getScaleSize());
 		beforeIteration();
 
-		loadGen.setDelay(60000 / numberOfRequestsPerMinute);
+		loadGen.setDelay(60000000 / numberOfRequestsPerMinute);
 		results = loadGen.execute(numberOfRequestsPerStep,
 				new LatencyMeasurementExecutable() {
 					@Override
@@ -269,7 +269,11 @@ public abstract class Experiment implements Scalable {
 	// }
 
 	public void run(String name) throws Exception {
-		run(name, true);
+		run(name, true, true);
+	}
+	
+	public void run(String name, boolean analyse) throws Exception {
+		run(name, analyse, true);
 	}
 
 	/**
@@ -278,8 +282,12 @@ public abstract class Experiment implements Scalable {
 	 * 
 	 * @param name
 	 *            label to be used in a ScalabilityReportChart
+	 * @param analyse
+	 * 			  true to perform analysis at the and of the experiment
+	 * @param store
+	 *            false discards the experiment report
 	 */
-	public void run(String name, boolean analyse) throws Exception {
+	public void run(String name, boolean analyse, boolean store) throws Exception {
 		ScaleCaster scalingCaster = new ScaleCaster(this, name, numberOfSteps,
 				measurementLimit, scalabilityFunction);
 
@@ -293,7 +301,8 @@ public abstract class Experiment implements Scalable {
 		report.setParameterLabels(getParameterLabels());
 		report.setMeasurementUnit(loadGen.getLabel());
 		afterExperiment();
-		reports.add(report);
+		if (store)
+			reports.add(report);
 		if (analyse)
 			analyzer.analyse(reports);
 	}
