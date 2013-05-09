@@ -1,10 +1,7 @@
 package eu.choreos.vv.analysis;
 
-import java.util.List;
-
 import org.apache.commons.math.stat.inference.TestUtils;
 import org.apache.commons.math.stat.regression.GLSMultipleLinearRegression;
-import org.apache.cxf.test.TestUtilities;
 
 import eu.choreos.vv.aggregations.AggregationFunction;
 import eu.choreos.vv.data.LinearRegressionSample;

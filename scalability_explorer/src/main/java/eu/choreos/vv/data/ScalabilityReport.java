@@ -1,11 +1,5 @@
 package eu.choreos.vv.data;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
