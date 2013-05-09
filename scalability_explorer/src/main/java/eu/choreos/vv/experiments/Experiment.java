@@ -12,7 +12,6 @@ import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 import eu.choreos.vv.loadgenerator.DegeneratedLoadGenerator;
 import eu.choreos.vv.loadgenerator.LoadGenerator;
-import eu.choreos.vv.loadgenerator.executable.LatencyMeasurementExecutable;
 
 /**
  * This class implements a skeleton of a scalability experiment consisted on
@@ -214,19 +213,7 @@ public abstract class Experiment implements Scalable {
 		beforeIteration();
 
 		loadGen.setDelay(60000000 / numberOfRequestsPerMinute);
-		results = loadGen.execute(numberOfRequestsPerStep,
-				new LatencyMeasurementExecutable() {
-					@Override
-					public void setUp() throws Exception {
-						beforeRequest();
-					}
-
-					@Override
-					public void experiment() throws Exception {
-						request();
-						afterRequest();
-					}
-				});
+		results = loadGen.execute(numberOfRequestsPerStep, this);
 
 		afterIteration();
 

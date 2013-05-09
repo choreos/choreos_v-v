@@ -7,31 +7,28 @@ import java.util.concurrent.Future;
 import org.apache.commons.math.random.RandomData;
 import org.apache.commons.math.random.RandomDataImpl;
 
-import eu.choreos.vv.loadgenerator.executable.Executor;
-
 public class PoissonLoadGenerator extends FastestLoadGenerator {
-	
+
 	private RandomData random;
 	private int delay;
-	
+
 	public PoissonLoadGenerator() {
 		super();
 		random = new RandomDataImpl();
 	}
-	
+
 	@Override
-	protected void performRequest(Executor executable,
-			final ExecutorService executor,
+	protected void performRequest(final ExecutorService executor,
 			final List<Future<Double>> futureResults) throws Exception {
 		long delay = nextPoisson();
 		long start = System.currentTimeMillis();
-		super.performRequest(executable, executor, futureResults);
+		super.performRequest(executor, futureResults);
 		long end = System.currentTimeMillis();
 		sleep(delay - end + start);
 	}
-	
+
 	@Override
-	public void setDelay(int delay) { 
+	public void setDelay(int delay) {
 		this.delay = delay;
 	}
 

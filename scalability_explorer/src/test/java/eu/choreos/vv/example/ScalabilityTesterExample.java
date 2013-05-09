@@ -6,13 +6,11 @@ import java.util.List;
 import org.junit.Test;
 
 import eu.choreos.vv.aggregations.Mean;
-import eu.choreos.vv.aggregations.Percentile;
 import eu.choreos.vv.analysis.ANOVATest;
-import eu.choreos.vv.analysis.ComposedAnalysis;
-import eu.choreos.vv.analysis.SampleSizeEstimation;
 import eu.choreos.vv.analysis.AggregatePerformance;
+import eu.choreos.vv.analysis.ComposedAnalysis;
 import eu.choreos.vv.experiments.ScalabilityExperiment;
-import eu.choreos.vv.loadgenerator.TruncatedNormalLoadGenerator;
+import eu.choreos.vv.loadgenerator.PoissonLoadGenerator;
 
 public class ScalabilityTesterExample extends ScalabilityExperiment {
 
@@ -53,7 +51,7 @@ public class ScalabilityTesterExample extends ScalabilityExperiment {
 
 	public static void execute() throws Exception {
 		ScalabilityTesterExample example = new ScalabilityTesterExample();
-		example.setLoadGenerator(new TruncatedNormalLoadGenerator());
+		example.setLoadGenerator(new PoissonLoadGenerator());
 		example.setNumberOfRequestsPerStep(10);
 		example.setNumberOfSteps(3);
 		example.setInitialRequestsPerMinute(30);

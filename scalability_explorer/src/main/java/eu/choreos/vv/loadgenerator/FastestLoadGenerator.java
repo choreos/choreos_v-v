@@ -2,33 +2,35 @@ package eu.choreos.vv.loadgenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import eu.choreos.vv.loadgenerator.executable.Executor;
+import eu.choreos.vv.experiments.Experiment;
 
 /**
- * Load generator that trigger the requests as fast as possible 
- *
+ * Load generator that trigger the requests as fast as possible
+ * 
  */
-public class FastestLoadGenerator implements LoadGenerator {
+public class FastestLoadGenerator implements LoadGenerator, Callable<Double> {
 
 	static final int DEFAULT_THREADS_TIMEOUT = 60;
 	static final int DEFAULT_POOL_SIZE = 50;
 	static final String LABEL = "response time (msec)";
-	
+
 	private int poolSize;
 	private int timeout;
-	
+	private Experiment experiment;
+
 	protected int delay;
-	
+
 	public FastestLoadGenerator(int poolSize, int timeout) {
 		this.poolSize = poolSize;
 		this.timeout = timeout;
 	}
-	
+
 	public FastestLoadGenerator() {
 		this(DEFAULT_POOL_SIZE, DEFAULT_THREADS_TIMEOUT);
 	}
@@ -39,18 +41,24 @@ public class FastestLoadGenerator implements LoadGenerator {
 	}
 
 	@Override
-	public List<Number> execute(int numberOfCalls,
-			Executor executor) throws Exception {
-		final ExecutorService executorService = Executors.newFixedThreadPool(poolSize);
+	public List<Number> execute(int numberOfCalls, Experiment experiment)
+			throws Exception {
+		final ExecutorService executorService = Executors
+				.newFixedThreadPool(poolSize);
 		final List<Future<Double>> futureResults = new ArrayList<Future<Double>>();
 		final List<Number> results = new ArrayList<Number>();
+		this.experiment = experiment;
 		try {
 			for (int i = 0; i < numberOfCalls; i++) {
-				performRequest(executor, executorService, futureResults); //TODO: exception handling. count failed requests?)
+				performRequest(executorService, futureResults); // TODO:
+																			// exception
+																			// handling.
+																			// count
+																			// failed
+																			// requests?)
 			}
 			executorService.shutdown();
-			while (!executorService
-					.awaitTermination(timeout, TimeUnit.SECONDS))
+			while (!executorService.awaitTermination(timeout, TimeUnit.SECONDS))
 				;
 		} catch (InterruptedException e) {
 			executorService.shutdownNow();
@@ -63,10 +71,9 @@ public class FastestLoadGenerator implements LoadGenerator {
 		return results;
 	}
 
-	protected void performRequest(Executor executor,
-			final ExecutorService executorService,
+	protected void performRequest(final ExecutorService executorService,
 			final List<Future<Double>> futureResults) throws Exception {
-		Future<Double> result = executorService.submit(executor);
+		Future<Double> result = executorService.submit(this);
 		futureResults.add(result);
 	}
 
@@ -74,12 +81,28 @@ public class FastestLoadGenerator implements LoadGenerator {
 	public void setDelay(int delay) {
 		this.delay = delay;
 	}
-	
+
 	public void sleep(long delay) throws InterruptedException {
 		long millis = delay / 1000000;
-		int nanos = (int)(delay % 1000000);
+		int nanos = (int) (delay % 1000000);
 		Thread.sleep(millis, nanos);
-		
+
+	}
+
+	/**
+	 * Calls the other methods in a proper sequence. It can be used by an
+	 * ExecutorService.
+	 * 
+	 * @return finalMeasurement() - initialMeasurement()
+	 */
+	@Override
+	public Double call() throws Exception {
+		experiment.beforeExperiment();
+		double start = System.currentTimeMillis();
+		experiment.request();
+		double end = System.currentTimeMillis();
+		experiment.afterExperiment();
+		return (end - start);
 	}
 
 }

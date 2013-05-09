@@ -9,10 +9,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.choreos.vv.aggregations.AggregationFunction;
-import eu.choreos.vv.aggregations.Mean;
-import eu.choreos.vv.aggregations.Percentile;
-
 public class AggregatorTest {
 
 	List<Number> aList;

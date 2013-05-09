@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import eu.choreos.vv.loadgenerator.executable.Executor;
+import eu.choreos.vv.experiments.Experiment;
 
 public class LoadGeneratorTest {
 	
@@ -19,29 +19,29 @@ public class LoadGeneratorTest {
 		LoadGenerator loadGen = new DegeneratedLoadGenerator();
 		loadGen.setDelay(DELAY);
 		try {
-		loadGen.execute(TIMES_TO_RUN, new Executor() {
+		loadGen.execute(TIMES_TO_RUN, new Experiment() {
 
 			@Override
-			public void experiment() {
+			public void request() {
 					times.add(System.currentTimeMillis());
 			}
 
 			@Override
-			protected double initialMeasurement() {
+			protected Number[] setInitialParameterValues() {
 				// TODO Auto-generated method stub
-				return 0;
+				return null;
 			}
 
 			@Override
-			protected double finalMeasurement() {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public void setUp() throws Exception {
+			protected void getParameterValues(Number... values) {
 				// TODO Auto-generated method stub
 				
+			}
+
+			@Override
+			protected List<String> getParameterLabels() {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		});
 		} catch (Exception e) {
@@ -55,10 +55,10 @@ public class LoadGeneratorTest {
 		LoadGenerator loadGen = new DegeneratedLoadGenerator();
 		loadGen.setDelay(1000000);
 		long startTime = System.currentTimeMillis();
-		loadGen.execute(100, new Executor() {
+		loadGen.execute(100, new Experiment() {
 
 			@Override
-			public void experiment() {
+			public void request() {
 				try {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
@@ -68,21 +68,21 @@ public class LoadGeneratorTest {
 			}
 
 			@Override
-			protected double initialMeasurement() {
+			protected Number[] setInitialParameterValues() {
 				// TODO Auto-generated method stub
-				return 0;
+				return null;
 			}
 
 			@Override
-			protected double finalMeasurement() {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public void setUp() throws Exception {
+			protected void getParameterValues(Number... values) {
 				// TODO Auto-generated method stub
 				
+			}
+
+			@Override
+			protected List<String> getParameterLabels() {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		});
 		long endTime = System.currentTimeMillis();
@@ -95,42 +95,37 @@ public class LoadGeneratorTest {
 		LoadGenerator loadGen = new DegeneratedLoadGenerator();
 		loadGen.setDelay(100000000);
 		long startTime = System.currentTimeMillis();
-		loadGen.execute(10, new Executor() {
+		loadGen.execute(10, new Experiment() {
 
 			@Override
-			public Double call() {
+			public void request() {
 				try {
 					Thread.sleep(200);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				return 1.0;
 			}
 
 			@Override
-			public void experiment() {
+			protected Number[] setInitialParameterValues() {
 				// TODO Auto-generated method stub
-
+				return null;
 			}
 
 			@Override
-			protected double initialMeasurement() {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			protected double finalMeasurement() {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public void setUp() throws Exception {
+			protected void getParameterValues(Number... values) {
 				// TODO Auto-generated method stub
 				
 			}
+
+			@Override
+			protected List<String> getParameterLabels() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+
 		});
 		long endTime = System.currentTimeMillis();
 		double duration = (endTime - startTime) / 1000d;
