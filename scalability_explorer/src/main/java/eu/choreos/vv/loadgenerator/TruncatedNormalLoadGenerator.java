@@ -46,7 +46,7 @@ public class TruncatedNormalLoadGenerator extends FastestLoadGenerator {
 	}
 
 	@Override
-	public void setDelay(int delay) {
+	public void setDelay(long delay) {
 		normal = new NormalDistributionImpl(delay, delay);
 	}
 

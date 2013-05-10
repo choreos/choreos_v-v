@@ -24,7 +24,7 @@ public class FastestLoadGenerator implements LoadGenerator, Callable<Double> {
 	private int timeout;
 	private Experiment experiment;
 
-	protected int delay;
+	protected long delay;
 
 	public FastestLoadGenerator(int poolSize, int timeout) {
 		this.poolSize = poolSize;
@@ -51,11 +51,11 @@ public class FastestLoadGenerator implements LoadGenerator, Callable<Double> {
 		try {
 			for (int i = 0; i < numberOfCalls; i++) {
 				performRequest(executorService, futureResults); // TODO:
-																			// exception
-																			// handling.
-																			// count
-																			// failed
-																			// requests?)
+																// exception
+																// handling.
+																// count
+																// failed
+																// requests?)
 			}
 			executorService.shutdown();
 			while (!executorService.awaitTermination(timeout, TimeUnit.SECONDS))
@@ -78,11 +78,11 @@ public class FastestLoadGenerator implements LoadGenerator, Callable<Double> {
 	}
 
 	@Override
-	public void setDelay(int delay) {
+	public void setDelay(long delay) {
 		this.delay = delay;
 	}
 
-	public void sleep(long delay) throws InterruptedException {
+	public static void sleep(long delay) throws InterruptedException {
 		long millis = delay / 1000000;
 		int nanos = (int) (delay % 1000000);
 		Thread.sleep(millis, nanos);
@@ -97,11 +97,11 @@ public class FastestLoadGenerator implements LoadGenerator, Callable<Double> {
 	 */
 	@Override
 	public Double call() throws Exception {
-		experiment.beforeExperiment();
+		experiment.beforeRequest();
 		double start = System.currentTimeMillis();
 		experiment.request();
 		double end = System.currentTimeMillis();
-		experiment.afterExperiment();
+		experiment.afterRequest();
 		return (end - start);
 	}
 

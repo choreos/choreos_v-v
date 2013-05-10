@@ -10,7 +10,6 @@ import org.apache.commons.math.random.RandomDataImpl;
 public class PoissonLoadGenerator extends FastestLoadGenerator {
 
 	private RandomData random;
-	private int delay;
 
 	public PoissonLoadGenerator() {
 		super();
@@ -27,11 +26,7 @@ public class PoissonLoadGenerator extends FastestLoadGenerator {
 		sleep(delay - end + start);
 	}
 
-	@Override
-	public void setDelay(int delay) {
-		this.delay = delay;
-	}
-
+	
 	private long nextPoisson() {
 		return random.nextPoisson(delay);
 	}

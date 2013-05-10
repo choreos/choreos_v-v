@@ -212,7 +212,7 @@ public abstract class Experiment implements Scalable {
 			deployer.scale(getScaleSize());
 		beforeIteration();
 
-		loadGen.setDelay(60000000 / numberOfRequestsPerMinute);
+		loadGen.setDelay(60000000000l / numberOfRequestsPerMinute);
 		results = loadGen.execute(numberOfRequestsPerStep, this);
 
 		afterIteration();
