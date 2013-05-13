@@ -48,6 +48,9 @@ public abstract class ArchitectureExperiment extends Experiment {
 
 	private void init() {
 		this.inititalResoucesQuantity = 1;
+		List<String> labels = new ArrayList<String>();
+		labels.add("size");
+		super.setParameterLabels(labels);
 	}
 
 	public Number getInititalResoucesQuantity() {
@@ -77,13 +80,6 @@ public abstract class ArchitectureExperiment extends Experiment {
 	protected void getParameterValues(Number... values) {
 		super.setNumberOfRequestsPerMinute(requestsPerMinute);
 		super.setScaleSize(values[0].intValue());
-	}
-	
-	@Override
-	protected List<String> getParameterLabels() {
-		List<String> labels = new ArrayList<String>();
-		labels.add("size");
-		return labels;
 	}
 	
 }

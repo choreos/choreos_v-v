@@ -49,6 +49,10 @@ public abstract class ScalabilityExperiment extends Experiment {
 	private void init() {
 		this.initialRequestsPerMinute = 60;
 		this.inititalResoucesQuantity = 1;
+		List<String> labels = new ArrayList<String>();
+		labels.add("load");
+		labels.add("size");
+		super.setParameterLabels(labels);
 	}
 
 	public Number getInitialRequestsPerMinute() {
@@ -79,14 +83,6 @@ public abstract class ScalabilityExperiment extends Experiment {
 	protected void getParameterValues(Number... values) {
 		super.setNumberOfRequestsPerMinute(values[0].intValue());
 		super.setScaleSize(values[1].intValue());
-	}
-	
-	@Override
-	protected List<String> getParameterLabels() {
-		List<String> labels = new ArrayList<String>();
-		labels.add("load");
-		labels.add("size");
-		return labels;
 	}
 	
 }

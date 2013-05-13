@@ -47,6 +47,9 @@ public abstract class WorkloadExperiment extends Experiment {
 
 	private void init() {
 		this.initialRequestsPerMinute = 60;
+		List<String> labels = new ArrayList<String>();
+		labels.add("load");
+		super.setParameterLabels(labels);
 	}
 
 	public Number getInitialRequestsPerMinute() {
@@ -69,12 +72,5 @@ public abstract class WorkloadExperiment extends Experiment {
 		super.setNumberOfRequestsPerMinute(values[0].intValue());
 		setDeployer(null);
 	}
-	
-	@Override
-	protected List<String> getParameterLabels() {
-		List<String> labels = new ArrayList<String>();
-		labels.add("load");
-		return labels;
-	}
-	
+		
 }

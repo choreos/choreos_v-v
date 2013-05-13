@@ -37,6 +37,8 @@ public abstract class Experiment implements Scalable {
 	private Analyzer analyzer;
 
 	private List<ScalabilityReport> reports;
+	
+	private List<String> labels;
 
 	/**
 	 * This method can be overridden to be executed before the experiment begin.
@@ -200,7 +202,14 @@ public abstract class Experiment implements Scalable {
 
 	protected abstract void getParameterValues(Number... values);
 
-	protected abstract List<String> getParameterLabels();
+	protected List<String> getParameterLabels() {
+		return labels;
+	}
+	
+	protected void setParameterLabels(List<String> labels) {
+		this.labels = labels;
+		
+	}
 
 	@Override
 	public List<Number> execute(Number... params) throws Exception {
