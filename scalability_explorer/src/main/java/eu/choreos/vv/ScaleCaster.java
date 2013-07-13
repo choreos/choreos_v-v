@@ -20,7 +20,7 @@ public class ScaleCaster {
 	String name;
 	Integer timesToExecute;
 	Double measurementLimit;
-	ScalabilityFunction function;
+	ScalabilityFunction[] functions;
 	Number[] currentParameterValues;
 
 	public ScaleCaster(Scalable item, String name) {
@@ -30,13 +30,13 @@ public class ScaleCaster {
 
 	public ScaleCaster(Scalable item, String name,
 			Integer timesToExecute, Double measurementLimit,
-			ScalabilityFunction function) {
+			ScalabilityFunction... function) {
 		super();
 		this.item = item;
 		this.name = name;
 		this.timesToExecute = timesToExecute;
 		this.measurementLimit = measurementLimit;
-		this.function = function;
+		this.functions = function;
 	}
 
 	public Scalable getItem() {
@@ -71,12 +71,19 @@ public class ScaleCaster {
 		this.measurementLimit = measurementLimit;
 	}
 
-	public ScalabilityFunction getFunction() {
-		return function;
+	public ScalabilityFunction[] getFunctions() {
+		return functions;
+	}
+	
+	public ScalabilityFunction getFunction(int index) {
+		if (index < functions.length)
+			return functions[index];
+		else
+			return functions[functions.length-1];
 	}
 
-	public void setFunction(ScalabilityFunction function) {
-		this.function = function;
+	public void setFunctions(ScalabilityFunction... function) {
+		this.functions = function;
 	}
 
 	public void setInitialParametersValues(Number... values) {
@@ -89,7 +96,7 @@ public class ScaleCaster {
 
 	private void increaseParamentersValues() {
 		for (int i = 0; i < currentParameterValues.length; i++)
-			currentParameterValues[i] = function.increaseParams(
+			currentParameterValues[i] = getFunction(i).increaseParams(
 					currentParameterValues[i]);
 	}
 

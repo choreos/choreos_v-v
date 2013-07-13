@@ -32,7 +32,7 @@ public abstract class Experiment implements Scalable {
 	private Double measurementLimit;
 
 	private LoadGenerator loadGen;
-	private ScalabilityFunction scalabilityFunction;
+	private ScalabilityFunction[] scalabilityFunctions;
 	private Deployer deployer;
 	private Analyzer analyzer;
 
@@ -117,9 +117,9 @@ public abstract class Experiment implements Scalable {
 	 * @param function
 	 *            scalability function
 	 */
-	public Experiment(LoadGenerator loadGenerator, ScalabilityFunction function) {
+	public Experiment(LoadGenerator loadGenerator, ScalabilityFunction... function) {
 		this.loadGen = loadGenerator;
-		this.scalabilityFunction = function;
+		this.scalabilityFunctions = function;
 		this.numberOfSteps = 1;
 		this.numberOfRequestsPerStep = 1;
 		this.measurementLimit = Double.MAX_VALUE;
@@ -134,12 +134,12 @@ public abstract class Experiment implements Scalable {
 		this.loadGen = loadGen;
 	}
 
-	public ScalabilityFunction getScalabilityFunction() {
-		return scalabilityFunction;
+	public ScalabilityFunction[] getScalabilityFunctions() {
+		return scalabilityFunctions;
 	}
 
-	public void setScalabilityFunction(ScalabilityFunction function) {
-		this.scalabilityFunction = function;
+	public void setScalabilityFunctions(ScalabilityFunction... function) {
+		this.scalabilityFunctions = function;
 	}
 
 	public Deployer getDeployer() {
@@ -285,7 +285,7 @@ public abstract class Experiment implements Scalable {
 	 */
 	public void run(String name, boolean analyse, boolean store) throws Exception {
 		ScaleCaster scalingCaster = new ScaleCaster(this, name, numberOfSteps,
-				measurementLimit, scalabilityFunction);
+				measurementLimit, scalabilityFunctions);
 
 		scalingCaster.setInitialParametersValues(setInitialParameterValues());
 
