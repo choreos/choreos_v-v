@@ -32,7 +32,7 @@
     </dependency>
     <dependency>
     	<groupId>org.ow2.choreos</groupId>
-    	<artifactId>ChoreographyDeployer</artifactId>
+    	<artifactId>EnactmentEngineAPI</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
     	<scope>provided</scope>
     </dependency>

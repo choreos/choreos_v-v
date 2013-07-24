@@ -8,8 +8,8 @@ import org.ow2.choreos.chors.ChoreographyNotFoundException;
 import org.ow2.choreos.chors.EnactmentException;
 import org.ow2.choreos.chors.client.ChorDeployerClient;
 import org.ow2.choreos.chors.datamodel.Choreography;
-import org.ow2.choreos.chors.datamodel.ChoreographyService;
 import org.ow2.choreos.chors.datamodel.ChoreographySpec;
+import org.ow2.choreos.services.datamodel.Service;
 
 public abstract class EEDeployer implements Deployer {
 
@@ -51,8 +51,8 @@ public abstract class EEDeployer implements Deployer {
 
 	private void storeServices(final Choreography chor) {
 		deployedServices = new HashMap<String, List<String>>(); 
-		for (ChoreographyService service : chor.getChoreographyServices()) {
-			deployedServices.put(service.getChoreographyServiceSpec().getName(), service.getService().getUris());
+		for (Service service : chor.getServices()) {
+			deployedServices.put(service.getSpec().getName(), service.getUris());
 		}
 	}
 
