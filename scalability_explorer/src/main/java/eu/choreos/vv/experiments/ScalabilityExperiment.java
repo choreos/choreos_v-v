@@ -72,7 +72,7 @@ public abstract class ScalabilityExperiment extends Experiment {
 	}
 
 	@Override
-	protected Number[] setInitialParameterValues() {
+	protected Number[] getInitialParameterValues() {
 		Number[] values = new Number[2];
 		values[0] = initialRequestsPerMinute;
 		values[1] = inititalResoucesQuantity;
@@ -80,7 +80,7 @@ public abstract class ScalabilityExperiment extends Experiment {
 	}
 	
 	@Override
-	protected void getParameterValues(Number... values) {
+	protected void updateParameterValues(Number... values) {
 		super.setNumberOfRequestsPerMinute(values[0].intValue());
 		super.setScaleSize(values[1].intValue());
 	}

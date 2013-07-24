@@ -70,14 +70,14 @@ public abstract class ArchitectureExperiment extends Experiment {
 	}
 
 	@Override
-	protected Number[] setInitialParameterValues() {
+	protected Number[] getInitialParameterValues() {
 		Number[] values = new Number[1];
 		values[0] = inititalResoucesQuantity;
 		return values;
 	}
 	
 	@Override
-	protected void getParameterValues(Number... values) {
+	protected void updateParameterValues(Number... values) {
 		super.setNumberOfRequestsPerMinute(requestsPerMinute);
 		super.setScaleSize(values[0].intValue());
 	}

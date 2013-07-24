@@ -30,7 +30,7 @@ public class ScaleCasterTest {
 		caster.setInitialParametersValues(0);
 		caster.setTimesToExecute(5);
 		caster.setFunctions(new LinearIncrease(10));
-		caster.executeIncreasingParams();
+		caster.execute();
 		int value = caster.getCurrentParametersValues()[0].intValue();
 		assertEquals(50, value);
 	}
@@ -41,7 +41,7 @@ public class ScaleCasterTest {
 		caster.setInitialParametersValues(1, 2);
 		caster.setTimesToExecute(5);
 		caster.setFunctions(new ExponentialIncrease(2));
-		caster.executeIncreasingParams();
+		caster.execute();
 		int value1 = caster.getCurrentParametersValues()[0].intValue();
 		int value2 = caster.getCurrentParametersValues()[1].intValue();
 		assertEquals(32, value1);
@@ -54,7 +54,7 @@ public class ScaleCasterTest {
 		caster.setInitialParametersValues(1, 2);
 		caster.setTimesToExecute(5);
 		caster.setFunctions(new ExponentialIncrease(2), new LinearIncrease(2));
-		caster.executeIncreasingParams();
+		caster.execute();
 		int value1 = caster.getCurrentParametersValues()[0].intValue();
 		int value2 = caster.getCurrentParametersValues()[1].intValue();
 		assertEquals(32, value1);

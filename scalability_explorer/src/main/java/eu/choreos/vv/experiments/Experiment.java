@@ -198,9 +198,9 @@ public abstract class Experiment implements Scalable {
 		this.analyzer = analyser;
 	}
 
-	protected abstract Number[] setInitialParameterValues();
+	protected abstract Number[] getInitialParameterValues();
 
-	protected abstract void getParameterValues(Number... values);
+	protected abstract void updateParameterValues(Number... values);
 
 	protected List<String> getParameterLabels() {
 		return labels;
@@ -213,7 +213,7 @@ public abstract class Experiment implements Scalable {
 
 	@Override
 	public List<Number> execute(Number... params) throws Exception {
-		getParameterValues(params);
+		updateParameterValues(params);
 
 		List<Number> results = new ArrayList<Number>();
 
@@ -287,13 +287,13 @@ public abstract class Experiment implements Scalable {
 		ScaleCaster scalingCaster = new ScaleCaster(this, name, numberOfSteps,
 				measurementLimit, scalabilityFunctions);
 
-		scalingCaster.setInitialParametersValues(setInitialParameterValues());
+		scalingCaster.setInitialParametersValues(getInitialParameterValues());
 
 		ScalabilityReport report;
 		if (deployer != null)
 			deployer.enact();
 		beforeExperiment();
-		report = scalingCaster.executeIncreasingParams();
+		report = scalingCaster.execute();
 		report.setParameterLabels(getParameterLabels());
 		report.setMeasurementUnit(loadGen.getLabel());
 		afterExperiment();

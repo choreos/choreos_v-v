@@ -100,7 +100,7 @@ public class ScaleCaster {
 					currentParameterValues[i]);
 	}
 
-	private List<Number> execute() throws Exception {
+	private List<Number> executeItem() throws Exception {
 		return item.execute(currentParameterValues);
 	}
 
@@ -111,13 +111,13 @@ public class ScaleCaster {
 	 * @return a ScalabiltyReport of the execution
 	 * @throws Exception
 	 */
-	public ScalabilityReport executeIncreasingParams() {
+	public ScalabilityReport execute() {
 		List<Number> values;
 		ScalabilityReport report = new ScalabilityReport(this.getName());
 		try {
 			for (int i = 0; i < this.getTimesToExecute()
 					/*&& value <= this.getMeasurementLimit()*/; i++) { //TODO: consider limit again
-				values = this.execute();
+				values = this.executeItem();
 				List<Number> params = new ArrayList<Number>();
 				Collections.addAll(params, currentParameterValues);
 				ReportData data = new ReportData(params, values); //TODO: include labels

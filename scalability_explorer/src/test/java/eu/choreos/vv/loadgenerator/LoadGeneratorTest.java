@@ -13,7 +13,7 @@ public class LoadGeneratorTest {
 	
 	@Test
 	public void shouldRunManyTimes() {
-		final int DELAY = 500000;
+		final int DELAY = 1000000;
 		final int TIMES_TO_RUN = 1000;
 		final List<Long> times = new ArrayList<Long>();
 		LoadGenerator loadGen = new DegeneratedLoadGenerator();
@@ -27,13 +27,13 @@ public class LoadGeneratorTest {
 			}
 
 			@Override
-			protected Number[] setInitialParameterValues() {
+			protected Number[] getInitialParameterValues() {
 				// TODO Auto-generated method stub
 				return null;
 			}
 
 			@Override
-			protected void getParameterValues(Number... values) {
+			protected void updateParameterValues(Number... values) {
 				// TODO Auto-generated method stub
 				
 			}
@@ -68,13 +68,13 @@ public class LoadGeneratorTest {
 			}
 
 			@Override
-			protected Number[] setInitialParameterValues() {
+			protected Number[] getInitialParameterValues() {
 				// TODO Auto-generated method stub
 				return null;
 			}
 
 			@Override
-			protected void getParameterValues(Number... values) {
+			protected void updateParameterValues(Number... values) {
 				// TODO Auto-generated method stub
 				
 			}
@@ -108,13 +108,13 @@ public class LoadGeneratorTest {
 			}
 
 			@Override
-			protected Number[] setInitialParameterValues() {
+			protected Number[] getInitialParameterValues() {
 				// TODO Auto-generated method stub
 				return null;
 			}
 
 			@Override
-			protected void getParameterValues(Number... values) {
+			protected void updateParameterValues(Number... values) {
 				// TODO Auto-generated method stub
 				
 			}

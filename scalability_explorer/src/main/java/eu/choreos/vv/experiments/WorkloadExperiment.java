@@ -61,14 +61,14 @@ public abstract class WorkloadExperiment extends Experiment {
 	}
 
 	@Override
-	protected Number[] setInitialParameterValues() {
+	protected Number[] getInitialParameterValues() {
 		Number[] values = new Number[1];
 		values[0] = initialRequestsPerMinute;
 		return values;
 	}
 	
 	@Override
-	protected void getParameterValues(Number... values) {
+	protected void updateParameterValues(Number... values) {
 		super.setNumberOfRequestsPerMinute(values[0].intValue());
 		setDeployer(null);
 	}
