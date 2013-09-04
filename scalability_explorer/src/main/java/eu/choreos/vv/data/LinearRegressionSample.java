@@ -20,13 +20,13 @@ public class LinearRegressionSample {
 		aggregator = function;
 	}
 	
-	public void setSample(ScalabilityReport report) {
+	public void setSample(ExperimentReport report) {
 		setY(report);
 		setX(report);
 		updateOmega();
 	}
 
-	public void setX(ScalabilityReport report) {
+	public void setX(ExperimentReport report) {
 		x = new double[report.size()][];
 		for(int i = 0; i < x.length; i++) {
 			List<Number> parameters = report.get(i).getParameters();
@@ -37,7 +37,7 @@ public class LinearRegressionSample {
 		}
 	}
 
-	public void setY(ScalabilityReport report) {
+	public void setY(ExperimentReport report) {
 		y = new double[report.size()];
 		for(int i = 0; i < y.length; i++) {
 			List<Number> measurements = report.get(i).getMeasurements();

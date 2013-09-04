@@ -14,7 +14,7 @@ import eu.choreos.vv.experiments.Experiment;
  * Load generator that trigger the requests as fast as possible
  * 
  */
-public class FastestLoadGenerator implements LoadGenerator, Callable<Double> {
+public class BasicLoadGenerator implements LoadGenerator, Callable<Double> {
 
 	static final int DEFAULT_THREADS_TIMEOUT = 60;
 	static final int DEFAULT_POOL_SIZE = 50;
@@ -26,12 +26,12 @@ public class FastestLoadGenerator implements LoadGenerator, Callable<Double> {
 
 	protected long delay;
 
-	public FastestLoadGenerator(int poolSize, int timeout) {
+	public BasicLoadGenerator(int poolSize, int timeout) {
 		this.poolSize = poolSize;
 		this.timeout = timeout;
 	}
 
-	public FastestLoadGenerator() {
+	public BasicLoadGenerator() {
 		this(DEFAULT_POOL_SIZE, DEFAULT_THREADS_TIMEOUT);
 	}
 

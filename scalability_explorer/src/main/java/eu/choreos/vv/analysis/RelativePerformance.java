@@ -8,7 +8,7 @@ import org.jfree.chart.PlotData;
 
 import eu.choreos.vv.aggregations.AggregationFunction;
 import eu.choreos.vv.chart.ReportChart;
-import eu.choreos.vv.data.ScalabilityReport;
+import eu.choreos.vv.data.ExperimentReport;
 
 public class RelativePerformance extends Analyzer {
 
@@ -21,7 +21,7 @@ public class RelativePerformance extends Analyzer {
 	}
 
 	@Override
-	public void analyse(ScalabilityReport report) throws Exception {
+	public void analyse(ExperimentReport report) throws Exception {
 		List<PlotData> plotData = new ArrayList<PlotData>();
 		ReportChart chart = new ReportChart(title, report, 0, function);
 		PlotData aggregation = new PlotData();

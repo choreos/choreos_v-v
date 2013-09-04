@@ -14,13 +14,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.choreos.vv.data.ReportData;
-import eu.choreos.vv.data.ScalabilityReport;
+import eu.choreos.vv.data.ExperimentReport;
 
 public class SaveToFileTest {
 	
 	private static final String NAME = "test report";
 	private File file;
-	private List<ScalabilityReport> reports;
+	private List<ExperimentReport> reports;
 	
 	private static List<Number> listFor(Number... values) {
 		List<Number> list = new ArrayList<Number>();
@@ -31,8 +31,8 @@ public class SaveToFileTest {
 	@Before
 	public void setup() throws Exception {
 		file = new File("/tmp/test.sex");
-		reports = new ArrayList<ScalabilityReport>();
-		ScalabilityReport report = new ScalabilityReport();
+		reports = new ArrayList<ExperimentReport>();
+		ExperimentReport report = new ExperimentReport();
 		report.setName(NAME);
 		ReportData data = new ReportData();
 		data.setMeasurements(listFor(1, 2, 3, 4));
@@ -50,9 +50,9 @@ public class SaveToFileTest {
 		
 		InputStream is = new FileInputStream(file);
 		ObjectInputStream ois = new ObjectInputStream(is);
-		List<ScalabilityReport> read = (List<ScalabilityReport>)ois.readObject();
+		List<ExperimentReport> read = (List<ExperimentReport>)ois.readObject();
 		assertEquals(read.size(), 1);
-		ScalabilityReport report = read.get(0);
+		ExperimentReport report = read.get(0);
 		assertEquals(report.getName(), NAME);
 		assertEquals(report.size(), 2);
 		assertEquals(report.get(0d).getMeasurements(), listFor(1, 2, 3, 4));

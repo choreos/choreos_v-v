@@ -7,7 +7,7 @@ import java.util.concurrent.Future;
 import org.apache.commons.math.random.RandomData;
 import org.apache.commons.math.random.RandomDataImpl;
 
-public class PoissonLoadGenerator extends FastestLoadGenerator {
+public class PoissonLoadGenerator extends BasicLoadGenerator {
 
 	private RandomData random;
 

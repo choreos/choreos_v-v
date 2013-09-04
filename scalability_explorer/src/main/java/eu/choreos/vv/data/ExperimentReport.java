@@ -3,7 +3,7 @@ package eu.choreos.vv.data;
 import java.util.HashMap;
 import java.util.List;
 
-public class ScalabilityReport extends HashMap<Double, ReportData> {
+public class ExperimentReport extends HashMap<Double, ReportData> {
 	private static final long serialVersionUID = -2993273004741518768L;
 	private String name;
 	List<String> parameterLabels;
@@ -26,10 +26,10 @@ public class ScalabilityReport extends HashMap<Double, ReportData> {
 		this.measurementUnit = measurementUnit;
 	}
 
-	public ScalabilityReport() {
+	public ExperimentReport() {
 	}
 
-	public ScalabilityReport(String methodName) {
+	public ExperimentReport(String methodName) {
 		this.name = methodName;
 	}
 

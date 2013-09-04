@@ -8,7 +8,7 @@ import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.NormalDistribution;
 import org.apache.commons.math.distribution.NormalDistributionImpl;
 
-public class TruncatedNormalLoadGenerator extends FastestLoadGenerator {
+public class TruncatedNormalLoadGenerator extends BasicLoadGenerator {
 
 	private double upperBound;
 	private double lowerBound;

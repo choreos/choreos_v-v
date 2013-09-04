@@ -6,7 +6,7 @@ import java.util.List;
 import eu.choreos.vv.Scalable;
 import eu.choreos.vv.ScaleCaster;
 import eu.choreos.vv.analysis.Analyzer;
-import eu.choreos.vv.data.ScalabilityReport;
+import eu.choreos.vv.data.ExperimentReport;
 import eu.choreos.vv.deployment.Deployer;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
@@ -36,7 +36,7 @@ public abstract class Experiment implements Scalable {
 	private Deployer deployer;
 	private Analyzer analyzer;
 
-	private List<ScalabilityReport> reports;
+	private List<ExperimentReport> reports;
 	
 	private List<String> labels;
 
@@ -123,7 +123,7 @@ public abstract class Experiment implements Scalable {
 		this.numberOfSteps = 1;
 		this.numberOfRequestsPerStep = 1;
 		this.measurementLimit = Double.MAX_VALUE;
-		reports = new ArrayList<ScalabilityReport>();
+		reports = new ArrayList<ExperimentReport>();
 	}
 
 	public LoadGenerator getLoadGenerator() {
@@ -289,9 +289,9 @@ public abstract class Experiment implements Scalable {
 
 		scalingCaster.setInitialParametersValues(getInitialParameterValues());
 
-		ScalabilityReport report;
+		ExperimentReport report;
 		if (deployer != null)
-			deployer.enact();
+			deployer.deploy();
 		beforeExperiment();
 		report = scalingCaster.execute();
 		report.setParameterLabels(getParameterLabels());

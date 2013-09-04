@@ -7,7 +7,7 @@ import org.apache.commons.math.distribution.TDistributionImpl;
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 
 import eu.choreos.vv.aggregations.DescriptiveStatisticsFactory;
-import eu.choreos.vv.data.ScalabilityReport;
+import eu.choreos.vv.data.ExperimentReport;
 
 public class SampleSizeEstimation extends Analyzer {
 
@@ -25,7 +25,7 @@ public class SampleSizeEstimation extends Analyzer {
 	}
 
 	@Override
-	public void analyse(ScalabilityReport report) throws Exception {
+	public void analyse(ExperimentReport report) throws Exception {
 		for (Number key : report.keySet()) {
 			List<Number> sample = report.get(key).getMeasurements();
 			int n = sample.size();

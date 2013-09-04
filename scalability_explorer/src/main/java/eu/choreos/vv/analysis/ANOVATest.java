@@ -6,12 +6,12 @@ import java.util.List;
 import org.apache.commons.math.stat.inference.TestUtils;
 
 import eu.choreos.vv.data.ReportData;
-import eu.choreos.vv.data.ScalabilityReport;
+import eu.choreos.vv.data.ExperimentReport;
 
 public class ANOVATest extends Analyzer {
 
 	@Override
-	public void analyse(ScalabilityReport report) throws Exception {
+	public void analyse(ExperimentReport report) throws Exception {
 		List<double[]> classes = new ArrayList<double[]>();
 		for (ReportData data : report.values()) {
 			double[] sample = doubleArray(data.getMeasurements());

@@ -5,7 +5,7 @@ import org.apache.commons.math.stat.regression.GLSMultipleLinearRegression;
 
 import eu.choreos.vv.aggregations.AggregationFunction;
 import eu.choreos.vv.data.LinearRegressionSample;
-import eu.choreos.vv.data.ScalabilityReport;
+import eu.choreos.vv.data.ExperimentReport;
 
 public class LinearRegression extends Analyzer {
 
@@ -16,7 +16,7 @@ public class LinearRegression extends Analyzer {
 	}
 
 	@Override
-	public void analyse(ScalabilityReport report) throws Exception {
+	public void analyse(ExperimentReport report) throws Exception {
 		GLSMultipleLinearRegression regression = new GLSMultipleLinearRegression();
 		System.out.println(report.getName());
 		LinearRegressionSample sample = new LinearRegressionSample(function);

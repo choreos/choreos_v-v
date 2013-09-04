@@ -8,7 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import eu.choreos.vv.data.ScalabilityReport;
+import eu.choreos.vv.data.ExperimentReport;
 
 public class SaveToFile extends Analyzer {
 
@@ -25,12 +25,12 @@ public class SaveToFile extends Analyzer {
 	}
 	
 	@Override 
-	public void analyse(ScalabilityReport report) throws Exception {
+	public void analyse(ExperimentReport report) throws Exception {
 		save(report);
 	}
 
 	@Override
-	public void analyse(List<ScalabilityReport> reports)
+	public void analyse(List<ExperimentReport> reports)
 			throws IOException {
 		save(reports);
 	}

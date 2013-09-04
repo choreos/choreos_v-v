@@ -7,7 +7,7 @@ import org.jfree.chart.PlotData;
 import org.jfree.chart.XYChart;
 
 import eu.choreos.vv.aggregations.AggregationFunction;
-import eu.choreos.vv.data.ScalabilityReport;
+import eu.choreos.vv.data.ExperimentReport;
 
 /**
  * Creates charts to present the results obtained by batteries of scalability tests.
@@ -32,7 +32,7 @@ public class ReportChart {
 		this.yLabel = yLabel;
 	}
 	
-	public ReportChart(String chartTitle, ScalabilityReport report, int paramIdx, AggregationFunction function) {
+	public ReportChart(String chartTitle, ExperimentReport report, int paramIdx, AggregationFunction function) {
 		this(chartTitle, report.getParameterLabels().get(paramIdx), function.getLabel() + " of " + report.getMeasurementUnit());
 	}
 	

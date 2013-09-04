@@ -11,7 +11,7 @@ import eu.choreos.vv.analysis.AggregatePerformance;
 import eu.choreos.vv.analysis.ComposedAnalysis;
 import eu.choreos.vv.experiments.ScalabilityExperiment;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
-import eu.choreos.vv.loadgenerator.FastestLoadGenerator;
+import eu.choreos.vv.loadgenerator.BasicLoadGenerator;
 
 public class ScalabilityTesterExample extends ScalabilityExperiment {
 
@@ -70,7 +70,7 @@ public class ScalabilityTesterExample extends ScalabilityExperiment {
 		ScalabilityTesterExample example = new ScalabilityTesterExample();
 //		example.setLoadGenerator(new MultiThreadLoadGenerator());
 //		example.setLoadGenerator(new DegeneratedLoadGenerator());
-		example.setLoadGenerator(new FastestLoadGenerator());
+		example.setLoadGenerator(new BasicLoadGenerator());
 		example.setScalabilityFunctions(new LinearIncrease(100000));
 //		example.setScalabilityFunction(new LinearIncrease(1000));
 		example.setNumberOfRequestsPerStep(REQUESTS);

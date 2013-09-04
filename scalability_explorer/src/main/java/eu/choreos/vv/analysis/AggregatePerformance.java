@@ -7,7 +7,7 @@ import org.jfree.chart.PlotData;
 
 import eu.choreos.vv.aggregations.AggregationFunction;
 import eu.choreos.vv.chart.ReportChart;
-import eu.choreos.vv.data.ScalabilityReport;
+import eu.choreos.vv.data.ExperimentReport;
 
 public class AggregatePerformance extends Analyzer {
 
@@ -29,7 +29,7 @@ public class AggregatePerformance extends Analyzer {
 	}
 
 	@Override
-	public void analyse(ScalabilityReport report) {
+	public void analyse(ExperimentReport report) {
 		PlotData aggregation = new PlotData();
 		aggregation.setName(report.getName().toString());
 		for (Number index : report.keySet()) {
@@ -43,7 +43,7 @@ public class AggregatePerformance extends Analyzer {
 	}
 	
 	@Override
-	public void analyse(List<ScalabilityReport> reports) throws Exception {
+	public void analyse(List<ExperimentReport> reports) throws Exception {
 		ReportChart chart = new ReportChart(title, // "execution",
 				reports.get(0).getParameterLabels().get(paramIdx), function.getLabel()
 				+ " of " + reports.get(0).getMeasurementUnit());

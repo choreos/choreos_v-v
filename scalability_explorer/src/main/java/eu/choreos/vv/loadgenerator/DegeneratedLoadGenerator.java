@@ -9,7 +9,7 @@ import java.util.concurrent.Future;
  * executions.
  * 
  */
-public class DegeneratedLoadGenerator extends FastestLoadGenerator {
+public class DegeneratedLoadGenerator extends BasicLoadGenerator {
 
 	@Override
 	protected void performRequest(final ExecutorService executor,

@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import eu.choreos.vv.data.ReportData;
-import eu.choreos.vv.data.ScalabilityReport;
+import eu.choreos.vv.data.ExperimentReport;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 
@@ -111,9 +111,9 @@ public class ScaleCaster {
 	 * @return a ScalabiltyReport of the execution
 	 * @throws Exception
 	 */
-	public ScalabilityReport execute() {
+	public ExperimentReport execute() {
 		List<Number> values;
-		ScalabilityReport report = new ScalabilityReport(this.getName());
+		ExperimentReport report = new ExperimentReport(this.getName());
 		try {
 			for (int i = 0; i < this.getTimesToExecute()
 					/*&& value <= this.getMeasurementLimit()*/; i++) { //TODO: consider limit again
