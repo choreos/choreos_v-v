@@ -11,13 +11,15 @@ import eu.choreos.vv.analysis.AggregatePerformance;
 import eu.choreos.vv.analysis.ComposedAnalysis;
 import eu.choreos.vv.experiments.ScalabilityExperiment;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
-import eu.choreos.vv.loadgenerator.BasicLoadGenerator;
+import eu.choreos.vv.loadgenerator.LoadGeneratorFactory;
+import eu.choreos.vv.loadgenerator.strategy.LoadGenerationStrategy;
+import eu.choreos.vv.loadgenerator.strategy.NullStrategy;
+import eu.choreos.vv.loadgenerator.strategy.TruncatedNormalLoad;
 
-public class ScalabilityTesterExample extends ScalabilityExperiment {
+public class ScalabilityTestExample extends ScalabilityExperiment <Long, Long>{
 
 	private static final int REQUESTS = 30;
 	List<Long> resources;
-	long sleepTime;
 	int resourceIndex;
 	
 	long[] timestamps;
@@ -39,25 +41,27 @@ public class ScalabilityTesterExample extends ScalabilityExperiment {
 	}
 
 	@Override
-	public void beforeRequest() {
+	public Long beforeRequest() {
 //		System.out.println("index " + resourceIndex);
 //		System.out.println("resource size " + resources.size());
-		sleepTime = resources.get(resourceIndex);
+		Long sleepTime = resources.get(resourceIndex);
 		resourceIndex = resourceIndex < resources.size() - 1 ? resourceIndex + 1
 				: 0;
+		return sleepTime;
 	}
 
 	@Override
-	public void request() {
+	public Long request(Long param) {
 		timestamps[count++] = System.nanoTime();
 //		System.out.println("request time " + System.currentTimeMillis());
 //		System.out.println("sleep " + sleepTime);
 		try {
-			Thread.sleep(sleepTime);
+			Thread.sleep(param);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	@Override
@@ -67,25 +71,20 @@ public class ScalabilityTesterExample extends ScalabilityExperiment {
 	}
 
 	public static void execute() throws Exception {
-		ScalabilityTesterExample example = new ScalabilityTesterExample();
-//		example.setLoadGenerator(new MultiThreadLoadGenerator());
-//		example.setLoadGenerator(new DegeneratedLoadGenerator());
-		example.setLoadGenerator(new BasicLoadGenerator());
-		example.setScalabilityFunctions(new LinearIncrease(100000));
-//		example.setScalabilityFunction(new LinearIncrease(1000));
+		ScalabilityTestExample example = new ScalabilityTestExample();
+		TruncatedNormalLoad strategy = new TruncatedNormalLoad();
+		strategy.setLowerBound(500);
+		strategy.setUpperBound(500000000);
+		strategy.setStandardDeviation(1000);
+		LoadGeneratorFactory.getInstance().setStrategy(strategy);
+		example.setScalabilityFunctions(new LinearIncrease(10000));
 		example.setNumberOfRequestsPerStep(REQUESTS);
 		example.setNumberOfSteps(5);
 		example.setInitialRequestsPerMinute(100000);
-//		example.setInitialRequestsPerMinute(3000);
-//		example.setAnalyser(new ANOVATest());
-		 example.setAnalyser(new ComposedAnalysis(new ANOVATest(), new AggregatePerformance("Matrix multiplication", new Mean())));
+		example.setAnalyser(new ComposedAnalysis(new ANOVATest(), new AggregatePerformance("Matrix multiplication", new Mean())));
 
-//		 example.run("test1", false);
 		example.run("test1");
 
-//		 example.setNumberOfRequestsPerStep(10);
-//		 example.setInitialRequestsPerMinute(600);
-//		 example.run("test2");
 	}
 
 	public static void main(String[] args) throws Exception {

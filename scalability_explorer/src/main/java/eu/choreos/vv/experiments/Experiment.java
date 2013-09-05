@@ -12,6 +12,7 @@ import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 import eu.choreos.vv.loadgenerator.DegeneratedLoadGenerator;
 import eu.choreos.vv.loadgenerator.LoadGenerator;
+import eu.choreos.vv.loadgenerator.LoadGeneratorFactory;
 
 /**
  * This class implements a skeleton of a scalability experiment consisted on
@@ -23,7 +24,7 @@ import eu.choreos.vv.loadgenerator.LoadGenerator;
  * limit).
  * 
  */
-public abstract class Experiment implements Scalable {
+public abstract class Experiment <K, T> implements Scalable {
 
 	private int numberOfRequestsPerStep;
 	private int numberOfRequestsPerMinute;
@@ -31,7 +32,8 @@ public abstract class Experiment implements Scalable {
 	private Integer numberOfSteps;
 	private Double measurementLimit;
 
-	private LoadGenerator loadGen;
+	private LoadGenerator<K, T> loadGen;
+
 	private ScalabilityFunction[] scalabilityFunctions;
 	private Deployer deployer;
 	private Analyzer analyzer;
@@ -63,7 +65,8 @@ public abstract class Experiment implements Scalable {
 	 * 
 	 * @throws Exception
 	 */
-	public void beforeRequest() throws Exception {
+	public K beforeRequest() throws Exception {
+		return null;
 	}
 
 	/**
@@ -71,7 +74,8 @@ public abstract class Experiment implements Scalable {
 	 * 
 	 * @throws Exception
 	 */
-	public void request() throws Exception {
+	public T request(K param) throws Exception {
+		return null;
 	}
 
 	/**
@@ -79,7 +83,7 @@ public abstract class Experiment implements Scalable {
 	 * 
 	 * @throws Exception
 	 */
-	public void afterRequest() throws Exception {
+	public void afterRequest(T param) throws Exception {
 	}
 
 	/**
@@ -104,21 +108,16 @@ public abstract class Experiment implements Scalable {
 	 * LinearIncrease
 	 */
 	public Experiment() {
-		this(new DegeneratedLoadGenerator(), new LinearIncrease(1)); 
+		this(new LinearIncrease(1)); 
 	}
 
 	/**
-	 * Creates a new ScalabilityTester
+	 * Creates a new Experiment
 	 * 
-	 * @param loadGenerator
-	 *            load generator to run the tests
-	 * @param aggregator
-	 *            aggregation function
 	 * @param function
 	 *            scalability function
 	 */
-	public Experiment(LoadGenerator loadGenerator, ScalabilityFunction... function) {
-		this.loadGen = loadGenerator;
+	public Experiment(ScalabilityFunction... function) {
 		this.scalabilityFunctions = function;
 		this.numberOfSteps = 1;
 		this.numberOfRequestsPerStep = 1;
@@ -126,12 +125,8 @@ public abstract class Experiment implements Scalable {
 		reports = new ArrayList<ExperimentReport>();
 	}
 
-	public LoadGenerator getLoadGenerator() {
-		return loadGen;
-	}
-
-	public void setLoadGenerator(LoadGenerator loadGen) {
-		this.loadGen = loadGen;
+	private void newLoadGenerator() {
+		loadGen = LoadGeneratorFactory.getInstance().<K, T>degeneratedLoad(); 		
 	}
 
 	public ScalabilityFunction[] getScalabilityFunctions() {
@@ -221,6 +216,7 @@ public abstract class Experiment implements Scalable {
 			deployer.scale(getScaleSize());
 		beforeIteration();
 
+		newLoadGenerator();
 		loadGen.setDelay(60000000000l / numberOfRequestsPerMinute);
 		results = loadGen.execute(numberOfRequestsPerStep, this);
 

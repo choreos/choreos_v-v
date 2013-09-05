@@ -16,14 +16,15 @@ public class LoadGeneratorTest {
 		final int DELAY = 1000000;
 		final int TIMES_TO_RUN = 1000;
 		final List<Long> times = new ArrayList<Long>();
-		LoadGenerator loadGen = new DegeneratedLoadGenerator();
+		LoadGenerator loadGen = LoadGeneratorFactory.getInstance().degeneratedLoad();
 		loadGen.setDelay(DELAY);
 		try {
-		loadGen.execute(TIMES_TO_RUN, new Experiment() {
+		loadGen.execute(TIMES_TO_RUN, new Experiment<Object, Object>() {
 
 			@Override
-			public void request() {
+			public Object request(Object param) {
 					times.add(System.currentTimeMillis());
+					return null;
 			}
 
 			@Override
@@ -52,19 +53,20 @@ public class LoadGeneratorTest {
 	
 	@Test
 	public void sholdRunForOneSecond() throws Exception {
-		LoadGenerator loadGen = new DegeneratedLoadGenerator();
+		LoadGenerator loadGen = LoadGeneratorFactory.getInstance().degeneratedLoad();
 		loadGen.setDelay(1000000);
 		long startTime = System.currentTimeMillis();
-		loadGen.execute(100, new Experiment() {
+		loadGen.execute(100, new Experiment<Object, Object>() {
 
 			@Override
-			public void request() {
+			public Object request(Object param) {
 				try {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				return null;
 			}
 
 			@Override
@@ -92,19 +94,20 @@ public class LoadGeneratorTest {
 
 	@Test
 	public void executionShouldTakeLongerThanDelay() throws Exception {
-		LoadGenerator loadGen = new DegeneratedLoadGenerator();
+		LoadGenerator loadGen = LoadGeneratorFactory.getInstance().degeneratedLoad();
 		loadGen.setDelay(100000000);
 		long startTime = System.currentTimeMillis();
-		loadGen.execute(10, new Experiment() {
+		loadGen.execute(10, new Experiment<Object, Object>() {
 
 			@Override
-			public void request() {
+			public Object request(Object param) {
 				try {
 					Thread.sleep(200);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				return null;
 			}
 
 			@Override
@@ -129,7 +132,7 @@ public class LoadGeneratorTest {
 		});
 		long endTime = System.currentTimeMillis();
 		double duration = (endTime - startTime) / 1000d;
-		assertEquals(1.1, duration, 0.01);
+		assertEquals(1.1, duration, 0.007);
 	}
 
 }

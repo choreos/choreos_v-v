@@ -16,7 +16,7 @@ import eu.choreos.vv.loadgenerator.LoadGenerator;
  * limit).
  * 
  */
-public abstract class ScalabilityExperiment extends Experiment {
+public abstract class ScalabilityExperiment <K, T> extends Experiment <K, T> {
 
 	private Number initialRequestsPerMinute;
 	private Number inititalResoucesQuantity;
@@ -31,21 +31,6 @@ public abstract class ScalabilityExperiment extends Experiment {
 		init();
 	}
 
-	/**
-	 * Creates a new ScalabilityTester
-	 * 
-	 * @param loadGenerator
-	 *            load generator to run the tests
-	 * @param aggregator
-	 *            aggregation function
-	 * @param function
-	 *            scalability function
-	 */
-	public ScalabilityExperiment(LoadGenerator loadGenerator, ScalabilityFunction function) {
-		super(loadGenerator, function);
-		init();
-	}
-	
 	private void init() {
 		this.initialRequestsPerMinute = 60;
 		this.inititalResoucesQuantity = 1;

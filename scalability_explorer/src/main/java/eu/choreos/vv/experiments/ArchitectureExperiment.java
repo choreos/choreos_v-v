@@ -16,7 +16,7 @@ import eu.choreos.vv.loadgenerator.LoadGenerator;
  * limit).
  * 
  */
-public abstract class ArchitectureExperiment extends Experiment {
+public abstract class ArchitectureExperiment <K, T> extends Experiment <K, T> {
 
 	private Number inititalResoucesQuantity;
 	private int requestsPerMinute;
@@ -28,21 +28,6 @@ public abstract class ArchitectureExperiment extends Experiment {
 	 */
 	public ArchitectureExperiment() {
 		super();
-		init();
-	}
-
-	/**
-	 * Creates a new ScalabilityTester
-	 * 
-	 * @param loadGenerator
-	 *            load generator to run the tests
-	 * @param aggregator
-	 *            aggregation function
-	 * @param function
-	 *            scalability function
-	 */
-	public ArchitectureExperiment(LoadGenerator loadGenerator, ScalabilityFunction function) {
-		super(loadGenerator, function);
 		init();
 	}
 
