@@ -1,11 +1,19 @@
 package eu.choreos.vv;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import eu.choreos.vv.data.ReportData;
+import org.apache.commons.math.random.RandomData;
+import org.apache.commons.math.random.RandomDataImpl;
+
 import eu.choreos.vv.data.ExperimentReport;
+import eu.choreos.vv.data.ReportData;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 
@@ -16,27 +24,23 @@ import eu.choreos.vv.increasefunctions.ScalabilityFunction;
  */
 public class ScaleCaster {
 
+	RandomData keyGenerator;
 	Scalable item;
 	String name;
 	Integer timesToExecute;
 	Double measurementLimit;
-	ScalabilityFunction[] functions;
-	Number[] currentParameterValues;
+	Map<String, ValueAndFunction> currentParameterValues;
 
-	public ScaleCaster(Scalable item, String name) {
-		this(item, name, Integer.MAX_VALUE, Double.MAX_VALUE,
-				new LinearIncrease(1));
-	}
 
 	public ScaleCaster(Scalable item, String name,
-			Integer timesToExecute, Double measurementLimit,
-			ScalabilityFunction... function) {
+			Integer timesToExecute, Double measurementLimit) {
 		super();
 		this.item = item;
 		this.name = name;
 		this.timesToExecute = timesToExecute;
 		this.measurementLimit = measurementLimit;
-		this.functions = function;
+		this.keyGenerator = new RandomDataImpl();
+		this.currentParameterValues = new HashMap<String, ValueAndFunction>();
 	}
 
 	public Scalable getItem() {
@@ -71,37 +75,31 @@ public class ScaleCaster {
 		this.measurementLimit = measurementLimit;
 	}
 
-	public ScalabilityFunction[] getFunctions() {
-		return functions;
+	public String addInitialParameterValue(Number value, ScalabilityFunction function) {
+		String key = nextKey();
+		ValueAndFunction pair = new ValueAndFunction(value, function);
+		currentParameterValues.put(key, pair);
+		return key;
+	}
+
+	public Number getCurrentParameterValue(String key) {
+		return currentParameterValues.get(key).value;
 	}
 	
-	public ScalabilityFunction getFunction(int index) {
-		if (index < functions.length)
-			return functions[index];
-		else
-			return functions[functions.length-1];
-	}
-
-	public void setFunctions(ScalabilityFunction... function) {
-		this.functions = function;
-	}
-
-	public void setInitialParametersValues(Number... values) {
-		currentParameterValues = values;
-	}
-
-	public Number[] getCurrentParametersValues() {
-		return currentParameterValues;
+	private synchronized String nextKey() {
+		return keyGenerator.nextHexString(8);
 	}
 
 	private void increaseParamentersValues() {
-		for (int i = 0; i < currentParameterValues.length; i++)
-			currentParameterValues[i] = getFunction(i).increaseParams(
-					currentParameterValues[i]);
+		for(ValueAndFunction pair: currentParameterValues.values()) {
+			Number value = pair.value;
+			ScalabilityFunction function = pair.function;
+			pair.value = function.increaseParams(value);
+		}
 	}
 
 	private List<Number> executeItem() throws Exception {
-		return item.execute(currentParameterValues);
+		return item.execute(this);
 	}
 
 	/**
@@ -119,7 +117,9 @@ public class ScaleCaster {
 					/*&& value <= this.getMeasurementLimit()*/; i++) { //TODO: consider limit again
 				values = this.executeItem();
 				List<Number> params = new ArrayList<Number>();
-				Collections.addAll(params, currentParameterValues);
+				for(ValueAndFunction pair: currentParameterValues.values()) {
+					params.add(pair.value);
+				}
 				ReportData data = new ReportData(params, values); //TODO: include labels
 				report.put((double) i + 1, data);
 				this.increaseParamentersValues();
@@ -130,4 +130,15 @@ public class ScaleCaster {
 		return report;
 	}
 
+}
+
+class ValueAndFunction {
+	Number value;
+	ScalabilityFunction function;
+	
+	public ValueAndFunction(Number value, ScalabilityFunction function) {
+		this.value = value;
+		this.function = function;
+	}
+	
 }

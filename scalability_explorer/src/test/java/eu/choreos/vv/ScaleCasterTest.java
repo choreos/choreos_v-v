@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import eu.choreos.vv.increasefunctions.ExponentialIncrease;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
+import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 
 public class ScaleCasterTest {
 
@@ -17,33 +18,30 @@ public class ScaleCasterTest {
 	public void setUp() {
 		caster = new ScaleCaster(new Scalable() {
 			@Override
-			public List<Number> execute(Number... params) throws Exception {
+			public List<Number> execute(ScaleCaster scaleCaster) throws Exception {
 				// TODO Auto-generated method stub
 				return null;
 			}
-		},"name");
+		},"name",5, 0.0);
 	}
 	
 	@Test
 	public void oneParameter() {
-	
-		caster.setInitialParametersValues(0);
-		caster.setTimesToExecute(5);
-		caster.setFunctions(new LinearIncrease(10));
+		ScalabilityFunction function = new LinearIncrease(10);
+		String key = caster.addInitialParameterValue(0, function);
 		caster.execute();
-		int value = caster.getCurrentParametersValues()[0].intValue();
+		int value = caster.getCurrentParameterValue(key).intValue();
 		assertEquals(50, value);
 	}
 	
 	@Test
 	public void twoParametersOneFunction() {
-	
-		caster.setInitialParametersValues(1, 2);
-		caster.setTimesToExecute(5);
-		caster.setFunctions(new ExponentialIncrease(2));
+		ScalabilityFunction function = new ExponentialIncrease(2); 
+		String key1 = caster.addInitialParameterValue(1, function);
+		String key2 = caster.addInitialParameterValue(2, function);
 		caster.execute();
-		int value1 = caster.getCurrentParametersValues()[0].intValue();
-		int value2 = caster.getCurrentParametersValues()[1].intValue();
+		int value1 = caster.getCurrentParameterValue(key1).intValue();
+		int value2 = caster.getCurrentParameterValue(key2).intValue();
 		assertEquals(32, value1);
 		assertEquals(64, value2);
 	}
@@ -51,12 +49,11 @@ public class ScaleCasterTest {
 	@Test
 	public void twoParametersTwoFunctions() {
 	
-		caster.setInitialParametersValues(1, 2);
-		caster.setTimesToExecute(5);
-		caster.setFunctions(new ExponentialIncrease(2), new LinearIncrease(2));
+		String key1 = caster.addInitialParameterValue(1, new ExponentialIncrease(2));
+		String key2 = caster.addInitialParameterValue(2, new LinearIncrease(2));
 		caster.execute();
-		int value1 = caster.getCurrentParametersValues()[0].intValue();
-		int value2 = caster.getCurrentParametersValues()[1].intValue();
+		int value1 = caster.getCurrentParameterValue(key1).intValue();
+		int value2 = caster.getCurrentParameterValue(key2).intValue();
 		assertEquals(32, value1);
 		assertEquals(12, value2);
 	}

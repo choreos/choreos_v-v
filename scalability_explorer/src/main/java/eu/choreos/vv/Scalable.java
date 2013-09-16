@@ -14,6 +14,6 @@ public interface Scalable {
 	 * @return a measurement of interest collected during the test.
 	 * @throws Exception
 	 */
-	public List<Number> execute(Number... params) throws Exception;
+	public List<Number> execute(ScaleCaster scaleCaster) throws Exception;
 	
 }
