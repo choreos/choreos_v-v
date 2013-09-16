@@ -9,14 +9,12 @@ import eu.choreos.vv.aggregations.Mean;
 import eu.choreos.vv.analysis.ANOVATest;
 import eu.choreos.vv.analysis.AggregatePerformance;
 import eu.choreos.vv.analysis.ComposedAnalysis;
-import eu.choreos.vv.experiments.ScalabilityExperiment;
+import eu.choreos.vv.experiments.Experiment;
+import eu.choreos.vv.experiments.strategy.ExperimentStrategy;
+import eu.choreos.vv.experiments.strategy.WorkloadScaling;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
-import eu.choreos.vv.loadgenerator.LoadGeneratorFactory;
-import eu.choreos.vv.loadgenerator.strategy.LoadGenerationStrategy;
-import eu.choreos.vv.loadgenerator.strategy.NullStrategy;
-import eu.choreos.vv.loadgenerator.strategy.TruncatedNormalLoad;
 
-public class ScalabilityTestExample extends ScalabilityExperiment <Long, Long>{
+public class ScalabilityTestExample extends Experiment <Long, Long>{
 
 	private static final int REQUESTS = 30;
 	List<Long> resources;
@@ -72,15 +70,19 @@ public class ScalabilityTestExample extends ScalabilityExperiment <Long, Long>{
 
 	public static void execute() throws Exception {
 		ScalabilityTestExample example = new ScalabilityTestExample();
-		TruncatedNormalLoad strategy = new TruncatedNormalLoad();
-		strategy.setLowerBound(500);
-		strategy.setUpperBound(500000000);
-		strategy.setStandardDeviation(1000);
-		LoadGeneratorFactory.getInstance().setStrategy(strategy);
-		example.setScalabilityFunctions(new LinearIncrease(10000));
+//		TruncatedNormalLoad strategy = new TruncatedNormalLoad();
+//		strategy.setLowerBound(500);
+//		strategy.setUpperBound(500000000);
+//		strategy.setStandardDeviation(1000);
+//		LoadGeneratorFactory.getInstance().setStrategy(strategy);
+		
+		ExperimentStrategy strategy = new WorkloadScaling();
+		strategy.setFunction(new LinearIncrease(10000));
+		strategy.setParameterInitialValue(10000);
+		
+		example.setStrategy(strategy);
 		example.setNumberOfRequestsPerStep(REQUESTS);
 		example.setNumberOfSteps(5);
-		example.setInitialRequestsPerMinute(100000);
 		example.setAnalyser(new ComposedAnalysis(new ANOVATest(), new AggregatePerformance("Matrix multiplication", new Mean())));
 
 		example.run("test1");

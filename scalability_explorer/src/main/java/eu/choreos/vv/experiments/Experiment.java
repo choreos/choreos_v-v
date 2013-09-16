@@ -8,9 +8,9 @@ import eu.choreos.vv.ScaleCaster;
 import eu.choreos.vv.analysis.Analyzer;
 import eu.choreos.vv.data.ExperimentReport;
 import eu.choreos.vv.deployment.Deployer;
+import eu.choreos.vv.experiments.strategy.ExperimentStrategy;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
-import eu.choreos.vv.loadgenerator.DegeneratedLoadGenerator;
 import eu.choreos.vv.loadgenerator.LoadGenerator;
 import eu.choreos.vv.loadgenerator.LoadGeneratorFactory;
 
@@ -24,7 +24,7 @@ import eu.choreos.vv.loadgenerator.LoadGeneratorFactory;
  * limit).
  * 
  */
-public abstract class Experiment <K, T> implements Scalable {
+public abstract class Experiment<K, T> implements Scalable {
 
 	private int numberOfRequestsPerStep;
 	private int numberOfRequestsPerMinute;
@@ -34,13 +34,12 @@ public abstract class Experiment <K, T> implements Scalable {
 
 	private LoadGenerator<K, T> loadGen;
 
-	private ScalabilityFunction[] scalabilityFunctions;
 	private Deployer deployer;
 	private Analyzer analyzer;
 
 	private List<ExperimentReport> reports;
-	
-	private List<String> labels;
+
+	private ExperimentStrategy strategy;
 
 	/**
 	 * This method can be overridden to be executed before the experiment begin.
@@ -103,22 +102,12 @@ public abstract class Experiment <K, T> implements Scalable {
 	public void afterExperiment() throws Exception {
 	}
 
-	/**
-	 * Creates a new ScalabilityTester that uses UniformLoadGenarator, Mean and
-	 * LinearIncrease
-	 */
-	public Experiment() {
-		this(new LinearIncrease(1)); 
-	}
 
 	/**
 	 * Creates a new Experiment
 	 * 
-	 * @param function
-	 *            scalability function
 	 */
-	public Experiment(ScalabilityFunction... function) {
-		this.scalabilityFunctions = function;
+	public Experiment() {
 		this.numberOfSteps = 1;
 		this.numberOfRequestsPerStep = 1;
 		this.measurementLimit = Double.MAX_VALUE;
@@ -126,15 +115,16 @@ public abstract class Experiment <K, T> implements Scalable {
 	}
 
 	private void newLoadGenerator() {
-		loadGen = LoadGeneratorFactory.getInstance().<K, T>degeneratedLoad(); 		
+		loadGen = LoadGeneratorFactory.getInstance().<K, T> degeneratedLoad();
 	}
 
-	public ScalabilityFunction[] getScalabilityFunctions() {
-		return scalabilityFunctions;
+	public ExperimentStrategy getStrategy() {
+		return strategy;
 	}
 
-	public void setScalabilityFunctions(ScalabilityFunction... function) {
-		this.scalabilityFunctions = function;
+	public void setStrategy(ExperimentStrategy strategy) {
+		this.strategy = strategy;
+		strategy.setExperiment(this);
 	}
 
 	public Deployer getDeployer() {
@@ -193,22 +183,13 @@ public abstract class Experiment <K, T> implements Scalable {
 		this.analyzer = analyser;
 	}
 
-	protected abstract Number[] getInitialParameterValues();
-
-	protected abstract void updateParameterValues(Number... values);
-
 	protected List<String> getParameterLabels() {
-		return labels;
+		return strategy.getLabels();
 	}
 	
-	protected void setParameterLabels(List<String> labels) {
-		this.labels = labels;
-		
-	}
-
 	@Override
-	public List<Number> execute(Number... params) throws Exception {
-		updateParameterValues(params);
+	public List<Number> execute(ScaleCaster scaleCaster) throws Exception {
+		strategy.updateParameterValues(scaleCaster);
 
 		List<Number> results = new ArrayList<Number>();
 
@@ -226,44 +207,25 @@ public abstract class Experiment <K, T> implements Scalable {
 	}
 
 	/**
-	 * runs a test battery according to the parameters
+	 * same as run(name, true, true);
 	 * 
 	 * @param name
-	 *            name to identify the battery - used by ScalabilityReportChart
-	 * @param timesToRun
-	 *            maximum number of test batteries to be executed
-	 * @param latencyLimit
-	 *            maximum return value allowed for a test battery
-	 * @param numberOfExecutionsPerTest
-	 *            number of executions in each test battery
-	 * @param initialRequestsPerMinute
-	 *            initial frequency of requests
-	 * @param inititalResoucesQuantity
-	 *            initial amount of resources
+	 *            label to be used in a ScalabilityReportChart
+	 * @throws Exception
 	 */
-	// public void run(String name, int timesToRun, double latencyLimit,
-	// int numberOfExecutionsPerTest, int initialRequestsPerMinute,
-	// int inititalResoucesQuantity) throws Exception {
-	// this.numberOfSteps = timesToRun;
-	// this.measurementLimit = latencyLimit;
-	// this.initialRequestsPerMinute = initialRequestsPerMinute;
-	// this.inititalResoucesQuantity = inititalResoucesQuantity;
-	//
-	// run(name);
-	// }
-	//
-	// public void run(String name, int timesToRun, int
-	// numberOfExecutionsPerTest,
-	// int initialRequestsPerMinute, int inititalResoucesQuantity)
-	// throws Exception {
-	// run(name, timesToRun, Double.MAX_VALUE, numberOfExecutionsPerTest,
-	// initialRequestsPerMinute, inititalResoucesQuantity);
-	// }
-
 	public void run(String name) throws Exception {
 		run(name, true, true);
 	}
-	
+
+	/**
+	 * same as run(name, analyse, true);
+	 * 
+	 * @param name
+	 *            label to be used in a ScalabilityReportChart
+	 * @param analyse
+	 *            true to perform analysis at the and of the experiment
+	 * @throws Exception
+	 */
 	public void run(String name, boolean analyse) throws Exception {
 		run(name, analyse, true);
 	}
@@ -275,21 +237,23 @@ public abstract class Experiment <K, T> implements Scalable {
 	 * @param name
 	 *            label to be used in a ScalabilityReportChart
 	 * @param analyse
-	 * 			  true to perform analysis at the and of the experiment
+	 *            true to perform analysis at the and of the experiment
 	 * @param store
 	 *            false discards the experiment report
 	 */
-	public void run(String name, boolean analyse, boolean store) throws Exception {
-		ScaleCaster scalingCaster = new ScaleCaster(this, name, numberOfSteps,
-				measurementLimit, scalabilityFunctions);
+	public void run(String name, boolean analyse, boolean store)
+			throws Exception {
+		ScaleCaster scaleCaster = new ScaleCaster(this, name, numberOfSteps,
+				measurementLimit);
 
-		scalingCaster.setInitialParametersValues(getInitialParameterValues());
+		strategy.putInitialParameterValues(scaleCaster);
+//		scaleCaster.setInitialParametersValues(getInitialParameterValues());
 
 		ExperimentReport report;
 		if (deployer != null)
 			deployer.deploy();
 		beforeExperiment();
-		report = scalingCaster.execute();
+		report = scaleCaster.execute();
 		report.setParameterLabels(getParameterLabels());
 		report.setMeasurementUnit(loadGen.getLabel());
 		afterExperiment();
