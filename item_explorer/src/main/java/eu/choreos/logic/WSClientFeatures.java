@@ -26,7 +26,7 @@ public class WSClientFeatures {
 		} 
 		catch (ParserException e) { e.printStackTrace(); } 
 		catch (InvalidOperationNameException e) { e.printStackTrace(); } 
-		catch (EmptyRequetItemException e) { e.printStackTrace(); }
+		catch (EmptyRequetItemException e) { return "//"+e.getMessage(); }
 		
 		return null;
 	}
