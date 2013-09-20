@@ -30,6 +30,7 @@ public class ScaleCaster {
 	Integer timesToExecute;
 	Double measurementLimit;
 	Map<String, ValueAndFunction> currentParameterValues;
+	List<ValueAndFunction> values;
 
 
 	public ScaleCaster(Scalable item, String name,
@@ -41,6 +42,7 @@ public class ScaleCaster {
 		this.measurementLimit = measurementLimit;
 		this.keyGenerator = new RandomDataImpl();
 		this.currentParameterValues = new HashMap<String, ValueAndFunction>();
+		this.values = new ArrayList<ValueAndFunction>();
 	}
 
 	public Scalable getItem() {
@@ -79,6 +81,7 @@ public class ScaleCaster {
 		String key = nextKey();
 		ValueAndFunction pair = new ValueAndFunction(value, function);
 		currentParameterValues.put(key, pair);
+		values.add(pair);
 		return key;
 	}
 
@@ -117,11 +120,11 @@ public class ScaleCaster {
 					/*&& value <= this.getMeasurementLimit()*/; i++) { //TODO: consider limit again
 				values = this.executeItem();
 				List<Number> params = new ArrayList<Number>();
-				for(ValueAndFunction pair: currentParameterValues.values()) {
+				for(ValueAndFunction pair: this.values) {
 					params.add(pair.value);
 				}
 				ReportData data = new ReportData(params, values); //TODO: include labels
-				report.put((double) i + 1, data);
+				report.put( i + 1, data);
 				this.increaseParamentersValues();
 			}
 		} catch (Exception e) {

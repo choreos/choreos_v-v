@@ -1,5 +1,6 @@
 package eu.choreos.vv.example;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +10,13 @@ import eu.choreos.vv.aggregations.Mean;
 import eu.choreos.vv.analysis.ANOVATest;
 import eu.choreos.vv.analysis.AggregatePerformance;
 import eu.choreos.vv.analysis.ComposedAnalysis;
+import eu.choreos.vv.analysis.SaveToXML;
 import eu.choreos.vv.experiments.Experiment;
+import eu.choreos.vv.experiments.strategy.CapacityScaling;
+import eu.choreos.vv.experiments.strategy.ComposedStrategy;
 import eu.choreos.vv.experiments.strategy.ExperimentStrategy;
 import eu.choreos.vv.experiments.strategy.WorkloadScaling;
+import eu.choreos.vv.increasefunctions.ExponentialIncrease;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 
 public class ScalabilityTestExample extends Experiment <Long, Long>{
@@ -76,14 +81,20 @@ public class ScalabilityTestExample extends Experiment <Long, Long>{
 //		strategy.setStandardDeviation(1000);
 //		LoadGeneratorFactory.getInstance().setStrategy(strategy);
 		
-		ExperimentStrategy strategy = new WorkloadScaling();
-		strategy.setFunction(new LinearIncrease(10000));
-		strategy.setParameterInitialValue(10000);
+		ExperimentStrategy estrategy = new WorkloadScaling();
+		estrategy.setFunction(new LinearIncrease(10000));
+		estrategy.setParameterInitialValue(10000);
+		
+		ExperimentStrategy cstrategy = new CapacityScaling();
+		cstrategy.setFunction(new ExponentialIncrease(2));
+		cstrategy.setParameterInitialValue(1);
+		
+		ExperimentStrategy strategy = new ComposedStrategy(estrategy, cstrategy);
 		
 		example.setStrategy(strategy);
 		example.setNumberOfRequestsPerStep(REQUESTS);
 		example.setNumberOfSteps(5);
-		example.setAnalyser(new ComposedAnalysis(new ANOVATest(), new AggregatePerformance("Matrix multiplication", new Mean())));
+		example.setAnalyser(new ComposedAnalysis(new SaveToXML(new File("/tmp/scalability_test.xml")), new ANOVATest(), new AggregatePerformance("Matrix multiplication", new Mean(), 1)));
 
 		example.run("test1");
 

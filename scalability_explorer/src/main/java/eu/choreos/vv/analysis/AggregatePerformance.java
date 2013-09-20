@@ -21,11 +21,11 @@ public class AggregatePerformance extends Analyzer {
 		this.title = title;
 		this.function = function;
 		this.paramIdx = param;
+		plotData = new ArrayList<PlotData>();
 	}
 
 	public AggregatePerformance(String title, AggregationFunction function) {
 		this(title, function, 0);
-		plotData = new ArrayList<PlotData>();
 	}
 
 	@Override
