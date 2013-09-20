@@ -36,10 +36,10 @@ public class SaveToFileTest {
 		report.setName(NAME);
 		ReportData data = new ReportData();
 		data.setMeasurements(listFor(1, 2, 3, 4));
-		report.put(0d, data);
+		report.put(0, data);
 		data = new ReportData();
 		data.setMeasurements(listFor(2, 4, 6, 8));
-		report.put(1d, data);
+		report.put(1, data);
 		reports.add(report);
 	}
 	
