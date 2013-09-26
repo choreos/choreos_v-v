@@ -221,7 +221,7 @@ public class ItemBuilder {
 			String repeatedEntry = m.group(1).replace(tagName, tagName);
 			
 			String listOfTagName = multiplyString(repeatedEntry, listSize);
-			result = baseXml.replaceFirst(REGEXP, listOfTagName);
+			result = result.replaceFirst(REGEXP, listOfTagName);
 		}
 		
 	        return result;
