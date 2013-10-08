@@ -7,10 +7,9 @@ import eu.choreos.vv.Scalable;
 import eu.choreos.vv.ScaleCaster;
 import eu.choreos.vv.analysis.Analyzer;
 import eu.choreos.vv.data.ExperimentReport;
+import eu.choreos.vv.data.ReportData;
 import eu.choreos.vv.deployment.Deployer;
 import eu.choreos.vv.experiments.strategy.ExperimentStrategy;
-import eu.choreos.vv.increasefunctions.LinearIncrease;
-import eu.choreos.vv.increasefunctions.ScalabilityFunction;
 import eu.choreos.vv.loadgenerator.LoadGenerator;
 import eu.choreos.vv.loadgenerator.LoadGeneratorFactory;
 
@@ -188,10 +187,10 @@ public abstract class Experiment<K, T> implements Scalable {
 	}
 	
 	@Override
-	public List<Number> execute(ScaleCaster scaleCaster) throws Exception {
+	public ReportData execute(ScaleCaster scaleCaster) throws Exception {
 		strategy.updateParameterValues(scaleCaster);
 
-		List<Number> results = new ArrayList<Number>();
+		ReportData report;
 
 		if (deployer != null)
 			deployer.scale(getScaleSize());
@@ -199,11 +198,11 @@ public abstract class Experiment<K, T> implements Scalable {
 
 		newLoadGenerator();
 		loadGen.setDelay(60000000000l / numberOfRequestsPerMinute);
-		results = loadGen.execute(numberOfRequestsPerStep, this);
+		report = loadGen.execute(numberOfRequestsPerStep, this);
 
 		afterIteration();
 
-		return results;
+		return report;
 	}
 
 	/**

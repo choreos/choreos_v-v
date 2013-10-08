@@ -1,8 +1,7 @@
 package eu.choreos.vv.loadgenerator;
 
-import java.util.List;
-
 import eu.choreos.vv.chart.Labeled;
+import eu.choreos.vv.data.ReportData;
 import eu.choreos.vv.experiments.Experiment;
 import eu.choreos.vv.loadgenerator.strategy.LoadGenerationStrategy;
 
@@ -20,7 +19,7 @@ public interface LoadGenerator <K, T> extends Labeled {
 	 * @return a list of the values returned by the executions
 	 * @throws Exception
 	 */
-	public List<Number> execute(int times, Experiment<K, T> exec) throws Exception;
+	public ReportData execute(int times, Experiment<K, T> exec) throws Exception;
 	
 	public void setDelay(long delay);
 	

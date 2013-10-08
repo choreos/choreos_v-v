@@ -101,7 +101,7 @@ public class ScaleCaster {
 		}
 	}
 
-	private List<Number> executeItem() throws Exception {
+	private ReportData executeItem() throws Exception {
 		return item.execute(this);
 	}
 
@@ -113,17 +113,18 @@ public class ScaleCaster {
 	 * @throws Exception
 	 */
 	public ExperimentReport execute() {
-		List<Number> values;
+		ReportData data;
 		ExperimentReport report = new ExperimentReport(this.getName());
 		try {
 			for (int i = 0; i < this.getTimesToExecute()
 					/*&& value <= this.getMeasurementLimit()*/; i++) { //TODO: consider limit again
-				values = this.executeItem();
+				data = this.executeItem();
 				List<Number> params = new ArrayList<Number>();
 				for(ValueAndFunction pair: this.values) {
 					params.add(pair.value);
 				}
-				ReportData data = new ReportData(params, values); //TODO: include labels
+//				ReportData data = new ReportData(params, values); //TODO: include labels
+				data.setParameters(params);
 				report.put( i + 1, data);
 				this.increaseParamentersValues();
 			}

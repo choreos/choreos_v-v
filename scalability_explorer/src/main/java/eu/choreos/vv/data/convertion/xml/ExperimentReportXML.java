@@ -16,7 +16,9 @@ public class ExperimentReportXML extends XMLConverter<ExperimentReport> {
 	private static final String LABEL = "label";
 	private static final String DATA = "data";
 	private static final String ITERATION = "iteration";
-	private static final String SEQUENCE = "sequence";	
+	private static final String SEQUENCE = "sequence";
+	private static final String START_TIME = "startTime";
+	private static final String END_TIME = "endTime";	
 	
 	public ExperimentReportXML(PrintWriter writer) {
 		super(writer);
@@ -45,6 +47,8 @@ public class ExperimentReportXML extends XMLConverter<ExperimentReport> {
 	private void writeIteration(int iteration, ReportData reportData) {
 		Map<String, String> param = new HashMap<String, String>();
 		param.put(SEQUENCE, ""+iteration);
+		param.put(START_TIME, reportData.getStartTime().toString());
+		param.put(END_TIME, reportData.getEndTime().toString());
 		openTag(ITERATION, param);
 //		writeIterationOrder(iteration);
 		writeReportData(reportData);

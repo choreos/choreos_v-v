@@ -55,8 +55,9 @@ public class SaveToFileTest {
 		ExperimentReport report = read.get(0);
 		assertEquals(report.getName(), NAME);
 		assertEquals(report.size(), 2);
-		assertEquals(report.get(0d).getMeasurements(), listFor(1, 2, 3, 4));
-		assertEquals(report.get(1d).getMeasurements(), listFor(2, 4, 6, 8));
+		assertEquals(report.get(0).getMeasurements(), listFor(1, 2, 3, 4));
+		assertEquals(report.get(1).getMeasurements(), listFor(2, 4, 6, 8));
+		ois.close();
 	}
 
 }

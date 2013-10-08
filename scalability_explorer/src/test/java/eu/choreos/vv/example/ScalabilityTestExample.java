@@ -36,7 +36,7 @@ public class ScalabilityTestExample extends Experiment <Long, Long>{
 	
 	@Override
 	public void beforeIteration() {
-		resources.add(5l);
+		resources.add(500l);
 		timestamps = new long[REQUESTS];
 		count = 0;
 //		resources.add(Math.round( Math.random() * 5l));
@@ -82,8 +82,8 @@ public class ScalabilityTestExample extends Experiment <Long, Long>{
 //		LoadGeneratorFactory.getInstance().setStrategy(strategy);
 		
 		ExperimentStrategy estrategy = new WorkloadScaling();
-		estrategy.setFunction(new LinearIncrease(10000));
-		estrategy.setParameterInitialValue(10000);
+		estrategy.setFunction(new LinearIncrease(100));
+		estrategy.setParameterInitialValue(100);
 		
 		ExperimentStrategy cstrategy = new CapacityScaling();
 		cstrategy.setFunction(new ExponentialIncrease(2));

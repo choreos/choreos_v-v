@@ -1,6 +1,7 @@
 package eu.choreos.vv.loadgenerator;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -8,6 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import eu.choreos.vv.data.ReportData;
 import eu.choreos.vv.experiments.Experiment;
 import eu.choreos.vv.loadgenerator.strategy.LoadGenerationStrategy;
 
@@ -32,16 +34,18 @@ public class BasicLoadGenerator <K, T> implements LoadGenerator<K, T>, Callable<
 	}
 
 	@Override
-	public List<Number> execute(int numberOfCalls, Experiment<K, T> experiment)
+	public ReportData execute(int numberOfCalls, Experiment<K, T> experiment)
 			throws Exception {
 		final ExecutorService executorService = Executors
 				.newFixedThreadPool(poolSize);
 		final List<Future<Double>> futureResults = new ArrayList<Future<Double>>();
-		final List<Number> results = new ArrayList<Number>();
+		final List<Number> measurements = new ArrayList<Number>();
+		Date start, end;
 		this.experiment = experiment;
 		strategy.setDelay(delay);
 		strategy.setup();
 		try {
+			start = new Date();
 			for (int i = 0; i < numberOfCalls; i++) {
 				strategy.beforeRequest();
 				performRequest(executorService, futureResults);
@@ -50,15 +54,19 @@ public class BasicLoadGenerator <K, T> implements LoadGenerator<K, T>, Callable<
 			executorService.shutdown();
 			while (!executorService.awaitTermination(timeout, TimeUnit.SECONDS))
 				;
+			end = new Date();
 		} catch (InterruptedException e) {
 			executorService.shutdownNow();
 			throw e;
 		}
 
 		for (Future<Double> future : futureResults)
-			results.add(future.get());
-
-		return results;
+			measurements.add(future.get());
+		ReportData report = new ReportData();
+		report.setMeasurements(measurements);
+		report.setStartTime(start);
+		report.setEndTime(end);
+		return report;
 	}
 
 	protected void performRequest(final ExecutorService executorService,

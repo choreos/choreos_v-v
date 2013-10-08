@@ -2,11 +2,10 @@ package eu.choreos.vv;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 
+import eu.choreos.vv.data.ReportData;
 import eu.choreos.vv.increasefunctions.ExponentialIncrease;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
@@ -18,9 +17,9 @@ public class ScaleCasterTest {
 	public void setUp() {
 		caster = new ScaleCaster(new Scalable() {
 			@Override
-			public List<Number> execute(ScaleCaster scaleCaster) throws Exception {
+			public ReportData execute(ScaleCaster scaleCaster) throws Exception {
 				// TODO Auto-generated method stub
-				return null;
+				return new ReportData();
 			}
 		},"name",5, 0.0);
 	}
