@@ -9,16 +9,16 @@ import eu.choreos.vv.data.ReportData;
 
 public class ExperimentReportXML extends XMLConverter<ExperimentReport> {
 	
-	private static final String REPORT = "report";
-	private static final String MEASUREMENTUNIT = "measurementUnit";
-	private static final String NAME = "name";
-	private static final String PARAMETERLABELS = "parameterLabels";
-	private static final String LABEL = "label";
-	private static final String DATA = "data";
-	private static final String ITERATION = "iteration";
-	private static final String SEQUENCE = "sequence";
-	private static final String START_TIME = "startTime";
-	private static final String END_TIME = "endTime";	
+	public static final String REPORT = "report";
+	public static final String MEASUREMENT_UNIT = "measurementUnit";
+	public static final String NAME = "name";
+	public static final String PARAMETER_LABELS = "parameterLabels";
+	public static final String LABEL = "label";
+	public static final String DATA = "data";
+	public static final String ITERATION = "iteration";
+	public static final String SEQUENCE = "sequence";
+	public static final String START_TIME = "startTime";
+	public static final String END_TIME = "endTime";	
 	
 	public ExperimentReportXML(PrintWriter writer) {
 		super(writer);
@@ -62,15 +62,15 @@ public class ExperimentReportXML extends XMLConverter<ExperimentReport> {
 	}
 
 	private void writeParameterLabels(ExperimentReport report) {
-		openTag(PARAMETERLABELS);
+		openTag(PARAMETER_LABELS);
 		writeList(LABEL, report.getParameterLabels());
-		closeTag(PARAMETERLABELS);
+		closeTag(PARAMETER_LABELS);
 	}
 
 	private void writeMeasurementUnit(ExperimentReport report) {
-		openTag(MEASUREMENTUNIT);
+		openTag(MEASUREMENT_UNIT);
 		value(report.getMeasurementUnit());
-		closeTag(MEASUREMENTUNIT);
+		closeTag(MEASUREMENT_UNIT);
 		
 	}
 
