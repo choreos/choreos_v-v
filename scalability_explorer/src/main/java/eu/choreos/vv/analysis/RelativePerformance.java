@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.jfree.chart.PlotData;
 
 import eu.choreos.vv.aggregations.AggregationFunction;
+import eu.choreos.vv.chart.PlotData;
 import eu.choreos.vv.chart.ReportChart;
 import eu.choreos.vv.data.ExperimentReport;
 

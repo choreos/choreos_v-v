@@ -1,4 +1,4 @@
-package org.jfree.chart;
+package eu.choreos.vv.chart;
 
 /**
  * JFreeChartDemo
@@ -27,6 +27,9 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.TickUnitSource;
 import org.jfree.chart.labels.StandardXYItemLabelGenerator;
@@ -38,16 +41,12 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+
 public class XYChart extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private String xLabel;
-	private String yLabel;
 
 	public XYChart(String applicationTitle, String chartTitle, List<PlotData> reports, String xLabel, String yLabel) {
         super(applicationTitle);
-        
-        this.xLabel = xLabel;
-        this.yLabel = yLabel;
         
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
@@ -57,7 +56,7 @@ public class XYChart extends JFrame {
             createDataset(dataset, report);
 		}
         // based on the dataset we create the chart
-        JFreeChart chart = createChart(dataset, chartTitle);
+        JFreeChart chart = createChart(dataset, chartTitle, xLabel, yLabel);
         // we put the chart into a panel
         ChartPanel chartPanel = new ChartPanel(chart);
         // default size
@@ -66,8 +65,19 @@ public class XYChart extends JFrame {
         setContentPane(chartPanel);
 
     }
+	
+	public static ChartPanel createChart(String chartTitle, List<PlotData> reports, String xLabel, String yLabel) {
+		XYSeriesCollection dataset = new XYSeriesCollection();
+
+        for (PlotData report : reports) {
+            createDataset(dataset, report);
+		}
+		JFreeChart chart = createChart(dataset, chartTitle, xLabel, yLabel);
+		ChartPanel panel = new ChartPanel(chart);
+		return panel;
+	}
 		
-    private void createDataset(XYSeriesCollection dataset, PlotData report) {
+    private static void createDataset(XYSeriesCollection dataset, PlotData report) {
     	XYSeries series = new XYSeries(report.getName());
 //    	for (int i = 0; i < report.size(); i++) {
     	for (Double x: report.keySet()) {
@@ -76,7 +86,7 @@ public class XYChart extends JFrame {
     	dataset.addSeries(series);
     }
 	
-    private JFreeChart createChart(XYDataset dataset, String chartTitle) {
+    private static JFreeChart createChart(XYDataset dataset, String chartTitle, String xLabel, String yLabel) {
 
         // create the chart...
         JFreeChart chart = ChartFactory.createXYLineChart(

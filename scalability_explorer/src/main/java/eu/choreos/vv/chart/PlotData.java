@@ -1,4 +1,4 @@
-package org.jfree.chart;
+package eu.choreos.vv.chart;
 
 import java.util.HashMap;
 

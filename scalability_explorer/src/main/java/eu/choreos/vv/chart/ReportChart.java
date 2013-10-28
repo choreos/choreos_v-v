@@ -3,8 +3,8 @@ package eu.choreos.vv.chart;
 import java.awt.EventQueue;
 import java.util.List;
 
-import org.jfree.chart.PlotData;
-import org.jfree.chart.XYChart;
+import javax.swing.JFrame;
+
 
 import eu.choreos.vv.aggregations.AggregationFunction;
 import eu.choreos.vv.data.ExperimentReport;
@@ -14,9 +14,9 @@ import eu.choreos.vv.data.ExperimentReport;
  * @author paulo
  *
  */
-public class ReportChart {
+public class ReportChart extends JFrame {
 	
-	final static private String applicationTitle  = "Scalability explorer";;
+	final static private String APPLICATION_TITLE  = "Scalability explorer";;
 	private String chartTitle;
 	private String xLabel, yLabel;
 	
@@ -27,7 +27,10 @@ public class ReportChart {
 	 * @param yLabel y-axis label
 	 */
 	public ReportChart(String chartTitle, String xLabel, String yLabel) {
-		this.chartTitle = chartTitle;
+		super(APPLICATION_TITLE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        this.chartTitle = chartTitle;
 		this.xLabel = xLabel;
 		this.yLabel = yLabel;
 	}
@@ -43,10 +46,10 @@ public class ReportChart {
     public void createChart(final List<PlotData> reports) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
-                XYChart chart = new XYChart(applicationTitle, chartTitle, reports, xLabel, yLabel);
-                chart.pack();
-                chart.setLocationRelativeTo(null);
-                chart.setVisible(true);
+                setContentPane(XYChart.createChart(chartTitle, reports, xLabel, yLabel));
+                pack();
+                setLocationRelativeTo(null);
+                setVisible(true);
             }
          });
     }
