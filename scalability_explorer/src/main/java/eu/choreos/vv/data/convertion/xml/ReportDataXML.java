@@ -6,9 +6,9 @@ import eu.choreos.vv.data.ReportData;
 
 public class ReportDataXML extends XMLConverter<ReportData> {
 	
-	private static final String VALUE = "value";
-	private static final String PARAMETERS = "parameters";
-	private static final String MEASUREMENTS = "measurements";
+	public static final String VALUE = "value";
+	public static final String PARAMETERS = "parameters";
+	public static final String MEASUREMENTS = "measurements";
 
 	public ReportDataXML(PrintWriter writer) {
 		super(writer);
