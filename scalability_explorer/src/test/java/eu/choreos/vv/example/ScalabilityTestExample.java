@@ -1,16 +1,12 @@
 package eu.choreos.vv.example;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
-import eu.choreos.vv.aggregations.Mean;
-import eu.choreos.vv.analysis.ANOVATest;
 import eu.choreos.vv.analysis.AggregatePerformance;
-import eu.choreos.vv.analysis.ComposedAnalysis;
-import eu.choreos.vv.analysis.SaveToXML;
+import eu.choreos.vv.chart.creator.MeanChartCreator;
 import eu.choreos.vv.experiments.Experiment;
 import eu.choreos.vv.experiments.strategy.CapacityScaling;
 import eu.choreos.vv.experiments.strategy.ComposedStrategy;
@@ -36,10 +32,10 @@ public class ScalabilityTestExample extends Experiment <Long, Long>{
 	
 	@Override
 	public void beforeIteration() {
-		resources.add(500l);
+		resources.add(50l);
 		timestamps = new long[REQUESTS];
 		count = 0;
-//		resources.add(Math.round( Math.random() * 5l));
+		resources.add(Math.round( Math.random() * 300l));
 		System.out.println("######### new iteration ##############");
 	}
 
@@ -94,8 +90,9 @@ public class ScalabilityTestExample extends Experiment <Long, Long>{
 		example.setStrategy(strategy);
 		example.setNumberOfRequestsPerStep(REQUESTS);
 		example.setNumberOfSteps(5);
-		example.setAnalyser(new ComposedAnalysis(new SaveToXML(new File("/tmp/scalability_test.xml")), new ANOVATest(), new AggregatePerformance("Matrix multiplication", new Mean(), 1)));
+		example.setAnalyser(new AggregatePerformance("Matrix multiplication", new MeanChartCreator(), 1));
 
+//		example.run("test0", false);
 		example.run("test1");
 
 	}

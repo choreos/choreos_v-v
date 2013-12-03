@@ -1,8 +1,8 @@
-package eu.choreos.vv.chart;
+package eu.choreos.vv.data;
 
 import java.util.HashMap;
 
-public class PlotData extends HashMap<Double, Double> {
+public class LineData extends HashMap<Double, Double>  implements PlotData<Double, Double> {
 	
 	private String name;
 

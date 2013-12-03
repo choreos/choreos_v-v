@@ -36,27 +36,27 @@ import org.jfree.chart.labels.StandardXYItemLabelGenerator;
 import org.jfree.chart.labels.XYItemLabelGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.data.xy.YIntervalSeries;
+import org.jfree.data.xy.YIntervalSeriesCollection;
 
-import eu.choreos.vv.data.LineData;
 import eu.choreos.vv.data.PlotData;
+import eu.choreos.vv.data.StatisticalData;
 
 
-public class XYChart extends JFrame {
+public class YIntervalChart extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	public XYChart(String applicationTitle, String chartTitle, List<PlotData> reports, String xLabel, String yLabel) {
+	public YIntervalChart(String applicationTitle, String chartTitle, List<PlotData> reports, String xLabel, String yLabel) {
         super(applicationTitle);
         
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
-        XYSeriesCollection dataset = new XYSeriesCollection();
+        YIntervalSeriesCollection dataset = new YIntervalSeriesCollection();
 
         for (PlotData report : reports) {
-            createDataset(dataset, (LineData)report);
+            createDataset(dataset, (StatisticalData)report);
 		}
         // based on the dataset we create the chart
         JFreeChart chart = createChart(dataset, chartTitle, xLabel, yLabel);
@@ -70,21 +70,23 @@ public class XYChart extends JFrame {
     }
 	
 	public static ChartPanel createChart(String chartTitle, List<PlotData> reports, String xLabel, String yLabel) {
-		XYSeriesCollection dataset = new XYSeriesCollection();
+		YIntervalSeriesCollection dataset = new YIntervalSeriesCollection();
 
         for (PlotData report : reports) {
-            createDataset(dataset, (LineData)report);
+            createDataset(dataset, (StatisticalData)report);
 		}
 		JFreeChart chart = createChart(dataset, chartTitle, xLabel, yLabel);
 		ChartPanel panel = new ChartPanel(chart);
 		return panel;
 	}
 		
-    private static void createDataset(XYSeriesCollection dataset, LineData report) {
-    	XYSeries series = new XYSeries(report.getName());
+    private static void createDataset(YIntervalSeriesCollection dataset, StatisticalData report) {
+    	YIntervalSeries series = new YIntervalSeries(report.getName());
 //    	for (int i = 0; i < report.size(); i++) {
     	for (Double x: report.keySet()) {
-			series.add(x, report.get(x));
+    		Double y = report.get(x).getMean();
+    		Double sd = report.get(x).getStandardDeviation();
+			series.add(x, y, y-sd, y+sd);
 		}
     	dataset.addSeries(series);
     }
@@ -126,8 +128,8 @@ public class XYChart extends JFrame {
         
 
         // render shapes and lines
-        XYLineAndShapeRenderer renderer =
-            new XYLineAndShapeRenderer(true, true);
+        DeviationRenderer renderer =
+            new DeviationRenderer(true, true);
         plot.setRenderer(renderer);
         renderer.setBaseShapesVisible(true);
         renderer.setBaseShapesFilled(true);
@@ -136,6 +138,12 @@ public class XYChart extends JFrame {
         Stroke stroke = new BasicStroke(
             3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
         renderer.setBaseOutlineStroke(stroke);
+        
+        //TODO: render the deviation with the same color as the line
+//        renderer.setBaseFillPaint(new Color(255, 200, 200));
+//        renderer.setUseOutlinePaint(flag);
+//        renderer.setUseFillPaint(flag);
+        
 
         // label the points
         NumberFormat format = NumberFormat.getNumberInstance();
@@ -146,6 +154,8 @@ public class XYChart extends JFrame {
                 format, format);
         renderer.setBaseItemLabelGenerator(generator);
         renderer.setBaseItemLabelsVisible(true);
+        
+        //TODO: fix the visible area to show the deviation
 
         return chart;
     }

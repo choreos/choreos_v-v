@@ -3,52 +3,58 @@ package eu.choreos.vv.analysis;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import eu.choreos.vv.aggregations.AggregationFunction;
-import eu.choreos.vv.chart.PlotData;
 import eu.choreos.vv.chart.ReportChart;
+import eu.choreos.vv.chart.creator.ChartCreator;
 import eu.choreos.vv.data.ExperimentReport;
+import eu.choreos.vv.data.PlotData;
 
 public class AggregatePerformance extends Analyzer {
 
 	private String title;
-	private AggregationFunction function;
 	private int paramIdx;
-	
-	private List<PlotData> plotData;
+	ChartCreator creator;
 
-	public AggregatePerformance(String title, AggregationFunction function, int param) {
+	// private List<PlotData> plotData;
+
+	public AggregatePerformance(String title, ChartCreator creator, int param) {
 		this.title = title;
-		this.function = function;
+		this.creator = creator;
 		this.paramIdx = param;
-		plotData = new ArrayList<PlotData>();
+		// plotData = new ArrayList<PlotData>();
 	}
 
-	public AggregatePerformance(String title, AggregationFunction function) {
-		this(title, function, 0);
+	public AggregatePerformance(String title, ChartCreator creator) {
+		this(title, creator, 0);
 	}
 
 	@Override
 	public void analyse(ExperimentReport report) {
-		PlotData aggregation = new PlotData();
-		aggregation.setName(report.getName().toString());
-		for (Number index : report.keySet()) {
-			aggregation.put(report.get(index).getParameters().get(paramIdx)
-					.doubleValue(),// (Double) index,
-					function.aggregate(report.get(index).getMeasurements()));
-		}
+		List<PlotData> plotData = new ArrayList<PlotData>();
+		PlotData aggregation = creator.createPlotData(report, paramIdx);
 		plotData.add(aggregation);
 
+		createChart(plotData, report.getParameterLabels().get(paramIdx),
+				report.getMeasurementUnit());
 
 	}
-	
+
 	@Override
 	public void analyse(List<ExperimentReport> reports) throws Exception {
-		ReportChart chart = new ReportChart(title, // "execution",
-				reports.get(0).getParameterLabels().get(paramIdx), function.getLabel()
-				+ " of " + reports.get(0).getMeasurementUnit());
-		super.analyse(reports);
-		chart.createChart(plotData);
+
+		List<PlotData> plotData = new ArrayList<PlotData>();
+		for (ExperimentReport report : reports)
+			plotData.add(creator.createPlotData(report, paramIdx));
+
+		createChart(plotData,
+				reports.get(0).getParameterLabels().get(paramIdx),
+				reports.get(0).getMeasurementUnit());
+
+	}
+
+	private void createChart(List<PlotData> data, String xLabel, String yLabel) {
+		ReportChart chart = new ReportChart();
+
+		chart.createChart(creator.createChart(data, title, xLabel, yLabel));
 	}
 
 }
