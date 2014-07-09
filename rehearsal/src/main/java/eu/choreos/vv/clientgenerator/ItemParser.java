@@ -43,7 +43,7 @@ public class ItemParser {
 			String trimmed = new String(ch, start, lenght).trim();
 
 			if (!trimmed.isEmpty() && !tagStack.empty()){
-				tagStack.peek().setContent(trimmed);			
+				tagStack.peek().appendContent(trimmed);			
 			}
 		}
 

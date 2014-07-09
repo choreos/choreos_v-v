@@ -80,6 +80,18 @@ public class ItemImpl implements Item{
 		return this;
 
 	}
+	
+	public Item appendContent(String content) {
+		StringBuilder builder = null; 
+		if (this.content == null) {
+			builder = new StringBuilder();
+		} else {
+			builder = new StringBuilder(this.content);
+		}
+		builder.append(content);
+		this.content = builder.toString();
+		return this;
+	}
 
 	public Map<String, String> getTagAttributes() {
 		return new HashMap<String, String>(tagAttributes);
