@@ -120,14 +120,9 @@ public class ItemParser {
 
 			InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
 			ResponseParserHandler handler = new ResponseParserHandler();
-//			parser = parserFactory.newSAXParser();
-//			parser.parse(is, handler);
-
-			org.apache.xerces.parsers.SAXParser saxParser = new org.apache.xerces.parsers.SAXParser();
-			saxParser.setProperty(LEXICAL_HANDLER, handler);
-			saxParser.setContentHandler(handler);
-			saxParser.parse(new InputSource(is));
-
+			parser = parserFactory.newSAXParser();
+			parser.setProperty(LEXICAL_HANDLER, handler);
+			parser.parse(is, handler);
 		} catch (Exception e) {
 			throw new ParserException(e);
 		}
