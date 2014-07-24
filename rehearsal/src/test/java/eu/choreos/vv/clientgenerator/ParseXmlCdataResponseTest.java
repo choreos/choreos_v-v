@@ -1,7 +1,5 @@
 package eu.choreos.vv.clientgenerator;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,20 +10,24 @@ import java.io.StringWriter;
 import org.apache.commons.io.IOUtils;
 import org.apache.xmlbeans.XmlException;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import eu.choreos.vv.exceptions.FrameworkException;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.NoMockResponseException;
 import eu.choreos.vv.exceptions.NoReplyWithStatementException;
+import eu.choreos.vv.exceptions.ParserException;
 import eu.choreos.vv.exceptions.WSDLException;
 import eu.choreos.vv.servicesimulator.MockResponse;
 import eu.choreos.vv.servicesimulator.WSMock;
+import static org.junit.Assert.assertTrue;
 
 public class ParseXmlCdataResponseTest {
 
 	@Test
-	public void shouldReadSuccessFromResponse() throws WSDLException, XmlException, IOException, FrameworkException, InvalidOperationNameException, NoSuchFieldException, NoMockResponseException,
-			NoReplyWithStatementException {
+	public void shouldReadSuccessFromResponse() throws WSDLException, XmlException, IOException, FrameworkException,
+		InvalidOperationNameException, NoSuchFieldException, NoMockResponseException,
+		NoReplyWithStatementException {
 		String wsdl = "file://" + System.getProperty("user.dir") + "/resource/globalweather.wsdl";
 
 		WSMock wsMock = new WSMock("globalweather", "4321", wsdl);
@@ -39,6 +41,14 @@ public class ParseXmlCdataResponseTest {
 		Item response = wsClient.request("GetWeather", request());
 		String content = response.getContent("GetWeatherResult");
 		assertTrue(content.contains("<Status>Success</Status>"));
+	}
+
+	@Test
+	public void getElementAsStringShouldReconstructCdata() throws ParserException, SAXException, IOException {
+		String path = System.getProperty("user.dir") + "/resource/cdata.xml";
+		Item item = new ItemParser().parse(fileContent(path));
+		String elementAsString = item.getElementAsString();
+		assertTrue(elementAsString.contains("<![CDATA[<?xml version=\"1.0\" encoding=\"utf-8\"?>"));
 	}
 
 	private Item request() {
