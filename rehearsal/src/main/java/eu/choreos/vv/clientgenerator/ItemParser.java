@@ -10,15 +10,15 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.xerces.impl.Constants;
 import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
 
 import eu.choreos.vv.exceptions.ParserException;
 
+
 /**
  * Utility class to parse the Soap XML response of a Web Service operation
- *
+ * 
  * @author Leonardo Leite, Guilherme Nogueira
  *
  */
@@ -37,8 +37,8 @@ public class ItemParser {
 		 * @param length - The number of characters to use from the character array.
 		 */
 		@Override
-		public void characters(char[] ch, int start, int lenght)
-			throws SAXException {
+		public void characters(char[] ch, int start, int lenght) 
+		throws SAXException {
 
 			String trimmed = new String(ch, start, lenght).trim();
 
@@ -54,11 +54,11 @@ public class ItemParser {
 		 */
 		@Override
 		public void endElement(String uri, String localName, String qName)
-			throws SAXException {
+		throws SAXException {
 
 			if (!tagStack.empty()) {
 				ItemImpl poped = tagStack.pop();
-				if (!tagStack.empty()) {
+				if (!tagStack.empty()){
 					ItemImpl father = tagStack.peek();
 					father.addChild(poped);
 				} else {
@@ -75,15 +75,15 @@ public class ItemParser {
 		 *	@param attributes - The attributes attached to the element.
 		 */
 		@Override
-		public void startElement(String uri, String localName, String qName, Attributes attributes)
-			throws SAXException {
+		public void startElement(String uri, String localName, String qName, Attributes attributes) 
+		throws SAXException {
 
 			String name = getNameWithoutNamespace(qName);
 
 			if (doNotContainsHeaderInformation(name) || !tagStack.empty()) {
 				HashMap<String, String> parameters = new HashMap<String, String>();
 
-				for (int i = 0; i < attributes.getLength(); i++)
+				for(int i=0; i< attributes.getLength(); i++)
 					parameters.put(attributes.getQName(i), attributes.getValue(i));
 
 				result = new ItemImpl(name, parameters);
@@ -99,13 +99,13 @@ public class ItemParser {
 		}
 
 		private boolean doNotContainsHeaderInformation(String name) {
-			return !name.contains("Envelope") && !name.contains("Header") && !name.contains("Body");
+			return !name.contains("Envelope")&&!name.contains("Header")&&!name.contains("Body");
 		}
 
 		private String getNameWithoutNamespace(String qName) {
-			String[] names = qName.split(":");
+			String[] names = qName.split(":");                        
 
-			return names[names.length - 1];
+			return names[names.length  - 1];
 		}
 	}
 
@@ -115,9 +115,9 @@ public class ItemParser {
 
 	public Item parse(String xml) throws ParserException {
 		try {
-			if (xml == null)
+			if  (xml == null)
 				return null;
-
+			
 			InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
 			ResponseParserHandler handler = new ResponseParserHandler();
 			parser = parserFactory.newSAXParser();
