@@ -41,6 +41,8 @@ public class ParseXmlCdataResponseTest {
 		Item response = wsClient.request("GetWeather", request());
 		String content = response.getContent("GetWeatherResult");
 		assertTrue(content.contains("<Status>Success</Status>"));
+		
+		wsMock.stop();
 	}
 
 	@Test
