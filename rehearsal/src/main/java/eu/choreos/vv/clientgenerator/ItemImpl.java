@@ -9,14 +9,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.choreos.vv.itemprinter.ItemPrinter;
 
-public class ItemImpl implements Item {
+public class ItemImpl implements Item{
 
 	private static AtomicInteger ai = new AtomicInteger();
 	private String content;
 	private boolean contentCDATA;
 	private String name;
 	private Map<String, String> tagAttributes;
-	private Map<String, LinkedList<Item>> items;
+	private Map<String, LinkedList<Item>>items;
 
 	// The id is only used for hashCode generation
 	// It is not used on equals
@@ -51,14 +51,14 @@ public class ItemImpl implements Item {
 	}
 
 	public Item getChild(String name) throws NoSuchFieldException {
-		if (!items.containsKey(name))
+		if(!items.containsKey(name))
 			throw new NoSuchFieldException();
 
 		return items.get(name).getFirst();
 	}
 
 	public List<Item> getChildAsList(String name) throws NoSuchFieldException {
-		if (!items.containsKey(name))
+		if(!items.containsKey(name))
 			throw new NoSuchFieldException();
 		return new LinkedList<Item>(items.get(name)); // return copy to protect encapsulation
 	}
@@ -66,18 +66,18 @@ public class ItemImpl implements Item {
 	public Item addChild(Item item) {
 		LinkedList<Item> currentItems = items.get(item.getName());
 
-		if (currentItems == null)
+		if(currentItems == null)
 			currentItems = new LinkedList<Item>();
 
 		currentItems.addLast(item);
 		items.put(item.getName(), currentItems);
-
+		
 		return this;
 	}
 
 	public Item setContent(String content) {
 		this.content = content;
-
+		
 		return this;
 
 	}
@@ -103,22 +103,22 @@ public class ItemImpl implements Item {
 		if (!tagAttributes.containsKey(key))
 			throw new NoSuchFieldException("tagAttribute doesn't exist: " + key);
 		return tagAttributes.get(key);
-	}
+	}        
 
-	public String getName() {
+	public String getName(){
 		return name;
-	}
+	}        
 
 	@Override
 	public String toString() {
 		return "ResponseItem [content=" + content + ", name=" + name + ", tagParameters="
-			+ tagAttributes + ", items=" + items + "]";
+		                      + tagAttributes + ", items=" + items + "]";
 	}
 
 	@Override
 	public List<Item> getChildren() {
 		List<Item> childrenList = new ArrayList<Item>();
-		for (String s : this.items.keySet()) {
+		for (String s : this.items.keySet() ){
 			childrenList.addAll(this.items.get(s));
 		}
 
@@ -128,7 +128,7 @@ public class ItemImpl implements Item {
 	@Override
 	public Integer getChildrenCount() {
 		Integer childrenCount = 0;
-		for (String s : this.items.keySet()) {
+		for (String s : this.items.keySet() ){
 			childrenCount += this.items.get(s).size();
 		}
 
@@ -144,7 +144,7 @@ public class ItemImpl implements Item {
 		result = prime * result + ((items == null) ? 0 : items.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result
-			+ ((tagAttributes == null) ? 0 : tagAttributes.hashCode());
+				+ ((tagAttributes == null) ? 0 : tagAttributes.hashCode());
 		return result;
 	}
 
@@ -190,40 +190,40 @@ public class ItemImpl implements Item {
 		}
 		return true;
 	}
-
+	
 	@Override
 	public int getListSizeFromItem(String tagName) {
 		int count = 0;
 		for (Item child : this.getChildren()) {
-			if (child.getName().equals(tagName))
-				count++;
-		}
-		if (count == 0) {
+	                if(child.getName().equals(tagName))
+	                	count++;
+                }
+		if(count == 0) {
 			for (Item child : this.getChildren()) {
-				count = child.getListSizeFromItem(tagName);
-				if (count > 0)
-					return count;
-			}
+	                        count = child.getListSizeFromItem(tagName);
+	                        if(count > 0)
+	                        	return count;
+                        }
 		}
 		else {
 			return count;
 		}
-		return 0;
-	}
+	        return 0;
+        }
 
 	@Override
 	public String getElementAsString() {
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("<" + this.name);
-
-		for (Map.Entry<String, String> entry : tagAttributes.entrySet()) {
+		
+		for (Map.Entry<String, String> entry : tagAttributes.entrySet()){
 			strBuilder.append(" " + entry.getKey() + "=\"" + entry.getValue() + "\"");
 		}
-
+		
 		strBuilder.append(">");
-
-		for (LinkedList<Item> list : items.values()) {
-			for (Item item : list) {
+		
+		for (LinkedList<Item> list : items.values()){
+			for (Item item : list){
 				strBuilder.append(item.getElementAsString());
 			}
 		}
@@ -235,20 +235,20 @@ public class ItemImpl implements Item {
 				strBuilder.append(this.content);
 			}
 		}
-
+		
 		strBuilder.append("</" + this.name + ">");
-
+		
 		return strBuilder.toString();
 	}
 
 	public Item addChild(String name) {
 		Item child = new ItemImpl(name);
 		addChild(child);
-
+		
 		return child;
 	}
 
-	public String getContent(String name) throws NoSuchFieldException {
+	public String  getContent(String name) throws NoSuchFieldException {
 		return getChild(name).getContent();
 	}
 
