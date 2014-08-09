@@ -13,6 +13,7 @@ public class ItemImpl implements Item{
 
 	private static AtomicInteger ai = new AtomicInteger();
 	private String content;
+	private boolean contentCDATA;
 	private String name;
 	private Map<String, String> tagAttributes;
 	private Map<String, LinkedList<Item>>items;
@@ -79,6 +80,18 @@ public class ItemImpl implements Item{
 		
 		return this;
 
+	}
+
+	public Item appendContent(String content) {
+		StringBuilder builder = null;
+		if (this.content == null) {
+			builder = new StringBuilder();
+		} else {
+			builder = new StringBuilder(this.content);
+		}
+		builder.append(content);
+		this.content = builder.toString();
+		return this;
 	}
 
 	public Map<String, String> getTagAttributes() {
@@ -214,9 +227,13 @@ public class ItemImpl implements Item{
 				strBuilder.append(item.getElementAsString());
 			}
 		}
-		
-		if (this.content != null){
-			strBuilder.append(this.content);
+
+		if (this.content != null) {
+			if (this.contentCDATA) {
+				strBuilder.append("<![CDATA[").append(this.content).append("]]>");
+			} else {
+				strBuilder.append(this.content);
+			}
 		}
 		
 		strBuilder.append("</" + this.name + ">");
@@ -252,6 +269,14 @@ public class ItemImpl implements Item{
 	@Override
 	public String printAsResponse() {
 		return ItemPrinter.printAsResponse(this);
+	}
+
+	public void setContentCDATA(boolean isContentCDATA) {
+		this.contentCDATA = isContentCDATA;
+	}
+
+	public boolean isContentCDATA() {
+		return contentCDATA;
 	}
 
 }

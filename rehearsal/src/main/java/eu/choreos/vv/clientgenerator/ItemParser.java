@@ -8,9 +8,10 @@ import java.util.Stack;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.xerces.impl.Constants;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.ext.DefaultHandler2;
 
 import eu.choreos.vv.exceptions.ParserException;
 
@@ -27,8 +28,7 @@ public class ItemParser {
 	private SAXParser parser;
 	private ItemImpl result;
 
-
-	private class ResponseParserHandler extends DefaultHandler {
+	private class ResponseParserHandler extends DefaultHandler2 {
 		private Stack<ItemImpl> tagStack = new Stack<ItemImpl>();
 
 		/**
@@ -42,8 +42,8 @@ public class ItemParser {
 
 			String trimmed = new String(ch, start, lenght).trim();
 
-			if (!trimmed.isEmpty() && !tagStack.empty()){
-				tagStack.peek().setContent(trimmed);			
+			if (!trimmed.isEmpty() && !tagStack.empty()) {
+				tagStack.peek().appendContent(trimmed);
 			}
 		}
 
@@ -91,6 +91,13 @@ public class ItemParser {
 			}
 		}
 
+		@Override
+		public void startCDATA() throws SAXException {
+			if (!tagStack.empty()) {
+				tagStack.peek().setContentCDATA(true);
+			}
+		}
+
 		private boolean doNotContainsHeaderInformation(String name) {
 			return !name.contains("Envelope")&&!name.contains("Header")&&!name.contains("Body");
 		}
@@ -102,16 +109,21 @@ public class ItemParser {
 		}
 	}
 
+	/** Property id: lexical handler. */
+	protected static final String LEXICAL_HANDLER =
+		Constants.SAX_PROPERTY_PREFIX + Constants.LEXICAL_HANDLER_PROPERTY;
+
 	public Item parse(String xml) throws ParserException {
 		try {
 			if  (xml == null)
 				return null;
 			
 			InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
+			ResponseParserHandler handler = new ResponseParserHandler();
 			parser = parserFactory.newSAXParser();
-			parser.parse(is, new ResponseParserHandler());
-		}  
-		catch (Exception e) {
+			parser.setProperty(LEXICAL_HANDLER, handler);
+			parser.parse(is, handler);
+		} catch (Exception e) {
 			throw new ParserException(e);
 		}
 
