@@ -77,7 +77,7 @@ public class ScaleCaster {
 		this.measurementLimit = measurementLimit;
 	}
 
-	public String addInitialParameterValue(Number value, ScalabilityFunction function) {
+	public String addInitialParameterValue(Integer value, ScalabilityFunction function) {
 		String key = nextKey();
 		ValueAndFunction pair = new ValueAndFunction(value, function);
 		currentParameterValues.put(key, pair);
@@ -95,7 +95,7 @@ public class ScaleCaster {
 
 	private void increaseParamentersValues() {
 		for(ValueAndFunction pair: currentParameterValues.values()) {
-			Number value = pair.value;
+			Integer value = pair.value;
 			ScalabilityFunction function = pair.function;
 			pair.value = function.increaseParams(value);
 		}
@@ -137,10 +137,10 @@ public class ScaleCaster {
 }
 
 class ValueAndFunction {
-	Number value;
+	Integer value;
 	ScalabilityFunction function;
 	
-	public ValueAndFunction(Number value, ScalabilityFunction function) {
+	public ValueAndFunction(Integer value, ScalabilityFunction function) {
 		this.value = value;
 		this.function = function;
 	}

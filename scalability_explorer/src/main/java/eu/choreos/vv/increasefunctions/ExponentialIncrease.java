@@ -8,9 +8,9 @@ package eu.choreos.vv.increasefunctions;
  */
 public class ExponentialIncrease implements ScalabilityFunction {
 
-	private Number fixedParam;
+	private Integer fixedParam;
 
-	public ExponentialIncrease(Number fixedParam) {
+	public ExponentialIncrease(Integer fixedParam) {
 		this.fixedParam = fixedParam;
 	}
 
@@ -22,8 +22,8 @@ public class ExponentialIncrease implements ScalabilityFunction {
 	 * @return next value to use
 	 */
 	@Override
-	public Number increaseParams(Number currentParam) {
-		return currentParam.doubleValue() * fixedParam.doubleValue();
+	public Integer increaseParams(Integer currentParam) {
+		return currentParam * fixedParam;
 	}
 
 }

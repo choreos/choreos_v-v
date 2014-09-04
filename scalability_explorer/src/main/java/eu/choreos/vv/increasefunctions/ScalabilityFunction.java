@@ -11,5 +11,5 @@ public interface ScalabilityFunction {
 	 * @param currentValue last value used
 	 * @return next value to use
 	 */
-	public Number increaseParams(Number currentValue);
+	public Integer increaseParams(Integer currentValue);
 }

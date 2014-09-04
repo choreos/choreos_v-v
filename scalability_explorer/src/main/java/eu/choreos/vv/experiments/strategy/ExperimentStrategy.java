@@ -11,7 +11,7 @@ public abstract class ExperimentStrategy {
 
 	private Experiment experiment;
 	private String parameterKey;
-	private Number parameterInitialValue;
+	private Integer parameterInitialValue;
 	private ScalabilityFunction function;
 	protected List<String> labels = new ArrayList<String>();
 
@@ -28,7 +28,7 @@ public abstract class ExperimentStrategy {
 		return parameterInitialValue;
 	}
 
-	public void setParameterInitialValue(Number parameterInitialValue) {
+	public void setParameterInitialValue(Integer parameterInitialValue) {
 		this.parameterInitialValue = parameterInitialValue;
 	}
 
