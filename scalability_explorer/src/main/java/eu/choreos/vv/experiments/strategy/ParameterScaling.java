@@ -12,7 +12,7 @@ public class ParameterScaling extends ExperimentStrategy {
 	
 	public ParameterScaling(String param) {
 		name = param;
-		labels.add("capacity");
+		labels.add(name);
 	}
 	
 	@Override
