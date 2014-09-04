@@ -6,15 +6,18 @@ import java.util.List;
 
 import eu.choreos.vv.ScaleCaster;
 
-public class CapacityScaling extends ExperimentStrategy {
+public class ParameterScaling extends ExperimentStrategy {
 
-	public CapacityScaling() {
+	private String name;
+	
+	public ParameterScaling(String param) {
+		name = param;
 		labels.add("capacity");
 	}
 	
 	@Override
 	public void updateParameterValues(ScaleCaster scaleCaster) {
-		getExperiment().setScaleSize(this.getCurrentParameterValue(scaleCaster).intValue());
+		getExperiment().setParam(name, this.getCurrentParameterValue(scaleCaster));
 
 	}
 

@@ -8,7 +8,7 @@ import org.junit.Test;
 import eu.choreos.vv.analysis.AggregatePerformance;
 import eu.choreos.vv.chart.creator.MeanChartCreator;
 import eu.choreos.vv.experiments.Experiment;
-import eu.choreos.vv.experiments.strategy.CapacityScaling;
+import eu.choreos.vv.experiments.strategy.ParameterScaling;
 import eu.choreos.vv.experiments.strategy.ComposedStrategy;
 import eu.choreos.vv.experiments.strategy.ExperimentStrategy;
 import eu.choreos.vv.experiments.strategy.WorkloadScaling;
@@ -81,7 +81,7 @@ public class ScalabilityTestExample extends Experiment <Long, Long>{
 		estrategy.setFunction(new LinearIncrease(100));
 		estrategy.setParameterInitialValue(100);
 		
-		ExperimentStrategy cstrategy = new CapacityScaling();
+		ExperimentStrategy cstrategy = new ParameterScaling("a");
 		cstrategy.setFunction(new ExponentialIncrease(2));
 		cstrategy.setParameterInitialValue(1);
 		

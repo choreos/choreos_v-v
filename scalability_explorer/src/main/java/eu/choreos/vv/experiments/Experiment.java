@@ -1,7 +1,9 @@
 package eu.choreos.vv.experiments;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import eu.choreos.vv.Scalable;
 import eu.choreos.vv.ScaleCaster;
@@ -27,7 +29,7 @@ public abstract class Experiment<K, T> implements Scalable {
 
 	private int numberOfRequestsPerStep;
 	private int numberOfRequestsPerMinute;
-	private int scaleSize;
+	private Map<String, Object> parameters;
 	private Integer numberOfSteps;
 	private Double measurementLimit;
 
@@ -111,10 +113,11 @@ public abstract class Experiment<K, T> implements Scalable {
 		this.numberOfRequestsPerStep = 1;
 		this.measurementLimit = Double.MAX_VALUE;
 		reports = new ArrayList<ExperimentReport>();
+		parameters = new HashMap<String, Object>();
 	}
 
 	private void newLoadGenerator() {
-		loadGen = LoadGeneratorFactory.getInstance().<K, T> degeneratedLoad();
+		loadGen = LoadGeneratorFactory.getInstance().<K, T> create();
 	}
 
 	public ExperimentStrategy getStrategy() {
@@ -150,14 +153,6 @@ public abstract class Experiment<K, T> implements Scalable {
 		this.numberOfRequestsPerMinute = number;
 	}
 
-	public int getScaleSize() {
-		return scaleSize;
-	}
-
-	public void setScaleSize(int scaleSize) {
-		this.scaleSize = scaleSize;
-	}
-
 	public Integer getNumberOfSteps() {
 		return numberOfSteps;
 	}
@@ -186,6 +181,14 @@ public abstract class Experiment<K, T> implements Scalable {
 		return strategy.getLabels();
 	}
 	
+	public void setParam(String name, Object value) {
+		parameters.put(name, value);
+	}
+	
+	public Object getParam(String name) {
+		return parameters.get(name);
+	}
+	
 	@Override
 	public ReportData execute(ScaleCaster scaleCaster) throws Exception {
 		strategy.updateParameterValues(scaleCaster);
@@ -193,7 +196,7 @@ public abstract class Experiment<K, T> implements Scalable {
 		ReportData report;
 
 		if (deployer != null)
-			deployer.scale(getScaleSize());
+			deployer.scale(parameters);
 		beforeIteration();
 
 		newLoadGenerator();
