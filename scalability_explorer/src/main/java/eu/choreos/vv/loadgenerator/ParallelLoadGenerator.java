@@ -17,7 +17,7 @@ import eu.choreos.vv.loadgenerator.strategy.LoadGenerationStrategy;
  * Load generator that trigger the requests as fast as possible
  * 
  */
-public class BasicLoadGenerator <K, T> implements LoadGenerator<K, T>, Callable<Double> {
+public class ParallelLoadGenerator <K, T> implements LoadGenerator<K, T>, Callable<Double> {
 
 	static final String LABEL = "response time (msec)";
 
@@ -42,7 +42,7 @@ public class BasicLoadGenerator <K, T> implements LoadGenerator<K, T>, Callable<
 		final List<Number> measurements = new ArrayList<Number>();
 		Date start, end;
 		this.experiment = experiment;
-		strategy.setDelay(delay);
+		strategy.setMeanDelay(delay);
 		strategy.setup();
 		try {
 			start = new Date();

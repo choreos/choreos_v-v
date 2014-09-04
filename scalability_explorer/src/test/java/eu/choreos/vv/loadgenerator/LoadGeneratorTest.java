@@ -16,7 +16,7 @@ public class LoadGeneratorTest {
 		final int DELAY = 10000000;
 		final int TIMES_TO_RUN = 1000;
 		final List<Long> times = new ArrayList<Long>();
-		LoadGenerator loadGen = LoadGeneratorFactory.getInstance().degeneratedLoad();
+		LoadGenerator loadGen = LoadGeneratorFactory.getInstance().create();
 		loadGen.setDelay(DELAY);
 		try {
 		loadGen.execute(TIMES_TO_RUN, new Experiment<Object, Object>() {
@@ -41,7 +41,7 @@ public class LoadGeneratorTest {
 	
 	@Test
 	public void sholdRunForOneSecond() throws Exception {
-		LoadGenerator loadGen = LoadGeneratorFactory.getInstance().degeneratedLoad();
+		LoadGenerator loadGen = LoadGeneratorFactory.getInstance().create();
 		loadGen.setDelay(1000000);
 		long startTime = System.currentTimeMillis();
 		loadGen.execute(100, new Experiment<Object, Object>() {
@@ -70,7 +70,7 @@ public class LoadGeneratorTest {
 
 	@Test
 	public void executionShouldTakeLongerThanDelay() throws Exception {
-		LoadGenerator loadGen = LoadGeneratorFactory.getInstance().degeneratedLoad();
+		LoadGenerator loadGen = LoadGeneratorFactory.getInstance().create();
 		loadGen.setDelay(100000000);
 		long startTime = System.currentTimeMillis();
 		loadGen.execute(10, new Experiment<Object, Object>() {

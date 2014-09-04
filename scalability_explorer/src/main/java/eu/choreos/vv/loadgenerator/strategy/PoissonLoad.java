@@ -7,7 +7,7 @@ import java.util.concurrent.Future;
 import org.apache.commons.math.random.RandomData;
 import org.apache.commons.math.random.RandomDataImpl;
 
-import eu.choreos.vv.loadgenerator.BasicLoadGenerator;
+import eu.choreos.vv.loadgenerator.ParallelLoadGenerator;
 
 public class PoissonLoad extends LoadGenerationStrategy {
 

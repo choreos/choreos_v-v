@@ -18,7 +18,7 @@ public abstract class LoadGenerationStrategy {
 		return delay;
 	}
 
-	public void setDelay(long delay) {
+	public void setMeanDelay(long delay) {
 		this.delay = delay;
 	}
 

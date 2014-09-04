@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import eu.choreos.vv.loadgenerator.BasicLoadGenerator;
+import eu.choreos.vv.loadgenerator.ParallelLoadGenerator;
 
 public class DegeneratedLoad extends LoadGenerationStrategy {
 

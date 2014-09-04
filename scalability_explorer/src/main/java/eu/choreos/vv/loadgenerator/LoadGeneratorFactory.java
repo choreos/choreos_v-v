@@ -9,6 +9,7 @@ public class LoadGeneratorFactory {
 	private int poolSize;
 	private int timeout;
 	private LoadGenerationStrategy strategy;
+	private Class loadGeneratorClass;
 	
 	private static LoadGeneratorFactory factory;
 	
@@ -17,6 +18,7 @@ public class LoadGeneratorFactory {
 		this.poolSize = 50;
 		this.timeout = 60;
 		this.strategy = new DegeneratedLoad();
+		this.loadGeneratorClass = ParallelLoadGenerator.class;
 		
 	}
 	
@@ -26,13 +28,19 @@ public class LoadGeneratorFactory {
 		return factory;
 	}
 	
-	public <T, K> LoadGenerator<T, K> degeneratedLoad() {
-		LoadGenerator<T, K> instance = new BasicLoadGenerator<T, K>();
-		instance.setDelay(delay);
-		instance.setPoolSize(poolSize);
-		instance.setTimeout(timeout);
-		instance.setStrategy(strategy);
-		return instance;
+	public <T, K> LoadGenerator<T, K> create() {
+		LoadGenerator<T, K> instance;
+		try {
+			instance = (LoadGenerator<T, K>)loadGeneratorClass.newInstance();
+			instance.setDelay(delay);
+			instance.setPoolSize(poolSize);
+			instance.setTimeout(timeout);
+			instance.setStrategy(strategy);
+			return instance;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new RuntimeException("Error creating load generator of type " + loadGeneratorClass.getName(), e);
+		}
 	}
 
 	public long getDelay() {
@@ -65,6 +73,14 @@ public class LoadGeneratorFactory {
 
 	public void setStrategy(LoadGenerationStrategy strategy) {
 		this.strategy = strategy;
+	}
+
+	public Class getLoadGeneratorClass() {
+		return loadGeneratorClass;
+	}
+
+	public void setLoadGeneratorClass(Class loadGeneratorClass) {
+		this.loadGeneratorClass = loadGeneratorClass;
 	}
 	
 	
