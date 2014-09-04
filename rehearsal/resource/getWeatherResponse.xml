@@ -1,0 +1,15 @@
+<![CDATA[<?xml version="1.0" encoding="utf-16"?>
+<CurrentWeather>
+	<Location>NEW YORK LA GUARDIA AIRPORT , NY, United States (KLGA) 40-47N
+		73-53W 11M</Location>
+	<Time>Jul 09, 2014 - 08:51 AM EDT / 2014.07.09 1251 UTC</Time>
+	<Wind> from the SW (230 degrees) at 7 MPH (6 KT):0</Wind>
+	<Visibility> 10 mile(s):0</Visibility>
+	<SkyConditions> partly cloudy</SkyConditions>
+	<Temperature> 79.0 F (26.1 C)</Temperature>
+	<DewPoint> 64.9 F (18.3 C)</DewPoint>
+	<RelativeHumidity> 62%</RelativeHumidity>
+	<Pressure> 29.88 in. Hg (1011 hPa)</Pressure>
+	<Status>Success</Status>
+</CurrentWeather>
+]]>
