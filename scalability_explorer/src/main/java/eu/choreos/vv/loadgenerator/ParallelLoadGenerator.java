@@ -63,7 +63,7 @@ public class ParallelLoadGenerator <K, T> implements LoadGenerator<K, T>, Callab
 		for (Future<Double> future : futureResults)
 			measurements.add(future.get());
 		ReportData report = new ReportData();
-		report.setMeasurements(measurements);
+		report.setMeasurements("latency", measurements);
 		report.setStartTime(start);
 		report.setEndTime(end);
 		return report;

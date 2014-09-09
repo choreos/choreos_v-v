@@ -40,7 +40,7 @@ public class LinearRegressionSample {
 	public void setY(ExperimentReport report) {
 		y = new double[report.size()];
 		for(int i = 0; i < y.length; i++) {
-			List<Number> measurements = report.get(i).getMeasurements();
+			List<Number> measurements = report.get(i).getMeasurements("latency");
 			double value = aggregator.aggregate(measurements);
 			y[i] = value;
 		}

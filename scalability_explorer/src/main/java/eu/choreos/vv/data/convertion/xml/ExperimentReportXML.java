@@ -10,6 +10,7 @@ import eu.choreos.vv.data.ReportData;
 public class ExperimentReportXML extends XMLConverter<ExperimentReport> {
 	
 	public static final String REPORT = "report";
+	public static final String EXPERIMENT = "experiment";
 	public static final String MEASUREMENT_UNIT = "measurementUnit";
 	public static final String NAME = "name";
 	public static final String PARAMETER_LABELS = "parameterLabels";

@@ -27,7 +27,7 @@ public class SampleSizeEstimation extends Analyzer {
 	@Override
 	public void analyse(ExperimentReport report) throws Exception {
 		for (Number key : report.keySet()) {
-			List<Number> sample = report.get(key).getMeasurements();
+			List<Number> sample = report.get(key).getMeasurements("latency");
 			int n = sample.size();
 			DescriptiveStatistics ds = DescriptiveStatisticsFactory
 					.create(sample);
