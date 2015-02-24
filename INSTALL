@@ -1,0 +1,40 @@
+REHEARSAL INSTALLATION GUIDE - 10/03/2012
+Written by Paulo Moura (USP)
+pbmoura@ime.usp.br
+== WHAT IS IT? ==
+Rehearsal is an integrated framework supporting the automated testing 
+of choreographies.
+Currently, Rehearsal is spitted in two different projects: 
+one including the features for correctness tests, supporting TDD;
+and the other concerning with scalability tests.
+== REQUIREMENTS ==
+  1. java jdk 1.6
+  2. maven 3.0.4
+== COMPILING IT ==
+Both the projects are available at:
+svn://svn.forge.objectweb.org/svnroot/choreos/trunk/governance/tdd
+in directories 'rehearsal' and 'scalability_explorer'.
+They can be compiled with 'mvn compile'
+== RUNNING IT ==
+As Rehearsal is a framework, it is not properly run, but is supposed
+to be used by other projects.
+The simplest way to do this is by installing Rehearsal in your local
+maven repository and including it as a dependence in your project.
+The installation can be done with 'mvn install'
+To establish the dependencies, you should add the following to your pom.xml.
+for correctness tests:
+    <dependency>
+      <groupId>eu.choreos</groupId>
+      <artifactId>rehearsal</artifactId>
+      <version>0.13</version>
+      <scope>jar</scope>
+    </dependency>
+for scalability tests:
+    <dependency>
+      <groupId>eu.choreos.vv</groupId>
+      <artifactId>scalability_explorer</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>jar</scope>
+    </dependency>
+== VERIFYING IF IT WORKS ==
+Check if you can import and use Rehearsal's components in your project.
