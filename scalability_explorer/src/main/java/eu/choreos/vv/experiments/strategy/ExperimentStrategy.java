@@ -48,7 +48,7 @@ public abstract class ExperimentStrategy {
 		return scaleCaster.getCurrentParameterValue(parameterKey);
 	}
 
-	public abstract void updateParameterValues(ScaleCaster scaleCaster);
+	public abstract void onUpdateParameterValue(ScaleCaster scaleCaster);
 	
 	public List<String> getLabels() {
 		return labels;

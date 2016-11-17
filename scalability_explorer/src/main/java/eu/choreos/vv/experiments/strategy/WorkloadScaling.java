@@ -10,7 +10,7 @@ public class WorkloadScaling extends ExperimentStrategy {
 	}
 
 	@Override
-	public void updateParameterValues(ScaleCaster scaleCaster) {
+	public void onUpdateParameterValue(ScaleCaster scaleCaster) {
 		getExperiment().setNumberOfRequestsPerMinute(getCurrentParameterValue(scaleCaster).intValue());
 	}
 

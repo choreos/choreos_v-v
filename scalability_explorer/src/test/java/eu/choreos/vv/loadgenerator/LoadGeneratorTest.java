@@ -96,7 +96,7 @@ public class LoadGeneratorTest {
 		});
 		long endTime = System.currentTimeMillis();
 		double duration = (endTime - startTime) / 1000d;
-		assertEquals(1.1, duration, 0.007);
+		assertEquals(1.1, duration, 0.01);
 	}
 
 }
