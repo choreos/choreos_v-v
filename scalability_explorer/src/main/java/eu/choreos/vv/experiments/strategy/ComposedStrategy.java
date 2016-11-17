@@ -17,9 +17,9 @@ public class ComposedStrategy extends ExperimentStrategy {
 	}
 
 	@Override
-	public void updateParameterValues(ScaleCaster scaleCaster) {
+	public void onUpdateParameterValue(ScaleCaster scaleCaster) {
 		for (ExperimentStrategy strategy : strategies) {
-			strategy.updateParameterValues(scaleCaster);
+			strategy.onUpdateParameterValue(scaleCaster);
 		}
 	}
 

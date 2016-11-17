@@ -191,7 +191,7 @@ public abstract class Experiment<K, T> implements Scalable {
 	
 	@Override
 	public ReportData execute(ScaleCaster scaleCaster) throws Exception {
-		strategy.updateParameterValues(scaleCaster);
+		strategy.onUpdateParameterValue(scaleCaster);
 
 		ReportData report;
 

@@ -16,7 +16,7 @@ public class ParameterScaling extends ExperimentStrategy {
 	}
 	
 	@Override
-	public void updateParameterValues(ScaleCaster scaleCaster) {
+	public void onUpdateParameterValue(ScaleCaster scaleCaster) {
 		getExperiment().setParam(name, this.getCurrentParameterValue(scaleCaster));
 
 	}
