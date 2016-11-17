@@ -245,6 +245,8 @@ public abstract class Experiment<K, T> implements Scalable {
 	 */
 	public void run(String name, boolean analyse, boolean store)
 			throws Exception {
+		beforeExperiment();
+
 		ScaleCaster scaleCaster = new ScaleCaster(this, name, numberOfSteps,
 				measurementLimit);
 
@@ -254,7 +256,6 @@ public abstract class Experiment<K, T> implements Scalable {
 		ExperimentReport report;
 		if (deployer != null)
 			deployer.deploy();
-		beforeExperiment();
 		report = scaleCaster.execute();
 		report.setParameterLabels(getParameterLabels());
 		report.setMeasurementUnit(loadGen.getLabel());

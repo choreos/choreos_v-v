@@ -8,16 +8,16 @@ import org.junit.Test;
 import eu.choreos.vv.analysis.AggregatePerformance;
 import eu.choreos.vv.chart.creator.MeanChartCreator;
 import eu.choreos.vv.experiments.Experiment;
-import eu.choreos.vv.experiments.strategy.ParameterScaling;
 import eu.choreos.vv.experiments.strategy.ComposedStrategy;
 import eu.choreos.vv.experiments.strategy.ExperimentStrategy;
+import eu.choreos.vv.experiments.strategy.ParameterScaling;
 import eu.choreos.vv.experiments.strategy.WorkloadScaling;
 import eu.choreos.vv.increasefunctions.ExponentialIncrease;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 
 public class ScalabilityTestExample extends Experiment <Long, Long>{
 
-	private static final int REQUESTS = 30;
+	private static final int REQUESTS = 10;
 	List<Long> resources;
 	int resourceIndex;
 	
@@ -28,14 +28,30 @@ public class ScalabilityTestExample extends Experiment <Long, Long>{
 	public void beforeExperiment() {
 		resources = new ArrayList<Long>();
 		resourceIndex = 0;
+		
+		ExperimentStrategy estrategy = new WorkloadScaling();
+		estrategy.setFunction(new LinearIncrease(100));
+		estrategy.setParameterInitialValue(100);
+		
+		ExperimentStrategy cstrategy = new ParameterScaling("a");
+		cstrategy.setFunction(new ExponentialIncrease(2));
+		cstrategy.setParameterInitialValue(1);
+		
+		ExperimentStrategy strategy = new ComposedStrategy(estrategy, cstrategy);
+		
+		this.setStrategy(strategy);
+		this.setNumberOfRequestsPerStep(REQUESTS);
+		this.setNumberOfSteps(5);
+		this.setAnalyser(new AggregatePerformance("Scalability Chart", new MeanChartCreator(), 1));
+		
 	}
 	
 	@Override
 	public void beforeIteration() {
-		resources.add(50l);
+		//resources.add(50l);
 		timestamps = new long[REQUESTS];
 		count = 0;
-		resources.add(Math.round( Math.random() * 300l));
+		resources.add(Math.round( Math.random() * 100l * (Integer)(getParam("a"))));
 		System.out.println("######### new iteration ##############");
 	}
 
@@ -71,28 +87,6 @@ public class ScalabilityTestExample extends Experiment <Long, Long>{
 
 	public static void execute() throws Exception {
 		ScalabilityTestExample example = new ScalabilityTestExample();
-//		TruncatedNormalLoad strategy = new TruncatedNormalLoad();
-//		strategy.setLowerBound(500);
-//		strategy.setUpperBound(500000000);
-//		strategy.setStandardDeviation(1000);
-//		LoadGeneratorFactory.getInstance().setStrategy(strategy);
-		
-		ExperimentStrategy estrategy = new WorkloadScaling();
-		estrategy.setFunction(new LinearIncrease(100));
-		estrategy.setParameterInitialValue(100);
-		
-		ExperimentStrategy cstrategy = new ParameterScaling("a");
-		cstrategy.setFunction(new ExponentialIncrease(2));
-		cstrategy.setParameterInitialValue(1);
-		
-		ExperimentStrategy strategy = new ComposedStrategy(estrategy, cstrategy);
-		
-		example.setStrategy(strategy);
-		example.setNumberOfRequestsPerStep(REQUESTS);
-		example.setNumberOfSteps(5);
-		example.setAnalyser(new AggregatePerformance("Matrix multiplication", new MeanChartCreator(), 1));
-
-//		example.run("test0", false);
 		example.run("test1");
 
 	}
