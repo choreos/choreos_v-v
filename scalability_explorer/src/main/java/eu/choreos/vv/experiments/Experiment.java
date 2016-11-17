@@ -17,20 +17,20 @@ import eu.choreos.vv.loadgenerator.LoadGeneratorFactory;
 
 /**
  * This class implements a skeleton of a scalability experiment consisted on
- * many steps. In each test battery, the frequency of requests and the quantity
+ * many Iterations. In each test battery, the frequency of requests and the quantity
  * of resources will be increased according to a ScalabilityFunction. A request
- * is executed a number of times, in each step, and some metrics are collected
- * for analysis. The steps will be executed up to a determined number of
+ * is executed a number of times, in each Iteration, and some metrics are collected
+ * for analysis. The Iterations will be executed up to a determined number of
  * executions (or until one's aggregated return value surpasses a defined
  * limit).
  * 
  */
 public abstract class Experiment<K, T> implements Scalable {
 
-	private int numberOfRequestsPerStep;
+	private int numberOfRequestsPerIteration;
 	private int numberOfRequestsPerMinute;
 	private Map<String, Object> parameters;
-	private Integer numberOfSteps;
+	private Integer numberOfIterations;
 	private Double measurementLimit;
 
 	private LoadGenerator<K, T> loadGen;
@@ -51,7 +51,7 @@ public abstract class Experiment<K, T> implements Scalable {
 	}
 
 	/**
-	 * This method can be overridden to execute before each step
+	 * This method can be overridden to execute before each Iteration
 	 * 
 	 * @param resourceQuantity
 	 *            current resource quantity
@@ -87,7 +87,7 @@ public abstract class Experiment<K, T> implements Scalable {
 	}
 
 	/**
-	 * This method can be overriden to execute after each step
+	 * This method can be overriden to execute after each Iteration
 	 * 
 	 * @throws Expeption
 	 */
@@ -109,8 +109,8 @@ public abstract class Experiment<K, T> implements Scalable {
 	 * 
 	 */
 	public Experiment() {
-		this.numberOfSteps = 1;
-		this.numberOfRequestsPerStep = 1;
+		this.numberOfIterations = 1;
+		this.numberOfRequestsPerIteration = 1;
 		this.measurementLimit = Double.MAX_VALUE;
 		reports = new ArrayList<ExperimentReport>();
 		parameters = new HashMap<String, Object>();
@@ -137,12 +137,12 @@ public abstract class Experiment<K, T> implements Scalable {
 		this.deployer = enacter;
 	}
 
-	public int getNumberOfRequestsPerStep() {
-		return numberOfRequestsPerStep;
+	public int getNumberOfRequestsPerIteration() {
+		return numberOfRequestsPerIteration;
 	}
 
-	public void setNumberOfRequestsPerStep(int number) {
-		this.numberOfRequestsPerStep = number;
+	public void setNumberOfRequestsPerIteration(int number) {
+		this.numberOfRequestsPerIteration = number;
 	}
 
 	public int getNumberOfRequestsPerMinute() {
@@ -153,12 +153,12 @@ public abstract class Experiment<K, T> implements Scalable {
 		this.numberOfRequestsPerMinute = number;
 	}
 
-	public Integer getNumberOfSteps() {
-		return numberOfSteps;
+	public Integer getNumberOfIterations() {
+		return numberOfIterations;
 	}
 
-	public void setNumberOfSteps(Integer numberOfTestsToRun) {
-		this.numberOfSteps = numberOfTestsToRun;
+	public void setNumberOfIterations(Integer numberOfTestsToRun) {
+		this.numberOfIterations = numberOfTestsToRun;
 	}
 
 	public Double getMeasurementLimit() {
@@ -201,7 +201,7 @@ public abstract class Experiment<K, T> implements Scalable {
 
 		newLoadGenerator();
 		loadGen.setDelay(60000000000l / numberOfRequestsPerMinute);
-		report = loadGen.execute(numberOfRequestsPerStep, this);
+		report = loadGen.execute(numberOfRequestsPerIteration, this);
 
 		afterIteration();
 
@@ -247,7 +247,7 @@ public abstract class Experiment<K, T> implements Scalable {
 			throws Exception {
 		beforeExperiment();
 
-		ScaleCaster scaleCaster = new ScaleCaster(this, name, numberOfSteps,
+		ScaleCaster scaleCaster = new ScaleCaster(this, name, numberOfIterations,
 				measurementLimit);
 
 		strategy.putInitialParameterValues(scaleCaster);

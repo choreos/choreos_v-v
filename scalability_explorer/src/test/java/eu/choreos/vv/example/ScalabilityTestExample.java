@@ -40,8 +40,8 @@ public class ScalabilityTestExample extends Experiment <Long, Long>{
 		ExperimentStrategy strategy = new ComposedStrategy(estrategy, cstrategy);
 		
 		this.setStrategy(strategy);
-		this.setNumberOfRequestsPerStep(REQUESTS);
-		this.setNumberOfSteps(5);
+		this.setNumberOfRequestsPerIteration(REQUESTS);
+		this.setNumberOfIterations(5);
 		this.setAnalyser(new AggregatePerformance("Scalability Chart", new MeanChartCreator(), 1));
 		
 	}
