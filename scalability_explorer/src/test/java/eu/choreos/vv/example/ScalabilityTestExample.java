@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import eu.choreos.vv.aggregations.Mean;
 import eu.choreos.vv.analysis.AggregatePerformance;
 import eu.choreos.vv.chart.creator.MeanChartCreator;
 import eu.choreos.vv.experiments.Experiment;
@@ -14,6 +15,7 @@ import eu.choreos.vv.experiments.strategy.ParameterScaling;
 import eu.choreos.vv.experiments.strategy.WorkloadScaling;
 import eu.choreos.vv.increasefunctions.ExponentialIncrease;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
+import eu.choreos.vv.stop.MeasurementStop;
 
 public class ScalabilityTestExample extends Experiment <Long, Long>{
 
@@ -41,7 +43,7 @@ public class ScalabilityTestExample extends Experiment <Long, Long>{
 		
 		this.setStrategy(strategy);
 		this.setNumberOfRequestsPerIteration(REQUESTS);
-		this.setNumberOfIterations(5);
+		this.setStoppingCriteria(new MeasurementStop(100.0, new Mean()));
 		this.setAnalyser(new AggregatePerformance("Scalability Chart", new MeanChartCreator(), 1));
 		
 	}

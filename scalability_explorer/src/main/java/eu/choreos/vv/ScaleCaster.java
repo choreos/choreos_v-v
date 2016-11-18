@@ -11,6 +11,7 @@ import org.apache.commons.math.random.RandomDataImpl;
 import eu.choreos.vv.data.ExperimentReport;
 import eu.choreos.vv.data.ReportData;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
+import eu.choreos.vv.stop.StopCriterion;
 
 /**
  * ScalabilityTest is the class in charge of executing a test multiple times
@@ -22,19 +23,16 @@ public class ScaleCaster {
 	RandomData keyGenerator;
 	Scalable item;
 	String name;
-	Integer timesToExecute;
-	Double measurementLimit;
+	StopCriterion criteria;
 	Map<String, ValueAndFunction> currentParameterValues;
 	List<ValueAndFunction> values;
 
 
-	public ScaleCaster(Scalable item, String name,
-			Integer timesToExecute, Double measurementLimit) {
+	public ScaleCaster(Scalable item, String name, StopCriterion criteria) {
 		super();
 		this.item = item;
 		this.name = name;
-		this.timesToExecute = timesToExecute;
-		this.measurementLimit = measurementLimit;
+		this.criteria = criteria;
 		this.keyGenerator = new RandomDataImpl();
 		this.currentParameterValues = new HashMap<String, ValueAndFunction>();
 		this.values = new ArrayList<ValueAndFunction>();
@@ -54,22 +52,6 @@ public class ScaleCaster {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Integer getTimesToExecute() {
-		return timesToExecute;
-	}
-
-	public void setTimesToExecute(Integer timesToExecute) {
-		this.timesToExecute = timesToExecute;
-	}
-
-	public Double getMeasurementLimit() {
-		return measurementLimit;
-	}
-
-	public void setMeasurementLimit(double measurementLimit) {
-		this.measurementLimit = measurementLimit;
 	}
 
 	public String addInitialParameterValue(Integer value, ScalabilityFunction function) {
@@ -108,11 +90,11 @@ public class ScaleCaster {
 	 * @throws Exception
 	 */
 	public ExperimentReport execute() {
+		int i = 1;
 		ReportData data;
 		ExperimentReport report = new ExperimentReport(this.getName());
 		try {
-			for (int i = 0; i < this.getTimesToExecute()
-					/*&& value <= this.getMeasurementLimit()*/; i++) { //TODO: consider limit again
+			while(!criteria.stop(report)) {
 				data = this.executeItem();
 				List<Number> params = new ArrayList<Number>();
 				for(ValueAndFunction pair: this.values) {
@@ -120,7 +102,7 @@ public class ScaleCaster {
 				}
 //				ReportData data = new ReportData(params, values); //TODO: include labels
 				data.setParameters(params);
-				report.put( i + 1, data);
+				report.put( i++, data);
 				this.increaseParamentersValues();
 			}
 		} catch (Exception e) {

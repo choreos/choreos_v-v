@@ -9,6 +9,7 @@ import eu.choreos.vv.data.ReportData;
 import eu.choreos.vv.increasefunctions.ExponentialIncrease;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
 import eu.choreos.vv.increasefunctions.ScalabilityFunction;
+import eu.choreos.vv.stop.IterationsStop;
 
 public class ScaleCasterTest {
 
@@ -21,7 +22,7 @@ public class ScaleCasterTest {
 				// TODO Auto-generated method stub
 				return new ReportData();
 			}
-		},"name",5, 0.0);
+		},"name", new IterationsStop(5));
 	}
 	
 	@Test

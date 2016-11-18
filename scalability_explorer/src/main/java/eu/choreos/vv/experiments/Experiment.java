@@ -14,6 +14,8 @@ import eu.choreos.vv.deployment.Deployer;
 import eu.choreos.vv.experiments.strategy.ExperimentStrategy;
 import eu.choreos.vv.loadgenerator.LoadGenerator;
 import eu.choreos.vv.loadgenerator.LoadGeneratorFactory;
+import eu.choreos.vv.stop.IterationsStop;
+import eu.choreos.vv.stop.StopCriterion;
 
 /**
  * This class implements a skeleton of a scalability experiment consisted on
@@ -30,16 +32,11 @@ public abstract class Experiment<K, T> implements Scalable {
 	private int numberOfRequestsPerIteration;
 	private int numberOfRequestsPerMinute;
 	private Map<String, Object> parameters;
-	private Integer numberOfIterations;
-	private Double measurementLimit;
-
+	private StopCriterion criteria;
 	private LoadGenerator<K, T> loadGen;
-
 	private Deployer deployer;
 	private Analyzer analyzer;
-
 	private List<ExperimentReport> reports;
-
 	private ExperimentStrategy strategy;
 
 	/**
@@ -109,9 +106,8 @@ public abstract class Experiment<K, T> implements Scalable {
 	 * 
 	 */
 	public Experiment() {
-		this.numberOfIterations = 1;
 		this.numberOfRequestsPerIteration = 1;
-		this.measurementLimit = Double.MAX_VALUE;
+		this.criteria = new IterationsStop(1);
 		reports = new ArrayList<ExperimentReport>();
 		parameters = new HashMap<String, Object>();
 	}
@@ -153,28 +149,20 @@ public abstract class Experiment<K, T> implements Scalable {
 		this.numberOfRequestsPerMinute = number;
 	}
 
-	public Integer getNumberOfIterations() {
-		return numberOfIterations;
-	}
-
-	public void setNumberOfIterations(Integer numberOfTestsToRun) {
-		this.numberOfIterations = numberOfTestsToRun;
-	}
-
-	public Double getMeasurementLimit() {
-		return measurementLimit;
-	}
-
-	public void setMeasurementLimit(Double measurementLimit) {
-		this.measurementLimit = measurementLimit;
-	}
-
 	public Analyzer getAnalyser() {
 		return analyzer;
 	}
 
 	public void setAnalyser(Analyzer analyser) {
 		this.analyzer = analyser;
+	}
+
+	public StopCriterion getStoppingCriteria() {
+		return criteria;
+	}
+
+	public void setStoppingCriteria(StopCriterion criteria) {
+		this.criteria = criteria;
 	}
 
 	protected List<String> getParameterLabels() {
@@ -247,11 +235,9 @@ public abstract class Experiment<K, T> implements Scalable {
 			throws Exception {
 		beforeExperiment();
 
-		ScaleCaster scaleCaster = new ScaleCaster(this, name, numberOfIterations,
-				measurementLimit);
+		ScaleCaster scaleCaster = new ScaleCaster(this, name, criteria);
 
 		strategy.putInitialParameterValues(scaleCaster);
-//		scaleCaster.setInitialParametersValues(getInitialParameterValues());
 
 		ExperimentReport report;
 		if (deployer != null)
