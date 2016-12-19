@@ -28,9 +28,9 @@ public class MeanChartCreator implements ChartCreator {
 		for (Number index : report.keySet()) {
 			Statistics stat = new Statistics();
 			stat.setMean((new Mean()).aggregate(report.get(index)
-					.getMeasurements("latency")));
+					.getMeasurements("responseTime")));
 			stat.setStandardDeviation((new StandardDeviation())
-					.aggregate(report.get(index).getMeasurements("latency")));
+					.aggregate(report.get(index).getMeasurements("responseTime")));
 			data.put(report.get(index).getParameters().get(paramIdx)
 					.doubleValue(), stat);
 		}

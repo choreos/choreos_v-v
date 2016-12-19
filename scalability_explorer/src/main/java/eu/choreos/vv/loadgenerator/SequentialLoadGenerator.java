@@ -43,7 +43,7 @@ public class SequentialLoadGenerator <K, T> implements LoadGenerator<K, T> {
 			end = new Date();
 
 		ReportData report = new ReportData();
-		report.setMeasurements("latency", measurements);
+		report.setMeasurements("responseTime", measurements);
 		report.setStartTime(start);
 		report.setEndTime(end);
 		return report;

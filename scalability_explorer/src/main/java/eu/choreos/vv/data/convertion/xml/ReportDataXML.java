@@ -22,7 +22,7 @@ public class ReportDataXML extends XMLConverter<ReportData> {
 
 	private void writeMeasurements(ReportData data) {
 		openTag(MEASUREMENTS);
-		writeList(VALUE, data.getMeasurements("latency"));
+		writeList(VALUE, data.getMeasurements("responseTime"));
 		closeTag(MEASUREMENTS);
 	}
 

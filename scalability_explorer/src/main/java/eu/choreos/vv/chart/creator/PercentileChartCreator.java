@@ -25,7 +25,7 @@ public class PercentileChartCreator implements ChartCreator {
 		for (Number index : report.keySet()) {
 			aggregation.put(report.get(index).getParameters().get(paramIdx)
 					.doubleValue(),// (Double) index,
-					function.aggregate(report.get(index).getMeasurements("latency")));
+					function.aggregate(report.get(index).getMeasurements("responseTime")));
 		}
 		return aggregation;
 	}

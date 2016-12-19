@@ -14,7 +14,7 @@ public class ANOVATest extends Analyzer {
 	public void analyse(ExperimentReport report) throws Exception {
 		List<double[]> classes = new ArrayList<double[]>();
 		for (ReportData data : report.values()) {
-			double[] sample = doubleArray(data.getMeasurements("latency"));
+			double[] sample = doubleArray(data.getMeasurements("responseTime"));
 			classes.add(sample);
 		}
 		String test = TestUtils.oneWayAnovaTest(classes, 0.01) ? "not equivalent"

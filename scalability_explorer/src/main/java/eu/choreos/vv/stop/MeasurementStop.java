@@ -20,7 +20,7 @@ public class MeasurementStop implements StopCriterion {
 	public boolean stop(ExperimentReport report) {
 		if (report.isEmpty()) return false;
 		Object key = Collections.max(report.keySet());
-		List<Number> data = report.get(key).getMeasurements("latency");
+		List<Number> data = report.get(key).getMeasurements("responseTime");
 		return limit < function.aggregate(data);
 	}
 
