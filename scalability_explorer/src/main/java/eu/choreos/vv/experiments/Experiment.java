@@ -145,13 +145,7 @@ public abstract class Experiment implements Scalable {
 
 		if (deployer != null)
 			deployer.scale(parameters);
-		//beforeIteration();
-
-		//newLoadGenerator();
-		//loadGen.setDelay(60000000000l / numberOfRequestsPerMinute);
 		report = client.execute(numberOfRequestsPerIteration, 60000000000l / numberOfRequestsPerMinute, parameters);
-
-		//afterIteration();
 
 		return report;
 	}

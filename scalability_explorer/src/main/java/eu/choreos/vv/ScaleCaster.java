@@ -100,7 +100,6 @@ public class ScaleCaster {
 				for(ValueAndFunction pair: this.values) {
 					params.add(pair.value);
 				}
-//				ReportData data = new ReportData(params, values); //TODO: include labels
 				data.setParameters(params);
 				report.put( i++, data);
 				this.increaseParamentersValues();
