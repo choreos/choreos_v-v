@@ -3,14 +3,9 @@ package eu.choreos.vv.loadgenerator;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
+import eu.choreos.vv.client.Client;
 import eu.choreos.vv.data.ReportData;
-import eu.choreos.vv.experiments.Experiment;
 import eu.choreos.vv.loadgenerator.strategy.LoadGenerationStrategy;
 
 /**
@@ -21,7 +16,7 @@ public class SequentialLoadGenerator <K, T> implements LoadGenerator<K, T> {
 
 	static final String LABEL = "response time (msec)";
 
-	private Experiment<K, T> experiment;
+	private Client<K, T> client;
 	private LoadGenerationStrategy strategy;
 
 	protected long delay;
@@ -32,11 +27,11 @@ public class SequentialLoadGenerator <K, T> implements LoadGenerator<K, T> {
 	}
 
 	@Override
-	public ReportData execute(int numberOfCalls, Experiment<K, T> experiment)
+	public ReportData execute(int numberOfCalls, Client<K, T> client)
 			throws Exception {
 		final List<Number> measurements = new ArrayList<Number>();
 		Date start, end;
-		this.experiment = experiment;
+		this.client = client;
 		strategy.setMeanDelay(delay);
 		strategy.setup();
 			start = new Date();
@@ -72,11 +67,11 @@ public class SequentialLoadGenerator <K, T> implements LoadGenerator<K, T> {
 	}
 
 	public Double call() throws Exception {
-		K valueBefore = experiment.beforeRequest();
+		K valueBefore = client.beforeRequest();
 		double start = System.currentTimeMillis();
-		T valueRequest = experiment.request(valueBefore);
+		T valueRequest = client.request(valueBefore);
 		double end = System.currentTimeMillis();
-		experiment.afterRequest(valueRequest);
+		client.afterRequest(valueRequest);
 		return (end - start);
 	}
 

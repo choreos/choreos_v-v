@@ -10,8 +10,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import eu.choreos.vv.client.Client;
 import eu.choreos.vv.data.ReportData;
-import eu.choreos.vv.experiments.Experiment;
 import eu.choreos.vv.loadgenerator.strategy.LoadGenerationStrategy;
 import eu.choreos.vv.loadgenerator.strategy.TraceDrivenLoad;
 
@@ -24,11 +24,11 @@ public class TraceDrivenTest {
 		BufferedReader in = new BufferedReader(reader);
 		LoadGenerationStrategy strategy = new TraceDrivenLoad(in);
 		LoadGeneratorFactory.getInstance().setStrategy(strategy);
-		LoadGenerator loadGen = LoadGeneratorFactory.getInstance().create();
+		LoadGenerator<Object, Object> loadGen = LoadGeneratorFactory.getInstance().create();
 		final List<Long> times = new ArrayList<Long>();
 
 		ReportData report = loadGen.execute(6,
-				new Experiment<Object, Object>() {
+				new Client<Object, Object>() {
 
 					long ant, now = System.nanoTime();
 
@@ -42,14 +42,10 @@ public class TraceDrivenTest {
 						return times;
 					}
 
-					@Override
-					protected List<String> getParameterLabels() {
-						// TODO Auto-generated method stub
-						return null;
-					}
+
 				});
 
-		assertEquals(times.get(1)/10000000f, 10f, 0.1);
+		assertEquals(times.get(1)/10000000f, 10f, 0.2);
 		assertEquals(times.get(2)/10000000f, 10f, 0.1);
 		assertEquals(times.get(3)/10000000f, 2f, 0.1);
 		assertEquals(times.get(4)/10000000f, 45.9f, 0.1);

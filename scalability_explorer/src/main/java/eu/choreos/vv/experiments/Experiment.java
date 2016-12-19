@@ -8,12 +8,11 @@ import java.util.Map;
 import eu.choreos.vv.Scalable;
 import eu.choreos.vv.ScaleCaster;
 import eu.choreos.vv.analysis.Analyzer;
+import eu.choreos.vv.client.Client;
 import eu.choreos.vv.data.ExperimentReport;
 import eu.choreos.vv.data.ReportData;
 import eu.choreos.vv.deployment.Deployer;
 import eu.choreos.vv.experiments.strategy.ExperimentStrategy;
-import eu.choreos.vv.loadgenerator.LoadGenerator;
-import eu.choreos.vv.loadgenerator.LoadGeneratorFactory;
 import eu.choreos.vv.stop.IterationsStop;
 import eu.choreos.vv.stop.StopCriterion;
 
@@ -27,13 +26,14 @@ import eu.choreos.vv.stop.StopCriterion;
  * limit).
  * 
  */
-public abstract class Experiment<K, T> implements Scalable {
+public abstract class Experiment implements Scalable {
 
 	private int numberOfRequestsPerIteration;
 	private int numberOfRequestsPerMinute;
 	private Map<String, Object> parameters;
 	private StopCriterion criteria;
-	private LoadGenerator<K, T> loadGen;
+	//private LoadGenerator<K, T> loadGen;
+	private Client client;
 	private Deployer deployer;
 	private Analyzer analyzer;
 	private List<ExperimentReport> reports;
@@ -45,51 +45,6 @@ public abstract class Experiment<K, T> implements Scalable {
 	 * @throws Exception
 	 */
 	public void beforeExperiment() throws Exception {
-	}
-
-	/**
-	 * This method can be overridden to execute before each Iteration
-	 * 
-	 * @param resourceQuantity
-	 *            current resource quantity
-	 * @throws Exception
-	 */
-	public void beforeIteration() throws Exception {
-	}
-
-	/**
-	 * This method can be overridden to execute before each request
-	 * 
-	 * @throws Exception
-	 */
-	public K beforeRequest() throws Exception {
-		return null;
-	}
-
-	/**
-	 * This method must be overridden in order to execute the proper request
-	 * 
-	 * @throws Exception
-	 */
-	public T request(K param) throws Exception {
-		return null;
-	}
-
-	/**
-	 * This method can be overriden to execute after each request
-	 * 
-	 * @throws Exception
-	 */
-	public void afterRequest(T param) throws Exception {
-	}
-
-	/**
-	 * This method can be overriden to execute after each Iteration
-	 * 
-	 * @throws Expeption
-	 */
-	public void afterIteration() throws Exception {
-
 	}
 
 	/**
@@ -112,9 +67,6 @@ public abstract class Experiment<K, T> implements Scalable {
 		parameters = new HashMap<String, Object>();
 	}
 
-	private void newLoadGenerator() {
-		loadGen = LoadGeneratorFactory.getInstance().<K, T> create();
-	}
 
 	public ExperimentStrategy getStrategy() {
 		return strategy;
@@ -131,6 +83,14 @@ public abstract class Experiment<K, T> implements Scalable {
 
 	public void setDeployer(Deployer enacter) {
 		this.deployer = enacter;
+	}
+	
+	public Client getClient() {
+		return client;
+	}
+	
+	public void setClient(Client client) {
+		this.client = client; 
 	}
 
 	public int getNumberOfRequestsPerIteration() {
@@ -185,13 +145,13 @@ public abstract class Experiment<K, T> implements Scalable {
 
 		if (deployer != null)
 			deployer.scale(parameters);
-		beforeIteration();
+		//beforeIteration();
 
-		newLoadGenerator();
-		loadGen.setDelay(60000000000l / numberOfRequestsPerMinute);
-		report = loadGen.execute(numberOfRequestsPerIteration, this);
+		//newLoadGenerator();
+		//loadGen.setDelay(60000000000l / numberOfRequestsPerMinute);
+		report = client.execute(numberOfRequestsPerIteration, 60000000000l / numberOfRequestsPerMinute, parameters);
 
-		afterIteration();
+		//afterIteration();
 
 		return report;
 	}
@@ -244,7 +204,7 @@ public abstract class Experiment<K, T> implements Scalable {
 			deployer.deploy();
 		report = scaleCaster.execute();
 		report.setParameterLabels(getParameterLabels());
-		report.setMeasurementUnit(loadGen.getLabel());
+		report.setMeasurementUnit(client.getLabel());
 		afterExperiment();
 		if (store)
 			reports.add(report);
