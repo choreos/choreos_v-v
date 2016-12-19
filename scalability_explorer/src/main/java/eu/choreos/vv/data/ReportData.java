@@ -1,6 +1,7 @@
 package eu.choreos.vv.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,14 @@ public class ReportData implements Serializable {
 	public void setMeasurements(String label, List<Number> measurements) {
 		this.measurements.put(label, measurements);
 	}
+	
+	public void addMeasurements(String label, List<Number> measurements) {
+		List<Number> current = this.getMeasurements(label);
+		if (current == null)
+			this.setMeasurements(label, measurements);
+		else
+			current.addAll(measurements);
+	}
 
 	public Date getStartTime() {
 		return startTime;
@@ -52,6 +61,27 @@ public class ReportData implements Serializable {
 
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
+	}
+	
+	public ReportData merge(ReportData that) {
+		ReportData merged = new ReportData();
+		
+		//TODO: label the parameters and only merge reports with similiar parameters and values
+		merged.setParameters(this.getParameters());
+		
+		merged.setStartTime(this.getStartTime().before(that.getStartTime())? this.getStartTime() : that.getStartTime());
+		merged.setEndTime(this.getEndTime().after(that.getEndTime())? this.getEndTime() : that.getEndTime());
+		
+		//TODO add timestamp to the measurements and merge them ordered
+		for(String key: this.measurements.keySet()) {
+			merged.addMeasurements(key, new ArrayList<Number>(this.getMeasurements(key)));
+		}
+		for(String key: that.measurements.keySet()) {
+			merged.addMeasurements(key, new ArrayList<Number>(that.getMeasurements(key)));
+		}
+		
+		
+		return merged;
 	}
 
 }
