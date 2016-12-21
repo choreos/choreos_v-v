@@ -3,10 +3,14 @@ package eu.choreos.vv.chart.creator;
 import java.util.List;
 
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.renderer.xy.DeviationRenderer;
+import org.jfree.data.xy.AbstractIntervalXYDataset;
+import org.jfree.data.xy.YIntervalSeries;
+import org.jfree.data.xy.YIntervalSeriesCollection;
 
 import eu.choreos.vv.aggregations.Mean;
 import eu.choreos.vv.aggregations.StandardDeviation;
-import eu.choreos.vv.chart.YIntervalChart;
+import eu.choreos.vv.chart.LineChart;
 import eu.choreos.vv.data.ExperimentReport;
 import eu.choreos.vv.data.PlotData;
 import eu.choreos.vv.data.StatisticalData;
@@ -47,9 +51,24 @@ public class MeanChartCreator implements ChartCreator {
 	@Override
 	public ChartPanel createChart(List<PlotData> plotData, String title,
 			String xLabel, String yLabel) {
-		// TODO Auto-generated method stub
-		return YIntervalChart.createChart(title, plotData, xLabel, "mean of "
-				+ yLabel);
+		YIntervalSeriesCollection dataset = new YIntervalSeriesCollection();
+
+        for (PlotData report : plotData) {
+            createDataset(dataset, (StatisticalData)report);
+		}
+		return LineChart.createChart(title, plotData, xLabel, "mean of "
+				+ yLabel, dataset, new DeviationRenderer(true, true));
 	}
+	
+	private static void createDataset(YIntervalSeriesCollection dataset, StatisticalData report) {
+    	YIntervalSeries series = new YIntervalSeries(report.getName());
+//    	for (int i = 0; i < report.size(); i++) {
+    	for (Double x: report.keySet()) {
+    		Double y = report.get(x).getMean();
+    		Double sd = report.get(x).getStandardDeviation();
+			series.add(x, y, y-sd, y+sd);
+		}
+    	dataset.addSeries(series);
+    }
 
 }

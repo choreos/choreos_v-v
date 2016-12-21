@@ -5,9 +5,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import eu.choreos.vv.aggregations.Mean;
 import eu.choreos.vv.analysis.AggregatePerformance;
-import eu.choreos.vv.chart.creator.MeanChartCreator;
+import eu.choreos.vv.chart.creator.PercentileChartCreator;
 import eu.choreos.vv.client.Client;
 import eu.choreos.vv.experiments.Experiment;
 import eu.choreos.vv.experiments.strategy.ComposedStrategy;
@@ -16,7 +15,7 @@ import eu.choreos.vv.experiments.strategy.ParameterScaling;
 import eu.choreos.vv.experiments.strategy.WorkloadScaling;
 import eu.choreos.vv.increasefunctions.ExponentialIncrease;
 import eu.choreos.vv.increasefunctions.LinearIncrease;
-import eu.choreos.vv.stop.MeasurementStop;
+import eu.choreos.vv.stop.IterationsStop;
 
 public class ScalabilityTestExample extends Experiment {
 	public static final int REQUESTS = 10;
@@ -39,9 +38,10 @@ public class ScalabilityTestExample extends Experiment {
 		this.setClient(new TheClient(resources));
 		this.setStrategy(strategy);
 		this.setNumberOfRequestsPerIteration(REQUESTS);
-		this.setStoppingCriteria(new MeasurementStop(100.0, new Mean()));
-		this.setAnalyser(new AggregatePerformance("Scalability Chart",
-				new MeanChartCreator(), 1));
+//		this.setStoppingCriteria(new MeasurementStop(100.0, new Mean()));
+		this.setStoppingCriteria(new IterationsStop(3));
+//		this.setAnalyser(new AggregatePerformance("Scalability Chart", new MeanChartCreator(), 1));
+		this.setAnalyser(new AggregatePerformance("Scalability Chart", new PercentileChartCreator(90), 1));
 
 	}
 

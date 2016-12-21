@@ -37,59 +37,61 @@ import org.jfree.chart.labels.XYItemLabelGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.xy.AbstractIntervalXYDataset;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.data.xy.YIntervalSeries;
+import org.jfree.data.xy.YIntervalSeriesCollection;
 
-import eu.choreos.vv.data.LineData;
 import eu.choreos.vv.data.PlotData;
+import eu.choreos.vv.data.StatisticalData;
 
 
-public class XYChart extends JFrame {
+public class LineChart extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	public XYChart(String applicationTitle, String chartTitle, List<PlotData> reports, String xLabel, String yLabel) {
-        super(applicationTitle);
-        
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
-        XYSeriesCollection dataset = new XYSeriesCollection();
-
-        for (PlotData report : reports) {
-            createDataset(dataset, (LineData)report);
-		}
-        // based on the dataset we create the chart
-        JFreeChart chart = createChart(dataset, chartTitle, xLabel, yLabel);
-        // we put the chart into a panel
-        ChartPanel chartPanel = new ChartPanel(chart);
-        // default size
-        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-        // add it to our application
-        setContentPane(chartPanel);
-
-    }
+//	public LineChart(String applicationTitle, String chartTitle, List<PlotData> reports, String xLabel, String yLabel) {
+//        super(applicationTitle);
+//        
+//        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//        
+//        YIntervalSeriesCollection dataset = new YIntervalSeriesCollection();
+//
+//        for (PlotData report : reports) {
+//            createDataset(dataset, (StatisticalData)report);
+//		}
+//        // based on the dataset we create the chart
+//        JFreeChart chart = createChart(dataset, chartTitle, xLabel, yLabel);
+//        // we put the chart into a panel
+//        ChartPanel chartPanel = new ChartPanel(chart);
+//        // default size
+//        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+//        // add it to our application
+//        setContentPane(chartPanel);
+//
+//    }
 	
-	public static ChartPanel createChart(String chartTitle, List<PlotData> reports, String xLabel, String yLabel) {
-		XYSeriesCollection dataset = new XYSeriesCollection();
-
-        for (PlotData report : reports) {
-            createDataset(dataset, (LineData)report);
-		}
-		JFreeChart chart = createChart(dataset, chartTitle, xLabel, yLabel);
+	public static ChartPanel createChart(String chartTitle, List<PlotData> reports, String xLabel, String yLabel, AbstractIntervalXYDataset dataset, XYLineAndShapeRenderer renderer) {
+//		YIntervalSeriesCollection dataset = new YIntervalSeriesCollection();
+//
+//        for (PlotData report : reports) {
+//            createDataset(dataset, (StatisticalData)report);
+//		}
+		JFreeChart chart = createChart(dataset, chartTitle, xLabel, yLabel, renderer);
 		ChartPanel panel = new ChartPanel(chart);
 		return panel;
 	}
 		
-    private static void createDataset(XYSeriesCollection dataset, LineData report) {
-    	XYSeries series = new XYSeries(report.getName());
-//    	for (int i = 0; i < report.size(); i++) {
-    	for (Double x: report.keySet()) {
-			series.add(x, report.get(x));
-		}
-    	dataset.addSeries(series);
-    }
+//    private static void createDataset(YIntervalSeriesCollection dataset, StatisticalData report) {
+//    	YIntervalSeries series = new YIntervalSeries(report.getName());
+//    	for (Double x: report.keySet()) {
+//    		Double y = report.get(x).getMean();
+//    		Double sd = report.get(x).getStandardDeviation();
+//			series.add(x, y, y-sd, y+sd);
+//		}
+//    	dataset.addSeries(series);
+//    }
 	
-    private static JFreeChart createChart(XYDataset dataset, String chartTitle, String xLabel, String yLabel) {
+    private static JFreeChart createChart(XYDataset dataset, String chartTitle, String xLabel, String yLabel, XYLineAndShapeRenderer renderer) {
 
         // create the chart...
         JFreeChart chart = ChartFactory.createXYLineChart(
@@ -126,8 +128,8 @@ public class XYChart extends JFrame {
         
 
         // render shapes and lines
-        XYLineAndShapeRenderer renderer =
-            new XYLineAndShapeRenderer(true, true);
+//        DeviationRenderer renderer =
+//            new DeviationRenderer(true, true);
         plot.setRenderer(renderer);
         renderer.setBaseShapesVisible(true);
         renderer.setBaseShapesFilled(true);
@@ -136,6 +138,12 @@ public class XYChart extends JFrame {
         Stroke stroke = new BasicStroke(
             3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
         renderer.setBaseOutlineStroke(stroke);
+        
+        //TODO: render the deviation with the same color as the line
+//        renderer.setBaseFillPaint(new Color(255, 200, 200));
+//        renderer.setUseOutlinePaint(flag);
+//        renderer.setUseFillPaint(flag);
+        
 
         // label the points
         NumberFormat format = NumberFormat.getNumberInstance();
@@ -146,6 +154,8 @@ public class XYChart extends JFrame {
                 format, format);
         renderer.setBaseItemLabelGenerator(generator);
         renderer.setBaseItemLabelsVisible(true);
+        
+        //TODO: fix the visible area to show the deviation
 
         return chart;
     }
