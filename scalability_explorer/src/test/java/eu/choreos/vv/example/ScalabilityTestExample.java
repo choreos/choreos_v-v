@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import eu.choreos.vv.analysis.AggregatePerformance;
 import eu.choreos.vv.chart.creator.PercentileChartCreator;
-import eu.choreos.vv.client.Client;
+import eu.choreos.vv.client.BaseClient;
 import eu.choreos.vv.experiments.Experiment;
 import eu.choreos.vv.experiments.strategy.ComposedStrategy;
 import eu.choreos.vv.experiments.strategy.ExperimentStrategy;
@@ -63,7 +63,7 @@ public class ScalabilityTestExample extends Experiment {
 
 }
 
-class TheClient extends Client<Long, Long> {
+class TheClient extends BaseClient<Long, Long> {
 	List<Long> resources;
 	int resourceIndex = 0;
 

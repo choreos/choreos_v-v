@@ -8,6 +8,7 @@ import java.util.Map;
 import eu.choreos.vv.Scalable;
 import eu.choreos.vv.ScaleCaster;
 import eu.choreos.vv.analysis.Analyzer;
+import eu.choreos.vv.client.BaseClient;
 import eu.choreos.vv.client.Client;
 import eu.choreos.vv.data.ExperimentReport;
 import eu.choreos.vv.data.ReportData;
@@ -33,7 +34,7 @@ public abstract class Experiment implements Scalable {
 	private Map<String, Object> parameters;
 	private StopCriterion criteria;
 	//private LoadGenerator<K, T> loadGen;
-	private Client client;
+	private BaseClient client;
 	private Deployer deployer;
 	private Analyzer analyzer;
 	private List<ExperimentReport> reports;
@@ -89,7 +90,7 @@ public abstract class Experiment implements Scalable {
 		return client;
 	}
 	
-	public void setClient(Client client) {
+	public void setClient(BaseClient client) {
 		this.client = client; 
 	}
 

@@ -14,7 +14,7 @@ import eu.choreos.vv.data.ReportData;
 import eu.choreos.vv.loadgenerator.LoadGeneratorFactory;
 import eu.choreos.vv.loadgenerator.strategy.LoadGenerationStrategy;
 
-public class MultiClient<T extends Client> extends Client implements Callable<ReportData> {
+public class MultiClient<T extends Client> extends BaseClient implements Callable<ReportData> {
 
 	List<T> clients;
 	Iterator<T> iterator;

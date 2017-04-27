@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import eu.choreos.vv.client.Client;
+import eu.choreos.vv.client.BaseClient;
 import eu.choreos.vv.data.ReportData;
 import eu.choreos.vv.loadgenerator.strategy.LoadGenerationStrategy;
 import eu.choreos.vv.loadgenerator.strategy.TraceDrivenLoad;
@@ -28,7 +28,7 @@ public class TraceDrivenTest {
 		final List<Long> times = new ArrayList<Long>();
 
 		ReportData report = loadGen.execute(6,
-				new Client<Object, Object>() {
+				new BaseClient<Object, Object>() {
 
 					long ant, now = System.nanoTime();
 

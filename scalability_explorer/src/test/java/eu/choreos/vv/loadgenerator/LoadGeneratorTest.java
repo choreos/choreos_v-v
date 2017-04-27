@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import eu.choreos.vv.client.Client;
+import eu.choreos.vv.client.BaseClient;
 
 public class LoadGeneratorTest {
 
@@ -20,7 +20,7 @@ public class LoadGeneratorTest {
 				.getInstance().create();
 		loadGen.setDelay(DELAY);
 		try {
-			loadGen.execute(TIMES_TO_RUN, new Client<Object, Object>() {
+			loadGen.execute(TIMES_TO_RUN, new BaseClient<Object, Object>() {
 
 				@Override
 				public Object request(Object param) {
@@ -41,7 +41,7 @@ public class LoadGeneratorTest {
 				.getInstance().create();
 		loadGen.setDelay(10000000);
 		long startTime = System.currentTimeMillis();
-		loadGen.execute(100, new Client<Object, Object>() {
+		loadGen.execute(100, new BaseClient<Object, Object>() {
 
 			@Override
 			public Object request(Object param) {
@@ -66,7 +66,7 @@ public class LoadGeneratorTest {
 				.getInstance().create();
 		loadGen.setDelay(100000000);
 		long startTime = System.currentTimeMillis();
-		loadGen.execute(10, new Client<Object, Object>() {
+		loadGen.execute(10, new BaseClient<Object, Object>() {
 
 			@Override
 			public Object request(Object param) {
