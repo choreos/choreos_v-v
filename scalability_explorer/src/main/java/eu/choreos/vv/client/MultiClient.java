@@ -12,12 +12,11 @@ import java.util.concurrent.TimeUnit;
 
 import eu.choreos.vv.data.ReportData;
 import eu.choreos.vv.loadgenerator.LoadGeneratorFactory;
-import eu.choreos.vv.loadgenerator.strategy.LoadGenerationStrategy;
 
-public class MultiClient<T extends Client> extends BaseClient implements Callable<ReportData> {
+public class MultiClient<T extends Client<A,B>, A, B> extends BaseClient<A,B> implements Callable<ReportData> {
 
-	List<T> clients;
-	Iterator<T> iterator;
+	protected List<T> clients;
+	protected Iterator<T> iterator;
 
 	int numberOfCalls;
 	long delay;
@@ -55,10 +54,10 @@ public class MultiClient<T extends Client> extends BaseClient implements Callabl
 			executorService.shutdownNow();
 			throw e;
 		}
-		
+
 		for (Future<ReportData> future : futureResults)
 			report.merge(future.get());
-		
+
 		this.tearDown();
 
 		return report;
