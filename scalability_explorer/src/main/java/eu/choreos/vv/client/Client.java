@@ -4,6 +4,7 @@ import java.util.Map;
 
 import eu.choreos.vv.chart.Labeled;
 import eu.choreos.vv.data.ReportData;
+import eu.choreos.vv.experiments.Experiment;
 
 public interface Client<K, T> extends Labeled {
 
@@ -43,5 +44,9 @@ public interface Client<K, T> extends Labeled {
 	 * @throws Exception
 	 */
 	void afterRequest(T param) throws Exception;
+
+	public Experiment getExperiment();
+
+	public void setExperiment(Experiment experiment);
 
 }
